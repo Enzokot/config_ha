@@ -1,0 +1,6 @@
+
+  - platform: polling
+    api_key: !secret telegram_api
+    allowed_chat_ids:
+      - !secret telegram_enzokot_chat_id
+      - !secret telegram_chita_chat_id

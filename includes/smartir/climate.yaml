@@ -1,0 +1,9 @@
+
+  - platform: smartir
+    name: Broadlink AC living room
+    unique_id: broadlink_ac_living_room
+    device_code: 1287
+    controller_data: remote.broadlink_ir_living_room
+    temperature_sensor: sensor.temp_for_ac_living_room
+    humidity_sensor: sensor.humidity_for_ac_living_room
+    power_sensor: binary_sensor.0x00158d000490fe9d_contact

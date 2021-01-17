@@ -1,0 +1,85 @@
+
+homeassistant:
+  name: Kotletochka home
+  latitude: !secret latitude_coord
+  longitude: !secret longitude_coord
+  elevation: 161
+  unit_system: metric
+  time_zone: Europe/Moscow
+  customize: !include_dir_merge_named includes/customize
+  allowlist_external_dirs:
+   - /config
+  external_url: !secret external_url_enzokot
+  internal_url: "http://kotletochkarpi4:8123/"
+  auth_mfa_modules:
+   - type: totp
+   - type: notify
+     message: "\U0001F511 *Двухфакторная аутентификация*\n`{}` код для завершения авторизации Home Assistant"
+
+default_config:
+#frontend:
+#  themes: !include_dir_merge_named themes
+
+http:
+  login_attempts_threshold: 5
+  use_x_forwarded_for: true
+  trusted_proxies: 
+    - 127.0.0.1
+    - ::1
+    - 172.30.32.0/23
+
+lovelace:
+  mode: yaml
+  resources: !include includes/resources.yaml
+
+hacs:
+  token: !secret HACS_github
+  appdaemon: true
+
+tts:
+  - platform: google_translate
+
+mqtt:
+  broker: core-mosquitto
+  username: mqtt
+  password: !secret mqtt_broker_password
+
+logger:
+  default: info
+#   logs:
+#     homeassistant.event: debug
+#     custom_components.unifiprotect: debug
+#  logs:
+#    homeassistant.components.sensor.rest: fatal
+#  logs:
+#    xiaomi_gateway: debug
+
+group: !include includes/groups.yaml
+automation: !include_dir_merge_list includes/automation
+script: !include_dir_merge_named includes/scripts
+scene: !include includes/scenes.yaml
+recorder: !include includes/recorder.yaml
+notify: !include includes/notify.yaml
+telegram_bot: !include includes/telegram_bot.yaml
+yeelight: !include includes/yeelight.yaml
+fan: !include includes/fan.yaml
+vacuum: !include includes/vacuum.yaml
+switch: !include_dir_merge_list includes/switches
+sensor: !include_dir_merge_list includes/sensor
+binary_sensor: !include_dir_merge_list includes/binary_sensor
+input_select: !include includes/input_select.yaml
+input_number: !include includes/input_number.yaml
+input_text: !include includes/input_text.yaml
+input_boolean: !include includes/input_boolean.yaml
+input_datetime: !include includes/input_datetime.yaml
+#device_tracker: !include includes/device_tracker.yaml
+timer: !include includes/timer.yaml
+media_player: !include includes/media_player.yaml
+wake_on_lan: !include includes/wake_on_lan.yaml
+webostv: !include includes/webostv.yaml
+#smartthinq_sensors: !include includes/smartthinq_sensors.yaml
+zone: !include includes/zone.yaml
+utility_meter: !include includes/utility_meter.yaml
+smartir: 
+climate: !include includes/smartir/climate.yaml
+camera: !include includes/camera.yaml

@@ -1,0 +1,900 @@
+
+title: Kotletochka smart home
+views:
+
+  - title: Главная
+    icon: mdi:home-assistant
+    
+    cards:
+
+      - type: vertical-stack
+        cards:
+
+        - type: markdown
+          content: >
+             **Текущее состояние**
+             
+        - type: entities
+          show_header_toggle: false
+          entities:
+            - entity: sensor.date
+              name: Дата
+              icon: mdi:calendar-check-outline
+            - entity: sensor.time
+              name: Время
+              icon: mdi:clock-outline
+            - entity: sensor.last_boot_custom
+            - entity: sensor.online_custom
+              tap_action:
+                  action: navigate
+                  navigation_path: /config/logs
+            - entity: sensor.cert_expiry_enzokot_domain
+            - entity: binary_sensor.rpi_power_inverted
+
+        - type: markdown
+          content: >
+             **Резервное копирование**
+             
+        - type: entities
+          show_header_toggle: false
+          entities:
+            - entity: sensor.snapshots_in_hassio_train
+            - entity: sensor.snapshots_in_google_drive_train
+            - entity: sensor.last_google_backup_train
+            
+      - type: vertical-stack
+        cards:
+        - type: markdown
+          content: >
+             **Графики** 
+
+        - type: horizontal-stack
+          cards:
+
+           - type: gauge
+             name: Загрузка CPU
+             unit: '%'
+             entity: sensor.processor_use
+             severity:
+                green: 0
+                yellow: 60
+                red: 85
+             
+           - type: gauge
+             name: Загрузка ОЗУ
+             unit: '%'
+             entity: sensor.memory_use_percent
+             severity:
+                green: 0
+                yellow: 60
+                red: 85
+                
+        - type: horizontal-stack
+          cards:
+
+           - type: gauge
+             name: Диск заполнен
+             unit: '%'
+             entity: sensor.disk_use_percent
+             severity:
+                green: 0
+                yellow: 60
+                red: 85    
+                
+           - type: gauge
+             name: Свободное место
+             unit: 'Гб'
+             min: 0
+             max: 33
+             entity: sensor.disk_free
+             severity:
+                red: 0
+                yellow: 3
+                green: 8
+
+        - type: custom:mini-graph-card
+          entities:
+             - entity: sensor.cpu_temperature
+               #show_points: false
+          hour24: true
+          points_per_hour: 6
+          hours_to_show: 12
+
+      - type: vertical-stack
+        cards:
+
+        - type: markdown
+          content: >
+             **Состояние базы** 
+
+        - type: entities
+          show_header_toggle: false
+          entities:
+            - entity: sensor.maria_db_size
+              name: Объем базы данных Maria - 
+              icon: mdi:database
+              secondary_info: entity-id              
+            - type: divider            
+            - type: call-service
+              icon: mdi:database-minus
+              name: База данных
+              action_name: Сжать
+              service: automation.trigger
+              service_data:
+                entity_id: automation.db_purge_everyday
+
+  - title: Освещение
+    icon: mdi:lightbulb-group
+
+    cards:
+    
+      - type: vertical-stack
+        cards:
+        - type: markdown
+          content: >
+             **Панель переключателей** 
+             
+        - type: entities
+          show_header_toggle: false
+          entities:          
+            - entity: binary_sensor.0x00158d0003f37a0f_contact
+              secondary_info: last-changed
+            - entity: light.yeelight_650
+              name: Люстра 650 основной свет
+            - entity: light.yeelight_650_nightlight
+              name: Люстра 650 ночник
+            - entity: light.yeelight_650_ambilight
+              name: Люстра 650 ambilight
+
+      - type: vertical-stack
+        cards:
+        - type: markdown
+          content: >
+             **Светильники**    
+              
+        - type: horizontal-stack
+          cards:
+            - type: light
+              entity: light.yeelight_650
+              name: Люстра 650
+            - type: light
+              entity: light.yeelight_650_nightlight
+              name: Ночник 650
+            - type: light
+              entity: light.yeelight_650_ambilight
+              name: Ambilight 650
+
+  - title: Zigbee
+    icon: mdi:zigbee
+    
+    cards:
+      - type: vertical-stack
+        cards:
+        - type: markdown
+          content: >
+             **Шлюз** 
+
+        - type: custom:vertical-stack-in-card
+          cards:
+
+            - type: custom:vertical-stack-in-card
+              horizontal: true
+              cards:
+
+                - type: alarm-panel
+                  entity: alarm_control_panel.signalka_shliuza_alarm
+                  name: 'Охрана:'
+                  states:
+                    - arm_away
+
+                - type: button
+                  show_name: false
+                  entity: input_boolean.alarm_gateway_button
+
+            - type: entities
+              show_header_toggle: false
+              entities:          
+                - entity: light.gateway_light_04cf8cabd77b
+                - entity: sensor.signalka_shliuza_illuminance
+                - entity: sensor.0x04cf8cdf3c7d15b7_illuminance_lux
+                
+        - type: markdown
+          content: >
+             **Двери, окна, движение, выключатели, датчики дыма** 
+        
+        - type: glance
+          columns: 4
+          entities:
+            - entity: binary_sensor.0x00158d000359304c_contact
+              show_last_changed: true
+            - entity: binary_sensor.0x00158d000566bde7_occupancy
+              show_last_changed: true
+              name: Коридор
+            - entity: binary_sensor.0x00158d00054b8d72_occupancy
+              show_last_changed: true
+              name: Детская
+            - entity: binary_sensor.0x00158d0003f37a0f_contact
+              show_last_changed: true
+              icon: mdi:ceiling-light
+            - entity: binary_sensor.0x00158d00039d9398_smoke
+              show_last_changed: true
+              name: Коридор
+            - entity: binary_sensor.0x00158d0003943639_smoke
+              show_last_changed: true
+              name: Кухня
+            - entity: binary_sensor.0x00158d00045ca483_smoke
+              show_last_changed: true
+              name: Детская
+            - entity: binary_sensor.0x00158d00045cd551_smoke
+              show_last_changed: true
+              name: Спальня
+            - entity: binary_sensor.0x00158d00039a8358_smoke
+              show_last_changed: true
+              name: Гостиная
+
+      - type: vertical-stack
+        cards:
+
+        - type: markdown
+          content: >
+             **Уровень заряда** 
+             
+        - type: custom:battery-state-card
+          color_gradient:
+              - "#ff0000" # red
+              - "#ffff00" # yellow
+              - "#008000" # green
+          sort_by_level: "asc"
+          collapse: 
+              - name: 'Герконы (min: {min}%, кол-во: {count})'
+                secondary_info: 'Диапазон заряда {range}%'
+                icon: 'mdi:door'
+                min: 30
+                entities:
+                  - sensor.0x00158d000359304c_battery
+                  - sensor.0x00158d000490fe9d_battery          
+                  - sensor.0x00158d0003f37a0f_battery
+              - name: 'Дыма (min: {min}%, кол-во: {count})'
+                secondary_info: 'Диапазон заряда {range}%'
+                icon: 'mdi:smoke-detector'
+                min: 30
+                entities:
+                  - sensor.0x00158d00039a8358_battery
+                  - sensor.0x00158d00039d9398_battery          
+                  - sensor.0x00158d00045ca483_battery
+                  - sensor.0x00158d00045cd551_battery          
+                  - sensor.0x00158d0003943639_battery
+              - name: 'Т&Rh (min: {min}%, кол-во: {count})'
+                secondary_info: 'Диапазон заряда {range}%'
+                icon: 'mdi:thermometer'
+                min: 30
+                entities:
+                  - sensor.0x00158d0004561de9_battery
+                  - sensor.0x00158d00042fd6f5_battery          
+              - name: 'Движения (min: {min}%, кол-во: {count})'
+                secondary_info: 'Диапазон заряда {range}%'
+                icon: 'mdi:motion-sensor'
+                min: 30
+                entities:
+                  - sensor.0x00158d000566bde7_battery
+                  - sensor.0x00158d00054b8d72_battery
+              - name: 'Кнопки (min: {min}%, кол-во: {count})'
+                secondary_info: 'Диапазон заряда {range}%'
+                icon: 'mdi:radiobox-marked'
+                min: 30
+                entities:
+                  - sensor.0x00158d0003a360b6_battery
+                  - sensor.0x00158d00045a78af_battery
+                  - sensor.0x04cf8cdf3c7d15b7_battery
+              - name: 'Часы (min: {min}%, кол-во: {count})'
+                secondary_info: 'Диапазон заряда {range}%'
+                icon: 'mdi:alarm-check'
+                min: 30
+                entities:
+                  - sensor.esp_xiaomi_bed_room_battery_level
+                  - sensor.esp_xiaomi_kitchen_battery_level
+                  - sensor.esp_xiaomi_living_room_battery_level
+                  - sensor.esp_xiaomi_childrens_room_battery_level
+          entities:          
+            - entity: sensor.0x00158d000359304c_battery
+              tap_action: more-info
+            - entity: sensor.0x00158d0003f37a0f_battery
+              tap_action: more-info
+            - entity: sensor.0x00158d00042fd6f5_battery
+              tap_action: more-info
+            - entity: sensor.0x00158d0004561de9_battery
+              tap_action: more-info
+            - entity: sensor.0x04cf8cdf3c7d15b7_battery
+              tap_action: more-info
+            - entity: sensor.0x00158d00045cd551_battery
+              tap_action: more-info
+            - entity: sensor.0x00158d00045ca483_battery
+              tap_action: more-info
+            - entity: sensor.0x00158d0003943639_battery
+              tap_action: more-info
+            - entity: sensor.0x00158d00039a8358_battery
+              tap_action: more-info
+            - entity: sensor.0x00158d00039d9398_battery
+              tap_action: more-info
+            - entity: sensor.0x00158d000490fe9d_battery
+              tap_action: more-info
+            - entity: sensor.0x00158d000566bde7_battery
+              tap_action: more-info
+            - entity: sensor.0x00158d00054b8d72_battery
+              tap_action: more-info
+            - entity: sensor.0x00158d0003a360b6_battery
+              tap_action: more-info
+            - entity: sensor.0x00158d00045a78af_battery
+              tap_action: more-info
+            - entity: sensor.esp_xiaomi_bed_room_battery_level
+              tap_action: more-info
+              name: 'Часы спальня'
+            - entity: sensor.esp_xiaomi_kitchen_battery_level
+              tap_action: more-info
+              name: 'Часы кухня'
+            - entity: sensor.esp_xiaomi_living_room_battery_level
+              tap_action: more-info
+              name: 'Часы гостиная'
+            - entity: sensor.esp_xiaomi_childrens_room_battery_level
+              tap_action: more-info
+              name: 'Часы детская'
+
+        - type: markdown
+          content: >
+             **Самотестирование датчиков дыма** 
+             
+        - type: horizontal-stack
+          cards:
+
+            - type: button
+              name: Кухня
+              show_state: false
+              icon: mdi:shield-check
+              tap_action:
+                action: call-service
+                service: script.selftest_smoke_detector
+                service_data:
+                  namesmokedetector: 'Smoke detector kitchen'
+            - type: button
+              name: Гостиная
+              show_state: false
+              icon: mdi:shield-check
+              tap_action:
+                action: call-service
+                service: script.selftest_smoke_detector
+                service_data:
+                  namesmokedetector: 'Smoke detector living room'
+            - type: button
+              name: Коридор
+              show_state: false
+              icon: mdi:shield-check
+              tap_action:
+                action: call-service
+                service: script.selftest_smoke_detector
+                service_data:
+                  namesmokedetector: 'Smoke detector hallway'
+            - type: button
+              name: Детская
+              show_state: false
+              icon: mdi:shield-check
+              tap_action:
+                action: call-service
+                service: script.selftest_smoke_detector
+                service_data:
+                  namesmokedetector: 'Smoke detector childrens room'
+            - type: button
+              name: Спальня
+              show_state: false
+              icon: mdi:shield-check
+              tap_action:
+                action: call-service
+                service: script.selftest_smoke_detector
+                service_data:
+                  namesmokedetector: 'Smoke detector bed room'
+
+        - type: markdown
+          content: >
+             **Стик zigbee** 
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: custom:vertical-stack-in-card
+              horizontal: true
+              cards:
+
+                - type: button
+                  name: Поиск zigbee
+                  show_state: false
+                  show_name: false
+                  entity: switch.permit_join_switch_z2m
+                  icon: mdi:cellphone-wireless
+
+                - type: entities
+                  show_header_toggle: false
+                  entities:          
+                    - entity: timer.zigbee_permit_join
+
+            - type: entities
+              show_header_toggle: false
+              entities:          
+                - entity: sensor.zigbee2mqtt_coordinator_ver
+                - entity: sensor.sostoianie_mosta
+                - entity: script.zigbee2mqtt_linkuality_check
+
+      - type: vertical-stack
+        cards:
+                
+        - type: markdown
+          content: >
+             **Розетка водонагревателя** 
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: switch.0x842e14fffe13a854_switch
+                    state_color: true
+                  - entity: input_boolean.water_heater_season
+                    state_color: true
+                  - entity: sensor.0x842e14fffe13a854_power
+                  - entity: sensor.total_water_heater_socket_cable_daily_electicity
+                  - entity: sensor.total_water_heater_socket_cable_monthly_electicity
+                  
+        - type: markdown
+          content: >
+             **Розетка обогревателя Electrolux** 
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: switch.0x842e14fffe5047f5_switch
+                    state_color: true
+                  - entity: input_boolean.heater_night_mode
+                    state_color: true
+                  - entity: sensor.0x842e14fffe5047f5_power
+                  - entity: sensor.total_heater_socket_cable_daily_electicity
+                  - entity: sensor.total_heater_socket_cable_monthly_electicity
+
+        - type: markdown
+          content: >
+             **Розетка в кухне 1** 
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: switch.0x842e14fffe36661f
+                    state_color: true
+                  - entity: sensor.0x842e14fffe36661f_power
+                  - entity: sensor.total_kithen_socket_1_cable_daily_electicity
+                  - entity: sensor.total_kitchen_socket_1_cable_monthly_electicity
+
+        - type: markdown
+          content: >
+             **Розетка в спальне 1** 
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: switch.0x588e81fffeff5c4f
+                    state_color: true
+                  - entity: sensor.0x588e81fffeff5c4f_power
+                  - entity: sensor.total_bedroom_socket_1_cable_daily_electicity
+                  - entity: sensor.total_bedroom_socket_1_cable_monthly_electicity
+
+  - title: Климат
+    icon: mdi:home-thermometer
+    
+    cards:
+      - type: vertical-stack
+        cards:
+
+        - type: markdown
+          content: >
+             **Погода**
+
+        - type: custom:weather-card
+          name: " "
+          entity: weather.kotletochka_home
+
+        - type: markdown
+          content: >
+             **Увлажнитель детская** 
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: fan.xiaomi_miio_device_1
+                    type: custom:custom-fan-card
+                    name: 'Вкл/Выкл'
+                    state_color: true
+            - type: horizontal-stack
+              cards:
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.xiaomi_miio_device_1_water
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.xiaomi_miio_device_1_speed
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: input_number.xiaomi_airpurifier_1_target_humidity
+                  - entity: switch.xiaomi_miio_device_1_buzzer
+                    state_color: true
+                  - entity: input_number.xiaomi_airpurifier_1_led_brightness
+                  - entity: switch.xiaomi_miio_device_1_dry
+                    state_color: true
+                  - entity: switch.xiaomi_miio_device_1_child_lock
+                    state_color: true
+
+        - type: markdown
+          content: >
+             **Увлажнитель спальня** 
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: fan.xiaomi_miio_device
+                    type: custom:custom-fan-card
+                    name: 'Вкл/Выкл'
+                    state_color: true
+            - type: horizontal-stack
+              cards:
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.xiaomi_miio_device_water
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.xiaomi_miio_device_speed
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: input_number.xiaomi_airpurifier_target_humidity
+                  - entity: switch.xiaomi_miio_device_buzzer
+                    state_color: true
+                  - entity: input_number.xiaomi_airpurifier_led_brightness
+                  - entity: switch.xiaomi_miio_device_dry
+                    state_color: true
+                  - entity: switch.xiaomi_miio_device_child_lock
+                    state_color: true
+                #   - type: conditional
+                #     conditions:
+                #       - entity: switch.xiaomi_miio_device_child_lock
+                #          state: 'on'
+                #     row:
+                #         entity: input_number.xiaomi_airpurifier_target_humidity
+
+      - type: vertical-stack
+        cards:
+
+        - type: markdown
+          content: >
+             **Температура, влажность, давление** 
+        
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: horizontal-stack
+              cards:
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.0x00158d00042fd6f5_temperature
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.0x00158d00042fd6f5_humidity
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: sensor.158d00042fd6f5_pressure
+            - type: horizontal-stack
+              cards:
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.esp_xiaomi_childrens_room_temperature
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.esp_xiaomi_childrens_room_humidity
+            - type: horizontal-stack
+              cards:
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.xiaomi_miio_device_1_temperature
+                          name: Т увлаж.
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.xiaomi_miio_device_1_humidity
+                          name: RH увлаж.
+            - type: horizontal-stack
+              cards:
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.0x00158d0004561de9_temperature
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.0x00158d0004561de9_humidity
+            - type: horizontal-stack
+              cards:
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.esp_xiaomi_kitchen_temperature
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.esp_xiaomi_kitchen_humidity
+            - type: horizontal-stack
+              cards:
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.esp_xiaomi_bed_room_temperature
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.esp_xiaomi_bed_room_humidity
+            - type: horizontal-stack
+              cards:
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.xiaomi_miio_device_temperature
+                          name: Т увлаж.
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.xiaomi_miio_device_humidity
+                          name: RH увлаж.
+            - type: horizontal-stack
+              cards:
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.esp_xiaomi_living_room_temperature
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.esp_xiaomi_living_room_humidity
+
+        - type: markdown
+          content: >
+             **Кондиционер гостиная** 
+        - type: thermostat
+          entity: climate.broadlink_ac_living_room
+          name: " "
+
+      - type: vertical-stack
+        cards:
+
+        - type: markdown
+          content: >
+             **Термоголовка детская** 
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: custom:vertical-stack-in-card
+              horizontal: true
+              cards:
+                - type: gauge
+                  entity: sensor.thermostat_childrens_room_valve_position
+                - type: thermostat
+                  entity: climate.0x5c0272fffec89454
+                  name: " "
+    
+            - type: glance
+              show_state: false
+              state_color: true
+              columns: 3
+              entities:
+                    - type: entity
+                      name: Блок. кнопок
+                      entity: switch.0x5c0272fffec89454_child_lock_switch
+                      tap_action:
+                        action: toggle
+    
+                    - type: button
+                      show_name: false
+                      entity: input_boolean.thermostat_childrensroom_night_mode                      
+                      tap_action:
+                        action: toggle
+    
+                    - type: entity
+                      name: Низкий заряд
+                      entity: binary_sensor.0x5c0272fffec89454_battery_low
+
+        - type: markdown
+          content: >
+             **Термоголовка спальня** 
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: custom:vertical-stack-in-card
+              horizontal: true
+              cards:
+                 
+                - type: gauge
+                  entity: sensor.thermostat_bedroom_valve_position
+    
+                - type: thermostat
+                  entity: climate.0x60a423fffea7e6f0
+                  name: " "
+    
+            - type: glance
+              #show_name: false
+              show_state: false
+              state_color: true
+              columns: 3
+              entities:
+                    # - type: entity
+                    #   name: Вкл/выкл термоголовку
+                    #   entity: switch.0x60a423fffea7e6f0_valve_detection
+                    #   icon: mdi:home-thermometer-outline
+                    
+                    - type: entity
+                      name: Блок. кнопок
+                      entity: switch.0x60a423fffea7e6f0_child_lock_switch
+                      tap_action:
+                        action: toggle
+
+                    - type: button
+                      show_name: false
+                      entity: input_boolean.thermostat_bedroom_night_mode                      
+                      tap_action:
+                        action: toggle
+                      
+                    - type: entity
+                      name: Низкий заряд
+                      entity: binary_sensor.0x60a423fffea7e6f0_battery_low
+
+        - type: markdown
+          content: >
+             **Термоголовка гостиная** 
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: custom:vertical-stack-in-card
+              horizontal: true
+              cards:
+                - type: gauge
+                  entity: sensor.thermostat_living_room_valve_position
+                - type: thermostat
+                  entity: climate.0x5c0272fffec9db22
+                  name: " "
+    
+            - type: glance
+              show_state: false
+              state_color: true
+              columns: 2
+              entities:
+                    - type: entity
+                      name: Блок. кнопок
+                      entity: switch.0x5c0272fffec9db22_child_lock_switch
+                      tap_action:
+                        action: toggle
+                      
+                    - type: entity
+                      name: Низкий заряд
+                      entity: binary_sensor.0x5c0272fffec9db22_battery_low
+
+        - type: markdown
+          content: >
+             **Термоголовка кухня** 
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: custom:vertical-stack-in-card
+              horizontal: true
+              cards:
+                - type: gauge
+                  entity: sensor.thermostat_kitchen_valve_position
+                - type: thermostat
+                  entity: climate.0x5c0272fffe8de819
+                  name: " "
+    
+            - type: glance
+              show_state: false
+              state_color: true
+              columns: 2
+              entities:
+                    - type: entity
+                      name: Блок. кнопок
+                      entity: switch.0x5c0272fffe8de819_child_lock_switch
+                      tap_action:
+                        action: toggle
+                      
+                    - type: entity
+                      name: Низкий заряд
+                      entity: binary_sensor.0x5c0272fffe8de819_battery_low
+
+  - title: Пылесос
+    #panel: true
+    icon: mdi:robot-vacuum
+    cards:
+    
+      - type: custom:vertical-stack-in-card
+        cards:
+        
+          - type: 'custom:vacuum-card'
+            entity: vacuum.xiaomi_vacuum_cleaner
+            #map: camera.roborock_vacuum_map
+            stats:
+              default:
+                - attribute: filter_left
+                  unit: ч.
+                  subtitle: Фильтр
+                - attribute: side_brush_left
+                  unit: ч.
+                  subtitle: Боковая щетка
+                - attribute: main_brush_left
+                  unit: ч.
+                  subtitle: Основная щетка
+                - attribute: sensor_dirty_left
+                  unit: ч.
+                  subtitle: Датчики
+              cleaning:
+                - attribute: cleaned_area
+                  unit: м2
+                  subtitle: Убрано
+                - attribute: cleaning_time
+                  unit: мин.
+                  subtitle: Длительность
+            actions:
+                - name: Уборка в гостиной
+                  service: vacuum.send_command
+                  service_data:
+                    entity_id: vacuum.xiaomi_vacuum_cleaner
+                    command: app_segment_clean
+                    params: [17]              
+                  icon: 'mdi:sofa'
+                - name: Уборка спальни
+                  service: vacuum.send_command
+                  service_data:
+                    entity_id: vacuum.xiaomi_vacuum_cleaner
+                    command: app_segment_clean
+                    params: [1]              
+                  icon: 'mdi:bed-king'
+                - name: Уборка детской
+                  service: vacuum.send_command
+                  service_data:
+                    entity_id: vacuum.xiaomi_vacuum_cleaner
+                    command: app_segment_clean
+                    params: [2]              
+                  icon: 'mdi:bed-queen'
+                - name: Уборка кухни
+                  service: vacuum.send_command
+                  service_data:
+                    entity_id: vacuum.xiaomi_vacuum_cleaner
+                    command: app_segment_clean
+                    params: [3]              
+                  icon: 'mdi:silverware-fork-knife'
+                - name: Коридор, санузлы, гардероб
+                  service: vacuum.send_command
+                  service_data:
+                    entity_id: vacuum.xiaomi_vacuum_cleaner
+                    command: app_segment_clean
+                    params: [18, 16, 19, 20]              
+                  icon: 'mdi:paper-roll'
+    
+          - type: custom:xiaomi-vacuum-map-card
+            entity: vacuum.xiaomi_vacuum_cleaner
+            map_camera: camera.roborock_vacuum_map
+            language: ru
+            default_mode: go_to_target
+            camera_calibration: true

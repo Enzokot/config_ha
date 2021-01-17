@@ -1,0 +1,37 @@
+
+#Карта с пылесоса
+  - platform: xiaomi_cloud_map_extractor
+    host: 192.168.217.78
+    token: !secret vacuum1_token
+    username: !secret xiaomi_cloud_username
+    password: !secret xiaomi_cloud_password
+    country: "ru"
+    name: "Roborock Vacuum Map"
+    colors:
+      color_map_outside: [3, 169, 244]
+      color_path: [255, 255, 255]
+      color_charger: [0, 255, 0]
+      color_robo: [200, 255, 200]      
+    draw:
+      - charger
+      - path
+      - goto_path
+      - predicted_path
+      - no_go_zones
+      - no_mopping_zones
+      - vacuum_position
+      - virtual_walls
+      - zones    
+    map_transformation:
+      scale: 2
+      trim:
+        top: 20
+        bottom: 20
+        left: 20
+        right: 20
+    sizes:
+      vacuum_radius: 6.5        
+    attributes:
+      - calibration_points
+      - vacuum_room
+      - room_numbers

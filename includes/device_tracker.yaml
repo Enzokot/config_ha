@@ -1,0 +1,10 @@
+
+    #Xiaomi Mi WiFi Repeater 2 -1
+  - platform: xiaomi_miio
+    host: 192.168.217.80
+    token: !secret repeater1_token
+    #Xiaomi Mi WiFi Repeater 2 -2
+  - platform: xiaomi_miio
+    host: 192.168.217.82
+    token: !secret repeater2_token
+    

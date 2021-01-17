@@ -1,0 +1,12 @@
+
+switch.0x842e14fffe5047f5_switch:
+  friendly_name: Вкл/выкл обогреватель
+
+switch.0x842e14fffe13a854_switch:
+  friendly_name: Вкл/выкл водонагреватель
+
+switch.0x842e14fffe36661f:
+  friendly_name: Вкл/выкл розетка 1 кухня
+
+switch.0x588e81fffeff5c4f:
+  friendly_name: Вкл/выкл розетка 1 спальня

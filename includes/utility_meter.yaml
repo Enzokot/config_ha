@@ -1,0 +1,47 @@
+  total_heater_socket_cable_daily:
+    source: sensor.total_heater_socket_cable
+    cycle: daily
+    tariffs:
+      - electicity
+
+  total_heater_socket_cable_monthly:
+    source: sensor.total_heater_socket_cable
+    cycle: monthly
+    tariffs:
+      - electicity
+
+  total_water_heater_socket_cable_daily:
+    source: sensor.total_water_heater_socket_cable
+    cycle: daily
+    tariffs:
+      - electicity
+
+  total_water_heater_socket_cable_monthly:
+    source: sensor.total_water_heater_socket_cable
+    cycle: monthly
+    tariffs:
+      - electicity
+
+  total_kithen_socket_1_cable_daily:
+    source: sensor.total_kitchen_socket_1_cable
+    cycle: daily
+    tariffs:
+      - electicity
+
+  total_kitchen_socket_1_cable_monthly:
+    source: sensor.total_kitchen_socket_1_cable
+    cycle: monthly
+    tariffs:
+      - electicity
+
+  total_bedroom_socket_1_cable_daily:
+    source: sensor.total_bedroom_socket_1_cable
+    cycle: daily
+    tariffs:
+      - electicity
+
+  total_bedroom_socket_1_cable_monthly:
+    source: sensor.total_bedroom_socket_1_cable
+    cycle: monthly
+    tariffs:
+      - electicity

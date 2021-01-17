@@ -1,0 +1,5 @@
+ - platform: samsungtv_encrypted 
+   host: 192.168.217.83 
+   token: !secret samsungtv_kit_token 
+   sessionid: 1 
+   port: 8080

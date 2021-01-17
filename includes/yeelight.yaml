@@ -1,0 +1,6 @@
+devices:
+  192.168.217.74:
+    name: yeelight_650
+    transition: 200
+    nightlight_switch_type: light
+    model: ceiling4

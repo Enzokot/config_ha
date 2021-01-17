@@ -1,0 +1,111 @@
+  - platform: template
+    sensors:
+     158d00042fd6f5_pressure:
+       value_template: "{{ (states('sensor.0x00158d00042fd6f5_pressure') | float * 0.75) | round(1) }}"
+       unit_of_measurement: 'мм рт. ст.'
+       device_class: pressure
+       friendly_name: 'Атм. давление улица'
+
+     xiaomi_miio_device_temperature:
+       value_template: "{{ state_attr('fan.xiaomi_miio_device', 'temperature') }}"
+       unit_of_measurement: '°C'
+       device_class: temperature
+       friendly_name: 'Т увлажнитель спальня'
+
+     xiaomi_miio_device_humidity:
+       value_template: "{{ state_attr('fan.xiaomi_miio_device', 'humidity') }}"
+       unit_of_measurement: '%'
+       device_class: humidity
+       friendly_name: 'Rh увлажнитель спальня'
+
+     xiaomi_miio_device_1_temperature:
+       value_template: "{{ state_attr('fan.xiaomi_miio_device_1', 'temperature') }}"
+       unit_of_measurement: '°C'
+       device_class: temperature
+       friendly_name: 'Т увлажнитель детская'
+
+     xiaomi_miio_device_1_humidity:
+       value_template: "{{ state_attr('fan.xiaomi_miio_device_1', 'humidity') }}"
+       unit_of_measurement: '%'
+       device_class: humidity
+       friendly_name: 'Rh увлажнитель детская'
+
+     xiaomi_miio_device_speed:
+       friendly_name: 'Скорость'
+       icon_template: mdi:speedometer
+       unit_of_measurement: 'об/м'
+       value_template: "{%- if is_state('fan.xiaomi_miio_device', 'unavailable') or is_state_attr('fan.xiaomi_miio_device', 'motor_speed', 0) -%}
+                            Off
+                        {%- else -%}
+                            {{ state_attr('fan.xiaomi_miio_device', 'motor_speed') }}
+                        {%- endif -%}"
+
+     xiaomi_miio_device_1_speed:
+       friendly_name: 'Скорость'
+       icon_template: mdi:speedometer
+       unit_of_measurement: 'об/м'
+       value_template: "{%- if is_state('fan.xiaomi_miio_device_1', 'unavailable') or is_state_attr('fan.xiaomi_miio_device_1', 'motor_speed', 0) -%}
+                            Off
+                        {%- else -%}
+                            {{ state_attr('fan.xiaomi_miio_device_1', 'motor_speed') }}
+                        {%- endif -%}"
+
+     xiaomi_miio_device_water:
+       friendly_name: 'Вода'
+       icon_template: mdi:cup-water
+       unit_of_measurement: '%'
+       value_template: "{%- if is_state('fan.xiaomi_miio_device', 'unavailable') -%}
+                            Off
+                        {%- else -%}
+                            {{ [state_attr('fan.xiaomi_miio_device', 'depth') / 1.2, 100] | min | int }}
+                        {%- endif -%}"
+
+     xiaomi_miio_device_1_water:
+       friendly_name: 'Вода'
+       icon_template: mdi:cup-water
+       unit_of_measurement: '%'
+       value_template: "{%- if is_state('fan.xiaomi_miio_device_1', 'unavailable') -%}
+                            Off
+                        {%- else -%}
+                            {{ state_attr('fan.xiaomi_miio_device_1', 'water_level') }}
+                        {%- endif -%}"
+
+     temp_for_ac_living_room:
+       friendly_name: 'Температура'
+       device_class: temperature
+       unit_of_measurement: '°C'
+       value_template: "{%- if is_state('sensor.esp_xiaomi_living_room_temperature', 'unavailable') -%}
+                            0
+                        {%- else -%}
+                            {{ states('sensor.esp_xiaomi_living_room_temperature') }}
+                        {%- endif -%}"
+
+     humidity_for_ac_living_room:
+       friendly_name: 'Влажность'
+       device_class: humidity
+       unit_of_measurement: '%'
+       value_template: "{%- if is_state('sensor.esp_xiaomi_living_room_humidity', 'unavailable') -%}
+                            0
+                        {%- else -%}
+                            {{ states('sensor.esp_xiaomi_living_room_humidity') }}
+                        {%- endif -%}"
+                        
+     thermostat_bedroom_valve_position:
+       friendly_name: 'Положение штока'
+       unit_of_measurement: '%'
+       value_template: "{{ 100 - states('sensor.0x60a423fffea7e6f0_position') | int }}"
+
+     thermostat_childrens_room_valve_position:
+       friendly_name: 'Положение штока'
+       unit_of_measurement: '%'
+       value_template: "{{ 100 - states('sensor.0x5c0272fffec89454_position') | int }}"
+
+     thermostat_living_room_valve_position:
+       friendly_name: 'Положение штока'
+       unit_of_measurement: '%'
+       value_template: "{{ 100 - states('sensor.0x5c0272fffec9db22_position') | int }}"
+
+     thermostat_kitchen_valve_position:
+       friendly_name: 'Положение штока'
+       unit_of_measurement: '%'
+       value_template: "{{ 100 - states('sensor.0x5c0272fffe8de819_position') | int }}"

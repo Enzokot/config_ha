@@ -1,0 +1,141 @@
+#Самотестирование датчиков дыма
+    selftest_smoke_detector:
+        alias: Самотестирование датчиков дыма
+        icon: mdi:test-tube
+        mode: queued
+        fields:
+          namesmokedetector:
+            description: 'FRIENDLY_NAME из z2m датчика дыма'
+            example: 'Smoke detector kitchen'
+        sequence:
+            - service: mqtt.publish
+              data:
+                topic: "zigbee2mqtt/ {{- namesmokedetector -}} /set"
+                payload: "{\"selftest\":\"\"}"
+
+#Чувствительность датчиков дыма
+    sensitivity_smoke_detector:
+        alias: Чувствительность датчиков дыма
+        icon: mdi:test-tube
+        mode: queued
+        fields:
+          namesmokedetector:
+            description: 'FRIENDLY_NAME из z2m датчика дыма'
+            example: 'Smoke detector kitchen'
+          sensitivity:
+            description: 'Чувствительность датчика дыма'
+            example: 'low, medium, high'
+        sequence:
+            - service: mqtt.publish
+              data:
+                topic: "zigbee2mqtt/ {{- namesmokedetector -}} /set"
+                payload: "{\"sensitivity\":\"{{- sensitivity -}}\"}"
+
+#Выявление устройств с низким сигналом
+    zigbee2mqtt_linkuality_check:
+        alias: Ур. сигнала устройств
+        icon: mdi:access-point-check
+        sequence:
+          - service: script.turn_on
+            data:
+              entity_id: >
+                {% set num_low_link = states | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.linkquality', '<', 20 ) | map(attribute = 'attributes.device.friendlyName') | unique | list | count %}
+                
+                {% if num_low_link > 0 %}
+                  script.zigbee2mqtt_link_level_low
+                {% else %}
+                  script.zigbee2mqtt_link_level_ok
+                {% endif %}
+    
+    zigbee2mqtt_link_level_low:
+        alias: zigbee2mqtt низкий уровень сигнала
+        sequence:
+        - service: telegram_bot.send_message
+          data:
+            title: >- 
+                     {{ '\U000026a0' }} *Контроль устройств Zigbee*
+            disable_notification: true
+            target: !secret telegram_enzokot_chat_id
+            message: >
+                {% set low_link = states | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.linkquality', '<', 20 ) | map(attribute = 'attributes.device.friendlyName') | unique | list | join(', ') %}
+                {% set num_low_link = states | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.linkquality','<', 20 ) | map(attribute = 'attributes.device.friendlyName') | unique | list | count %}
+                              
+                Низкий сигнал ({{ num_low_link }}шт): {% if num_low_link > 0 %}{{low_link}}{% endif %}
+    
+    zigbee2mqtt_link_level_ok:
+        alias: zigbee2mqtt нормальный уровень сигнала
+        sequence:
+        - service: telegram_bot.send_message
+          data:
+            title: >-
+                     {{ '\U00002705' }} *Контроль устройств Zigbee*
+            disable_notification: true
+            target: !secret telegram_enzokot_chat_id
+            message: "Устройств с низким уровнем сигнала не обнаружено"
+
+#Автоматическая подстройка локальной температуры термоголовки
+    auto_local_temperature_calibration_thermostats:
+        alias: Автоматическая подстройка локальной температуры термоголовки
+        icon: mdi:hydraulic-oil-temperature
+        mode: parallel
+        fields:
+          namevalve:
+            description: 'FRIENDLY_NAME из z2m термоголовки'
+            example: 'Bedroom valve with thermostat'
+          objectvalve:
+            description: 'Имя объекта домена climate'
+            example: 'climate.0x60a423fffea7e6f0_climate'
+          objectvalvewindow:
+            description: 'Имя объекта сеносра открытого окна'
+            example: 'switch.0x60a423fffea7e6f0_window_detection'
+          objectsensortemperature:
+            description: 'Имя объекта внешнего датчика температуры'
+            example: 'sensor.esp_xiaomi_bed_room_temperature'
+        sequence:
+        - variables:
+              calibration_local: >
+                                 {{ 128 + ((states(objectsensortemperature) | float 
+                                    - state_attr(objectvalve, 'local_temperature') | float) / 0.5) | round(0) * 0.5 
+                                    + state_attr(objectvalve, 'local_temperature_calibration') | float
+                                 }}
+              calibration_local_condition: >
+                                 {{ 128 + ((states(objectsensortemperature) | float 
+                                    - state_attr(objectvalve, 'local_temperature') | float) / 0.5) | round(0) * 0.5 
+                                 }}
+        - choose:
+          - conditions:
+              - condition: template
+                value_template: >-
+                   {{ calibration_local_condition != 0
+                      and is_state(objectvalvewindow, 'off') 
+                      and states(objectsensortemperature) not in ['unavailable', 'unknown', ''] 
+                      and state_attr(objectvalve, 'local_temperature') not in ['unavailable', 'unknown', ''] 
+                   }}
+            sequence:
+            - service: mqtt.publish
+              data:
+                topic: "zigbee2mqtt/{{- namevalve -}}/set/local_temperature_calibration"
+                payload: '{{ calibration_local }}'
+
+#Запуск/остановка permit join в z2m
+    toggle_permit_join_z2m:
+        alias: Вкл/выкл добавления устройств в z2m
+        icon: mdi:zigbee
+        mode: parallel
+        fields:
+          topicpayload:
+            description: 'true/false для включения или отключения добавления устройств'
+            example: 'true'
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: zigbee2mqtt/bridge/config/permit_join
+              payload: '{{ topicpayload }}'
+          - service: >
+                {% if topicpayload == true %}
+                  timer.start
+                {%- else -%}
+                  timer.cancel
+                {%- endif %}                  
+            data:
+              entity_id: timer.zigbee_permit_join

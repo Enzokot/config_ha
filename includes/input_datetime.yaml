@@ -1,0 +1,9 @@
+
+    # time_start_test:
+    #   name: Время начала
+    #   has_time: true
+    #   has_date: false
+    # time_finish_test:
+    #   name: Время окончания
+    #   has_time: true
+    #   has_date: false

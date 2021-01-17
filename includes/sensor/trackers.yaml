@@ -1,0 +1,14 @@
+#Трекеры инета в Калуге
+#   - platform: command_line
+#     name: tracker_host_klg
+#     command: !secret tracker_host_klg
+#     value_template: '{{ value }}'
+#     command_timeout: 180
+#     scan_interval: 300
+
+#   - platform: command_line
+#     name: tracker_mibox_klg
+#     command: !secret tracker_mibox_klg
+#     value_template: '{{ value }}'
+#     command_timeout: 180
+#     scan_interval: 300

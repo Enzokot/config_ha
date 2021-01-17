@@ -1,0 +1,7 @@
+
+#Пылесос
+vacuum.xiaomi_vacuum_cleaner:
+  friendly_name: Степа
+
+camera.roborock_vacuum_map:
+  friendly_name: Карта уборки

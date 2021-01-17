@@ -1,0 +1,70 @@
+
+#Бинарные сенсоры  
+binary_sensor.0x00158d0003943639_smoke:
+  friendly_name: Датчик дыма кухня
+  device_class: smoke
+  icon: mdi:smoke-detector
+
+binary_sensor.0x00158d00039a8358_smoke:
+  friendly_name: Датчик дыма гостиная
+  device_class: smoke
+  icon: mdi:smoke-detector
+
+binary_sensor.0x00158d00039d9398_smoke:
+  friendly_name: Датчик дыма коридор
+  device_class: smoke
+  icon: mdi:smoke-detector
+
+binary_sensor.0x00158d00045ca483_smoke:
+  friendly_name: Датчик дыма детская
+  device_class: smoke
+  icon: mdi:smoke-detector
+
+binary_sensor.0x00158d00045cd551_smoke:
+  friendly_name: Датчик дыма спальня
+  device_class: smoke
+  icon: mdi:smoke-detector
+
+binary_sensor.0x00158d000359304c_contact:
+  friendly_name: Входная дверь
+  device_class: door
+  
+binary_sensor.0x00158d0003f37a0f_contact:
+  friendly_name: Выкл. детская
+  device_class: light
+  
+binary_sensor.neptun_bathroom:
+  friendly_name: Neptun WI-FI ванная
+
+binary_sensor.neptun_wc:
+  friendly_name: Neptun WI-FI туалет
+
+# binary_sensor.neptun_bathroom_ping:
+#   friendly_name: Ping Neptun ванная
+
+# binary_sensor.neptun_wc_ping:
+#   friendly_name: Ping Neptun туалет
+
+binary_sensor.availability_host_klg:
+  friendly_name: Роутер в Калуге
+
+binary_sensor.availability_mibox_klg:
+  friendly_name: Mibox в Калуге
+
+# binary_sensor.inet_at_klg:
+#   friendly_name: Интернет в Калуге
+
+binary_sensor.0x00158d000490fe9d_contact:
+  friendly_name: Питание кондиционер
+  device_class: power
+  icon: mdi:air-conditioner
+
+binary_sensor.0x00158d00054b8d72_occupancy:
+  friendly_name: Датчик движения детская
+
+binary_sensor.0x00158d000566bde7_occupancy:
+  friendly_name: Датчик движения коридор
+
+binary_sensor.rpi_power_status:
+  friendly_name: Состояние питания RPi
+  

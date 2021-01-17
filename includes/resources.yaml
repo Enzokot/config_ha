@@ -1,0 +1,15 @@
+
+    - url: /local/community/vertical-stack-in-card/vertical-stack-in-card.js
+      type: module  
+    - url: /local/community/custom-fan-card/custom-fan-card.js
+      type: module
+    - url: /local/community/vacuum-card/vacuum-card.js
+      type: module
+    - url: /local/community/lovelace-xiaomi-vacuum-map-card/xiaomi-vacuum-map-card.js
+      type: module
+    - url: /local/community/weather-card/weather-card.js
+      type: module
+    - url: /local/community/battery-state-card/battery-state-card.js
+      type: module
+    - url: /local/community/mini-graph-card/mini-graph-card-bundle.js
+      type: module

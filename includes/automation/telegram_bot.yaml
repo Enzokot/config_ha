@@ -1,0 +1,339 @@
+
+    - alias: 'reply pong to ping'
+      initial_state: true
+      trigger:
+        platform: event
+        event_type: telegram_command
+        event_data:
+          command: '/ping'
+      action:
+        - service: notify.notify
+          data:
+            message: 'pong'
+        - service: telegram_bot.send_message
+          data:
+            target: '{{ trigger.event.data.user_id }}'
+            message: >-
+                       {{ '\U00002139' }} pong
+
+    - alias: 'keyboard tuc tuc gateway'
+      initial_state: true
+      trigger:
+        platform: event
+        event_type: telegram_command
+        event_data:
+          command: '/tuctuc'
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: '{{ trigger.event.data.user_id }}'
+            message: >-
+                       {{ '\U0001f4e2' }} С уровнем громкости:
+            inline_keyboard:
+              - 'Тихо:/minlevelsound, Средне:/avrlevelsound, Громко:/maxlevelsound'
+
+    - alias: 'keyboard alarm home'
+      initial_state: true
+      trigger:
+        platform: event
+        event_type: telegram_command
+        event_data:
+          command: '/home_alarm'
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: '{{ trigger.event.data.user_id }}'
+            message: >-
+                       {% if is_state('alarm_control_panel.signalka_shliuza_alarm', 'armed_away') -%}
+                           {{ '\U0001f509' }} Сигнализация *включена*
+                       {%- else -%}
+                           {{ '\U0001f507' }} Сигнализация *выключена*
+                       {%- endif %}
+            inline_keyboard: >-
+                              {% if is_state('alarm_control_panel.signalka_shliuza_alarm', 'armed_away') -%}
+                                 Выключить:/alarm_home_disarm
+                              {%- else -%}
+                                 Включить:/alarm_home_arm
+                              {%- endif %}
+
+    - alias: 'do alarm change state'
+      initial_state: true
+      trigger:
+        - platform: event
+          event_type: telegram_callback
+          event_data:
+            data: 
+              '/alarm_home_disarm'
+        - platform: event
+          event_type: telegram_callback
+          event_data:
+            data: 
+              '/alarm_home_arm'
+      action:
+        - service: telegram_bot.delete_message
+          data:
+            chat_id: '{{ trigger.event.data.user_id }}'
+            message_id: '{{ trigger.event.data.message.message_id }}'
+        - service: >-
+                     {% if trigger.event.data.command == '/alarm_home_disarm' -%}
+                        alarm_control_panel.alarm_disarm
+                     {%- else -%}
+                        alarm_control_panel.alarm_arm_away
+                     {%- endif %}
+          data:
+            entity_id: alarm_control_panel.signalka_shliuza_alarm
+        - service: telegram_bot.answer_callback_query
+          data:
+            callback_query_id: '{{ trigger.event.data.id }}'
+            message: >-
+                     {% if trigger.event.data.command == '/alarm_home_disarm' -%}
+                        Выключили сигнализацию
+                     {%- else -%}
+                        Включили сигнализацию
+                     {%- endif %}
+
+    - alias: 'do tuc tuc gateway'
+      initial_state: true
+      trigger:
+        - platform: event
+          event_type: telegram_callback
+          event_data:
+            data: '/minlevelsound'
+        - platform: event
+          event_type: telegram_callback
+          event_data:
+            data: '/avrlevelsound'
+        - platform: event
+          event_type: telegram_callback
+          event_data:
+            data: '/maxlevelsound'
+      action:
+        - service: telegram_bot.delete_message
+          data:
+            chat_id: '{{ trigger.event.data.user_id }}'
+            message_id: '{{ trigger.event.data.message.message_id }}'
+        - service: xiaomi_aqara.play_ringtone
+          data:
+            gw_mac: !secret gateway1_mac
+            ringtone_id: 11
+            ringtone_vol: '{%- if trigger.event.data.data == "/maxlevelsound"  -%}
+                                50
+                            {%- elif trigger.event.data.data == "/avrlevelsound" -%}
+                                25
+                            {%- else -%}
+                                3
+                            {%- endif -%}'
+        - service: telegram_bot.answer_callback_query
+          data:
+            callback_query_id: '{{ trigger.event.data.id }}'
+            message: 'Постучали шлюзом'
+
+    - alias: 'del keyboard sync yeelight650 to switch'
+      initial_state: true
+      trigger:
+        - platform: event
+          event_type: telegram_callback
+          event_data:
+            data: '/changelight'
+        - platform: event
+          event_type: telegram_callback
+          event_data:
+            data: '/nochangelight'
+        - platform: event
+          event_type: telegram_callback
+          event_data:
+            data: '/ignoringchangelight'
+      action:
+        - service: telegram_bot.delete_message
+          data:
+            chat_id: '{{ trigger.event.data.user_id }}'
+            message_id: '{{ trigger.event.data.message.message_id }}'
+
+    - alias: 'no key sync yeelight650 to switch'
+      initial_state: true
+      trigger:
+        - platform: event
+          event_type: telegram_callback
+          event_data:
+            data: '/nochangelight'
+      action:
+        - service: automation.turn_on
+          entity_id: automation.sync_yeelight650_to_switch
+        - service: telegram_bot.answer_callback_query
+          data:
+            callback_query_id: '{{ trigger.event.data.id }}'
+            message: 'Проверим состояние позже'
+
+    - alias: 'ignor key sync yeelight650 to switch'
+      initial_state: true
+      trigger:
+        - platform: event
+          event_type: telegram_callback
+          event_data:
+            data: '/ignoringchangelight'
+      action:
+        - service: telegram_bot.answer_callback_query
+          data:
+            callback_query_id: '{{ trigger.event.data.id }}'
+            message: 'Отключили проверку'
+
+    - alias: 'change keyboard sync yeelight650 to switch'
+      initial_state: true
+      trigger:
+        - platform: event
+          event_type: telegram_callback
+          event_data:
+            data: '/changelight'
+      condition:
+          condition: or
+          conditions:
+            - condition: and
+              conditions:
+                - condition: state
+                  entity_id: binary_sensor.0x00158d0003f37a0f_contact
+                  state: 'on'
+                - condition: state
+                  entity_id: light.yeelight_650
+                  state: 'off'
+            - condition: and
+              conditions:
+                - condition: state
+                  entity_id: binary_sensor.0x00158d0003f37a0f_contact
+                  state: 'off'
+                - condition: state
+                  entity_id: light.yeelight_650
+                  state: 'on'
+      action:
+        - service: light.toggle
+          entity_id: light.yeelight_650
+        - service: automation.turn_on
+          entity_id: automation.sync_yeelight650_to_switch
+        - service: telegram_bot.answer_callback_query
+          data:
+            callback_query_id: '{{ trigger.event.data.id }}'
+            message: 'Изменили состояние'
+
+#Пылесос
+    - alias: 'vacuum chita answer key find vacuum'
+      initial_state: true
+      trigger:
+        - platform: event
+          event_type: telegram_callback
+          event_data:
+            data: '/findvacuum'
+      action:
+        - service: vacuum.locate
+          entity_id: vacuum.xiaomi_vacuum_cleaner
+        - service: telegram_bot.delete_message
+          data:
+            chat_id: '{{ trigger.event.data.user_id }}'
+            message_id: '{{ trigger.event.data.message.message_id }}'
+        - service: telegram_bot.answer_callback_query
+          data:
+            callback_query_id: '{{ trigger.event.data.id }}'
+            message: 'Включили поиск Степы'
+            
+    - alias: 'keyboard vacuum start cleaning'
+      initial_state: true
+      trigger:
+        platform: event
+        event_type: telegram_command
+        event_data:
+          command: '/vacuum'
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: '{{ trigger.event.data.user_id }}'
+            message: >-
+                       {{ '\U0000231b' }} Отправить убирать:
+            inline_keyboard:
+              - 'Сейчас:/vacuumnow, Через 10 мин.:/vacuum10, Через 20 мин.:/vacuum20'
+              - 'Отменить уборку:/vacuumcancel'
+
+    - alias: 'vacuum start cleaning'
+      initial_state: true
+      trigger:
+        - platform: event
+          event_type: telegram_callback
+          event_data:
+            data: '/vacuumnow'
+      action:
+        - service: vacuum.start
+          entity_id: vacuum.xiaomi_vacuum_cleaner
+        - service: telegram_bot.delete_message
+          data:
+            chat_id: '{{ trigger.event.data.user_id }}'
+            message_id: '{{ trigger.event.data.message.message_id }}'
+        - service: telegram_bot.answer_callback_query
+          data:
+            callback_query_id: '{{ trigger.event.data.id }}'
+            message: 'Пылесос отправили на уборку'              
+
+    - alias: 'vacuum later start cleaning'
+      initial_state: true
+      trigger:
+        - platform: event
+          event_type: telegram_callback
+          event_data:
+            data: '/vacuum10'
+        - platform: event
+          event_type: telegram_callback
+          event_data:
+            data: '/vacuum20'
+      action:
+        - service: telegram_bot.delete_message
+          data:
+            chat_id: '{{ trigger.event.data.user_id }}'
+            message_id: '{{ trigger.event.data.message.message_id }}'
+        - service: timer.cancel
+          entity_id: timer.vacumm_ten_minutes
+        - service: timer.start
+          data:
+            entity_id: timer.vacumm_ten_minutes
+            duration: >-
+                        {%- if trigger.event.data.data == "/vacuum10"  -%}
+                            600
+                        {%- else -%}
+                            1200
+                        {%- endif -%}
+        - service: telegram_bot.answer_callback_query
+          data:
+            callback_query_id: '{{ trigger.event.data.id }}'
+            message: '{%- if trigger.event.data.data == "/vacuum10"  -%}
+                        "Будет отправлен на уборку через 10 мин."
+                    {%- else -%}
+                        "Будет отправлен на уборку через 20 мин."
+                    {%- endif -%}'              
+        - service: input_text.set_value
+          data:
+              entity_id: input_text.var_chat_id_vacuum_later_start
+              value: '{{ trigger.event.data.user_id }}'
+
+    - alias: 'vacuum cancel cleaning'
+      initial_state: true
+      trigger:
+        - platform: event
+          event_type: telegram_callback
+          event_data:
+            data: '/vacuumcancel'
+      action:
+        - service: telegram_bot.delete_message
+          data:
+            chat_id: '{{ trigger.event.data.user_id }}'
+            message_id: '{{ trigger.event.data.message.message_id }}'
+        - service: timer.cancel
+          entity_id: timer.vacumm_ten_minutes
+        - service: vacuum.pause
+          entity_id: vacuum.xiaomi_vacuum_cleaner
+        - delay:
+            seconds: 3
+        - service: vacuum.return_to_base
+          entity_id: vacuum.xiaomi_vacuum_cleaner
+        - service: telegram_bot.answer_callback_query
+          data:
+            callback_query_id: '{{ trigger.event.data.id }}'
+            message: "Отменили таймеры, отправили на базу"
+        - service: input_text.set_value
+          data:
+              entity_id: input_text.var_chat_id_vacuum_later_start
+              value: !secret telegram_chita_chat_id

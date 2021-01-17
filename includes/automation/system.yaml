@@ -1,0 +1,76 @@
+  #System
+#- alias: Restart HA
+#  trigger: 
+#    platform: time
+#    at: "23:00:00"  
+#  condition:
+#    condition: time
+#    weekday:
+#    - fri
+#  action:
+#    - service: homeassistant.restart
+
+- alias: DB purge everyday
+  initial_state: true
+  trigger:
+    - platform: time
+      at: '01:00:00'
+  action:
+    - service: recorder.purge
+      data:
+          keep_days: 180
+          repack: true
+
+#Отслеживание питания RPi
+- alias: tracker power rpi
+  initial_state: true
+  trigger:
+    platform: state
+    entity_id: binary_sensor.rpi_power_inverted
+    from: 'on'
+    to: 'off'
+  action:
+    service: notify.telegram_enzokot_to_bot
+    data:
+        title: >-
+                 {{ '\U000026a0' }} *Мониторинг устройств*
+        message: "Необходимо проверить питание RPi"
+
+#Перезапуск nginx для принятия нового сертификата, который получает certbot на rpi в пятницу
+- alias: restart nginx addon
+  initial_state: true
+  trigger:
+    - platform: time
+      at: '04:00:00'
+  condition:
+    condition: time
+    weekday:
+      - sat      
+  action:
+    - service: hassio.addon_restart
+      data:
+          addon: 'core_nginx_proxy'
+
+#Бекап базы homeassistant в MariaDB
+- alias: backup homeassistant database
+  initial_state: true
+  trigger:
+    - platform: time
+      at: '00:30:00'
+  action:
+    - service: hassio.addon_stdin
+      data:
+        addon: a0d7b954_ssh
+        input: "/config/backup.sh"
+
+
+#Обновление сенсоров template, основанных на now()
+# - alias: template date time sensors update
+#   initial_state: true
+#   trigger:
+#     - platform: time_pattern
+#       minutes: '/5'
+#   action:
+#     - service: homeassistant.update_entity
+#       entity_id: 
+#           - sensor.last_boot_custom

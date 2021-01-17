@@ -1,0 +1,9 @@
+#Светильники
+
+light.signalka_shliuza_light:
+  friendly_name: Шлюз подсветка
+  icon: mdi:star-circle-outline
+
+light.gateway_light_04cf8cabd77b:
+  friendly_name: Шлюз подсветка
+  icon: mdi:star-circle-outline

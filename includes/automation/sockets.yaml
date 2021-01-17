@@ -1,0 +1,305 @@
+
+#Водонагреватель выкл/вкл на ночь
+    - alias: night off water heater
+      initial_state: true
+      trigger:
+        - platform: time
+          at: '22:30:00'
+      condition:
+          - condition: state
+            entity_id: input_boolean.water_heater_season
+            state: 'on'      
+      action:
+          - service: switch.turn_off
+            data:
+              entity_id: switch.0x842e14fffe13a854_switch
+
+    - alias: night oт water heater
+      initial_state: true
+      trigger:
+        - platform: time
+          at: '05:30:00'
+      condition:
+          - condition: state
+            entity_id: input_boolean.water_heater_season
+            state: 'on'      
+      action:
+          - service: switch.turn_on
+            data:
+              entity_id: switch.0x842e14fffe13a854_switch
+
+#Ночной режим обогревателя
+    - alias: night mode on heater
+      initial_state: true
+      trigger:
+        - platform: time
+          at: '22:00:00'
+      condition:
+          - condition: state
+            entity_id: input_boolean.heater_night_mode
+            state: 'on'      
+      action:
+          - service: switch.turn_on
+            data:
+              entity_id: switch.0x842e14fffe5047f5_switch
+          - service: timer.start
+            data:
+              entity_id: timer.turn_off_heater_night_mode
+
+    - alias: night mode off heater
+      initial_state: true
+      trigger:
+        - platform: time
+          at: '07:00:00'
+      condition:
+          - condition: state
+            entity_id: input_boolean.heater_night_mode
+            state: 'on'
+      action:
+          - service: timer.cancel
+            data:
+              entity_id: timer.turn_on_heater_night_mode
+          - service: timer.cancel
+            data:
+              entity_id: timer.turn_off_heater_night_mode
+          - service: switch.turn_off
+            data:
+              entity_id: switch.0x842e14fffe5047f5_switch
+
+    - alias: night mode timer heater off
+      initial_state: true
+      trigger:
+      - platform: event
+        event_type: timer.finished
+        event_data:
+          entity_id: timer.turn_off_heater_night_mode
+      action:
+          - service: switch.turn_off
+            data:
+              entity_id: switch.0x842e14fffe5047f5_switch
+          - service: timer.start
+            data:
+              entity_id: timer.turn_on_heater_night_mode
+
+    - alias: night mode timer heater on
+      initial_state: true
+      trigger:
+      - platform: event
+        event_type: timer.finished
+        event_data:
+          entity_id: timer.turn_on_heater_night_mode
+      action:
+          - service: switch.turn_on
+            data:
+              entity_id: switch.0x842e14fffe5047f5_switch
+          - service: timer.start
+            data:
+              entity_id: timer.turn_off_heater_night_mode
+              
+    - alias: on off night mode heater at action time
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: input_boolean.heater_night_mode
+      condition:
+        - condition: time
+          after: '22:00:00'
+          before: '07:00:00'
+      action:
+        - choose:
+            - conditions:
+                - condition: state
+                  entity_id: input_boolean.heater_night_mode
+                  state: 'off'
+              sequence:
+                - service: automation.trigger
+                  data:
+                    entity_id: automation.night_mode_off_heater
+            - conditions:
+                - condition: state
+                  entity_id: input_boolean.heater_night_mode
+                  state: 'on'
+              sequence:
+                - service: automation.trigger
+                  data:
+                    entity_id: automation.night_mode_on_heater
+
+#Отключение розеток при превышении 3кВт
+    - alias: safety power socets off
+      initial_state: true
+      trigger:
+      - platform: numeric_state
+        entity_id: 
+            - sensor.0x842e14fffe5047f5_power
+            - sensor.0x842e14fffe13a854_power
+            - sensor.0x842e14fffe36661f_power
+            - sensor.0x588e81fffeff5c4f_power
+        above: 3000
+      action:
+          - service: switch.turn_off
+            data:
+              entity_id: >-
+                        {%- if trigger.entity_id == 'sensor.0x842e14fffe5047f5_power' -%}
+                           switch.0x842e14fffe5047f5_switch
+                        {%- endif -%} 
+                        {%- if trigger.entity_id == 'sensor.0x842e14fffe13a854_power' -%}
+                           switch.0x842e14fffe13a854_switch
+                        {%- endif -%}
+                        {% if trigger.entity_id == 'sensor.0x842e14fffe36661f_power' -%}
+                           switch.0x842e14fffe36661f
+                        {%- endif -%}
+                        {% if trigger.entity_id == 'sensor.0x588e81fffeff5c4f_power' -%}
+                           switch.0x588e81fffeff5c4f
+                        {%- endif -%}              
+
+#После рестарта НА проверить ночной режим обогревателя
+    - alias: restart night mode heater after reboot
+      initial_state: true
+      trigger:
+        - platform: homeassistant
+          event: start
+      condition:
+        - condition: state
+          entity_id: input_boolean.heater_night_mode
+          state: 'on'
+        - condition: time
+          after: '22:00:00'
+          before: '07:00:00'
+      action:
+        - choose:
+            - conditions:
+                - condition: state
+                  entity_id: switch.0x842e14fffe5047f5_switch
+                  state: 'off'
+              sequence:
+                - service: automation.trigger
+                  data:
+                    entity_id: automation.night_mode_timer_heater_on
+            - conditions:
+                - condition: state
+                  entity_id: switch.0x842e14fffe5047f5_switch
+                  state: 'on'
+              sequence:
+                - service: automation.trigger
+                  data:
+                    entity_id: automation.night_mode_timer_heater_off      
+
+#Сохранение значений потребления при рестарте НА или z2m
+    - alias: restart z2m or instance for heater
+      initial_state: true
+      mode: restart
+      trigger:
+        - platform: state
+          entity_id: sensor.0x842e14fffe5047f5_power
+          attribute: energy
+      condition:
+          condition: not
+          conditions:      
+            - condition: state
+              entity_id: sensor.0x842e14fffe5047f5_power
+              state: 'unavailable'
+      action:
+          - service: input_number.set_value
+            data:
+              entity_id: input_number.total_heater_socket_saved
+              value: "{{ state_attr('sensor.0x842e14fffe5047f5_power', 'energy') }}"
+
+    - alias: restart z2m or instance for water heater
+      initial_state: true
+      mode: restart
+      trigger:
+        - platform: state
+          entity_id: sensor.0x842e14fffe13a854_power
+          attribute: energy
+      condition:
+          condition: not
+          conditions:      
+            - condition: state
+              entity_id: sensor.0x842e14fffe13a854_power
+              state: 'unavailable'
+      action:
+          - service: input_number.set_value
+            data:
+              entity_id: input_number.total_water_heater_socket_saved
+              value: "{{ state_attr('sensor.0x842e14fffe13a854_power', 'energy') }}"
+
+    - alias: restart z2m or instance for kitchen socket 1
+      initial_state: true
+      mode: restart
+      trigger:
+        - platform: state
+          entity_id: sensor.0x842e14fffe36661f_power
+          attribute: energy
+      condition:
+          condition: not
+          conditions:      
+            - condition: state
+              entity_id: sensor.0x842e14fffe36661f_power
+              state: 'unavailable'
+      action:
+          - service: input_number.set_value
+            data:
+              entity_id: input_number.total_kitchen_socket1_saved
+              value: "{{ state_attr('sensor.0x842e14fffe36661f_power', 'energy') }}"
+
+    - alias: restart z2m or instance for bedroom socket 1
+      initial_state: true
+      mode: restart
+      trigger:
+        - platform: state
+          entity_id: sensor.0x588e81fffeff5c4f_power
+          attribute: energy
+      condition:
+          condition: not
+          conditions:      
+            - condition: state
+              entity_id: sensor.0x588e81fffeff5c4f_power
+              state: 'unavailable'
+      action:
+          - service: input_number.set_value
+            data:
+              entity_id: input_number.total_bedroom_socket1_saved
+              value: "{{ state_attr('sensor.0x588e81fffeff5c4f_power', 'energy') }}"
+
+#Гирлянда в детской
+    - alias: on move turn on garland childrens room
+      trigger:
+        - platform: state
+          entity_id: binary_sensor.0x00158d00054b8d72_occupancy
+          from: 'off'
+          to: 'on'
+      condition:
+        condition: or
+        conditions:
+            - condition: time
+              after: '09:30:00'
+              before: '12:00:00'
+            - condition: time
+              after: '17:00:00'
+              before: '21:00:00'
+      action:
+        - choose:
+            - conditions:
+                - condition: state
+                  entity_id: switch.0x842e14fffe5047f5_switch
+                  state: 'off'
+              sequence:
+                  - service: switch.turn_on
+                    data:
+                      entity_id: switch.0x842e14fffe5047f5_switch
+        - service: timer.start
+          data:
+            entity_id: timer.turn_off_garland_childrens_room
+            duration: 300
+
+    - alias: on timer turn off garland childrens room
+      initial_state: true
+      trigger:
+          - platform: event
+            event_type: timer.finished
+            event_data:
+              entity_id: timer.turn_off_garland_childrens_room
+      action:
+          - service: switch.turn_off
+            data:
+              entity_id: switch.0x842e14fffe5047f5_switch

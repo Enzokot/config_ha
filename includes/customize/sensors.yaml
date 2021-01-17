@@ -1,0 +1,173 @@
+
+#Сенсоры
+sensor.signalka_shliuza_illuminance:
+  friendly_name: Шлюз освещенность
+  device_class: illuminance
+
+sensor.illumination_04cf8cabd77b:
+  friendly_name: Шлюз освещенность
+  device_class: illuminance
+
+sensor.0x00158d00042fd6f5_temperature:
+  friendly_name: Т улица
+  device_class: temperature
+
+sensor.0x00158d0004561de9_temperature:
+  friendly_name: Т ванная
+  device_class: temperature
+  
+sensor.0x00158d00042fd6f5_humidity:
+  friendly_name: Rh улица
+  device_class: humidity
+
+sensor.0x00158d0004561de9_humidity:
+  friendly_name: Rh ванная
+  device_class: humidity
+
+sensor.pressure_158d00042fd6f5:
+  friendly_name: Атм. давление улица
+  device_class: pressure
+  
+sensor.CPU_Temperature:
+  friendly_name: Температура CPU
+  device_class: temperature
+  unit_of_measurement: '°C'
+
+sensor.esp_xiaomi_bed_room_temperature:
+  friendly_name: Т спальня
+
+sensor.esp_xiaomi_bed_room_humidity:
+  friendly_name: Rh спальня
+
+sensor.esp_xiaomi_kitchen_temperature:
+  friendly_name: Т кухня
+  device_class: temperature
+
+sensor.esp_xiaomi_kitchen_humidity:
+  friendly_name: Rh кухня
+  device_class: humidity
+
+sensor.esp_xiaomi_childrens_room_temperature:
+  friendly_name: Т детская
+  device_class: temperature
+
+sensor.esp_xiaomi_childrens_room_humidity:
+  friendly_name: Rh детская
+  device_class: humidity
+
+sensor.esp_xiaomi_living_room_temperature:
+  friendly_name: Т гостиная
+  device_class: temperature
+
+sensor.esp_xiaomi_living_room_humidity:
+  friendly_name: Rh гостиная
+  device_class: humidity
+
+sensor.0x00158d00054b8d72_battery:
+  friendly_name: Датчик движения детская
+
+sensor.0x00158d00054b8d72_illuminance:
+  friendly_name: Датчик движения детская
+
+sensor.0x00158d00054b8d72_linkquality:
+  friendly_name: Датчик движения детская
+
+sensor.0x00158d000566bde7_battery:
+  friendly_name: Датчик движения коридор
+
+sensor.0x00158d000566bde7_illuminance:
+  friendly_name: Датчик движения коридор
+
+sensor.0x00158d000566bde7_linkquality:
+  friendly_name: Датчик движения коридор
+
+sensor.0x00158d0004561de9_battery:
+  friendly_name: Т&Rh ванная
+  device_class: battery
+
+sensor.0x00158d00042fd6f5_battery:
+  friendly_name: Т&Rh улица
+  device_class: battery
+
+sensor.0x00158d0003f37a0f_battery:
+  device_class: battery
+  friendly_name: Выкл. детская
+
+sensor.0x00158d000359304c_battery:
+  device_class: battery
+  friendly_name: Входная дверь  
+
+sensor.0x00158d000490fe9d_battery:
+  device_class: battery
+  friendly_name: Питание кондиционер
+
+sensor.0x00158d00045cd551_battery:
+  device_class: battery
+  friendly_name: Датчик дыма спальня
+
+sensor.0x00158d00045ca483_battery:
+  device_class: battery
+  friendly_name: Датчик дыма детская
+
+sensor.0x00158d00039a8358_battery:
+  device_class: battery
+  friendly_name: Датчик дыма гостиная
+
+sensor.0x00158d00039d9398_battery:
+  device_class: battery
+  friendly_name: Датчик дыма коридор
+
+sensor.0x00158d0003943639_battery:
+  device_class: battery
+  friendly_name: Датчик дыма кухня
+
+sensor.0x00158d0003a360b6_battery:
+  friendly_name: Беспроводная кн. детская
+
+sensor.0x00158d00045a78af_battery:
+  friendly_name: Беспроводная кн. звонок
+
+sensor.total_heater_socket_cable_daily_electicity:
+  friendly_name: Обогреватель потреб. день
+  
+sensor.total_heater_socket_cable_monthly_electicity:
+  friendly_name: Обогреватель потреб. мес.
+
+sensor.total_bedroom_socket_1_cable_daily_electicity:
+  friendly_name: Спальня роз. 1 потреб. день
+  
+sensor.total_bedroom_socket_1_cable_monthly_electicity:
+  friendly_name: Спальня роз. 1 потреб. мес.
+
+sensor.total_kithen_socket_1_cable_daily_electicity:
+  friendly_name: Кухня роз. 1 потреб. день
+  
+sensor.total_kitchen_socket_1_cable_monthly_electicity:
+  friendly_name: Кухня роз. 1 потреб. мес.
+
+sensor.0x842e14fffe5047f5_power:
+  friendly_name: Тек. мощность обогрева
+
+sensor.total_water_heater_socket_cable_daily_electicity:
+  friendly_name: Водогрей потреб. день
+  
+sensor.total_water_heater_socket_cable_monthly_electicity:
+  friendly_name: Водогрей потреб. мес.
+  
+sensor.0x842e14fffe13a854_power:
+  friendly_name: Тек. мощность нагрева
+
+sensor.0x842e14fffe36661f_power:
+  friendly_name: Тек. мощность
+
+sensor.0x588e81fffeff5c4f_power:
+  friendly_name: Тек. мощность
+
+sensor.0x04cf8cdf3c7d15b7_illuminance:
+  friendly_name: Улица освещенность
+
+sensor.0x04cf8cdf3c7d15b7_illuminance_lux:
+  friendly_name: Улица освещенность
+
+sensor.0x04cf8cdf3c7d15b7_battery:
+  friendly_name: Улица освещенность

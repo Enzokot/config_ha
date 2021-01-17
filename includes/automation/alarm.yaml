@@ -1,0 +1,238 @@
+#Кнопка вкл/выкл сигнализации
+    - alias: turn_on_alarm
+      initial_state: true
+      trigger:
+        platform: state
+        entity_id: input_boolean.alarm_gateway_button
+        to: 'on'
+      action:
+      - service: scene.create
+        data:
+          scene_id: before_alarm_on
+          snapshot_entities:
+            - light.gateway_light_04cf8cabd77b
+      - service: script.turn_on
+        data:
+          entity_id: script.alarm_gateway_light
+      - service: script.turn_on
+        data:
+          entity_id: script.alarm_gateway_sound
+      - service: timer.start
+        data:
+          entity_id: timer.alarm_gateway_sound
+          duration: 1800
+        
+    - alias: turn_off_alarm
+      initial_state: true
+      trigger:
+      - entity_id: input_boolean.alarm_gateway_button
+        platform: state
+        to: 'off'
+      action:
+      - service: script.turn_off
+        data:
+          entity_id: script.alarm_gateway_light
+      - service: script.turn_off
+        data:
+          entity_id: script.alarm_gateway_sound
+      - service: light.turn_off
+        entity_id: light.gateway_light_04cf8cabd77b
+      - service: xiaomi_aqara.stop_ringtone
+        data:
+          gw_mac: !secret gateway1_mac
+      - service: timer.cancel
+        data:
+          entity_id: timer.alarm_gateway_sound
+      - service: scene.turn_on
+        entity_id: scene.before_alarm_on
+
+#Выключение звука сигнализации по таймеру
+    - alias: alarm_gateway_stop_ringtone_timer
+      initial_state: true
+      trigger:
+      - platform: event
+        event_type: timer.finished
+        event_data:
+          entity_id: timer.alarm_gateway_sound
+      condition:
+       - condition: state
+         entity_id: input_boolean.alarm_gateway_button
+         state: 'on'
+      action:
+      - service: script.turn_off
+        data:
+          entity_id: script.alarm_gateway_sound
+      - service: xiaomi_aqara.stop_ringtone
+        data:
+          gw_mac: !secret gateway1_mac
+
+#Вкл/выкл сигнализации по датчикам дыма
+    - alias: smoke detector alarm to gateway
+      initial_state: true
+      trigger:
+       - platform: state
+         entity_id: binary_sensor.0x00158d0003943639_smoke
+         to: 'on'
+       - platform: state
+         entity_id: binary_sensor.0x00158d00039a8358_smoke
+         to: 'on'
+       - platform: state
+         entity_id: binary_sensor.0x00158d00039d9398_smoke
+         to: 'on'
+       - platform: state
+         entity_id: binary_sensor.0x00158d00045ca483_smoke
+         to: 'on'      
+       - platform: state
+         entity_id: binary_sensor.0x00158d00045cd551_smoke
+         to: 'on'
+      condition:
+       - condition: state
+         entity_id: input_boolean.alarm_gateway_button
+         state: 'off'
+      action:
+          - service: input_boolean.turn_on
+            data:
+              entity_id: input_boolean.alarm_gateway_button
+
+    - alias: smoke detector stop alarm to gateway
+      initial_state: true
+      trigger:
+       - platform: state
+         entity_id: binary_sensor.0x00158d0003943639_smoke
+         from: 'on'
+         to: 'off'
+       - platform: state
+         entity_id: binary_sensor.0x00158d00039a8358_smoke
+         from: 'on'
+         to: 'off'
+       - platform: state
+         entity_id: binary_sensor.0x00158d00039d9398_smoke
+         from: 'on'
+         to: 'off'
+       - platform: state
+         entity_id: binary_sensor.0x00158d00045ca483_smoke
+         from: 'on'
+         to: 'off'      
+       - platform: state
+         entity_id: binary_sensor.0x00158d00045cd551_smoke
+         from: 'on'
+         to: 'off'
+      condition:
+       - condition: state
+         entity_id: binary_sensor.0x00158d0003943639_smoke
+         state: 'off'
+       - condition: state
+         entity_id: binary_sensor.0x00158d00039a8358_smoke
+         state: 'off'
+       - condition: state
+         entity_id: binary_sensor.0x00158d00039d9398_smoke
+         state: 'off'
+       - condition: state
+         entity_id: binary_sensor.0x00158d00045ca483_smoke
+         state: 'off'      
+       - condition: state
+         entity_id: binary_sensor.0x00158d00045cd551_smoke
+         state: 'off'
+       - condition: state
+         entity_id: input_boolean.alarm_gateway_button
+         state: 'on'
+      action:
+          - service: input_boolean.turn_off
+            data:
+              entity_id: input_boolean.alarm_gateway_button
+
+#Включение сигнализации по датчикам открытия и движения
+    - alias: door and motion alarm to gateway
+      initial_state: true
+      trigger:
+       - platform: state
+         entity_id: binary_sensor.0x00158d000359304c_contact
+         to: 'on'
+       - platform: state
+         entity_id: 
+            - binary_sensor.0x00158d00054b8d72_occupancy
+            - binary_sensor.0x00158d000566bde7_occupancy
+         to: 'on'
+       - platform: state
+         entity_id: 
+            - sensor.0x00158d00054b8d72_illuminance
+            - sensor.0x00158d000566bde7_illuminance
+      condition:
+       - condition: state
+         entity_id: alarm_control_panel.signalka_shliuza_alarm
+         state: 'armed_away'
+       - condition: state
+         entity_id: input_boolean.alarm_gateway_button
+         state: 'off'
+      action:
+          - service: input_boolean.turn_on
+            data:
+              entity_id: input_boolean.alarm_gateway_button
+
+#Выключение сигнализации по отключению режима охраны/по долгому нажатию кнопки в детской
+    - alias: turn_off_alarm_disarmed_control_panel
+      initial_state: true
+      trigger:
+      - entity_id: alarm_control_panel.signalka_shliuza_alarm
+        platform: state
+        to: 'disarmed'
+      - entity_id: sensor.0x00158d0003a360b6_action
+        platform: state
+        to: 'hold'
+      condition:
+       - condition: state
+         entity_id: input_boolean.alarm_gateway_button
+         state: 'on'
+      action:
+          - service: input_boolean.turn_off
+            data:
+              entity_id: input_boolean.alarm_gateway_button
+
+#Включение сигнализации по многократному нажатию кнопки в детской
+    - alias: wireless switch many tap alarm to gateway
+      initial_state: true
+      trigger:
+       - platform: state
+         entity_id: sensor.0x00158d0003a360b6_action
+         to: 'many'
+      condition:
+       - condition: state
+         entity_id: input_boolean.alarm_gateway_button
+         state: 'off'
+      action:
+          - variables:
+              sm_g973f_rezhim_zvonka: >-
+                                     {{ states('sensor.sm_g973f_rezhim_zvonka') }}
+              sm_g973f_rezhim_ne_bespokoit: >-
+                                            {{ states('sensor.sm_g973f_rezhim_ne_bespokoit') }}
+          - service: notify.notify
+            data:
+              message: 'command_ringer_mode'
+              title: 'normal'
+          - service: input_boolean.turn_on
+            data:
+              entity_id: input_boolean.alarm_gateway_button
+          - service: telegram_bot.send_message
+            data:
+              title: >-
+                       {{ '\U0001f6a8' }} *Сигнализация*
+              message: 'Нажатие тревожной кнопки в *детской*'
+              target: !secret telegram_all_chat_id
+          - service: notify.notify
+            data:
+              title: 'Сигнализация'
+              message: 'Нажатие тревожной кнопки в детской'
+              data:
+                  ttl: 0
+                  priority: high
+                  channel: alarm_stream
+          - service: notify.mobile_app_sm_g973f
+            data:
+              message: 'command_ringer_mode'
+              title: >-
+                        {{ sm_g973f_rezhim_zvonka }}
+          - service: notify.mobile_app_sm_g973f
+            data:
+              message: 'command_dnd'
+              title: >-
+                        {{ sm_g973f_rezhim_ne_bespokoit }}

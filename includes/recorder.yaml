@@ -1,0 +1,62 @@
+    commit_interval: 60
+    db_url: mysql://homeassistant:hass@core-mariadb/homeassistant?charset=utf8mb4
+    auto_purge: false
+    include:
+        entities:
+          #Система
+          - sensor.processor_use
+          - sensor.memory_use_percent
+          - binary_sensor.rpi_power_inverted
+          - sensor.cpu_temperature
+          #База
+          - sensor.home_assistant_v2_db
+          - sensor.maria_db_size
+          #Входная дверь
+          - binary_sensor.0x00158d000359304c_contact
+          #Движение коридор
+          - binary_sensor.0x00158d000566bde7_occupancy
+          #Движение детская
+          - binary_sensor.0x00158d00054b8d72_occupancy
+          #Трекер WI-FI защиты от протечки
+          - binary_sensor.neptun_bathroom
+          - binary_sensor.neptun_wc
+          #Трекер инета в Калуге
+          - binary_sensor.availability_host_klg
+          - binary_sensor.availability_mibox_klg
+          #- binary_sensor.inet_at_klg
+          #Климат
+          - sensor.158d00042fd6f5_pressure
+          - sensor.0x00158d0004561de9_humidity
+          - sensor.0x00158d00042fd6f5_humidity
+          - sensor.esp_xiaomi_kitchen_humidity
+          - sensor.esp_xiaomi_living_room_humidity
+          - sensor.esp_xiaomi_childrens_room_humidity
+          - sensor.esp_xiaomi_kitchen_temperature
+          - sensor.esp_xiaomi_living_room_temperature
+          - sensor.esp_xiaomi_childrens_room_temperature
+          - sensor.0x00158d0004561de9_temperature
+          - sensor.0x00158d00042fd6f5_temperature
+          - sensor.xiaomi_miio_device_humidity
+          - sensor.xiaomi_miio_device_temperature
+          - sensor.xiaomi_miio_device_1_humidity
+          - sensor.xiaomi_miio_device_1_temperature
+          - sensor.esp_xiaomi_bed_room_temperature
+          - sensor.esp_xiaomi_bed_room_humidity
+          #Счетчики розеток
+          - sensor.total_heater_socket_cable_daily_electicity
+          - sensor.total_heater_socket_cable_monthly_electicity
+          - sensor.total_water_heater_socket_cable_daily_electicity
+          - sensor.total_water_heater_socket_cable_monthly_electicity
+          - sensor.total_kithen_socket_1_cable_daily_electicity
+          - sensor.total_kitchen_socket_1_cable_monthly_electicity
+          - sensor.total_bedroom_socket_1_cable_daily_electicity
+          - sensor.total_bedroom_socket_1_cable_monthly_electicity
+          #Датчик освещенности улица
+          - sensor.0x04cf8cdf3c7d15b7_illuminance_lux
+          #Положение штока термоголовок
+          - sensor.thermostat_childrens_room_valve_position
+          - sensor.thermostat_bedroom_valve_position
+          - sensor.thermostat_living_room_valve_position
+          - sensor.thermostat_kitchen_valve_position
+          #Напряжение в сети
+          - sensor.0x842e14fffe13a854_voltage

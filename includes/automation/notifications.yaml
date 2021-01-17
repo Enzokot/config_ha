@@ -1,0 +1,791 @@
+#Датчик открытия входной двери    
+    - alias: notification front door open long time
+      initial_state: true
+      trigger:
+        platform: state
+        entity_id: binary_sensor.0x00158d000359304c_contact
+        from: 'off'
+        to: 'on'
+        for:
+          minutes: 2
+      action:
+        service: notify.telegram_enzokot_to_bot
+        data:
+            title: >-
+                   {{ '\U000026a0' }} *Датчик открытия/закрытия*
+            message: >-
+                     Входная дверь: открыта более 2 минут
+
+    - alias: notification sound front door open long time
+      initial_state: true
+      trigger:
+        platform: state
+        entity_id: binary_sensor.0x00158d000359304c_contact
+        from: 'off'
+        to: 'on'
+        for:
+          minutes: 2
+      condition:
+          - condition: state
+            entity_id: input_boolean.alarm_gateway_button
+            state: 'off'
+          - condition: state
+            entity_id: alarm_control_panel.signalka_shliuza_alarm
+            state: 'disarmed'
+          - condition: or
+            conditions:
+              - condition: time
+                after: '9:00:00'
+                before: '12:00:00'
+              - condition: time
+                after: '17:00:00'
+                before: '21:00:00'
+      action:
+          - service: timer.start
+            entity_id: timer.front_door_ringtone          
+          - service: xiaomi_aqara.play_ringtone
+            data:
+              gw_mac: !secret gateway1_mac
+              ringtone_id: 10004
+              ringtone_vol: 25
+
+    - alias: notification sound front door open long time repeat
+      initial_state: true
+      trigger:
+           - platform: event
+             event_type: timer.finished
+             event_data:
+               entity_id: timer.front_door_ringtone
+      action:
+          - service: timer.start
+            entity_id: timer.front_door_ringtone          
+          - service: xiaomi_aqara.play_ringtone
+            data:
+              gw_mac: !secret gateway1_mac
+              ringtone_id: 10004
+              ringtone_vol: 40
+
+    - alias: notification sound front door open long time cancel
+      initial_state: true
+      trigger:
+           - platform: time
+             at: "12:00:00"
+           - platform: time
+             at: "21:00:00"
+           - platform: state
+             entity_id: binary_sensor.0x00158d000359304c_contact
+             from: 'on'
+             to: 'off'
+      condition:
+            condition: state
+            entity_id: timer.front_door_ringtone
+            state: 'active'
+      action:
+          - service: timer.cancel
+            entity_id: timer.front_door_ringtone
+
+    - alias: notification front door open
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: binary_sensor.0x00158d000359304c_contact
+          from: 'off'
+          to: 'on'
+    #   condition:
+    #     condition: time
+    #     after: '7:00:00'
+    #     before: '21:00:00'
+    #     weekday:
+    #       - mon
+    #       - tue
+    #       - wed        
+    #       - thu
+    #       - fri
+      action:
+        service: telegram_bot.send_message
+        data:
+            title: >-
+                   {{ '\U0001F6AA' }} *Датчик открытия/закрытия*
+            message: >-
+                     Входная дверь: открыта
+            disable_notification: true
+            target: !secret telegram_enzokot_chat_id
+
+    - alias: notification front door close
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: binary_sensor.0x00158d000359304c_contact
+          from: 'on'
+          to: 'off'
+    #   condition:
+    #     condition: time
+    #     after: '7:00:00'
+    #     before: '21:00:00'
+    #     weekday:
+    #       - mon
+    #       - tue
+    #       - wed        
+    #       - thu
+    #       - fri
+      action:
+        service: telegram_bot.send_message
+        data:
+            title: >-
+                   {{ '\U0001f510' }} *Датчик открытия/закрытия*
+            message: >-
+                     Входная дверь: закрыта
+            disable_notification: true
+            target: !secret telegram_enzokot_chat_id
+
+    - alias: notification front door open armed
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: binary_sensor.0x00158d000359304c_contact
+          to: 'on'
+      condition:
+        - condition: state
+          entity_id: alarm_control_panel.signalka_shliuza_alarm
+          state: 'armed_away'
+      action:
+        - variables:
+              sm_g973f_rezhim_zvonka: >-
+                                     {{ states('sensor.sm_g973f_rezhim_zvonka') }}
+              sm_g973f_rezhim_ne_bespokoit: >-
+                                            {{ states('sensor.sm_g973f_rezhim_ne_bespokoit') }}
+        - service: notify.notify
+          data:
+              message: 'command_ringer_mode'
+              title: 'normal'
+        - service: telegram_bot.send_message
+          data:
+            title: >-
+                   {{ '\U0001f6a8' }} *Сигнализация*
+            message: >-
+                     Обнаружено вскрытие {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
+            target: !secret telegram_all_chat_id
+        - service: notify.notify
+          data:
+            title: 'Сигнализация'
+            message: >-
+                     Обнаружено вскрытие {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
+            data:
+              ttl: 0
+              priority: high
+              channel: alarm_stream
+        - service: notify.mobile_app_sm_g973f
+          data:
+              message: 'command_ringer_mode'
+              title: >-
+                        {{ sm_g973f_rezhim_zvonka }}
+        - service: notify.mobile_app_sm_g973f
+          data:
+              message: 'command_dnd'
+              title: >-
+                        {{ sm_g973f_rezhim_ne_bespokoit }}
+
+    - alias: notification motion detected armed
+      initial_state: true
+      mode: queued
+      trigger:
+        - platform: state
+          entity_id: 
+             - binary_sensor.0x00158d00054b8d72_occupancy
+             - binary_sensor.0x00158d000566bde7_occupancy
+          to: 'on'
+      condition:
+        - condition: state
+          entity_id: alarm_control_panel.signalka_shliuza_alarm
+          state: 'armed_away'
+      action:
+        - variables:
+              sm_g973f_rezhim_zvonka: >-
+                                     {{ states('sensor.sm_g973f_rezhim_zvonka') }}
+              sm_g973f_rezhim_ne_bespokoit: >-
+                                     {{ states('sensor.sm_g973f_rezhim_ne_bespokoit') }}
+        - service: notify.notify
+          data:
+              message: 'command_ringer_mode'
+              title: 'normal'
+        - service: telegram_bot.send_message
+          data:
+            title: >-
+                   {{ '\U0001f6a8' }} *Сигнализация*
+            message: >-
+                     Обнаружено движение _{{ trigger.to_state.attributes.friendly_name }}_ при включенной сигнализации
+            target: !secret telegram_all_chat_id
+        - service: notify.notify
+          data:
+            title: 'Сигнализация'
+            message: >-
+                     Обнаружено движение {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
+            data:
+              ttl: 0
+              priority: high
+              channel: alarm_stream
+        - service: notify.mobile_app_sm_g973f
+          data:
+              message: 'command_ringer_mode'
+              title: >-
+                        {{ sm_g973f_rezhim_zvonka }}
+        - service: notify.mobile_app_sm_g973f
+          data:
+              message: 'command_dnd'
+              title: >-
+                        {{ sm_g973f_rezhim_ne_bespokoit }}
+
+#Пылесос
+    - alias: "vacuum cleaner error chita"
+      initial_state: true
+      trigger:
+       - platform: state
+         entity_id: sensor.vacuum_cleaner_status_sensor
+         to: 'Error'
+       - platform: state
+         entity_id: sensor.vacuum_cleaner_status_sensor
+         to: 'In Error'
+       - platform: state
+         entity_id: sensor.vacuum_cleaner_status_sensor
+         to: 'Charging Error'
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_chita_chat_id
+            title: >-
+                   {{ '\U000026a0' }} *Степа*
+            message: 'Похоже я застрял или какая то другая ошибка'
+            inline_keyboard:
+              - 'Найти меня (громко):/findvacuum'
+
+    - alias: "vacuum cleaner after cleaning chita"
+      initial_state: true
+      trigger:
+       - platform: state
+         entity_id: vacuum.xiaomi_vacuum_cleaner
+         from: 'returning'
+         to: 'docked'
+      condition:
+          condition: template
+          value_template: "{{ (state_attr('vacuum.xiaomi_vacuum_cleaner', 'total_cleaned_area') | int) > (states('input_number.total_cleaned_area_saved') | int) + 30 }}"
+      action:
+        - service: notify.telegram_chita_to_bot
+          data:
+            title: >-
+                   {{ '\U0001f4af' }} *Степа*
+            message: 'Вернулся на базу, нужно снять танк с водой и заглянуть в контейнер пылесборника'
+        - service: input_number.set_value
+          data:
+            entity_id: input_number.total_cleaned_area_saved
+            value: >-
+                   {{ (state_attr('vacuum.xiaomi_vacuum_cleaner', 'total_cleaned_area') | int) }}
+
+#Датчики дыма
+    - alias: "smoke detector alarm"
+      initial_state: true
+      trigger:
+       - platform: state
+         entity_id: binary_sensor.0x00158d0003943639_smoke
+         to: 'on'
+       - platform: state
+         entity_id: binary_sensor.0x00158d00039a8358_smoke
+         to: 'on'
+       - platform: state
+         entity_id: binary_sensor.0x00158d00039d9398_smoke
+         to: 'on'
+       - platform: state
+         entity_id: binary_sensor.0x00158d00045ca483_smoke
+         to: 'on'      
+       - platform: state
+         entity_id: binary_sensor.0x00158d00045cd551_smoke
+         to: 'on'
+      action:
+        - variables:
+              sm_g973f_rezhim_zvonka: >-
+                                     {{ states('sensor.sm_g973f_rezhim_zvonka') }}
+              sm_g973f_rezhim_ne_bespokoit: >-
+                                            {{ states('sensor.sm_g973f_rezhim_ne_bespokoit') }}
+        - service: notify.notify
+          data:
+              message: 'command_ringer_mode'
+              title: 'normal'
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_all_chat_id
+            title: >-
+                     {{ '\U0001f6a8' }} *Датчик дыма*
+            message: >-
+                        Сработали датчики:
+                        {{ '\n' }}
+                        {%- if is_state('binary_sensor.0x00158d0003943639_smoke', 'on') -%}
+                           _Кухня_
+                        {{- '\n' }}
+                        {%- endif -%} 
+                        {%- if is_state('binary_sensor.0x00158d00039a8358_smoke', 'on') -%}
+                           _Гостиная_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {% if is_state('binary_sensor.0x00158d00039d9398_smoke', 'on') -%}
+                           _Коридор_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {% if is_state('binary_sensor.0x00158d00045ca483_smoke', 'on') -%}
+                           _Детская_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {%- if is_state('binary_sensor.0x00158d00045cd551_smoke', 'on') -%}
+                           _Спальня_
+                        {{- '\n' }}
+                        {%- endif -%}
+        - service: notify.notify
+          data:
+            data:
+              ttl: 0
+              priority: high
+              channel: alarm_stream
+            title: 'Датчик дыма'
+            message: >-
+                        Сработали датчики:
+                        {{ '\n' }}
+                        {%- if is_state('binary_sensor.0x00158d0003943639_smoke', 'on') -%}
+                           Кухня
+                        {{- '\n' }}
+                        {%- endif -%} 
+                        {%- if is_state('binary_sensor.0x00158d00039a8358_smoke', 'on') -%}
+                           Гостиная
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {% if is_state('binary_sensor.0x00158d00039d9398_smoke', 'on') -%}
+                           Коридор
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {% if is_state('binary_sensor.0x00158d00045ca483_smoke', 'on') -%}
+                           Детская
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {%- if is_state('binary_sensor.0x00158d00045cd551_smoke', 'on') -%}
+                           Спальня
+                        {{- '\n' }}
+                        {%- endif -%}
+        - service: notify.mobile_app_sm_g973f
+          data:
+              message: 'command_ringer_mode'
+              title: >-
+                        {{ sm_g973f_rezhim_zvonka }}
+        - service: notify.mobile_app_sm_g973f
+          data:
+              message: 'command_dnd'
+              title: >-
+                        {{ sm_g973f_rezhim_ne_bespokoit }}
+
+#Срок сертификата менее 5 дней
+    - alias: notification cert expired
+      initial_state: true
+      trigger:
+        platform: time
+        at: "19:00:00"
+      condition:
+        - condition: numeric_state
+          entity_id: sensor.cert_expiry_enzokot_domain
+          below: 5
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: >-
+                     {{ '\U000026a0' }} *Сертификат SSL*
+            message: >-
+                        Срок действия сертификата: {{ states('sensor.cert_expiry_enzokot_domain') }} дн.
+                        
+#Новая версия НА
+    - alias: update available notification
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: binary_sensor.new_version_ha
+          to: 'on'
+      action:
+        - service: notify.notify
+          data:
+            title: "{{ '\U0001f389' }} Системное обновление"
+            message: "Доступна {{ states('sensor.latest_version_ha') }} версия для установки HA, текущая {{ states('sensor.current_version_ha') }}."
+            
+#Низкий заряд батарей Zigbee
+    - alias: notification low battery zigbee
+      initial_state: true
+      trigger:
+        platform: time
+        at: "20:00:00"
+      condition:
+          condition: or
+          conditions:
+            - condition: numeric_state
+              entity_id: sensor.0x00158d0003943639_battery
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.0x00158d00039a8358_battery
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.0x00158d00039d9398_battery
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.0x00158d00045ca483_battery
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.0x00158d00045cd551_battery
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.0x00158d0004561de9_battery
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.0x00158d00042fd6f5_battery
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.0x00158d000359304c_battery
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.0x00158d0003f37a0f_battery
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.0x00158d000490fe9d_battery
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.0x00158d00054b8d72_battery
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.0x00158d000566bde7_battery
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.0x00158d0003a360b6_battery
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.esp_xiaomi_living_room_battery_level
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.esp_xiaomi_kitchen_battery_level
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.esp_xiaomi_childrens_room_battery_level
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.esp_xiaomi_bed_room_battery_level
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.0x04cf8cdf3c7d15b7_battery
+              below: 20
+            - condition: state
+              entity_id: binary_sensor.0x60a423fffea7e6f0_battery_low
+              state: 'on'
+            - condition: state
+              entity_id: binary_sensor.0x5c0272fffec9db22_battery_low
+              state: 'on'
+            - condition: state
+              entity_id: binary_sensor.0x5c0272fffec89454_battery_low
+              state: 'on'
+            - condition: state
+              entity_id: binary_sensor.0x5c0272fffe8de819_battery_low
+              state: 'on'
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: >-
+                     {{ '\U0001f50b' }} *Низкий заряд Zigbee*
+            message: >-
+                        Для сенсоров:
+                        {{ '\n' }}
+                        {%- if states('sensor.0x00158d0003943639_battery') | int < 20 -%}
+                           _Датчик дыма кухня_
+                        {{- '\n' }}
+                        {%- endif -%} 
+                        {%- if states('sensor.0x00158d00039a8358_battery') | int < 20 -%}
+                           _Датчик дыма гостиная_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {% if states('sensor.0x00158d00039d9398_battery') | int < 20 -%}
+                           _Датчик дыма коридор_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {% if states('sensor.0x00158d00045ca483_battery') | int < 20 -%}
+                           _Датчик дыма детская_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {%- if states('sensor.0x00158d00045cd551_battery') | int < 20 -%}
+                           _Датчик дыма спальня_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {%- if states('sensor.0x00158d0004561de9_battery') | int < 20 -%}
+                           _Т&Rh ванная_
+                        {{- '\n' }}
+                        {%- endif -%} 
+                        {%- if states('sensor.0x00158d00042fd6f5_battery') | int < 20 -%}
+                           _Т&Rh улица_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {% if states('sensor.0x00158d000359304c_battery') | int < 20 -%}
+                           _Входная дверь_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {% if states('sensor.0x00158d0003f37a0f_battery') | int < 20 -%}
+                           _Выкл. детская_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {%- if states('sensor.0x00158d000490fe9d_battery') | int < 20 -%}
+                           _Питание кондиционер_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {%- if states('sensor.0x00158d00054b8d72_battery') | int < 20 -%}
+                          _Датчик движения детская_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {%- if states('sensor.0x00158d000566bde7_battery') | int < 20 -%}
+                           _Датчик движения коридор_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {%- if states('sensor.0x00158d0003a360b6_battery') | int < 20 -%}
+                           _Беспроводная кн. детская_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {%- if states('sensor.esp_xiaomi_bed_room_battery_level') | int < 20 -%}
+                           _Часы спальня_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {%- if states('sensor.esp_xiaomi_childrens_room_battery_level') | int < 20 -%}
+                           _Часы детская_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {%- if states('sensor.esp_xiaomi_living_room_battery_level') | int < 20 -%}
+                           _Часы гостиная_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {%- if states('sensor.esp_xiaomi_kitchen_battery_level') | int < 20 -%}
+                           _Часы кухня_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {%- if states('sensor.0x04cf8cdf3c7d15b7_battery') | int < 20 -%}
+                           _Уличный датчик освещенности_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {%- if is_state('binary_sensor.0x60a423fffea7e6f0_battery_low', 'on') -%}
+                          _Термоголовка спальня_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {%- if is_state('binary_sensor.0x5c0272fffec89454_battery_low', 'on') -%}
+                          _Термоголовка детская_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {%- if is_state('binary_sensor.0x5c0272fffec9db22_battery_low', 'on') -%}
+                          _Термоголовка гостиная_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {%- if is_state('binary_sensor.0x5c0272fffe8de819_battery_low', 'on') -%}
+                          _Термоголовка гостиная_
+                        {{- '\n' }}
+                        {%- endif -%}
+
+#После рестарта НА остался включенный обогреватель
+    - alias: notification safety sockets on restart
+      initial_state: true
+      trigger:
+        - platform: homeassistant
+          event: start
+      condition:
+        - condition: state
+          entity_id: switch.0x842e14fffe5047f5_switch
+          state: 'on'          
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: >-
+                     {{ '\U0001f50c' }} *Управляемые розетки*
+            message: >-
+                        После перезапуска НА осталась включена розетка обогревателя.
+
+#Уведомление от розеток при превышении 3кВт
+    - alias: notification safety sockets off
+      initial_state: true
+      trigger:
+          - platform: numeric_state
+            entity_id: 
+                - sensor.0x842e14fffe5047f5_power
+                - sensor.0x842e14fffe13a854_power
+                - sensor.0x588e81fffeff5c4f_power
+                - sensor.0x842e14fffe36661f_power
+            above: 3000
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: >-
+                     {{ '\U000026a0' }} *Управляемые розетки*
+            message: >-
+                        Сработала защита по превышению потребления для розетки:
+                        {{ '\n' }}
+                        {%- if states('sensor.0x842e14fffe13a854_power') | int > 3000 -%}
+                        _Водонагревателя_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {%- if states('sensor.0x842e14fffe5047f5_power') | int > 3000 -%}
+                        _Обогревателя_
+                        {%- endif -%}
+                        {%- if states('sensor.0x842e14fffe36661f_power') | int > 3000 -%}
+                        _На кухне 1_
+                        {%- endif -%}
+                        {%- if states('sensor.0x588e81fffeff5c4f_power') | int > 3000 -%}
+                        _В спальне 1_
+                        {%- endif -%}
+
+#Уведомление о смене Public IP
+    - alias: notification public ip changed
+      initial_state: true
+      trigger:
+          - platform: state
+            entity_id: sensor.myip
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: >-
+                     {{ '\U0001f4f6' }} *Трекинг устройств*
+            message: >-
+                    {%- if trigger.from_state.state in ['unavailable', 'unknown', ''] -%}
+                        Внешний IP-адрес определен `{{ trigger.to_state.state }}`
+                    {%- else -%}
+                        Внешний IP-адрес изменен с `{{ trigger.from_state.state }}` на `{{ trigger.to_state.state }}`
+                    {%- endif -%}
+        - service: notify.notify
+          data:
+            title: >-
+                     {{ '\U0001f4f6' }} Трекинг устройств
+            message: >-
+                    {%- if trigger.from_state.state in ['unavailable', 'unknown', ''] -%}
+                        Внешний IP-адрес определен {{ trigger.to_state.state }}
+                    {%- else -%}
+                        Внешний IP-адрес изменен с {{ trigger.from_state.state }} на {{ trigger.to_state.state }}
+                    {%- endif -%}
+                    
+#Уведомление при низком уровне воды
+    - alias: notification low level water
+      initial_state: true
+      trigger:
+        - platform: numeric_state
+          entity_id: fan.xiaomi_miio_device
+          below: 40
+          attribute: depth
+        - platform: numeric_state
+          entity_id: fan.xiaomi_miio_device_1
+          below: 20
+          attribute: water_level
+      condition:
+        - condition: template
+          value_template: >- 
+                    {{ trigger.from_state.state not in ['unavailable', 'unknown', '', 'off'] }}
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_all_chat_id
+            title: >-
+                     {{ '\U0001F6B0' }} *Увлажнители*
+            message: >-
+                    Пора залить воду в увлажнитель: _{{- trigger.to_state.name -}}_
+
+#Уведомление обслуживания пылесоса
+    - alias: notification vacuum maintenance
+      initial_state: true
+      trigger:
+        - platform: numeric_state
+          entity_id: 
+            - sensor.vacuum_cleaner_main_brush_left
+            - sensor.vacuum_cleaner_side_brush_left
+            - sensor.vacuum_cleaner_filter_left
+            - sensor.vacuum_cleaner_sensor_dirty_left
+          below: 2
+      condition:
+        - condition: template
+          value_template: >- 
+                    {{ trigger.from_state.state not in ['unavailable', 'unknown', ''] }}
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_all_chat_id
+            title: >-
+                     {{ '\U0001F527' }} *Степа*
+            message: >-
+                    Необходимо провести обслуживание: _{{- trigger.to_state.name -}}_
+
+#Уведомления по напряжению сети
+    - alias: notifications control voltage
+      initial_state: true
+      mode: queued
+      trigger:
+        - platform: numeric_state
+          entity_id: sensor.0x842e14fffe13a854_voltage
+          above: 250
+        - platform: numeric_state
+          entity_id: sensor.0x842e14fffe13a854_voltage
+          below: 180
+        - platform: numeric_state
+          entity_id: sensor.0x842e14fffe13a854_voltage
+          above: 179.9
+          below: 250.1
+      condition:
+        - condition: template
+          value_template: >- 
+                    {{ trigger.from_state.state not in ['unavailable', 'unknown', ''] and
+                        (
+                        trigger.above == None or trigger.below == None or
+                        (trigger.from_state.state | float >= trigger.below
+                        or trigger.from_state.state | float <= trigger.above)
+                        )
+                    }}
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: >-
+                     {% if trigger.above != None and trigger.below != None  %} {{ '\U00002705' }} {% else %} {{ '\U000026a0' }} {% endif -%} *Контроль напряжения*
+            message: >-
+                     {% if trigger.above != None and trigger.below == None and trigger.to_state.state | float >= trigger.above | float %}
+                        Обнаружено *повышенное* напряжение сети {{ trigger.to_state.state }}В
+                     {% elif trigger.above == None and trigger.below != None and trigger.to_state.state | float <= trigger.below | float %}
+                        Обнаружено *пониженное* напряжение сети {{ trigger.to_state.state }}В
+                     {% else %}
+                        В сети *нормальное* напряжение {{ trigger.to_state.state }}В
+                     {% endif %}
+
+#Уведомление об успешном бекапе
+    - alias: notifications control voltage
+      initial_state: true
+      mode: queued
+      trigger:
+        - platform: state
+          entity_id: sensor.last_backup_db_homeassistant
+      condition:
+        - condition: template
+          value_template: >- 
+            {{ trigger.from_state.state != trigger.to_state.state 
+               and (trigger.from_state.state not in ['unavailable', 'unknown', ''] 
+               or trigger.to_state.state not in ['unavailable', 'unknown', ''])
+            }}
+      action:
+        - service: homeassistant.update_entity
+          entity_id: sensor.disk_use_percent
+        - wait_for_trigger:
+            - platform: state
+              entity_id: sensor.disk_use_percent
+          timeout: 
+              seconds: 10
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: >-
+                  {% if trigger.to_state.state == '2' %} {{ '\U000026D4' }} {% elif trigger.to_state.state == '3' %} {{ '\U000026A0' }} {%- else %} {{ '\U0001F4BD' }} {%- endif %} *Резервное копирование БД*
+            message: >-
+                  {% if trigger.to_state.state == '2' %}
+                     Бекап не создан
+                  {% elif trigger.to_state.state == '3' %}
+                     Создан бекап, но архивирование не удалось. Системный диск заполнен на *{{ states('sensor.disk_use_percent') -}}*%
+                  {% else %}
+                     Создана и упакована резервная копия с именем файла `{{ trigger.to_state.state -}}.7z`, системный диск заполнен на *{{ states('sensor.disk_use_percent') -}}*%
+                  {% endif %}

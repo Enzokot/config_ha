@@ -1,0 +1,25 @@
+
+#Сигнализация на шлюзе
+    alarm_gateway_button:
+        name: Вкл/выкл сигнализацию
+        initial: off
+        icon: mdi:alarm-light
+
+#Водонагреватель в сезоне
+    water_heater_season:
+        name: Сезонное откл. ГВС
+        icon: mdi:water-off
+        
+#Ночной режим обогревателя
+    heater_night_mode:
+        name: Ночной режим обогрева
+        icon: mdi:weather-night
+
+#Ночной режим термостатов
+    thermostat_bedroom_night_mode:
+        name: Ночной режим
+        icon: mdi:weather-night
+        
+    thermostat_childrensroom_night_mode:
+        name: Ночной режим
+        icon: mdi:weather-night

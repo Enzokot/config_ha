@@ -1,0 +1,12 @@
+
+  - platform: xiaomi_miio
+    host: 192.168.217.79
+    token: !secret fan1_token
+    model: zhimi.humidifier.cb1
+    name: xiaomi_miio_device
+
+  - platform: xiaomi_miio_airpurifier
+    host: 192.168.217.90
+    token: !secret fan2_token
+    model: zhimi.humidifier.ca4
+    name: xiaomi_miio_device_1

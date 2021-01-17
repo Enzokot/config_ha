@@ -1,0 +1,124 @@
+
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'date'
+      - 'time_date'
+
+  - platform: systemmonitor
+    resources:
+    - type: processor_use
+    - type: disk_use_percent
+      arg: /
+    - type: memory_use_percent
+    - type: last_boot
+    - type: disk_free
+      arg: /
+
+#  - platform: filesize
+#    file_paths:
+#     - /config/home-assistant_v2.db
+     
+  - platform: sql
+    db_url: mysql://homeassistant:hass@core-mariadb/homeassistant?charset=utf8
+    queries:
+      - name: Maria DB size
+        query: 'SELECT table_schema "database", Round(Sum(data_length + index_length) / 1048576, 2) "value" FROM information_schema.tables WHERE table_schema="homeassistant" GROUP BY table_schema;'
+        column: 'value'
+        unit_of_measurement: MB 
+
+  - platform: cert_expiry
+    host: !secret certificate_host
+    port: !secret certificate_port
+
+  - platform: template
+    sensors:
+
+# Время с последней перезагрузки
+
+     last_boot_custom:
+       friendly_name: "Последняя перезагрузка"
+       value_template: >
+           {% set uptime = as_timestamp (now()) - as_timestamp(states('sensor.last_boot')) | int %}
+           {% set minutes = (( uptime % 3600) / 60) | int %}
+           {% set hours = ((uptime % 86400) / 3600) | int %}
+           {% set days = (uptime / 86400) | int %}
+             {% if uptime < 1 %}
+               Меньше минуты
+             {% else %}
+               {% if days > 0 %}
+                 {{ days }} д.
+               {% endif %}
+               {% if hours > 0 %}
+                 {% if days > 0 %}
+                   {{ ' ' }}
+                 {% endif %}
+                 {{ hours }} ч.
+               {% endif %}
+               {% if minutes > 0 %}
+                 {% if days > 0 or hours > 0 %}
+                   {{ ' ' }}
+                 {% endif %}
+                   {{ minutes }} мин.
+               {% endif %}
+             {% endif %}
+       icon_template: mdi:clock
+        
+     online_custom:
+       friendly_name: "Последняя перезагрузка HA"
+       value_template: >
+           {% set uptime = ((as_timestamp(now()) | int - as_timestamp(states('sensor.online')) | int) / 60 ) | int %}
+           {% set minutes = (( uptime % 60) / 1) | int %}
+           {% set hours = ((uptime % 1440) / 60) | int %}
+           {% set days = (uptime / 1440) | int %}
+             {% if uptime < 1 %}
+               Меньше минуты
+             {% else %}
+               {% if days > 0 %}
+                 {{ days }} д.
+               {% endif %}
+               {% if hours > 0 %}
+                 {% if days > 0 %}
+                   {{ ' ' }}
+                 {% endif %}
+                 {{ hours }} ч.
+               {% endif %}
+               {% if minutes > 0 %}
+                 {% if days > 0 or hours > 0 %}
+                   {{ ' ' }}
+                 {% endif %}
+                   {{ minutes }} мин.
+               {% endif %}
+             {% endif %}
+       icon_template: mdi:clock
+     
+     cert_expiry_enzokot_domain:
+       unit_of_measurement: 'дн.'
+       icon_template: mdi:certificate-outline
+       friendly_name: 'Срок сертификата SSL'
+       value_template: >
+            {% if as_timestamp(states('sensor.cert_expiry_timestamp_enzokot_ftp_sh_8123')) | int > as_timestamp (states('sensor.date')) | int %}
+              {{ ((as_timestamp(states('sensor.cert_expiry_timestamp_enzokot_ftp_sh_8123')) - as_timestamp (states('sensor.date')) | int) / 86400) | int }}
+            {% else %}
+              0
+            {% endif %}
+
+  - platform: uptime
+    name: online
+
+  - platform: command_line
+    name: CPU Temperature
+    #scan_interval: 300
+    command: "cat /sys/class/thermal/thermal_zone0/temp"
+    value_template: '{{ value | multiply(0.001) | round(1) }}'
+
+  - platform: version
+    source: hassio
+    name: Latest version HA
+
+# HA current version    
+  - platform: version
+    name: Current version HA
+
+#Public IP
+  - platform: dnsip

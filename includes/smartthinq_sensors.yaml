@@ -1,0 +1,3 @@
+  token: !secret smartthinq_token
+  region: RU
+  language: ru-RU

@@ -1,0 +1,111 @@
+#Защита от протечки WI-FI трекер
+
+#  - platform: template
+#    sensors:
+
+#     neptun_bathroom:
+#       value_template: "{{ is_state('device_tracker.60_c5_a8_6c_93_65', 'home') }}"
+#       friendly_name: Ванная
+#       icon_template: mdi:water-pump
+#       entity_id: device_tracker.60_c5_a8_6c_93_65
+
+#     neptun_wc:
+#       value_template: "{{ is_state('device_tracker.60_c5_a8_6c_c4_d2', 'home') }}"
+#       friendly_name: Туалет
+#       icon_template: mdi:water-pump
+#       entity_id: device_tracker.60_c5_a8_6c_c4_d2
+
+#   - platform: ping
+#     name: neptun_bathroom_ping
+#     host: 192.168.217.71
+# #    count: 3
+#     scan_interval: 90
+
+#   - platform: ping
+#     name: neptun_wc_ping
+#     host: 192.168.217.70
+# #    count: 3
+#     scan_interval: 90
+
+#  - platform: command_line
+#    name: neptun_bathroom_ping
+#    command: 'ping -c4 -i0.5 -W8 192.168.217.71 | grep -P " [0-2] received" | wc -l'
+#    device_class: connectivity
+#    payload_on: 0
+#    payload_off: 1
+#    scan_interval: 90
+
+#  - platform: command_line
+#    name: neptun_wc_ping
+#    command: 'ping -c4 -i0.5 -W8 192.168.217.70 | grep -P " [0-2] received" | wc -l'
+#    device_class: connectivity
+#    payload_on: 0
+#    payload_off: 1
+#    scan_interval: 90
+
+#   - platform: command_line
+#     name: neptun_bathroom
+#     #command: 'nmap 192.168.217.71 -p 6350 -Pn | grep "6350/tcp open" | wc -l'
+#     command: 'nc -zv -w 9 192.168.217.71 6350 2>&1 | grep "open" | wc -l'
+#     device_class: connectivity
+#     payload_on: 1
+#     payload_off: 0
+#     scan_interval: 90
+
+#   - platform: command_line
+#     name: neptun_wc
+#     #command: 'nmap 192.168.217.70 -p 6350 -Pn | grep "6350/tcp open" | wc -l'
+#     command: 'nc -zv -w 9 192.168.217.70 6350 2>&1 | grep "open" | wc -l'
+#     device_class: connectivity
+#     payload_on: 1
+#     payload_off: 0
+#     scan_interval: 90
+
+#   - platform: command_line
+#     name: inet_at_klg
+#     command: !secret command_check_klg
+#     device_class: connectivity
+#     payload_on: 1
+#     payload_off: 0
+#     scan_interval: 300
+
+  - platform: mqtt
+    name: availability_host_klg
+    state_topic: "network_diagnostics/availability_host_klg"
+    payload_on: "1"
+    payload_off: "0"
+    device_class: connectivity
+
+  - platform: mqtt
+    name: availability_mibox_klg
+    state_topic: "network_diagnostics/availability_mibox_klg"
+    payload_on: "1"
+    payload_off: "0"
+    device_class: connectivity
+
+  - platform: mqtt
+    name: neptun_bathroom
+    state_topic: "network_diagnostics/availability_neptun_bathroom"
+    payload_on: "1"
+    payload_off: "0"
+    device_class: connectivity
+
+  - platform: mqtt
+    name: neptun_wc
+    state_topic: "network_diagnostics/availability_neptun_wc"
+    payload_on: "1"
+    payload_off: "0"
+    device_class: connectivity
+
+#   - platform: template
+#     sensors:
+
+#         availability_host_klg:
+#           value_template: "{{ is_state('sensor.tracker_host_klg', 'Up') }}"
+#           friendly_name: Роутер в Калуге
+#           icon_template: mdi:lan-connect
+    
+#         availability_mibox_klg:
+#           value_template: "{{ is_state('sensor.tracker_mibox_klg', 'Up') }}"
+#           friendly_name: Mibox в Калуге
+#           icon_template: mdi:lan-connect

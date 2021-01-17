@@ -1,0 +1,106 @@
+
+#Звонок входной двери
+    - alias: turn_on_doorbell
+      initial_state: true
+      mode: restart
+      trigger:
+        - platform: state
+          entity_id: sensor.0x00158d00045a78af_action
+      condition:
+          - condition: state
+            entity_id: timer.doorbell_timer_restart_automation
+            state: 'idle'
+          - condition: state
+            entity_id: input_boolean.alarm_gateway_button
+            state: 'off'
+          - condition: state
+            entity_id: alarm_control_panel.signalka_shliuza_alarm
+            state: 'disarmed'
+          - condition: template
+            value_template: >
+                              {{ trigger.to_state.state not in ['release', 'unavailable', 'unknown', ''] }}
+                #  - 'hold'
+                #  - 'single'
+                #  - 'double'
+                #  - 'triple'
+                #  - 'quadruple'
+                #  - 'many'
+      action:
+          - service: timer.start
+            entity_id: timer.doorbell_timer_restart_automation
+          - service: telegram_bot.send_message
+            data:
+              title: >-
+                      {{ '\U0001f514' }} *Дверной звонок*
+              message: >- 
+                         Кто-то звонит в дверь
+              target: !secret telegram_all_chat_id
+          - condition: or
+            conditions:
+                - condition: time
+                  after: '8:00:00'
+                  before: '13:00:00'
+                - condition: time
+                  after: '17:00:00'
+                  before: '21:00:00'
+          - service: xiaomi_aqara.stop_ringtone
+            data:
+              gw_mac: !secret gateway1_mac
+          - service: xiaomi_aqara.play_ringtone
+            data:
+              gw_mac: !secret gateway1_mac
+              ringtone_id: 10002
+              ringtone_vol: 50
+
+    - alias: turn_on_light_doorbell
+      initial_state: true
+      mode: restart
+      trigger:
+        - platform: state
+          entity_id: sensor.0x00158d00045a78af_action
+      condition:
+          - condition: state
+            entity_id: timer.doorbell_timer_restart_automation
+            state: 'idle'
+          - condition: state
+            entity_id: input_boolean.alarm_gateway_button
+            state: 'off'
+          - condition: state
+            entity_id: alarm_control_panel.signalka_shliuza_alarm
+            state: 'disarmed'
+          - condition: template
+            value_template: >
+                              {{ trigger.to_state.state not in ['release', 'unavailable', 'unknown', ''] }}
+      action:
+        - service: scene.create
+          data:
+            scene_id: before_doorbell_light
+            snapshot_entities:
+              - light.gateway_light_04cf8cabd77b
+        - repeat:
+             while:
+                - condition: template
+                  value_template: "{{ repeat.index <= 3 }}"
+             sequence:
+                - service: light.turn_on
+                  entity_id: light.gateway_light_04cf8cabd77b
+                  data:
+                    rgb_color: [255,128,0]
+                    brightness: 128
+                - delay:
+                    milliseconds: 150
+                - service: light.turn_off
+                  entity_id: light.gateway_light_04cf8cabd77b
+                - delay:
+                    milliseconds: 50
+                - service: light.turn_on
+                  entity_id: light.gateway_light_04cf8cabd77b
+                  data:
+                    rgb_color: [255,128,0]
+                    brightness: 128
+                - delay:
+                    milliseconds: 150
+                - service: light.turn_off
+                  entity_id: light.gateway_light_04cf8cabd77b
+        - service: scene.turn_on
+          entity_id: scene.before_doorbell_light

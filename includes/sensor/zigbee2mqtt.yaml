@@ -1,0 +1,33 @@
+
+    - platform: mqtt
+      name: Состояние моста
+      state_topic: "zigbee2mqtt/bridge/state"
+      icon: mdi:router-wireless
+
+    - platform: mqtt
+      name: Zigbee2mqtt Coordinator Version
+      state_topic: "zigbee2mqtt/bridge/config"
+      value_template: "{{ value_json.coordinator }}"
+      json_attributes_topic: "zigbee2mqtt/bridge/config"
+      json_attributes_template: "{{ {'revision':value_json.coordinator['meta'].revision, 'type':value_json.coordinator['type']} | tojson }}"
+      icon: mdi:chip
+    
+    - platform: mqtt
+      name: Zigbee2mqtt Bridge Uptime
+      state_topic: "zigbee2mqtt_start_at"
+      value_template: '{{ as_timestamp(now()) - value | int }}'
+      unit_of_measurement: 's'
+      force_update: true
+      icon: mdi:av-timer
+
+    - platform: mqtt
+      name: Last Backup DB Homeassistant
+      state_topic: "last_backup_db_at"
+      icon: mdi:calendar-clock
+
+    - platform: template
+      sensors:
+        zigbee2mqtt_coordinator_ver:
+           friendly_name: Версия стика
+           icon_template: mdi:chip
+           value_template: "{{ state_attr('sensor.zigbee2mqtt_coordinator_version', 'type') }}  rev.{{ state_attr('sensor.zigbee2mqtt_coordinator_version', 'revision')}}"

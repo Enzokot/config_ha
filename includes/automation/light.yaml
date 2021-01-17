@@ -1,0 +1,207 @@
+#yeelight650 детская
+    - alias: yeelight650 off
+      initial_state: true
+      mode: restart
+      trigger:
+        - platform: state
+          entity_id: binary_sensor.0x00158d0003f37a0f_contact
+          from: 'on'
+          to: 'off'
+      action:
+        - service: light.turn_off
+          data:
+              entity_id: light.yeelight_650
+        - service: light.turn_off
+          data:
+              entity_id: light.yeelight_650_ambilight
+
+    - alias: yeelight650 on
+      initial_state: true
+      mode: restart
+      trigger:
+        - platform: state
+          entity_id: binary_sensor.0x00158d0003f37a0f_contact
+          from: 'off'
+          to: 'on'
+      action:
+        - service: light.turn_on
+          data:
+              entity_id: light.yeelight_650
+              brightness: 255
+        - service: light.turn_on
+          data:
+              entity_id: light.yeelight_650_ambilight
+              brightness: 255
+              rgb_color: [255, 0, 135]
+
+    - alias: yeelight650 on ambilight night mode
+      initial_state: true
+      mode: restart
+      trigger:
+        - platform: state
+          entity_id: sensor.0x00158d0003a360b6_action
+          to: 'single'
+      condition:
+          - condition: state
+            entity_id: light.yeelight_650
+            state: "off"
+      action:
+          - service: light.turn_on
+            data:
+                entity_id: light.yeelight_650_ambilight
+                brightness: 1
+                rgb_color: [255, 0, 135]
+                #rgb_color: [255, 167, 88]
+
+    - alias: yeelight650 off ambilight night mode
+      initial_state: true
+      mode: restart
+      trigger:
+        - platform: state
+          entity_id: sensor.0x00158d0003a360b6_action
+          to: 'single'
+      condition:
+          - condition: state
+            entity_id: light.yeelight_650_ambilight
+            state: "on"
+          - condition: state
+            entity_id: light.yeelight_650
+            state: "off"
+      action:
+          - service: light.turn_off
+            data:
+                entity_id: light.yeelight_650_ambilight
+
+#Синхронизация светильника и выключателя каждые 3 минуты          
+    - alias: sync yeelight650 to switch
+      initial_state: true
+      trigger:
+        platform: time_pattern
+        minutes: "/3"
+      condition:
+          - "{{ (state_attr('automation.yeelight650_on', 'current')|int) == 0 }}"
+          - "{{ (state_attr('automation.yeelight650_off', 'current')|int) == 0 }}"
+          - condition: or
+            conditions:
+              - condition: and
+                conditions:
+                  - condition: state
+                    entity_id: binary_sensor.0x00158d0003f37a0f_contact
+                    state: 'on'
+                  - condition: state
+                    entity_id: light.yeelight_650
+                    state: 'off'
+                  - condition: state
+                    entity_id: light.yeelight_650_ambilight
+                    state: 'off'
+                  - condition: state
+                    entity_id: light.yeelight_650_nightlight
+                    state: 'off'
+              - condition: and
+                conditions:
+                  - condition: state
+                    entity_id: binary_sensor.0x00158d0003f37a0f_contact
+                    state: 'off'
+                  - condition: state
+                    entity_id: light.yeelight_650
+                    state: 'on'
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            message: >-
+                       {{ '\U000026a0' }} Обнаружено отклонение светильника и выключателя, исправить?
+            inline_keyboard:
+              - 'Да:/changelight, Нет:/nochangelight, Игнорировать:/ignoringchangelight'
+        - service: automation.turn_off
+          entity_id: automation.sync_yeelight650_to_switch
+
+#Подсветка шлюза при открытии входной двери
+    - alias: light gateway toggle
+      initial_state: true
+      trigger:
+        platform: state
+        entity_id: binary_sensor.0x00158d000359304c_contact
+        from: 'off'
+        to: 'on'
+      condition:
+        - condition: state
+          entity_id: input_boolean.alarm_gateway_button
+          state: 'off'
+      action:
+        - service: scene.create
+          data:
+            scene_id: before_light_door_open
+            snapshot_entities:
+              - light.gateway_light_04cf8cabd77b      
+        - service: light.turn_on
+          entity_id: light.gateway_light_04cf8cabd77b
+          data:
+            rgb_color: [255,0,0]
+            brightness: 255
+        - delay:
+            milliseconds: 150
+        - service: light.turn_off
+          entity_id: light.gateway_light_04cf8cabd77b
+        - delay:
+            milliseconds: 50
+        - service: light.turn_on
+          entity_id: light.gateway_light_04cf8cabd77b
+          data:
+            rgb_color: [255,0,0]
+            brightness: 255
+        - delay:
+            milliseconds: 150
+        - service: light.turn_off
+          entity_id: light.gateway_light_04cf8cabd77b
+        - service: scene.turn_on
+          entity_id: scene.before_light_door_open
+
+#Подсветка шлюза утром
+    - alias: light gateway go to work on
+      trigger:
+        platform: time
+        at: "07:00:00"
+      condition:
+        - condition: state
+          entity_id: input_boolean.alarm_gateway_button
+          state: 'off'
+        - condition: time
+          weekday:
+            - mon
+            - tue
+            - wed        
+            - thu
+            - fri
+      action:
+        - service: scene.create
+          data:
+            scene_id: before_on_go_to_work
+            snapshot_entities:
+              - light.gateway_light_04cf8cabd77b
+        - service: light.turn_on
+          entity_id: light.gateway_light_04cf8cabd77b
+          data:
+            rgb_color: [230,255,0]
+            brightness: 5
+
+    - alias: light gateway go to work off
+      trigger:
+        platform: time
+        at: "07:20:00"
+      condition:
+        - condition: state
+          entity_id: input_boolean.alarm_gateway_button
+          state: 'off'
+        - condition: time
+          weekday:
+            - mon
+            - tue
+            - wed        
+            - thu
+            - fri
+      action:
+        - service: light.turn_off
+          entity_id: light.gateway_light_04cf8cabd77b
+        - service: scene.turn_on
+          entity_id: scene.before_on_go_to_work

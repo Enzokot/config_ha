@@ -1,0 +1,6 @@
+#Улажнители
+    fan.xiaomi_miio_device:
+      friendly_name: Увлажнитель спальня
+
+    fan.xiaomi_miio_device_1:
+      friendly_name: Увлажнитель детская

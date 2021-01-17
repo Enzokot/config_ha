@@ -1,0 +1,63 @@
+
+# Xiaomi Smartmi Air Humidifier 2
+  xiaomi_airpurifier_target_humidity:
+    name: "Целевая влажность"
+    min: 40
+    max: 80
+    step: 10
+    icon: "mdi:water-percent"
+    unit_of_measurement: "%"
+  
+  xiaomi_airpurifier_led_brightness:
+    name: "Яркость индикации"
+    min: 0
+    max: 2
+    step: 1
+    icon: "mdi:lightbulb-outline"
+
+  xiaomi_airpurifier_1_target_humidity:
+    name: "Целевая влажность"
+    min: 40
+    max: 80
+    step: 10
+    icon: "mdi:water-percent"
+    unit_of_measurement: "%"
+  
+  xiaomi_airpurifier_1_led_brightness:
+    name: "Яркость индикации"
+    min: 0
+    max: 2
+    step: 1
+    icon: "mdi:lightbulb-outline"
+
+# Сохраняемое значение кВт от розеток
+  total_heater_socket_saved:
+    name: "Потребление обогревателя сохраненное"
+    icon: mdi:horizontal-rotate-counterclockwise
+    min: 0
+    max: 1000000
+
+  total_water_heater_socket_saved:
+    name: "Потребление водонагревателя сохраненное"
+    icon: mdi:horizontal-rotate-counterclockwise
+    min: 0
+    max: 1000000
+
+  total_bedroom_socket1_saved:
+    name: "Потребление розетка в спальне 1 сохраненное"
+    icon: mdi:horizontal-rotate-counterclockwise
+    min: 0
+    max: 1000000
+
+  total_kitchen_socket1_saved:
+    name: "Потребление розетка на кухне 1 сохраненное"
+    icon: mdi:horizontal-rotate-counterclockwise
+    min: 0
+    max: 1000000
+    
+#Сохраненное значение общей площади уборки
+  total_cleaned_area_saved:
+    name: "Общая площадь уборки пылесоса"
+    icon: mdi:square-circle
+    min: 0
+    max: 1000000

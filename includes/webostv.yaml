@@ -1,0 +1,7 @@
+  - host: 192.168.217.84
+    name: LG Smart TV
+    customize:
+      sources:
+        - livetv
+        - youtube
+        - netflix

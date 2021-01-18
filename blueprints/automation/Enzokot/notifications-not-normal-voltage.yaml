@@ -1,0 +1,60 @@
+blueprint:
+  name: Notifications not normal voltage
+  description: Уведомления о высоком/низком напряжении в сети
+  domain: automation
+  input:
+    object_id:
+      name: Сущность
+      description: Сенсор (сущность), для которого анализируется состояние напряжения
+        (например, sensor.0x842e14fffe13a854_voltage)
+      selector:
+        entity:
+          domain: sensor
+    voltage_above:
+      name: Высокое V
+      description: Верхняя граница допустимого напряжения в сети (от 230 до 300)
+      selector:
+        number:
+          min: 230.0
+          max: 300.0
+          unit_of_measurement: V
+          step: 0.1
+          mode: slider
+    voltage_below:
+      name: Низкое V
+      description: Нижняя граница допустимого напряжения в сети (от 1 до 210)
+      selector:
+        number:
+          min: 1.0
+          max: 210.0
+          unit_of_measurement: V
+          step: 0.1
+          mode: slider
+    telegram_chat_id:
+      name: Чат ID
+      description: Чат ID (цифрами 1234, либо перечислением [1234, 4321]) телеграмм
+        бота, в который отправлять уведомления
+  source_url: https://gist.github.com/Enzokot/7e743b3f6eb2a8bf219e34a5175b3864
+mode: queued
+trigger:
+- platform: numeric_state
+  entity_id: !input 'object_id'
+  above: !input 'voltage_above'
+- platform: numeric_state
+  entity_id: !input 'object_id'
+  below: !input 'voltage_below'
+condition:
+- condition: template
+  value_template: '{{ trigger.from_state.state not in [''unavailable'', ''unknown'',
+    ''''] }}'
+action:
+- service: telegram_bot.send_message
+  data:
+    target: !input 'telegram_chat_id'
+    title: '{{ ''⚠'' }} *Контроль напряжения*'
+    parse_mode: markdown
+    message: "{% if trigger.above != None and trigger.to_state.state | float >= trigger.above\
+      \ | float %}\n   Обнаружено *повышенное* напряжение сети {{ trigger.to_state.state\
+      \ }}В данные от {{ trigger.to_state.name }}\n{% else %}\n   Обнаружено *пониженное*\
+      \ напряжение сети {{ trigger.to_state.state }}В данные от {{ trigger.to_state.name\
+      \ }}\n{% endif %}"

@@ -1,0 +1,56 @@
+blueprint:
+  name: Notifications normal voltage
+  description: Уведомления о нормальном напряжении в сети
+  domain: automation
+  input:
+    object_id:
+      name: Сущность
+      description: Сенсор (сущность), для которого анализируется состояние напряжения
+        (например, sensor.0x842e14fffe13a854_voltage)
+      selector:
+        entity:
+          domain: sensor
+    voltage_above:
+      name: Нижнее V
+      description: Нижняя граница допустимого напряжения в сети (от 1 до 210)
+      selector:
+        number:
+          min: 1.0
+          max: 210.0
+          unit_of_measurement: V
+          step: 0.1
+          mode: slider
+    voltage_below:
+      name: Верхнее V
+      description: Верхняя граница допустимого напряжения в сети (от 230 до 300)
+      selector:
+        number:
+          min: 230.0
+          max: 300.0
+          step: 0.1
+          unit_of_measurement: V
+          mode: slider
+    telegram_chat_id:
+      name: Чат ID
+      description: Чат ID (цифрами, либо перечислением [1234, 4321]) телеграмм бота,
+        в который отправлять уведомления
+  source_url: https://gist.github.com/Enzokot/21723dad06fa95e35474277fcce3e1ec
+mode: queued
+trigger:
+- platform: numeric_state
+  entity_id: !input 'object_id'
+  above: !input 'voltage_above'
+  below: !input 'voltage_below'
+condition:
+- condition: template
+  value_template: "{{ \n    trigger.from_state.state not in ['unavailable', 'unknown',\
+    \ ''] \n    and (trigger.from_state.state | float >= trigger.below\n    or trigger.from_state.state\
+    \ | float <= trigger.above)\n}}\n"
+action:
+- service: telegram_bot.send_message
+  data:
+    target: !input 'telegram_chat_id'
+    title: '{{ ''✅'' }} *Контроль напряжения*'
+    parse_mode: markdown
+    message: В сети *нормальное* напряжение {{ trigger.to_state.state }}В, данные
+      от {{ trigger.to_state.name }}

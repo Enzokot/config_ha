@@ -1,0 +1,70 @@
+blueprint:
+  name: Notifications control voltage
+  description: Уведомления о высоком/низком/нормальном напряжении в сети
+  domain: automation
+  input:
+    object_id:
+      name: Сущность
+      description: Сенсор (сущность), для которого анализируется состояние напряжения
+        (например, sensor.0x842e14fffe13a854_voltage)
+      selector:
+        entity:
+          domain: sensor
+    voltage_above:
+      name: Высокое V
+      description: Верхняя граница допустимого напряжения в сети (от 230 до 300)
+      selector:
+        number:
+          min: 230.0
+          max: 300.0
+          unit_of_measurement: V
+          step: 0.1
+          mode: slider
+    voltage_below:
+      name: Низкое V
+      description: Нижняя граница допустимого напряжения в сети (от 1 до 210)
+      selector:
+        number:
+          min: 1.0
+          max: 210.0
+          unit_of_measurement: V
+          step: 0.1
+          mode: slider
+    telegram_chat_id:
+      name: Чат ID
+      description: Чат ID (цифрами 1234, либо перечислением [1234, 4321]) телеграмм
+        бота, в который отправлять уведомления
+  source_url: https://gist.github.com/Enzokot/e6ca248c6baf270df1204665f0049c03
+mode: queued
+trigger:
+- platform: numeric_state
+  entity_id: !input 'object_id'
+  above: !input 'voltage_above'
+- platform: numeric_state
+  entity_id: !input 'object_id'
+  below: !input 'voltage_below'
+- platform: numeric_state
+  entity_id: !input 'object_id'
+  above: !input 'voltage_below'
+  below: !input 'voltage_above'
+condition:
+- condition: template
+  value_template: "{{ trigger.from_state.state not in ['unavailable', 'unknown', '']\
+    \ and\n    (\n    trigger.above == None or trigger.below == None or\n    (trigger.from_state.state\
+    \ | float >= trigger.below\n    or trigger.from_state.state | float <= trigger.above)\n\
+    \    )\n}}"
+action:
+- service: telegram_bot.send_message
+  data:
+    target: !input 'telegram_chat_id'
+    parse_mode: markdown
+    title: '{% if trigger.above != None and trigger.below != None  %} {{ ''\U00002705''
+      }} {% else %} {{ ''\U000026a0'' }} {% endif -%} *Контроль напряжения*'
+    message: "{% if trigger.above != None and trigger.below == None and trigger.to_state.state\
+      \ | float >= trigger.above | float %}\n   Обнаружено *повышенное* напряжение\
+      \ сети {{ trigger.to_state.state }}В данные от {{ trigger.to_state.name }}\n\
+      {% elif trigger.above == None and trigger.below != None and trigger.to_state.state\
+      \ | float <= trigger.below | float %}\n   Обнаружено *пониженное* напряжение\
+      \ сети {{ trigger.to_state.state }}В данные от {{ trigger.to_state.name }}\n\
+      {% else %}\n   В сети *нормальное* напряжение {{ trigger.to_state.state }}В\
+      \ данные от {{ trigger.to_state.name }}\n{% endif %}"

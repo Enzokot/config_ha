@@ -398,18 +398,63 @@
                         Срок действия сертификата: {{ states('sensor.cert_expiry_enzokot_domain') }} дн.
                         
 #Новая версия НА
-    - alias: update available notification
+    - alias: update HA available notification
       initial_state: true
       trigger:
         - platform: state
           entity_id: binary_sensor.new_version_ha
           to: 'on'
       action:
-        - service: notify.notify
+        - service: telegram_bot.send_message
           data:
-            title: "{{ '\U0001f389' }} Системное обновление"
-            message: "Доступна {{ states('sensor.latest_version_ha') }} версия для установки HA, текущая {{ states('sensor.current_version_ha') }}."
-            
+            target: !secret telegram_enzokot_chat_id
+            title: "{{ '\U0001f389' }} *Системное обновление*"
+            message: "Доступна [{{ states('sensor.latest_version_ha') }}](https://github.com/home-assistant/core/releases/tag/{{- states('sensor.latest_version_ha') }}) версия Core для установки, текущая `{{ states('sensor.current_version_ha') }}`."
+            disable_web_page_preview: true
+
+#Новая версия Supervisor
+    - alias: update Supervisor available notification
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: binary_sensor.new_version_supervisor
+          to: 'on'
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: "{{ '\U0001f389' }} *Системное обновление*"
+            message: "Доступна [{{ state_attr('sensor.latest_version_ha', 'supervisor') }}](https://github.com/home-assistant/supervisor/releases/tag/{{- state_attr('sensor.latest_version_ha', 'supervisor') }}) версия Supervisor для установки, текущая `{{ state_attr('sensor.supervisor_versions', 'current_version') }}`."
+            disable_web_page_preview: true
+
+#Доступны для обновления аддоны Supervisor
+    - alias: update Supervisor addons available notification
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: binary_sensor.new_version_ha_addons
+          to: 'on'
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: "{{ '\U0001f389' }} *Системное обновление*"
+            message: "Addons's Supervisor - доступно для обновления *{{ states('sensor.supervisor_versions') | int }}*."
+
+#Доступны для обновления аддоны HACS
+    - alias: update HACS addons available notification
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: binary_sensor.new_version_hacs_addons
+          to: 'on'
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: "{{ '\U0001f389' }} *Системное обновление*"
+            message: "Addons's HACS - доступно для обновления *{{ states('sensor.hacs') | int }}*."
+
 #Низкий заряд батарей Zigbee
     - alias: notification low battery zigbee
       initial_state: true

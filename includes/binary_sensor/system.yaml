@@ -10,3 +10,13 @@
         friendly_name: Состояние питания RPi
         icon_template: 'mdi:raspberry-pi'
         device_class: power
+
+      new_version_supervisor:
+        value_template: "{{ state_attr('sensor.latest_version_ha', 'supervisor') != 'unknown' and state_attr('sensor.supervisor_versions', 'current_version') != 'unknown' 
+                         and state_attr('sensor.latest_version_ha', 'supervisor') != state_attr('sensor.supervisor_versions', 'current_version') }}"
+
+      new_version_hacs_addons:
+        value_template: "{{ states('sensor.hacs') | int > 0 }}"
+
+      new_version_ha_addons:
+        value_template: "{{ states('sensor.supervisor_versions') | int > 0 }}"

@@ -1,0 +1,130 @@
+substitutions:
+  devicename: esp32-devtools
+  telegram_api_token: !secret telegram_api
+  telegram_chat_id: !secret telegram_enzokot_chat_id  
+
+esphome:
+  name: $devicename
+  platform: ESP32
+  board: nodemcu-32s
+  comment: Only for fun
+
+wifi:
+  #use_address: esp32_devtools.local
+  #power_save_mode: none
+  networks:
+  
+  - ssid: Kotletochka_Yi
+    password: !secret kotletochka_wifi_password
+    hidden: true
+    priority: 1
+  
+  - ssid: Kotletochka_kit
+    password: !secret kotletochka_wifi_password
+    hidden: true
+    priority: 1
+  
+  #Точка в спальне
+  - ssid: Kotletochka
+    password: !secret kotletochka_wifi_password
+    bssid: "50:ff:20:4b:10:73"
+    priority: 1
+
+  #Точка на кухне
+  - ssid: Kotletochka
+    password: !secret kotletochka_wifi_password
+    bssid: "50:ff:20:4a:bf:cd"
+    priority: 1
+
+  #Основная точка
+  - ssid: Kotletochka
+    password: !secret kotletochka_wifi_password
+    bssid: "50:ff:20:3c:2b:74"
+    priority: 2
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "${devicename}"
+    password: !secret kotletochka_wifi_password
+
+captive_portal:
+
+http_request:
+
+# Enable logging
+logger:
+  #level: NONE
+
+# Enable Home Assistant API
+api:
+  password: !secret api_password
+  reboot_timeout: 0s
+
+ota:
+  password: !secret ota_password
+
+# Веб сервер
+web_server:
+  port: 80
+
+switch:
+  - platform: restart
+    name: "$devicename Restart"
+#  - platform: template
+#    name: "$devicename Test Switch"
+#    turn_on_action:
+#        - http_request.post:
+#            url: "https://api.telegram.org/bot${telegram_api_token}/sendMessage"
+#            verify_ssl: false
+#            headers:
+#              Content-Type: application/json
+#            json:
+#              chat_id: "${telegram_chat_id}"
+#              parse_mode: "HTML"
+#              text: "\U00002705 <b>Тестовые сообщения</b>\n${devicename}: Сработал test switch"
+
+#  - platform: gpio
+#    id: onboard_led
+#    name: "$devicename On Board Led"
+#    pin:
+#      number: GPIO2
+#      mode: OUTPUT
+#    restore_mode: ALWAYS_OFF    
+
+text_sensor:
+  - platform: wifi_info
+#    ip_address:
+#      name: "${devicename} IP Address"
+    ssid:
+      name: "${devicename} Connected SSID"
+    bssid:
+      name: "${devicename} Connected BSSID" 
+
+esp32_ble_tracker:
+  scan_parameters:
+    window: 48ms
+    interval: 512ms
+
+sensor:
+  - platform: uptime
+    name: "$devicename Uptime Sensor"
+    id: uptime_sec
+    internal: true
+    update_interval: 15s
+
+  - platform: wifi_signal
+    name: "$devicename WiFi RSSI"
+    update_interval: 60s
+
+  - platform: homeassistant
+    name: "Temperature outside"
+    internal: true
+    entity_id: sensor.0x00158d00042fd6f5_temperature
+    id: temp_outside
+
+#  - platform: xiaomi_lywsd02
+#    mac_address: 3F:5B:7D:72:CC:F3
+#    temperature:
+#      name: "ESP Xiaomi Bed Room Temperature"
+#    humidity:
+#      name: "ESP Xiaomi Bed Room Humidity"

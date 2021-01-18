@@ -1,0 +1,87 @@
+substitutions:
+  devicename: ble-tracker-childrens-room
+
+esphome:
+  name: $devicename
+  platform: ESP32
+  board: nodemcu-32s
+  comment: BLE childrens room
+
+wifi:
+  networks:
+  
+  - ssid: Kotletochka_Yi
+    password: !secret kotletochka_wifi_password
+    hidden: true
+    priority: 1
+  
+  - ssid: Kotletochka_kit
+    password: !secret kotletochka_wifi_password
+    hidden: true
+    priority: 1
+  
+  #Точка в спальне
+  - ssid: Kotletochka
+    password: !secret kotletochka_wifi_password
+    bssid: "50:ff:20:4b:10:73"
+    priority: 1
+
+  #Точка на кухне
+  - ssid: Kotletochka
+    password: !secret kotletochka_wifi_password
+    bssid: "50:ff:20:4a:bf:cd"
+    priority: 1
+
+  #Основная точка
+  - ssid: Kotletochka
+    password: !secret kotletochka_wifi_password
+    bssid: "50:ff:20:3c:2b:74"
+    priority: 2
+    
+  ap:
+    ssid: "${devicename}"
+    password: !secret kotletochka_wifi_password
+
+captive_portal:
+
+# Enable logging
+logger:
+#  level: NONE
+
+# Enable Home Assistant API
+api:
+  password: !secret api_password
+  reboot_timeout: 0s
+
+ota:
+  password: !secret ota_password
+
+switch:
+  - platform: restart
+    name: "$devicename Restart"
+
+text_sensor:
+  - platform: wifi_info
+    ssid:
+      name: "${devicename} Connected SSID"
+    bssid:
+      name: "${devicename} Connected BSSID" 
+
+esp32_ble_tracker:
+  scan_parameters:
+    window: 48ms
+    interval: 512ms
+
+sensor:
+  - platform: xiaomi_lywsd02
+    mac_address: !secret clock_bt_childrens_room_mac
+    temperature:
+     name: "ESP Xiaomi Childrens Room Temperature"
+    humidity:
+     name: "ESP Xiaomi Childrens Room Humidity"
+    battery_level:
+     name: "ESP Xiaomi Childrens Room Battery Level"
+  
+  - platform: wifi_signal
+    name: "$devicename WiFi RSSI"
+    update_interval: 60s

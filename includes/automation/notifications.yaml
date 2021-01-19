@@ -409,7 +409,7 @@
           data:
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Доступна [{{ states('sensor.latest_version_ha') }}](https://github.com/home-assistant/core/releases/tag/{{- states('sensor.latest_version_ha') }}) версия Core для установки, текущая `{{ states('sensor.current_version_ha') }}`."
+            message: "Доступна [{{ states('sensor.latest_version_ha') }}](https://github.com/home-assistant/core/releases/tag/{{- states('sensor.latest_version_ha') }}) версия Core для установки, текущая *{{ states('sensor.current_version_ha') }}*."
             disable_web_page_preview: true
 
 #Новая версия Supervisor
@@ -424,7 +424,7 @@
           data:
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Доступна [{{ state_attr('sensor.latest_version_ha', 'supervisor') }}](https://github.com/home-assistant/supervisor/releases/tag/{{- state_attr('sensor.latest_version_ha', 'supervisor') }}) версия Supervisor для установки, текущая `{{ state_attr('sensor.supervisor_versions', 'current_version') }}`."
+            message: "Доступна [{{ state_attr('sensor.latest_version_ha', 'supervisor') }}](https://github.com/home-assistant/supervisor/releases/tag/{{- state_attr('sensor.latest_version_ha', 'supervisor') }}) версия Supervisor для установки, текущая *{{ state_attr('sensor.supervisor_versions', 'current_version') }}*."
             disable_web_page_preview: true
 
 #Доступны для обновления аддоны Supervisor

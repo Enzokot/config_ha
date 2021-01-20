@@ -8,6 +8,7 @@
   - platform: systemmonitor
     resources:
     - type: processor_use
+    - type: processor_temperature
     - type: disk_use_percent
       arg: /
     - type: memory_use_percent
@@ -105,12 +106,6 @@
 
   - platform: uptime
     name: online
-
-  - platform: command_line
-    name: CPU Temperature
-    #scan_interval: 300
-    command: "cat /sys/class/thermal/thermal_zone0/temp"
-    value_template: '{{ value | multiply(0.001) | round(1) }}'
 
   - platform: version
     source: hassio

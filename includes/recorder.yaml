@@ -7,7 +7,7 @@
           - sensor.processor_use
           - sensor.memory_use_percent
           - binary_sensor.rpi_power_inverted
-          - sensor.cpu_temperature
+          - sensor.processor_temperature
           #База
           - sensor.home_assistant_v2_db
           - sensor.maria_db_size

@@ -28,10 +28,9 @@ sensor.pressure_158d00042fd6f5:
   friendly_name: Атм. давление улица
   device_class: pressure
   
-sensor.CPU_Temperature:
+sensor.processor_temperature:
   friendly_name: Температура CPU
   device_class: temperature
-  unit_of_measurement: '°C'
 
 sensor.esp_xiaomi_bed_room_temperature:
   friendly_name: Т спальня

@@ -94,7 +94,7 @@ views:
 
         - type: custom:mini-graph-card
           entities:
-             - entity: sensor.cpu_temperature
+             - entity: sensor.processor_temperature
                #show_points: false
           hour24: true
           points_per_hour: 6

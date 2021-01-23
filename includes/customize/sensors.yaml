@@ -138,6 +138,12 @@ sensor.total_bedroom_socket_1_cable_daily_electicity:
 sensor.total_bedroom_socket_1_cable_monthly_electicity:
   friendly_name: Спальня роз. 1 потреб. мес.
 
+sensor.total_server_socket_cable_daily_electicity:
+  friendly_name: Сервер потреб. день
+  
+sensor.total_server_socket_cable_monthly_electicity:
+  friendly_name: Спальня потреб. мес.
+
 sensor.total_kithen_socket_1_cable_daily_electicity:
   friendly_name: Кухня роз. 1 потреб. день
   
@@ -160,6 +166,9 @@ sensor.0x842e14fffe36661f_power:
   friendly_name: Тек. мощность
 
 sensor.0x588e81fffeff5c4f_power:
+  friendly_name: Тек. мощность
+  
+sensor.server_ac_power_socket_w:
   friendly_name: Тек. мощность
 
 sensor.0x04cf8cdf3c7d15b7_illuminance:

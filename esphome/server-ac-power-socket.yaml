@@ -82,7 +82,7 @@ binary_sensor:
                     - binary_sensor.is_off: "status_connection"
                 then:
                   - switch.turn_off: "blue_led"
-    
+
   - platform: gpio
     name: ${devicename}_Button
     pin:
@@ -98,23 +98,10 @@ switch:
     pin: GPIO14
     id: relay
     restore_mode: ALWAYS_ON
-    on_turn_on:
-      - switch.turn_on: "red_led"
-    on_turn_off:
-      - switch.turn_off: "red_led"
 
   - platform: gpio
     id: blue_led
     name: ${devicename}_LED_Blue
-    icon: mdi:led-on
-    restore_mode: ALWAYS_OFF
-    pin: 
-      number: GPIO1
-      inverted: True
-
-  - platform: gpio
-    id: red_led
-    name: ${devicename}_LED_Red
     icon: mdi:led-on
     restore_mode: ALWAYS_OFF
     pin: 
@@ -126,6 +113,7 @@ switch:
   
   - platform: template
     name: "$devicename Reboot Powerload"
+    icon: mdi:reload-alert
     turn_on_action:
           then:
             - if:

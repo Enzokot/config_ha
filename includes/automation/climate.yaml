@@ -142,18 +142,18 @@
                           {% else %}  
                             Silent 
                           {% endif %}
-      - choose:
-          - conditions:  
-                - condition: state
-                  entity_id: fan.xiaomi_miio_device_1
-                  state: 'on'    
-            sequence:
-                - service: fan.set_speed
-                  data:
-                    entity_id: fan.xiaomi_miio_device_1
-                    speed: >-
-                          {% if '08:00:00' <= as_timestamp(trigger.now) | timestamp_custom('%H:%M:%S')  < '22:00:00' %}
-                            Auto
-                          {% else %}  
-                            Low 
-                          {% endif %}
+    #   - choose:
+    #       - conditions:  
+    #             - condition: state
+    #               entity_id: fan.xiaomi_miio_device_1
+    #               state: 'on'    
+    #         sequence:
+    #             - service: fan.set_speed
+    #               data:
+    #                 entity_id: fan.xiaomi_miio_device_1
+    #                 speed: >-
+    #                       {% if '08:00:00' <= as_timestamp(trigger.now) | timestamp_custom('%H:%M:%S')  < '22:00:00' %}
+    #                         Auto
+    #                       {% else %}  
+    #                         Low 
+    #                       {% endif %}

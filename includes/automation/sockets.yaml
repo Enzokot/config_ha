@@ -134,6 +134,7 @@
             - sensor.0x842e14fffe13a854_power
             - sensor.0x842e14fffe36661f_power
             - sensor.0x588e81fffeff5c4f_power
+            - sensor.server_ac_power_socket_w
         above: 3000
       action:
           - service: switch.turn_off
@@ -150,6 +151,9 @@
                         {%- endif -%}
                         {% if trigger.entity_id == 'sensor.0x588e81fffeff5c4f_power' -%}
                            switch.0x588e81fffeff5c4f
+                        {%- endif -%}              
+                        {% if trigger.entity_id == 'sensor.server_ac_power_socket_w' -%}
+                           switch.server_ac_power_socket_relay
                         {%- endif -%}              
 
 #После рестарта НА проверить ночной режим обогревателя

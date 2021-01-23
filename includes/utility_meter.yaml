@@ -45,3 +45,15 @@
     cycle: monthly
     tariffs:
       - electicity
+
+  total_server_socket_cable_daily:
+    source: sensor.total_server_socket_cable
+    cycle: daily
+    tariffs:
+      - electicity
+
+  total_server_socket_cable_monthly:
+    source: sensor.total_server_socket_cable
+    cycle: monthly
+    tariffs:
+      - electicity

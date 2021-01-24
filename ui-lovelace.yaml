@@ -127,31 +127,31 @@ views:
           content: >
              **Розетка сервера** 
 
+        - type: horizontal-stack
+          cards:
+            - entity: switch.server_ac_power_socket_relay
+              state_color: true
+              type: button
+              tap_action:
+                action: call-service
+                service: switch.toggle
+                service_data:
+                  entity_id: switch.server_ac_power_socket_relay
+                confirmation:
+                  text: Вкл/выкл розетку?
+            - entity: switch.server_ac_power_socket_reboot_powerload
+              state_color: true
+              type: button
+              tap_action:
+                action: call-service
+                service: switch.toggle
+                service_data:
+                  entity_id: switch.server_ac_power_socket_reboot_powerload
+                confirmation:
+                  text: Перезапустить нагрузку?
+
         - type: custom:vertical-stack-in-card
           cards:
-            - type: custom:vertical-stack-in-card
-              horizontal: true
-              cards:
-                - entity: switch.server_ac_power_socket_relay
-                  state_color: true
-                  type: button
-                  tap_action:
-                    action: call-service
-                    service: switch.toggle
-                    service_data:
-                      entity_id: switch.server_ac_power_socket_relay
-                    confirmation:
-                      text: Вкл/выкл розетку?
-                - entity: switch.server_ac_power_socket_reboot_powerload
-                  state_color: true
-                  type: button
-                  tap_action:
-                    action: call-service
-                    service: switch.toggle
-                    service_data:
-                      entity_id: switch.server_ac_power_socket_reboot_powerload
-                    confirmation:
-                      text: Перезапустить нагрузку?
             - type: entities
               show_header_toggle: false
               entities:

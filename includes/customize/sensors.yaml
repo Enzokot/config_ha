@@ -142,7 +142,7 @@ sensor.total_server_socket_cable_daily_electicity:
   friendly_name: Сервер потреб. день
   
 sensor.total_server_socket_cable_monthly_electicity:
-  friendly_name: Спальня потреб. мес.
+  friendly_name: Сервер потреб. мес.
 
 sensor.total_kithen_socket_1_cable_daily_electicity:
   friendly_name: Кухня роз. 1 потреб. день

@@ -235,6 +235,56 @@
               title: >-
                         {{ sm_g973f_rezhim_ne_bespokoit }}
 
+    - alias: notification open window armed
+      initial_state: true
+      mode: queued
+      trigger:
+        - platform: state
+          entity_id: 
+             - group.window_bed_room_group
+             - group.window_childrens_room_group
+          to: 'on'
+      condition:
+        - condition: state
+          entity_id: alarm_control_panel.signalka_shliuza_alarm
+          state: 'armed_away'
+      action:
+        - variables:
+              sm_g973f_rezhim_zvonka: >-
+                                     {{ states('sensor.sm_g973f_rezhim_zvonka') }}
+              sm_g973f_rezhim_ne_bespokoit: >-
+                                     {{ states('sensor.sm_g973f_rezhim_ne_bespokoit') }}
+        - service: notify.notify
+          data:
+              message: 'command_ringer_mode'
+              title: 'normal'
+        - service: telegram_bot.send_message
+          data:
+            title: >-
+                   {{ '\U0001f6a8' }} *Сигнализация*
+            message: >-
+                     Обнаружено вскрытие окна _{{ trigger.to_state.attributes.friendly_name }}_ при включенной сигнализации
+            target: !secret telegram_all_chat_id
+        - service: notify.notify
+          data:
+            title: 'Сигнализация'
+            message: >-
+                     Обнаружено вскрытие окна {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
+            data:
+              ttl: 0
+              priority: high
+              channel: alarm_stream
+        - service: notify.mobile_app_sm_g973f
+          data:
+              message: 'command_ringer_mode'
+              title: >-
+                        {{ sm_g973f_rezhim_zvonka }}
+        - service: notify.mobile_app_sm_g973f
+          data:
+              message: 'command_dnd'
+              title: >-
+                        {{ sm_g973f_rezhim_ne_bespokoit }}
+
 #Пылесос
     - alias: "vacuum cleaner error chita"
       initial_state: true
@@ -530,6 +580,19 @@
             - condition: state
               entity_id: binary_sensor.0x5c0272fffe8de819_battery_low
               state: 'on'
+            - condition: numeric_state
+              entity_id: sensor.0x00158d0003cfa725_battery
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.0x00158d00039677d9_battery
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.0x00158d0003fa6b60_battery
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.0x00158d000396f1f9_battery
+              below: 20
+              
       action:
         - service: telegram_bot.send_message
           data:
@@ -625,6 +688,23 @@
                         {%- endif -%}
                         {%- if is_state('binary_sensor.0x5c0272fffe8de819_battery_low', 'on') -%}
                           _Термоголовка гостиная_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        
+                        {% if states('sensor.0x00158d000396f1f9_battery') | int < 20 -%}
+                           _Окно в детской_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {% if states('sensor.0x00158d0003fa6b60_battery') | int < 20 -%}
+                           _Окно в спальне_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {% if states('sensor.0x00158d0003cfa725_battery') | int < 20 -%}
+                           _Балконная дверь в спальне_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {% if states('sensor.0x00158d00039677d9_battery') | int < 20 -%}
+                           _Балконная дверь в детской_
                         {{- '\n' }}
                         {%- endif -%}
 

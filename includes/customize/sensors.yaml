@@ -179,3 +179,19 @@ sensor.0x04cf8cdf3c7d15b7_illuminance_lux:
 
 sensor.0x04cf8cdf3c7d15b7_battery:
   friendly_name: Улица освещенность
+
+sensor.0x00158d000396f1f9_battery:
+  device_class: battery
+  friendly_name: Окно детская
+
+sensor.0x00158d0003fa6b60_battery:
+  device_class: battery
+  friendly_name: Окно спальня
+
+sensor.0x00158d0003cfa725_battery:
+  device_class: battery
+  friendly_name: Балконная дверь спальня
+
+sensor.0x00158d00039677d9_battery:
+  device_class: battery
+  friendly_name: Балконная дверь детская

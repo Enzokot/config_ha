@@ -234,24 +234,62 @@ views:
                 - entity: sensor.signalka_shliuza_illuminance
                 - entity: sensor.0x04cf8cdf3c7d15b7_illuminance_lux
                 
+
         - type: markdown
           content: >
-             **Двери, окна, движение, выключатели, датчики дыма** 
+             **Двери, окна, движение, выключатели детская** 
         
         - type: glance
-          columns: 4
+          columns: 5
           entities:
-            - entity: binary_sensor.0x00158d000359304c_contact
-              show_last_changed: true
-            - entity: binary_sensor.0x00158d000566bde7_occupancy
-              show_last_changed: true
-              name: Коридор
             - entity: binary_sensor.0x00158d00054b8d72_occupancy
               show_last_changed: true
               name: Детская
             - entity: binary_sensor.0x00158d0003f37a0f_contact
               show_last_changed: true
               icon: mdi:ceiling-light
+              name: Свет
+            - entity: binary_sensor.0x00158d000396f1f9_contact
+              show_last_changed: true
+              name: Окно
+            - entity: binary_sensor.0x00158d00039677d9_contact
+              show_last_changed: true
+              name: Балкон
+
+        - type: markdown
+          content: >
+             **Двери, окна, движение, выключатели спальня** 
+        
+        - type: glance
+          columns: 5
+          entities:
+            - entity: binary_sensor.0x00158d0003fa6b60_contact
+              show_last_changed: true
+              name: Окно
+            - entity: binary_sensor.0x00158d0003cfa725_contact
+              show_last_changed: true
+              name: Балкон
+
+        - type: markdown
+          content: >
+             **Двери, движение, выключатели коридор** 
+        
+        - type: glance
+          columns: 5
+          entities:
+            - entity: binary_sensor.0x00158d000359304c_contact
+              show_last_changed: true
+            - entity: binary_sensor.0x00158d000566bde7_occupancy
+              show_last_changed: true
+              name: Коридор
+
+        - type: markdown
+          content: >
+             **Датчики дыма** 
+        
+        - type: glance
+          columns: 5
+          entities:
             - entity: binary_sensor.0x00158d00039d9398_smoke
               show_last_changed: true
               name: Коридор
@@ -290,6 +328,10 @@ views:
                   - sensor.0x00158d000359304c_battery
                   - sensor.0x00158d000490fe9d_battery          
                   - sensor.0x00158d0003f37a0f_battery
+                  - sensor.0x00158d00039677d9_battery
+                  - sensor.0x00158d0003cfa725_battery
+                  - sensor.0x00158d0003fa6b60_battery
+                  - sensor.0x00158d000396f1f9_battery
               - name: 'Дыма (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
                 icon: 'mdi:smoke-detector'
@@ -374,6 +416,14 @@ views:
             - entity: sensor.esp_xiaomi_childrens_room_battery_level
               tap_action: more-info
               name: 'Часы детская'
+            - entity: sensor.0x00158d000396f1f9_battery
+              tap_action: more-info
+            - entity: sensor.0x00158d0003fa6b60_battery
+              tap_action: more-info
+            - entity: sensor.0x00158d0003cfa725_battery
+              tap_action: more-info
+            - entity: sensor.0x00158d00039677d9_battery
+              tap_action: more-info
 
         - type: markdown
           content: >

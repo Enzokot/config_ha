@@ -67,4 +67,20 @@ binary_sensor.0x00158d000566bde7_occupancy:
 
 binary_sensor.rpi_power_status:
   friendly_name: Состояние питания RPi
+
+binary_sensor.0x00158d00039677d9_contact:
+  friendly_name: Балконная дверь детская
+  device_class: door
+
+binary_sensor.0x00158d0003cfa725_contact:
+  friendly_name: Балконная дверь спальня
+  device_class: door
+
+binary_sensor.0x00158d0003fa6b60_contact:
+  friendly_name: Окно спальня
+  device_class: window
+
+binary_sensor.0x00158d000396f1f9_contact:
+  friendly_name: Окно детская
+  device_class: window
   

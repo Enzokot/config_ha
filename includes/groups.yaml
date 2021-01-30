@@ -1,0 +1,10 @@
+
+    window_childrens_room_group:
+        entities:
+          - binary_sensor.0x00158d00039677d9_contact
+          - binary_sensor.0x00158d000396f1f9_contact
+
+    window_bed_room_group:
+        entities:
+          - binary_sensor.0x00158d0003cfa725_contact
+          - binary_sensor.0x00158d0003fa6b60_contact

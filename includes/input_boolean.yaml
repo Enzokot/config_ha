@@ -23,3 +23,20 @@
     thermostat_childrensroom_night_mode:
         name: Ночной режим
         icon: mdi:weather-night
+
+#Сохраненное значение изменения состояния автоматизацией
+    auto_triggered_fan_window_childrens_room:
+        name: Восстановление увлажнителя после закрытия окна в детской
+        icon: mdi:window-open
+
+    auto_triggered_valve_window_childrens_room:
+        name: Восстановление термоголовки после закрытия окна в детской
+        icon: mdi:window-open
+
+    auto_triggered_fan_window_bed_room:
+        name: Восстановление увлажнителя после закрытия окна в спальне
+        icon: mdi:window-open
+
+    auto_triggered_valve_window_bed_room:
+        name: Восстановление термоголовки после закрытия окна в спальне
+        icon: mdi:window-open

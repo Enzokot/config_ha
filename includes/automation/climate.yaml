@@ -117,7 +117,7 @@
 
 #Увлажнитель на ночь 1 скорость, днем авто
 - alias: air humidifier day and night speed
-  initial_state: true
+  #initial_state: true
   mode: queued
   max: 25
   trigger:
@@ -125,7 +125,6 @@
       at: "22:00:00"
     - platform: time
       at: "08:00:00"
-  condition:
   action:
       - choose:
           - conditions:  
@@ -142,18 +141,189 @@
                           {% else %}  
                             Silent 
                           {% endif %}
-    #   - choose:
-    #       - conditions:  
-    #             - condition: state
-    #               entity_id: fan.xiaomi_miio_device_1
-    #               state: 'on'    
-    #         sequence:
-    #             - service: fan.set_speed
-    #               data:
-    #                 entity_id: fan.xiaomi_miio_device_1
-    #                 speed: >-
-    #                       {% if '08:00:00' <= as_timestamp(trigger.now) | timestamp_custom('%H:%M:%S')  < '22:00:00' %}
-    #                         Auto
-    #                       {% else %}  
-    #                         Low 
-    #                       {% endif %}
+      - choose:
+          - conditions:  
+                - condition: state
+                  entity_id: fan.xiaomi_miio_device_1
+                  state: 'on'    
+            sequence:
+                - service: fan.set_speed
+                  data:
+                    entity_id: fan.xiaomi_miio_device_1
+                    speed: >-
+                          {% if '08:00:00' <= as_timestamp(trigger.now) | timestamp_custom('%H:%M:%S')  < '22:00:00' %}
+                            Auto
+                          {% else %}  
+                            Low 
+                          {% endif %}
+
+#Вкл/выкл климат. устройств при открытии/закрытии окна
+- alias: turn on off climate devices childrens room window open close
+  mode: single
+  max_exceeded: silent
+  trigger:
+    - platform: state
+      entity_id: group.window_childrens_room_group
+      from: "off"
+      to: "on"
+      for: "00:00:30"
+    - platform: state
+      entity_id: group.window_childrens_room_group
+      from: "on"
+      to: "off"
+      for: "00:00:15"
+  condition: >
+              {{ 
+                 trigger.to_state.state == 'on' and 
+                 (is_state('input_boolean.auto_triggered_fan_window_childrens_room', 'off') or is_state('input_boolean.auto_triggered_valve_window_childrens_room', 'off'))
+                 or trigger.to_state.state == 'off' and 
+                 (is_state('input_boolean.auto_triggered_fan_window_childrens_room', 'on') or is_state('input_boolean.auto_triggered_valve_window_childrens_room', 'on'))
+              }}
+  action:
+      - choose:
+          - conditions:  
+                - condition: template
+                  value_template: >
+                    {{ 
+                       trigger.to_state.state == 'on' and is_state('fan.xiaomi_miio_device_1', 'on') 
+                       or trigger.to_state.state == 'off' and is_state('fan.xiaomi_miio_device_1', 'off')
+                       and is_state('input_boolean.auto_triggered_fan_window_childrens_room', 'on')
+                    }}
+            sequence:
+                - service: >
+                            {% if trigger.to_state.state == 'on' -%}
+                              fan.turn_off
+                            {%- else -%}
+                              fan.turn_on
+                            {%- endif %}
+                  data:
+                    entity_id: fan.xiaomi_miio_device_1
+                - service: input_boolean.toggle
+                  entity_id: input_boolean.auto_triggered_fan_window_childrens_room
+          - conditions:  
+                - condition: template
+                  value_template: >
+                    {{ 
+                       trigger.to_state.state == 'off' and is_state('fan.xiaomi_miio_device_1', 'on')
+                       and is_state('input_boolean.auto_triggered_fan_window_childrens_room', 'on')
+                    }}
+            sequence:
+                - service: input_boolean.turn_off
+                  entity_id: input_boolean.auto_triggered_fan_window_childrens_room
+                    
+      - choose:
+          - conditions:  
+                - condition: template
+                  value_template: >
+                    {{ 
+                       trigger.to_state.state == 'on' and is_state('climate.0x5c0272fffec89454', 'auto') 
+                       or trigger.to_state.state == 'off' and is_state('climate.0x5c0272fffec89454', 'off') 
+                       and is_state('input_boolean.auto_triggered_valve_window_childrens_room', 'on')
+                    }}
+            sequence:
+                - service: climate.set_hvac_mode
+                  data:
+                    entity_id: climate.0x5c0272fffec89454
+                    hvac_mode: >
+                            {% if trigger.to_state.state == 'on' -%}
+                              off
+                            {%- else -%}
+                              auto
+                            {%- endif %}
+                - service: input_boolean.toggle
+                  entity_id: input_boolean.auto_triggered_valve_window_childrens_room
+          - conditions:  
+                - condition: template
+                  value_template: >
+                    {{ 
+                       trigger.to_state.state == 'off' and is_state('climate.0x5c0272fffec89454', 'on') 
+                       and is_state('input_boolean.auto_triggered_valve_window_childrens_room', 'on')
+                    }}
+            sequence:
+                - service: input_boolean.turn_off
+                  entity_id: input_boolean.auto_triggered_valve_window_childrens_room
+
+- alias: turn on off climate devices bed room window open close
+  mode: single
+  max_exceeded: silent
+  trigger:
+    - platform: state
+      entity_id: group.window_bed_room_group
+      from: "off"
+      to: "on"
+      for: "00:00:30"
+    - platform: state
+      entity_id: group.window_bed_room_group
+      from: "on"
+      to: "off"
+      for: "00:00:15"
+  condition: >
+              {{ 
+                 trigger.to_state.state == 'on' and 
+                 (is_state('input_boolean.auto_triggered_fan_window_bed_room', 'off') or is_state('input_boolean.auto_triggered_valve_window_bed_room', 'off'))
+                 or trigger.to_state.state == 'off' and 
+                 (is_state('input_boolean.auto_triggered_fan_window_bed_room', 'on') or is_state('input_boolean.auto_triggered_valve_window_bed_room', 'on'))
+              }}
+  action:
+      - choose:
+          - conditions:  
+                - condition: template
+                  value_template: >
+                    {{ 
+                       trigger.to_state.state == 'on' and is_state('fan.xiaomi_miio_device', 'on') 
+                       or trigger.to_state.state == 'off' and is_state('fan.xiaomi_miio_device', 'off')
+                       and is_state('input_boolean.auto_triggered_fan_window_bed_room', 'on')
+                    }}
+            sequence:
+                - service: >
+                            {% if trigger.to_state.state == 'on' -%}
+                              fan.turn_off
+                            {%- else -%}
+                              fan.turn_on
+                            {%- endif %}
+                  data:
+                    entity_id: fan.xiaomi_miio_device
+                - service: input_boolean.toggle
+                  entity_id: input_boolean.auto_triggered_fan_window_bed_room
+          - conditions:  
+                - condition: template
+                  value_template: >
+                    {{ 
+                       trigger.to_state.state == 'off' and is_state('fan.xiaomi_miio_device', 'on')
+                       and is_state('input_boolean.auto_triggered_fan_window_bed_room', 'on')
+                    }}
+            sequence:
+                - service: input_boolean.turn_off
+                  entity_id: input_boolean.auto_triggered_fan_window_bed_room
+                    
+      - choose:
+          - conditions:  
+                - condition: template
+                  value_template: >
+                    {{ 
+                       trigger.to_state.state == 'on' and is_state('climate.0x60a423fffea7e6f0', 'auto') 
+                       or trigger.to_state.state == 'off' and is_state('climate.0x60a423fffea7e6f0', 'off') 
+                       and is_state('input_boolean.auto_triggered_valve_window_bed_room', 'on')
+                    }}
+            sequence:
+                - service: climate.set_hvac_mode
+                  data:
+                    entity_id: climate.0x60a423fffea7e6f0
+                    hvac_mode: >
+                            {% if trigger.to_state.state == 'on' -%}
+                              off
+                            {%- else -%}
+                              auto
+                            {%- endif %}
+                - service: input_boolean.toggle
+                  entity_id: input_boolean.auto_triggered_valve_window_bed_room
+          - conditions:  
+                - condition: template
+                  value_template: >
+                    {{ 
+                       trigger.to_state.state == 'off' and is_state('climate.0x60a423fffea7e6f0', 'on') 
+                       and is_state('input_boolean.auto_triggered_valve_window_bed_room', 'on')
+                    }}
+            sequence:
+                - service: input_boolean.turn_off
+                  entity_id: input_boolean.auto_triggered_valve_window_bed_room

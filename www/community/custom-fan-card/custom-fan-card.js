@@ -19,11 +19,11 @@ class CustomFanCard extends Polymer.Element {
                 .speeds button {
                     min-width: 34px !important;
                     width: 34px;
-                    font-size: 11px !important;
+                    font-size: 11px !important;					
                 }
-                ha-entity-toggle {
-                    margin-left: 16px;
-                }                
+                <!-- ha-entity-toggle {
+                <!-- margin-left: 7px;
+                <!-- } 				
             </style>
             
             <hui-generic-entity-row hass="[[hass]]" config="[[_config]]">
@@ -57,8 +57,15 @@ class CustomFanCard extends Polymer.Element {
                             disabled='[[_isThreeSpeed]]'>
                             <span class="mdc-button__label">3</span>
                         </button>
-                    </div>
-                    <ha-entity-toggle hass="[[hass]]" state-obj="[[_stateObj]]"></ha-entity-toggle>
+                        <button
+                            class='mdc-button mdc-button--raised mdc-ripple-upgraded'
+                            toggles name="turnOff"
+                            on-click='turnOff'
+                            disabled='[[_isOff]]'>
+                            <span class="mdc-button__label">off</span>
+                        </button>
+						<!-- <ha-entity-toggle hass="[[hass]]" state-obj="[[_stateObj]]"></ha-entity-toggle>
+                    </div>                    
                 </div>
             </hui-generic-entity-row>
         `;
@@ -76,6 +83,7 @@ class CustomFanCard extends Polymer.Element {
             _isOneSpeed: Boolean,
             _isTwoSpeed: Boolean,
             _isThreeSpeed: Boolean,
+			_isOff: Boolean,
         }
     }
 
@@ -106,10 +114,11 @@ class CustomFanCard extends Polymer.Element {
 
         this.setProperties({
             _stateObj: stateObj,
-            _isAuto: speed === this.getNameSpeed('Auto', stateObj.attributes.model),
-            _isOneSpeed: speed === this.getNameSpeed('Silent', stateObj.attributes.model),
-            _isTwoSpeed: speed === this.getNameSpeed('Medium', stateObj.attributes.model),
-            _isThreeSpeed: speed === this.getNameSpeed('High', stateObj.attributes.model),
+            _isAuto: speed === this.getNameSpeed('Auto', stateObj.attributes.model) && stateObj.state === 'on',
+            _isOneSpeed: speed === this.getNameSpeed('Silent', stateObj.attributes.model) && stateObj.state === 'on',
+            _isTwoSpeed: speed === this.getNameSpeed('Medium', stateObj.attributes.model) && stateObj.state === 'on',
+            _isThreeSpeed: speed === this.getNameSpeed('High', stateObj.attributes.model) && stateObj.state === 'on',
+			_isOff: stateObj.state === 'off'
         });
     }
 
@@ -119,7 +128,7 @@ class CustomFanCard extends Polymer.Element {
 
     setSpeed(e) {
         const stateObj = this.hass.states[this._config.entity];
-        if (stateObj && stateObj.attributes && stateObj.state === 'on' )
+        if (stateObj && stateObj.attributes)
         {
 			if (stateObj.attributes.depth > 0 || stateObj.attributes.water_level > 0) {
 				const speed = e.currentTarget.getAttribute('name');
@@ -127,6 +136,16 @@ class CustomFanCard extends Polymer.Element {
 					entity_id: this._config.entity, speed: this.getNameSpeed(speed, stateObj.attributes.model)
 				});
 			}
+        }
+    }
+	
+    turnOff(e) {
+        const stateObj = this.hass.states[this._config.entity];
+        if (stateObj && stateObj.attributes && stateObj.state === 'on')
+        {
+			this.hass.callService('fan', 'turn_off', {
+			entity_id: this._config.entity
+			});
         }
     }
 }

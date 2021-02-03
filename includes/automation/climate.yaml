@@ -166,7 +166,7 @@
       entity_id: group.window_childrens_room_group
       from: "off"
       to: "on"
-      for: "00:00:30"
+      for: "00:05:00"
     - platform: state
       entity_id: group.window_childrens_room_group
       from: "on"
@@ -251,7 +251,7 @@
       entity_id: group.window_bed_room_group
       from: "off"
       to: "on"
-      for: "00:00:30"
+      for: "00:05:00"
     - platform: state
       entity_id: group.window_bed_room_group
       from: "on"
@@ -283,7 +283,12 @@
                             {%- endif %}
                   data:
                     entity_id: fan.xiaomi_miio_device
-                - service: input_boolean.toggle
+                - service: >
+                            {% if trigger.to_state.state == 'off' -%}
+                              input_boolean.turn_off
+                            {%- else -%}
+                              input_boolean.turn_on
+                            {%- endif %}
                   entity_id: input_boolean.auto_triggered_fan_window_bed_room
           - conditions:  
                 - condition: template
@@ -315,7 +320,12 @@
                             {%- else -%}
                               auto
                             {%- endif %}
-                - service: input_boolean.toggle
+                - service: >
+                            {% if trigger.to_state.state == 'off' -%}
+                              input_boolean.turn_off
+                            {%- else -%}
+                              input_boolean.turn_on
+                            {%- endif %}
                   entity_id: input_boolean.auto_triggered_valve_window_bed_room
           - conditions:  
                 - condition: template

@@ -25,9 +25,9 @@ class CustomFanCard extends Polymer.Element {
                 <!-- margin-left: 7px;
                 <!-- } 				
             </style>
-            
+
             <hui-generic-entity-row hass="[[hass]]" config="[[_config]]">
-                <div class='flex-container' on-click="stopPropagation">
+                <div class='horizontal justified layout' on-click="stopPropagation">
                     <div class='speeds'>
                         <button
                             class='mdc-button mdc-button--raised mdc-ripple-upgraded'

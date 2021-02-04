@@ -43,6 +43,12 @@ mqtt:
   broker: core-mosquitto
   username: mqtt
   password: !secret mqtt_broker_password
+  birth_message:
+    topic: 'homeassistant/status'
+    payload: 'online'
+  will_message:
+    topic: 'homeassistant/status'
+    payload: 'offline'
 
 logger:
   default: info

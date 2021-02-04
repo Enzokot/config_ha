@@ -150,9 +150,9 @@
                 - condition: numeric_state
                   entity_id: sensor.thermostat_bedroom_valve_position
                   above: 79
-                - condition: numeric_state
-                  entity_id: sensor.esp_xiaomi_bed_room_temperature
-                  below: 25.7
+                # - condition: numeric_state
+                #   entity_id: sensor.esp_xiaomi_bed_room_temperature
+                #   below: 25.7
               sequence:      
                 - service: climate.set_preset_mode
                   data:
@@ -166,9 +166,9 @@
                 - condition: numeric_state
                   entity_id: sensor.thermostat_childrens_room_valve_position
                   above: 79
-                - condition: numeric_state
-                  entity_id: sensor.esp_xiaomi_childrens_room_temperature
-                  below: 25.7
+                # - condition: numeric_state
+                #   entity_id: sensor.esp_xiaomi_childrens_room_temperature
+                #   below: 25.7
               sequence:      
                 - service: climate.set_preset_mode
                   data:

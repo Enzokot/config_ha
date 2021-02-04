@@ -171,7 +171,7 @@
       entity_id: group.window_childrens_room_group
       from: "on"
       to: "off"
-      for: "00:00:15"
+      for: "00:01:15"
   condition: >
               {{ 
                  trigger.to_state.state == 'on' and 
@@ -256,7 +256,7 @@
       entity_id: group.window_bed_room_group
       from: "on"
       to: "off"
-      for: "00:00:15"
+      for: "00:01:15"
   condition: >
               {{ 
                  trigger.to_state.state == 'on' and 

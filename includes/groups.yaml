@@ -8,3 +8,14 @@
         entities:
           - binary_sensor.0x00158d0003cfa725_contact
           - binary_sensor.0x00158d0003fa6b60_contact
+
+    window_living_room_group:
+        entities:
+          - binary_sensor.0x00158d0003975d8b_contact
+          - binary_sensor.0x00158d0003d05782_contact
+          - binary_sensor.0x00158d000396f197_contact
+
+    window_kitchen_group:
+        entities:
+          - binary_sensor.0x00158d0003975b4c_contact
+          - binary_sensor.0x00158d00039a2f33_contact

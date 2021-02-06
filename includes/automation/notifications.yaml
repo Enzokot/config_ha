@@ -249,6 +249,8 @@
           entity_id: 
              - group.window_bed_room_group
              - group.window_childrens_room_group
+             - group.window_living_room_group
+             - group.window_kitchen_group
           to: 'on'
       condition:
         - condition: state
@@ -604,7 +606,21 @@
             - condition: numeric_state
               entity_id: sensor.0x00158d000396f1f9_battery
               below: 20
-              
+            - condition: numeric_state
+              entity_id: sensor.0x00158d000396f197_battery
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.0x00158d0003d05782_battery
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.0x00158d0003975d8b_battery
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.0x00158d0003975b4c_battery
+              below: 20
+            - condition: numeric_state
+              entity_id: sensor.0x00158d00039a2f33_battery
+              below: 20
       action:
         - service: telegram_bot.send_message
           data:
@@ -719,6 +735,27 @@
                            _Балконная дверь в детской_
                         {{- '\n' }}
                         {%- endif -%}
+                        {% if states('sensor.0x00158d000396f197_battery') | int < 20 -%}
+                           _Левая створка окна гостиная_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {% if states('sensor.0x00158d0003d05782_battery') | int < 20 -%}
+                           _Центральная створка окна гостиная_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {% if states('sensor.0x00158d0003975d8b_battery') | int < 20 -%}
+                           _Правая створка окна гостиная_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {% if states('sensor.0x00158d0003975b4c_battery') | int < 20 -%}
+                           _Левая створка окна кухня_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {% if states('sensor.0x00158d00039a2f33_battery') | int < 20 -%}
+                           _Правая створка окна кухня_
+                        {{- '\n' }}
+                        {%- endif -%}
+
 
 #После рестарта НА остался включенный обогреватель
     - alias: notification safety sockets on restart

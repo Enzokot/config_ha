@@ -195,3 +195,23 @@ sensor.0x00158d0003cfa725_battery:
 sensor.0x00158d00039677d9_battery:
   device_class: battery
   friendly_name: Балконная дверь детская
+
+sensor.0x00158d000396f197_battery:
+  device_class: battery
+  friendly_name: Лев. окно гостиная
+
+sensor.0x00158d0003d05782_battery:
+  device_class: battery
+  friendly_name: Центр. окно гостиная
+
+sensor.0x00158d0003975d8b_battery:
+  device_class: battery
+  friendly_name: Прав. окно гостиная
+
+sensor.0x00158d0003975b4c_battery:
+  device_class: battery
+  friendly_name: Лев. окно кухня
+
+sensor.0x00158d00039a2f33_battery:
+  device_class: battery
+  friendly_name: Прав. окно кухня

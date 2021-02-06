@@ -4,3 +4,9 @@ group.window_bed_room_group:
 
 group.window_childrens_room_group:
   friendly_name: Окно детская
+
+group.window_living_room_group:
+  friendly_name: Окно гостиная
+
+group.window_kitchen_group:
+  friendly_name: Окно кухня

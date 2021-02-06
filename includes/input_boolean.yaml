@@ -40,3 +40,15 @@
     auto_triggered_valve_window_bed_room:
         name: Восстановление термоголовки после закрытия окна в спальне
         icon: mdi:window-open
+
+    auto_triggered_valve_window_living_room:
+        name: Восстановление термоголовки после закрытия окна в гостиной
+        icon: mdi:window-open
+
+    auto_triggered_valve_window_kitchen:
+        name: Восстановление термоголовки после закрытия окна на кухне
+        icon: mdi:window-open
+
+    auto_triggered_ac_window_living_room:
+        name: Восстановление кондиционера после закрытия окна в гостиной
+        icon: mdi:window-open

@@ -46,9 +46,11 @@ mqtt:
   birth_message:
     topic: 'homeassistant/status'
     payload: 'online'
+    retain: true
   will_message:
     topic: 'homeassistant/status'
     payload: 'offline'
+    retain: true
 
 logger:
   default: info

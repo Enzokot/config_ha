@@ -154,6 +154,8 @@
             - binary_sensor.0x00158d000359304c_contact
             - group.window_childrens_room_group
             - group.window_bed_room_group
+            - group.window_kitchen_group
+            - group.window_living_room_group
          to: 'on'
        - platform: state
          entity_id: 

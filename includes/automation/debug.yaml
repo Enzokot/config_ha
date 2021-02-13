@@ -1,0 +1,20 @@
+    - alias: debug low level water
+      trigger:
+        - platform: state
+          entity_id: fan.xiaomi_miio_device
+          attribute: depth
+        - platform: state
+          entity_id: fan.xiaomi_miio_device_1
+          attribute: water_level
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: >-
+                     {{ '\U0001F41B' }} *Отладка*
+            message: >-
+                  {% if trigger.to_state.entity_id == 'fan.xiaomi_miio_device' %}
+                    {{ trigger.to_state.name }} -> {{ trigger.from_state.attributes.depth }} -> {{ trigger.to_state.attributes.depth }}
+                  {% else %}
+                    {{ trigger.to_state.name }} -> {{ trigger.from_state.attributes.water_level }} -> {{ trigger.to_state.attributes.water_level }}
+                  {% endif %}

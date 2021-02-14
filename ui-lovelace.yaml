@@ -168,37 +168,39 @@ views:
         cards:
         - type: markdown
           content: >
-             **Панель переключателей** 
-             
-        - type: entities
-          show_header_toggle: false
-          entities:          
-            - entity: binary_sensor.0x00158d0003f37a0f_contact
-              secondary_info: last-changed
-            - entity: light.yeelight_650
-              name: Люстра 650 основной свет
-            - entity: light.yeelight_650_nightlight
-              name: Люстра 650 ночник
-            - entity: light.yeelight_650_ambilight
-              name: Люстра 650 ambilight
+             **Освещение детская** 
+        - type: custom:vertical-stack-in-card
+          title: 'Потолочный светильник'
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:          
+                - entity: binary_sensor.0x00158d0003f37a0f_contact
+                  secondary_info: last-changed
+            - type: horizontal-stack
+              cards:
+                - type: light
+                  entity: light.yeelight_650
+                  name: Люстра 650
+                - type: light
+                  entity: light.yeelight_650_nightlight
+                  name: Ночник 650
+                - type: light
+                  entity: light.yeelight_650_ambilight
+                  name: Ambilight 650
 
       - type: vertical-stack
         cards:
         - type: markdown
           content: >
-             **Светильники**    
-              
-        - type: horizontal-stack
-          cards:
-            - type: light
-              entity: light.yeelight_650
-              name: Люстра 650
-            - type: light
-              entity: light.yeelight_650_nightlight
-              name: Ночник 650
-            - type: light
-              entity: light.yeelight_650_ambilight
-              name: Ambilight 650
+             **Освещение кухня**    
+
+        - type: entities
+          show_header_toggle: false
+          state_color: true
+          entities:          
+            - entity: switch.0x842e14fffe0e1042
+              secondary_info: last-changed
 
   - title: Zigbee
     icon: mdi:zigbee
@@ -646,6 +648,7 @@ views:
                     show_header_toggle: false
                     entities:
                         - entity: sensor.xiaomi_miio_device_1_water
+                          name: 'Вода'
                   - type: entities
                     show_header_toggle: false
                     entities:
@@ -681,6 +684,7 @@ views:
                     show_header_toggle: false
                     entities:
                         - entity: sensor.xiaomi_miio_device_water
+                          name: 'Вода'
                   - type: entities
                     show_header_toggle: false
                     entities:
@@ -859,7 +863,7 @@ views:
                   entity: sensor.thermostat_bedroom_valve_position
     
                 - type: thermostat
-                  entity: climate.0x60a423fffea7e6f0
+                  entity: climate.0x60a423fffe968719
                   name: " "
     
             - type: glance
@@ -870,12 +874,12 @@ views:
               entities:
                     # - type: entity
                     #   name: Вкл/выкл термоголовку
-                    #   entity: switch.0x60a423fffea7e6f0_valve_detection
+                    #   entity: switch.0x60a423fffe968719_valve_detection
                     #   icon: mdi:home-thermometer-outline
                     
                     - type: entity
                       name: Блок. кнопок
-                      entity: switch.0x60a423fffea7e6f0_child_lock_switch
+                      entity: switch.0x60a423fffe968719_child_lock_switch
                       tap_action:
                         action: toggle
 
@@ -887,7 +891,7 @@ views:
                       
                     - type: entity
                       name: Низкий заряд
-                      entity: binary_sensor.0x60a423fffea7e6f0_battery_low
+                      entity: binary_sensor.0x60a423fffe968719_battery_low
 
         - type: markdown
           content: >

@@ -86,8 +86,8 @@
         - service: script.auto_local_temperature_calibration_thermostats
           data:
             namevalve: 'Bedroom valve with thermostat'
-            objectvalve: 'climate.0x60a423fffea7e6f0'
-            objectvalvewindow: 'switch.0x60a423fffea7e6f0_window_detection'
+            objectvalve: 'climate.0x60a423fffe968719'
+            objectvalvewindow: 'switch.0x60a423fffe968719_window_detection'
             objectsensortemperature: 'sensor.esp_xiaomi_bed_room_temperature'
         - service: script.auto_local_temperature_calibration_thermostats
           data:
@@ -156,7 +156,7 @@
               sequence:      
                 - service: climate.set_preset_mode
                   data:
-                    entity_id: climate.0x60a423fffea7e6f0
+                    entity_id: climate.0x60a423fffe968719
                     preset_mode: 'boost'
         - choose:
             - conditions:

@@ -306,14 +306,14 @@
                 - condition: template
                   value_template: >
                     {{ 
-                       trigger.to_state.state == 'on' and is_state('climate.0x60a423fffea7e6f0', 'auto') 
-                       or trigger.to_state.state == 'off' and is_state('climate.0x60a423fffea7e6f0', 'off') 
+                       trigger.to_state.state == 'on' and is_state('climate.0x60a423fffe968719', 'auto') 
+                       or trigger.to_state.state == 'off' and is_state('climate.0x60a423fffe968719', 'off') 
                        and is_state('input_boolean.auto_triggered_valve_window_bed_room', 'on')
                     }}
             sequence:
                 - service: climate.set_hvac_mode
                   data:
-                    entity_id: climate.0x60a423fffea7e6f0
+                    entity_id: climate.0x60a423fffe968719
                     hvac_mode: >
                             {% if trigger.to_state.state == 'on' -%}
                               off
@@ -331,7 +331,7 @@
                 - condition: template
                   value_template: >
                     {{ 
-                       trigger.to_state.state == 'off' and is_state('climate.0x60a423fffea7e6f0', 'on') 
+                       trigger.to_state.state == 'off' and is_state('climate.0x60a423fffe968719', 'on') 
                        and is_state('input_boolean.auto_triggered_valve_window_bed_room', 'on')
                     }}
             sequence:
@@ -490,3 +490,31 @@
             sequence:
                 - service: input_boolean.turn_off
                   entity_id: input_boolean.auto_triggered_valve_window_living_room
+
+#Установка уровня воды для fan.xiaomi_miio_device
+- alias: set input number for water level humidifier in bed room
+  mode: single
+  max_exceeded: silent
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: fan.xiaomi_miio_device
+      attribute: depth
+  condition:
+    - condition: template
+      value_template: >- 
+                {{ 
+                  trigger.from_state.state not in ['unavailable', 'unknown', ''] and
+                  trigger.to_state.state not in ['unavailable', 'unknown', ''] and
+                  trigger.to_state.attributes.depth != states('input_number.water_level_fan_xiaomi_miio_device_saved')
+                }}
+  action:
+    - service: input_number.set_value
+      data:
+        entity_id: input_number.water_level_fan_xiaomi_miio_device_saved
+        value: >
+          {% if trigger.to_state.attributes.depth | int - states('input_number.water_level_fan_xiaomi_miio_device_saved') | int > 10 %}
+            {{ trigger.to_state.attributes.depth }}
+          {% else %}
+            {{ [state_attr('fan.xiaomi_miio_device', 'depth') | int, states('input_number.water_level_fan_xiaomi_miio_device_saved') | int] | min | int }}
+          {% endif %}

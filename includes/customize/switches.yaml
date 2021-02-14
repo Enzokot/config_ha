@@ -16,3 +16,7 @@ switch.server_ac_power_socket_relay:
 
 switch.server_ac_power_socket_reboot_powerload:
   friendly_name: Перезапуск нагрузки
+
+switch.0x842e14fffe0e1042:
+  friendly_name: Подсветка столешницы
+  icon: mdi:light-switch

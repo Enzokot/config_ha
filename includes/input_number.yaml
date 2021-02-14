@@ -61,3 +61,10 @@
     icon: mdi:square-circle
     min: 0
     max: 1000000
+
+#Сохраненное значение уровня воды в увлажнителе
+  water_level_fan_xiaomi_miio_device_saved:
+    name: "Увлажнитель спальня"
+    icon: mdi:cup-water
+    min: 0
+    max: 200

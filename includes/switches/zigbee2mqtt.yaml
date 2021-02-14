@@ -18,17 +18,17 @@
         icon_template: "mdi:cellphone-wireless"
 
 #Вкл/выкл блокировки от детей в спальне
-      0x60a423fffea7e6f0_child_lock_switch:
+      0x60a423fffe968719_child_lock_switch:
         friendly_name: "Защита от детей"
-        value_template: "{{ is_state('lock.0x60a423fffea7e6f0_child_lock', 'locked') }}"
+        value_template: "{{ is_state('lock.0x60a423fffe968719_child_lock', 'locked') }}"
         turn_on:
             service: lock.lock
             data:
-              entity_id: lock.0x60a423fffea7e6f0_child_lock
+              entity_id: lock.0x60a423fffe968719_child_lock
         turn_off:
             service: lock.unlock
             data:
-              entity_id: lock.0x60a423fffea7e6f0_child_lock
+              entity_id: lock.0x60a423fffe968719_child_lock
         icon_template: "mdi:human-female-girl"
 
 #Вкл/выкл блокировки от детей в гостиной

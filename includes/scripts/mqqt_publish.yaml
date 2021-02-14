@@ -84,7 +84,7 @@
             example: 'Bedroom valve with thermostat'
           objectvalve:
             description: 'Имя объекта домена climate'
-            example: 'climate.0x60a423fffea7e6f0_climate'
+            example: 'climate.0x60a423fffea7e6f0'
           objectvalvewindow:
             description: 'Имя объекта сеносра открытого окна'
             example: 'switch.0x60a423fffea7e6f0_window_detection'

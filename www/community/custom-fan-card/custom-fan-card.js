@@ -130,12 +130,17 @@ class CustomFanCard extends Polymer.Element {
         const stateObj = this.hass.states[this._config.entity];
         if (stateObj && stateObj.attributes)
         {
+			if (stateObj.state === 'off' && stateObj.attributes.model === 'zhimi.humidifier.ca4') {
+				this.hass.callService('fan', 'turn_on', {
+				entity_id: this._config.entity
+				});
+			};
 			if (stateObj.attributes.depth > 0 || stateObj.attributes.water_level > 0) {
 				const speed = e.currentTarget.getAttribute('name');
 				this.hass.callService('fan', 'set_speed', {
 					entity_id: this._config.entity, speed: this.getNameSpeed(speed, stateObj.attributes.model)
 				});
-			}
+			};
         }
     }
 	

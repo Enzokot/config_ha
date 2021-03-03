@@ -21,7 +21,7 @@
 #     - /config/home-assistant_v2.db
      
   - platform: sql
-    db_url: mysql://homeassistant:hass@core-mariadb/homeassistant?charset=utf8
+    db_url: !secret connection_string
     queries:
       - name: Maria DB size
         query: 'SELECT table_schema "database", Round(Sum(data_length + index_length) / 1048576, 2) "value" FROM information_schema.tables WHERE table_schema="homeassistant" GROUP BY table_schema;'

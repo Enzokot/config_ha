@@ -1,5 +1,5 @@
     commit_interval: 60
-    db_url: mysql://homeassistant:hass@core-mariadb/homeassistant?charset=utf8mb4
+    db_url: !secret connection_string
     auto_purge: false
     include:
         entities:
@@ -62,3 +62,5 @@
           - sensor.thermostat_kitchen_valve_position
           #Напряжение в сети
           - sensor.0x842e14fffe13a854_voltage
+          #Трекер персоны
+          - person.kostik

@@ -2,4 +2,16 @@
     latitude: !secret latitude_coord
     longitude: !secret longitude_coord
     radius: 8.3
-    icon: mdi:account-multiple
+    icon: mdi:home-assistant
+
+  - name: Work
+    latitude: !secret latitude_enzokot_work_coord
+    longitude: !secret longitude_enzokot_work_coord
+    radius: 5
+    icon: mdi:factory
+
+  - name: Home Kaluga
+    latitude: !secret latitude_klg_home_coord
+    longitude: !secret longitude_klg_home_coord
+    radius: 5
+    icon: mdi:home-circle

@@ -15,6 +15,10 @@
                    {{ '\U000026a0' }} *Датчик открытия/закрытия*
             message: >-
                      Входная дверь: открыта более 2 минут
+            # data:
+            #     inline_keyboard:
+            #       - 'Открыть:/open, Отклонить:/reject'
+            #       - '-'
 
     - alias: notification sound front door open long time
       initial_state: true
@@ -765,7 +769,7 @@
           event: start
       condition:
         - condition: state
-          entity_id: switch.0x842e14fffe5047f5_switch
+          entity_id: switch.0x842e14fffe5047f5
           state: 'on'          
       action:
         - service: telegram_bot.send_message

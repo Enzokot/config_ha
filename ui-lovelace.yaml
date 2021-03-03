@@ -4,7 +4,6 @@ views:
 
   - title: Главная
     icon: mdi:home-assistant
-    
     cards:
 
       - type: vertical-stack
@@ -85,7 +84,7 @@ views:
              name: Свободное место
              unit: 'Гб'
              min: 0
-             max: 33
+             max: 118
              entity: sensor.disk_free
              severity:
                 red: 0
@@ -111,10 +110,10 @@ views:
           show_header_toggle: false
           entities:
             - entity: sensor.maria_db_size
-              name: Объем базы данных Maria - 
+              name: Объем базы данных Maria
               icon: mdi:database
-              secondary_info: entity-id              
-            - type: divider            
+              secondary_info: entity-id
+            - type: divider
             - type: call-service
               icon: mdi:database-minus
               name: База данных
@@ -559,7 +558,7 @@ views:
             - type: entities
               show_header_toggle: false
               entities:
-                  - entity: switch.0x842e14fffe13a854_switch
+                  - entity: switch.0x842e14fffe13a854
                     state_color: true
                   - entity: input_boolean.water_heater_season
                     state_color: true
@@ -576,7 +575,7 @@ views:
             - type: entities
               show_header_toggle: false
               entities:
-                  - entity: switch.0x842e14fffe5047f5_switch
+                  - entity: switch.0x842e14fffe5047f5
                     state_color: true
                   - entity: input_boolean.heater_night_mode
                     state_color: true
@@ -1026,3 +1025,18 @@ views:
             language: ru
             default_mode: go_to_target
             camera_calibration: true
+
+  - title: Карта
+    panel: true
+    # badges:
+    #   - person.kostik
+    icon: mdi:map-legend
+    cards:
+        - type: map
+          entities:
+            - zone.home
+            - zone.work
+            - zone.home_kaluga
+            - person.kostik
+          hours_to_show: 48
+          default_zoom: 15

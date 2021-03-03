@@ -1,8 +1,8 @@
 
-switch.0x842e14fffe5047f5_switch:
+switch.0x842e14fffe5047f5:
   friendly_name: Вкл/выкл обогреватель
 
-switch.0x842e14fffe13a854_switch:
+switch.0x842e14fffe13a854:
   friendly_name: Вкл/выкл водонагреватель
 
 switch.0x842e14fffe36661f:

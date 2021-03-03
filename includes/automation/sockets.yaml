@@ -12,7 +12,7 @@
       action:
           - service: switch.turn_off
             data:
-              entity_id: switch.0x842e14fffe13a854_switch
+              entity_id: switch.0x842e14fffe13a854
 
     - alias: night oт water heater
       initial_state: true
@@ -26,7 +26,7 @@
       action:
           - service: switch.turn_on
             data:
-              entity_id: switch.0x842e14fffe13a854_switch
+              entity_id: switch.0x842e14fffe13a854
 
 #Ночной режим обогревателя
     - alias: night mode on heater
@@ -41,7 +41,7 @@
       action:
           - service: switch.turn_on
             data:
-              entity_id: switch.0x842e14fffe5047f5_switch
+              entity_id: switch.0x842e14fffe5047f5
           - service: timer.start
             data:
               entity_id: timer.turn_off_heater_night_mode
@@ -64,7 +64,7 @@
               entity_id: timer.turn_off_heater_night_mode
           - service: switch.turn_off
             data:
-              entity_id: switch.0x842e14fffe5047f5_switch
+              entity_id: switch.0x842e14fffe5047f5
 
     - alias: night mode timer heater off
       initial_state: true
@@ -76,7 +76,7 @@
       action:
           - service: switch.turn_off
             data:
-              entity_id: switch.0x842e14fffe5047f5_switch
+              entity_id: switch.0x842e14fffe5047f5
           - service: timer.start
             data:
               entity_id: timer.turn_on_heater_night_mode
@@ -91,7 +91,7 @@
       action:
           - service: switch.turn_on
             data:
-              entity_id: switch.0x842e14fffe5047f5_switch
+              entity_id: switch.0x842e14fffe5047f5
           - service: timer.start
             data:
               entity_id: timer.turn_off_heater_night_mode
@@ -141,10 +141,10 @@
             data:
               entity_id: >-
                         {%- if trigger.entity_id == 'sensor.0x842e14fffe5047f5_power' -%}
-                           switch.0x842e14fffe5047f5_switch
+                           switch.0x842e14fffe5047f5
                         {%- endif -%} 
                         {%- if trigger.entity_id == 'sensor.0x842e14fffe13a854_power' -%}
-                           switch.0x842e14fffe13a854_switch
+                           switch.0x842e14fffe13a854
                         {%- endif -%}
                         {% if trigger.entity_id == 'sensor.0x842e14fffe36661f_power' -%}
                            switch.0x842e14fffe36661f
@@ -173,7 +173,7 @@
         - choose:
             - conditions:
                 - condition: state
-                  entity_id: switch.0x842e14fffe5047f5_switch
+                  entity_id: switch.0x842e14fffe5047f5
                   state: 'off'
               sequence:
                 - service: automation.trigger
@@ -181,7 +181,7 @@
                     entity_id: automation.night_mode_timer_heater_on
             - conditions:
                 - condition: state
-                  entity_id: switch.0x842e14fffe5047f5_switch
+                  entity_id: switch.0x842e14fffe5047f5
                   state: 'on'
               sequence:
                 - service: automation.trigger
@@ -285,12 +285,12 @@
         - choose:
             - conditions:
                 - condition: state
-                  entity_id: switch.0x842e14fffe5047f5_switch
+                  entity_id: switch.0x842e14fffe5047f5
                   state: 'off'
               sequence:
                   - service: switch.turn_on
                     data:
-                      entity_id: switch.0x842e14fffe5047f5_switch
+                      entity_id: switch.0x842e14fffe5047f5
         - service: timer.start
           data:
             entity_id: timer.turn_off_garland_childrens_room
@@ -306,4 +306,4 @@
       action:
           - service: switch.turn_off
             data:
-              entity_id: switch.0x842e14fffe5047f5_switch
+              entity_id: switch.0x842e14fffe5047f5

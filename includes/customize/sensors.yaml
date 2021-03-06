@@ -72,13 +72,19 @@ sensor.0x00158d00054b8d72_linkquality:
   friendly_name: Датчик движения детская
 
 sensor.0x00158d000566bde7_battery:
-  friendly_name: Датчик движения коридор
+  friendly_name: Датчик движения коридор 1
 
 sensor.0x00158d000566bde7_illuminance:
-  friendly_name: Датчик движения коридор
+  friendly_name: Датчик движения коридор 1
 
 sensor.0x00158d000566bde7_linkquality:
-  friendly_name: Датчик движения коридор
+  friendly_name: Датчик движения коридор 1
+
+sensor.0x00158d0003953ee9_battery:
+  friendly_name: Датчик движения коридор 2
+
+sensor.0x00158d0003953ee9_linkquality:
+  friendly_name: Датчик движения коридор 2
 
 sensor.0x00158d0004561de9_battery:
   friendly_name: Т&Rh ванная
@@ -188,7 +194,7 @@ sensor.0x00158d0003fa6b60_battery:
   device_class: battery
   friendly_name: Окно спальня
 
-sensor.0x00158d0003cfa725_battery:
+sensor.0x00158d0003981f6d_battery:
   device_class: battery
   friendly_name: Балконная дверь спальня
 

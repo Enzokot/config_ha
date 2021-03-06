@@ -200,6 +200,7 @@
           entity_id: 
              - binary_sensor.0x00158d00054b8d72_occupancy
              - binary_sensor.0x00158d000566bde7_occupancy
+             - binary_sensor.0x00158d0003953ee9_occupancy
           to: 'on'
       condition:
         - condition: state
@@ -569,6 +570,9 @@
               entity_id: sensor.0x00158d000566bde7_battery
               below: 20
             - condition: numeric_state
+              entity_id: sensor.0x00158d0003953ee9_battery
+              below: 20
+            - condition: numeric_state
               entity_id: sensor.0x00158d0003a360b6_battery
               below: 20
             - condition: numeric_state
@@ -599,7 +603,7 @@
               entity_id: binary_sensor.0x5c0272fffe8de819_battery_low
               state: 'on'
             - condition: numeric_state
-              entity_id: sensor.0x00158d0003cfa725_battery
+              entity_id: sensor.0x00158d0003981f6d_battery
               below: 20
             - condition: numeric_state
               entity_id: sensor.0x00158d00039677d9_battery
@@ -679,7 +683,11 @@
                         {{- '\n' }}
                         {%- endif -%}
                         {%- if states('sensor.0x00158d000566bde7_battery') | int < 20 -%}
-                           _Датчик движения коридор_
+                           _Датчик движения коридор 1_
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {%- if states('sensor.0x00158d0003953ee9_battery') | int < 20 -%}
+                           _Датчик движения коридор 2_
                         {{- '\n' }}
                         {%- endif -%}
                         {%- if states('sensor.0x00158d0003a360b6_battery') | int < 20 -%}
@@ -731,7 +739,7 @@
                            _Окно в спальне_
                         {{- '\n' }}
                         {%- endif -%}
-                        {% if states('sensor.0x00158d0003cfa725_battery') | int < 20 -%}
+                        {% if states('sensor.0x00158d0003981f6d_battery') | int < 20 -%}
                            _Балконная дверь в спальне_
                         {{- '\n' }}
                         {%- endif -%}

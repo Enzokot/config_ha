@@ -1,4 +1,0 @@
-
-  - platform: xiaomi_miio
-    host: 192.168.217.78
-    token: !secret vacuum1_token

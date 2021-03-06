@@ -63,7 +63,10 @@ binary_sensor.0x00158d00054b8d72_occupancy:
   friendly_name: Датчик движения детская
 
 binary_sensor.0x00158d000566bde7_occupancy:
-  friendly_name: Датчик движения коридор
+  friendly_name: Датчик движения коридор 1
+
+binary_sensor.0x00158d0003953ee9_occupancy:
+  friendly_name: Датчик движения коридор 2
 
 binary_sensor.rpi_power_status:
   friendly_name: Состояние питания RPi
@@ -72,7 +75,7 @@ binary_sensor.0x00158d00039677d9_contact:
   friendly_name: Балконная дверь детская
   device_class: door
 
-binary_sensor.0x00158d0003cfa725_contact:
+binary_sensor.0x00158d0003981f6d_contact:
   friendly_name: Балконная дверь спальня
   device_class: door
 

@@ -273,7 +273,7 @@ views:
             - entity: binary_sensor.0x00158d0003fa6b60_contact
               show_last_changed: true
               name: Окно
-            - entity: binary_sensor.0x00158d0003cfa725_contact
+            - entity: binary_sensor.0x00158d0003981f6d_contact
               show_last_changed: true
               name: Балкон
 
@@ -328,7 +328,10 @@ views:
               show_last_changed: true
             - entity: binary_sensor.0x00158d000566bde7_occupancy
               show_last_changed: true
-              name: Коридор
+              name: Коридор 1
+            - entity: binary_sensor.0x00158d0003953ee9_occupancy
+              show_last_changed: true
+              name: Коридор 2
 
       - type: vertical-stack
         cards:
@@ -353,7 +356,7 @@ views:
                   - sensor.0x00158d000490fe9d_battery          
                   - sensor.0x00158d0003f37a0f_battery
                   - sensor.0x00158d00039677d9_battery
-                  - sensor.0x00158d0003cfa725_battery
+                  - sensor.0x00158d0003981f6d_battery
                   - sensor.0x00158d0003fa6b60_battery
                   - sensor.0x00158d000396f1f9_battery
                   - sensor.0x00158d0003975b4c_battery
@@ -384,6 +387,7 @@ views:
                 min: 30
                 entities:
                   - sensor.0x00158d000566bde7_battery
+                  - sensor.0x00158d0003953ee9_battery
                   - sensor.0x00158d00054b8d72_battery
               - name: 'Кнопки (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
@@ -427,6 +431,8 @@ views:
               tap_action: more-info
             - entity: sensor.0x00158d000566bde7_battery
               tap_action: more-info
+            - entity: sensor.0x00158d0003953ee9_battery
+              tap_action: more-info
             - entity: sensor.0x00158d00054b8d72_battery
               tap_action: more-info
             - entity: sensor.0x00158d0003a360b6_battery
@@ -449,7 +455,7 @@ views:
               tap_action: more-info
             - entity: sensor.0x00158d0003fa6b60_battery
               tap_action: more-info
-            - entity: sensor.0x00158d0003cfa725_battery
+            - entity: sensor.0x00158d0003981f6d_battery
               tap_action: more-info
             - entity: sensor.0x00158d00039677d9_battery
               tap_action: more-info
@@ -515,7 +521,7 @@ views:
                 action: call-service
                 service: script.selftest_smoke_detector
                 service_data:
-                  namesmokedetector: 'Smoke detector bed room'
+                  namesmokedetector: 'Smoke detector bedroom'
 
         - type: markdown
           content: >

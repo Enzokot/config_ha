@@ -151,6 +151,7 @@
          entity_id: 
             - binary_sensor.0x00158d00054b8d72_occupancy
             - binary_sensor.0x00158d000566bde7_occupancy
+            - binary_sensor.0x00158d0003953ee9_occupancy
             - binary_sensor.0x00158d000359304c_contact
             - group.window_childrens_room_group
             - group.window_bed_room_group

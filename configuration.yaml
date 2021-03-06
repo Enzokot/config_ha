@@ -71,7 +71,6 @@ notify: !include includes/notify.yaml
 telegram_bot: !include includes/telegram_bot.yaml
 yeelight: !include includes/yeelight.yaml
 fan: !include includes/fan.yaml
-vacuum: !include includes/vacuum.yaml
 switch: !include_dir_merge_list includes/switches
 sensor: !include_dir_merge_list includes/sensor
 binary_sensor: !include_dir_merge_list includes/binary_sensor

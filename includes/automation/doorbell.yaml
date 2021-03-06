@@ -49,8 +49,8 @@
           - service: xiaomi_aqara.play_ringtone
             data:
               gw_mac: !secret gateway1_mac
-              ringtone_id: 10002
-              ringtone_vol: 50
+              ringtone_id: 10001
+              ringtone_vol: 45
 
     - alias: turn_on_light_doorbell
       initial_state: true

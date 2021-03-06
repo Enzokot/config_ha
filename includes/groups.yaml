@@ -6,7 +6,7 @@
 
     window_bed_room_group:
         entities:
-          - binary_sensor.0x00158d0003cfa725_contact
+          - binary_sensor.0x00158d0003981f6d_contact
           - binary_sensor.0x00158d0003fa6b60_contact
 
     window_living_room_group:

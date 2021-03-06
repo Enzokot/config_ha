@@ -15,6 +15,7 @@
           - binary_sensor.0x00158d000359304c_contact
           #Движение коридор
           - binary_sensor.0x00158d000566bde7_occupancy
+          - binary_sensor.0x00158d0003953ee9_occupancy
           #Движение детская
           - binary_sensor.0x00158d00054b8d72_occupancy
           #Трекер WI-FI защиты от протечки

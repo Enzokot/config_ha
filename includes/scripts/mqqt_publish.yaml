@@ -131,11 +131,3 @@
             data:
               topic: zigbee2mqtt/bridge/request/permit_join
               payload: '{{ topicpayload }}'
-          - service: >
-                {% if topicpayload == true %}
-                  timer.start
-                {%- else -%}
-                  timer.cancel
-                {%- endif %}                  
-            data:
-              entity_id: timer.zigbee_permit_join

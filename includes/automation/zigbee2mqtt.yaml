@@ -12,6 +12,21 @@
             data:
               topicpayload: false
 
+    - alias: start_stop_zigbee_join_timer
+      initial_state: true
+      trigger:
+      - platform: state
+        entity_id: binary_sensor.state_permit_join_z2m_frontend
+      action:
+          - service: >
+                {% if trigger.to_state.state == 'on' %}
+                  timer.start
+                {%- else -%}
+                  timer.cancel
+                {%- endif %}                  
+            data:
+              entity_id: timer.zigbee_permit_join
+
     - alias: zigbee_device_joined_notification
       trigger:
         platform: mqtt

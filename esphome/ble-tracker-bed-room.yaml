@@ -72,15 +72,12 @@ sensor:
       name: "ESP Xiaomi Bed Room Temperature"
     humidity:
       name: "ESP Xiaomi Bed Room Humidity"
-      icon: mdi:water-percent
     battery_level:
       name: "ESP Xiaomi Bed Room Battery Level"
-      icon: mdi:battery
 
   - platform: wifi_signal
     name: "$devicename WiFi RSSI"
     update_interval: 60s
-    icon: mdi:wifi
 
 switch:
   - platform: restart

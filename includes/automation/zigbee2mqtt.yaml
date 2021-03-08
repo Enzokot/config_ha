@@ -8,18 +8,17 @@
         event_data:
           entity_id: timer.zigbee_permit_join
       action:
-      - service: mqtt.publish
-        data:
-          topic: zigbee2mqtt/bridge/config/permit_join
-          payload: 'false'
+          - service: script.toggle_permit_join_z2m
+            data:
+              topicpayload: false
 
     - alias: zigbee_device_joined_notification
       trigger:
         platform: mqtt
-        topic: 'zigbee2mqtt/bridge/log'
+        topic: 'zigbee2mqtt/bridge/event'
       condition:
         condition: template
-        value_template: '{{trigger.payload_json.type == "pairing" and trigger.payload_json.message == "interview_successful"}}'
+        value_template: '{{trigger.payload_json.type == "device_interview" and trigger.payload_json.data.status == "successful" and trigger.payload_json.data.supported}}'
       action:
         - service: telegram_bot.send_message
           data:
@@ -28,11 +27,13 @@
             message: >-
                       Добавлено новое устройство:
                       {{ '\n' }}
-                      Имя: {{trigger.payload_json.meta.friendly_name}},
+                      Имя: {{trigger.payload_json.data.friendly_name}},
                       {{ '\n' }}
-                      Поставщик: {{trigger.payload_json.meta.vendor}},
+                      Поставщик: {{trigger.payload_json.data.definition.vendor}},
                       {{ '\n' }}
-                      Описание: {{trigger.payload_json.meta.description}}
+                      Модель: {{trigger.payload_json.data.definition.model}}
+                      {{ '\n' }}
+                      Описание: {{trigger.payload_json.data.definition.description}}
             disable_notification: true
             target: !secret telegram_enzokot_chat_id
             
@@ -108,30 +109,6 @@
             objectvalve: 'climate.0x5c0272fffe8de819'
             objectvalvewindow: 'switch.0x5c0272fffe8de819_window_detection'
             objectsensortemperature: 'sensor.esp_xiaomi_kitchen_temperature'
-
-#Пауза таймера добавления нового устройства, если permit join включен с UI
-    - alias: zigbee2mqtt_timer_off_frontend_permit_join
-      initial_state: 'true'
-      trigger:
-        - platform: state
-          entity_id: binary_sensor.state_permit_join_z2m_frontend
-          from: 'off'
-          to: 'on'
-      action:  
-        - service: timer.pause
-          entity_id: timer.zigbee_permit_join
-
-    - alias: zigbee2mqtt_timer_on_after_frontend_permit_join
-      initial_state: 'true'
-      trigger:
-        - platform: state
-          entity_id: binary_sensor.state_permit_join_z2m_frontend
-          from: 'on'
-          to: 'off'
-      condition: "{{ is_state('binary_sensor.state_permit_join_z2m', 'on') and is_state('timer.zigbee_permit_join', 'paused') }}"
-      action:  
-        - service: switch.turn_off
-          entity_id: switch.permit_join_switch_z2m
 
 #Автоматическая установка boost режима во время сна
     - alias: auto_boost_mode_thermostats_at_sleeping_time

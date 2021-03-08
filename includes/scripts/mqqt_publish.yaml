@@ -129,7 +129,7 @@
         sequence:
           - service: mqtt.publish
             data:
-              topic: zigbee2mqtt/bridge/config/permit_join
+              topic: zigbee2mqtt/bridge/request/permit_join
               payload: '{{ topicpayload }}'
           - service: >
                 {% if topicpayload == true %}

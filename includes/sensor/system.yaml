@@ -129,3 +129,9 @@
     - newest_version
     - current_version
     - addons
+
+#Дата последней резервной копии
+  - platform: mqtt
+    name: Last Backup DB Homeassistant
+    state_topic: "last_backup_db_at"
+    icon: mdi:calendar-clock

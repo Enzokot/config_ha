@@ -174,10 +174,8 @@
       for: "00:01:15"
   condition: >
               {{ 
-                 trigger.to_state.state == 'on' and 
-                 (is_state('input_boolean.auto_triggered_fan_window_childrens_room', 'off') or is_state('input_boolean.auto_triggered_valve_window_childrens_room', 'off'))
-                 or trigger.to_state.state == 'off' and 
-                 (is_state('input_boolean.auto_triggered_fan_window_childrens_room', 'on') or is_state('input_boolean.auto_triggered_valve_window_childrens_room', 'on'))
+                 trigger.to_state.state == 'on' or 
+                 is_state('input_boolean.auto_triggered_fan_window_childrens_room', 'on') or is_state('input_boolean.auto_triggered_valve_window_childrens_room', 'on')
               }}
   action:
       - choose:
@@ -259,10 +257,8 @@
       for: "00:01:15"
   condition: >
               {{ 
-                 trigger.to_state.state == 'on' and 
-                 (is_state('input_boolean.auto_triggered_fan_window_bed_room', 'off') or is_state('input_boolean.auto_triggered_valve_window_bed_room', 'off'))
-                 or trigger.to_state.state == 'off' and 
-                 (is_state('input_boolean.auto_triggered_fan_window_bed_room', 'on') or is_state('input_boolean.auto_triggered_valve_window_bed_room', 'on'))
+                 trigger.to_state.state == 'on' or 
+                 is_state('input_boolean.auto_triggered_fan_window_bed_room', 'on') or is_state('input_boolean.auto_triggered_valve_window_bed_room', 'on')
               }}
   action:
       - choose:
@@ -354,9 +350,7 @@
       for: "00:01:15"
   condition: >
               {{ 
-                 trigger.to_state.state == 'on' and is_state('input_boolean.auto_triggered_valve_window_kitchen', 'off')
-                 or 
-                 trigger.to_state.state == 'off' and is_state('input_boolean.auto_triggered_valve_window_kitchen', 'on')
+                 trigger.to_state.state == 'on' or is_state('input_boolean.auto_triggered_valve_window_kitchen', 'on')
               }}
   action:
       - choose:
@@ -412,10 +406,8 @@
       for: "00:01:15"
   condition: >
               {{ 
-                 trigger.to_state.state == 'on' and 
-                 (is_state('input_boolean.auto_triggered_ac_window_living_room', 'off') or is_state('input_boolean.auto_triggered_valve_window_living_room', 'off'))
-                 or trigger.to_state.state == 'off' and 
-                 (is_state('input_boolean.auto_triggered_ac_window_living_room', 'on') or is_state('input_boolean.auto_triggered_valve_window_living_room', 'on'))
+                 trigger.to_state.state == 'on' or
+                 is_state('input_boolean.auto_triggered_ac_window_living_room', 'on') or is_state('input_boolean.auto_triggered_valve_window_living_room', 'on')
               }}
   action:
       - choose:

@@ -20,11 +20,6 @@
       force_update: true
       icon: mdi:av-timer
 
-    - platform: mqtt
-      name: Last Backup DB Homeassistant
-      state_topic: "last_backup_db_at"
-      icon: mdi:calendar-clock
-
     - platform: template
       sensors:
         zigbee2mqtt_coordinator_ver:

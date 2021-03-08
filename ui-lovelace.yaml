@@ -566,6 +566,7 @@ views:
               entities:
                   - entity: switch.0x842e14fffe13a854
                     state_color: true
+                    secondary_info: last-changed
                   - entity: input_boolean.water_heater_season
                     state_color: true
                   - entity: sensor.0x842e14fffe13a854_power
@@ -583,6 +584,7 @@ views:
               entities:
                   - entity: switch.0x842e14fffe5047f5
                     state_color: true
+                    secondary_info: last-changed
                   - entity: input_boolean.heater_night_mode
                     state_color: true
                   - entity: sensor.0x842e14fffe5047f5_power
@@ -600,6 +602,7 @@ views:
               entities:
                   - entity: switch.0x842e14fffe36661f
                     state_color: true
+                    secondary_info: last-changed
                   - entity: sensor.0x842e14fffe36661f_power
                   - entity: sensor.total_kithen_socket_1_cable_daily_electicity
                   - entity: sensor.total_kitchen_socket_1_cable_monthly_electicity
@@ -615,6 +618,7 @@ views:
               entities:
                   - entity: switch.0x588e81fffeff5c4f
                     state_color: true
+                    secondary_info: last-changed
                   - entity: sensor.0x588e81fffeff5c4f_power
                   - entity: sensor.total_bedroom_socket_1_cable_daily_electicity
                   - entity: sensor.total_bedroom_socket_1_cable_monthly_electicity

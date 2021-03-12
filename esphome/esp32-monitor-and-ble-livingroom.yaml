@@ -10,27 +10,27 @@ esphome:
 wifi:
   networks:
   
-  - ssid: Kotletochka_Yi
-    password: !secret kotletochka_wifi_password
-    hidden: true
-    priority: 1
+#  - ssid: Kotletochka_Yi
+#    password: !secret kotletochka_wifi_password
+#    hidden: true
+#    priority: 1
   
-  - ssid: Kotletochka_kit
-    password: !secret kotletochka_wifi_password
-    hidden: true
-    priority: 1
+#  - ssid: Kotletochka_kit
+#    password: !secret kotletochka_wifi_password
+#    hidden: true
+#    priority: 1
   
   #Точка в спальне
-  - ssid: Kotletochka
-    password: !secret kotletochka_wifi_password
-    bssid: "50:ff:20:4b:10:73"
-    priority: 1
+#  - ssid: Kotletochka
+#    password: !secret kotletochka_wifi_password
+#    bssid: "50:ff:20:4b:10:73"
+#    priority: 1
 
   #Точка на кухне
-  - ssid: Kotletochka
-    password: !secret kotletochka_wifi_password
-    bssid: "50:ff:20:4a:bf:cd"
-    priority: 2
+#  - ssid: Kotletochka
+#    password: !secret kotletochka_wifi_password
+#    bssid: "50:ff:20:4a:bf:cd"
+#    priority: 2
 
   #Основная точка
   - ssid: Kotletochka

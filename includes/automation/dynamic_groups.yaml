@@ -1,0 +1,20 @@
+
+    - alias: "dynamic group sensor battery"
+      initial_state: true
+      trigger:
+          - platform: time_pattern
+            hours: "/3"
+      action:
+        - service: group.set
+          data:
+            name: dynamic group sensor battery
+            object_id: dynamic_group_sensor_battery
+            icon: mdi:battery-unknown
+            entities: >-
+                {%- 
+                    for state in states.sensor 
+                      if is_state_attr(state.entity_id, 'device_class', 'battery') and
+                      (state.entity_id.endswith("_battery") or state.entity_id.endswith("_battery_level"))
+                %}
+                    {{ state.entity_id }}{%- if not loop.last -%}, {%- endif -%}
+                {%- endfor %}

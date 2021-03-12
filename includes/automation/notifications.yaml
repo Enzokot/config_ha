@@ -530,105 +530,14 @@
       trigger:
         platform: time
         at: "20:00:00"
-      condition:
-          condition: or
-          conditions:
-            - condition: numeric_state
-              entity_id: sensor.0x00158d0003943639_battery
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.0x00158d00039a8358_battery
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.0x00158d00039d9398_battery
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.0x00158d00045ca483_battery
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.0x00158d00045cd551_battery
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.0x00158d0004561de9_battery
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.0x00158d00042fd6f5_battery
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.0x00158d000359304c_battery
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.0x00158d0003f37a0f_battery
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.0x00158d000490fe9d_battery
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.0x00158d00054b8d72_battery
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.0x00158d000566bde7_battery
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.0x00158d0003953ee9_battery
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.0x00158d0003a360b6_battery
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.esp_xiaomi_living_room_battery_level
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.esp_xiaomi_kitchen_battery_level
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.esp_xiaomi_childrens_room_battery_level
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.esp_xiaomi_bed_room_battery_level
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.0x04cf8cdf3c7d15b7_battery
-              below: 20
-            - condition: state
-              entity_id: binary_sensor.0x60a423fffe968719_battery_low
-              state: 'on'
-            - condition: state
-              entity_id: binary_sensor.0x5c0272fffec9db22_battery_low
-              state: 'on'
-            - condition: state
-              entity_id: binary_sensor.0x5c0272fffec89454_battery_low
-              state: 'on'
-            - condition: state
-              entity_id: binary_sensor.0x5c0272fffe8de819_battery_low
-              state: 'on'
-            - condition: numeric_state
-              entity_id: sensor.0x00158d0003981f6d_battery
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.0x00158d00039677d9_battery
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.0x00158d0003fa6b60_battery
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.0x00158d000396f1f9_battery
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.0x00158d000396f197_battery
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.0x00158d0003d05782_battery
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.0x00158d0003975d8b_battery
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.0x00158d0003975b4c_battery
-              below: 20
-            - condition: numeric_state
-              entity_id: sensor.0x00158d00039a2f33_battery
-              below: 20
+      condition: >
+                      {% macro entities_low_level() %}
+                      {%- set entities = expand('group.dynamic_group_sensor_battery') -%}
+                      {% for x in entities if x.state|int < 20 %}
+                        {{- x.name -}}
+                      {% endfor %}
+                      {% endmacro %}
+                      {{ entities_low_level() | trim != "" }}
       action:
         - service: telegram_bot.send_message
           data:
@@ -636,139 +545,13 @@
             title: >-
                      {{ '\U0001f50b' }} *Низкий заряд Zigbee*
             message: >-
-                        Для сенсоров:
-                        {{ '\n' }}
-                        {%- if states('sensor.0x00158d0003943639_battery') | int < 20 -%}
-                           _Датчик дыма кухня_
-                        {{- '\n' }}
-                        {%- endif -%} 
-                        {%- if states('sensor.0x00158d00039a8358_battery') | int < 20 -%}
-                           _Датчик дыма гостиная_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {% if states('sensor.0x00158d00039d9398_battery') | int < 20 -%}
-                           _Датчик дыма коридор_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {% if states('sensor.0x00158d00045ca483_battery') | int < 20 -%}
-                           _Датчик дыма детская_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {%- if states('sensor.0x00158d00045cd551_battery') | int < 20 -%}
-                           _Датчик дыма спальня_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {%- if states('sensor.0x00158d0004561de9_battery') | int < 20 -%}
-                           _Т&Rh ванная_
-                        {{- '\n' }}
-                        {%- endif -%} 
-                        {%- if states('sensor.0x00158d00042fd6f5_battery') | int < 20 -%}
-                           _Т&Rh улица_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {% if states('sensor.0x00158d000359304c_battery') | int < 20 -%}
-                           _Входная дверь_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {% if states('sensor.0x00158d0003f37a0f_battery') | int < 20 -%}
-                           _Выкл. детская_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {%- if states('sensor.0x00158d000490fe9d_battery') | int < 20 -%}
-                           _Питание кондиционер_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {%- if states('sensor.0x00158d00054b8d72_battery') | int < 20 -%}
-                          _Датчик движения детская_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {%- if states('sensor.0x00158d000566bde7_battery') | int < 20 -%}
-                           _Датчик движения коридор 1_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {%- if states('sensor.0x00158d0003953ee9_battery') | int < 20 -%}
-                           _Датчик движения коридор 2_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {%- if states('sensor.0x00158d0003a360b6_battery') | int < 20 -%}
-                           _Беспроводная кн. детская_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {%- if states('sensor.esp_xiaomi_bed_room_battery_level') | int < 20 -%}
-                           _Часы спальня_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {%- if states('sensor.esp_xiaomi_childrens_room_battery_level') | int < 20 -%}
-                           _Часы детская_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {%- if states('sensor.esp_xiaomi_living_room_battery_level') | int < 20 -%}
-                           _Часы гостиная_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {%- if states('sensor.esp_xiaomi_kitchen_battery_level') | int < 20 -%}
-                           _Часы кухня_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {%- if states('sensor.0x04cf8cdf3c7d15b7_battery') | int < 20 -%}
-                           _Уличный датчик освещенности_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {%- if is_state('binary_sensor.0x60a423fffe968719_battery_low', 'on') -%}
-                          _Термоголовка спальня_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {%- if is_state('binary_sensor.0x5c0272fffec89454_battery_low', 'on') -%}
-                          _Термоголовка детская_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {%- if is_state('binary_sensor.0x5c0272fffec9db22_battery_low', 'on') -%}
-                          _Термоголовка гостиная_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {%- if is_state('binary_sensor.0x5c0272fffe8de819_battery_low', 'on') -%}
-                          _Термоголовка гостиная_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        
-                        {% if states('sensor.0x00158d000396f1f9_battery') | int < 20 -%}
-                           _Окно в детской_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {% if states('sensor.0x00158d0003fa6b60_battery') | int < 20 -%}
-                           _Окно в спальне_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {% if states('sensor.0x00158d0003981f6d_battery') | int < 20 -%}
-                           _Балконная дверь в спальне_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {% if states('sensor.0x00158d00039677d9_battery') | int < 20 -%}
-                           _Балконная дверь в детской_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {% if states('sensor.0x00158d000396f197_battery') | int < 20 -%}
-                           _Левая створка окна гостиная_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {% if states('sensor.0x00158d0003d05782_battery') | int < 20 -%}
-                           _Центральная створка окна гостиная_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {% if states('sensor.0x00158d0003975d8b_battery') | int < 20 -%}
-                           _Правая створка окна гостиная_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {% if states('sensor.0x00158d0003975b4c_battery') | int < 20 -%}
-                           _Левая створка окна кухня_
-                        {{- '\n' }}
-                        {%- endif -%}
-                        {% if states('sensor.0x00158d00039a2f33_battery') | int < 20 -%}
-                           _Правая створка окна кухня_
-                        {{- '\n' }}
-                        {%- endif -%}
-
-
+                      Для сенсоров:
+                      {{- '\n' -}}
+                      {%- set entities = expand('group.dynamic_group_sensor_battery') -%}
+                      {% for x in entities if x.state|int < 20 %}
+                        {%- if not loop.first %}, {{- '\n' -}} {% endif -%}
+                        {{- '_' -}} {{- x.name -}} {{- '_' -}}
+                      {% endfor %}
 #После рестарта НА остался включенный обогреватель
     - alias: notification safety sockets on restart
       initial_state: true

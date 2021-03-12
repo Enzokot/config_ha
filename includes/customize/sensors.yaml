@@ -221,3 +221,15 @@ sensor.0x00158d0003975b4c_battery:
 sensor.0x00158d00039a2f33_battery:
   device_class: battery
   friendly_name: Прав. окно кухня
+
+sensor.esp_xiaomi_bed_room_battery_level:
+  friendly_name: Часы спальня
+
+sensor.esp_xiaomi_childrens_room_battery_level:
+  friendly_name: Часы детская
+
+sensor.esp_xiaomi_kitchen_battery_level:
+  friendly_name: Часы кухня
+
+sensor.esp_xiaomi_living_room_battery_level:
+  friendly_name: Часы гостиная

@@ -792,3 +792,29 @@
         - service: persistent_notification.dismiss
           data:
             notification_id: 'http_login' 
+
+#Уведомление о неуспешной проверке конфигурации
+    - alias: check configuration failed
+      mode: parallel
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: 
+            - persistent_notification.homeassistant_check_config
+            - persistent_notification.invalid_config
+          to: 'notifying'
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: "{{ '\U0000203C' }} *Проверка конфигурации*"
+            message: >
+                {{ trigger.to_state.attributes.message }}
+        - service: persistent_notification.dismiss
+          data:
+            notification_id: >
+                {% if 'could not be set up' in trigger.to_state.attributes.message | lower %}
+                    invalid_config
+                {% else %}
+                    homeassistant_check_config
+                {% endif %}

@@ -4,6 +4,8 @@
       trigger:
           - platform: time_pattern
             hours: "/3"
+          - platform: homeassistant
+            event: start            
       action:
         - service: group.set
           data:

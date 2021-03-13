@@ -747,54 +747,45 @@
                      Создана и упакована резервная копия с именем файла `{{ trigger.to_state.state -}}.7z`, системный диск заполнен на *{{ states('sensor.disk_use_percent') -}}*%
                   {% endif %}
 
-#Уведоление о блокировки IP по неуспешным логинам
-    - alias: notifications failed login block IP
+#Уведоление о неуспешном входе или о блокировки IP по неуспешным логинам
+    - alias: notifications failed login or block IP
       mode: parallel
       initial_state: true
       trigger:
         - platform: state
-          entity_id: persistent_notification.ip_ban
-      condition:
-        - condition: template
-          value_template: '{{trigger.to_state.state is not none}}'
+          entity_id: 
+           - persistent_notification.ip_ban
+           - persistent_notification.http_login
+          to: 'notifying'
       action:
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
-            title: "{{ '\U0001F6AB' }} *Вход в систему*"
+            title: >-
+                {% if 'with invalid authentication' in trigger.to_state.attributes.message | lower -%}
+                    {{ '\U0001F6AB' -}}
+                {% else -%}
+                    {{ '\U0001F6AB' -}}
+                {% endif -%} *Вход в систему*
             message: >
                 {% set ipadress = trigger.to_state.attributes.message.split('from ')[1] | regex_replace('\s+.*') %}
-                Заблокирован IP адрес [{{ ipadress }}](https://whatismyipaddress.com/ip/{{- ipadress }}), 5 попыток входа
+                {% if 'with invalid authentication' in trigger.to_state.attributes.message | lower %}
+                    Неудачная попытка входа в систему с адреса [{{ ipadress }}](https://whatismyipaddress.com/ip/{{- ipadress }})
+                {% else %}
+                    Заблокирован IP адрес [{{ ipadress }}](https://whatismyipaddress.com/ip/{{- ipadress }}), 5 попыток входа
+                {% endif %}
             disable_web_page_preview: true
         - service: persistent_notification.dismiss
           data:
-            notification_id: 'ip_ban' 
-
-#Уведомление о неуспешном входе
-    - alias: notifications failed login
-      mode: parallel
-      initial_state: true
-      trigger:
-        - platform: state
-          entity_id: persistent_notification.http_login
-      condition:
-        - condition: template
-          value_template: '{{trigger.to_state.state is not none}}'
-      action:
-        - service: telegram_bot.send_message
-          data:
-            target: !secret telegram_enzokot_chat_id
-            title: "{{ '\U0001F6B7' }} *Вход в систему*"
-            message: >
-                {% set ipadress = trigger.to_state.attributes.message.split('from ')[1] | regex_replace('\s+.*') %}
-                Неудачная попытка входа в систему с адреса [{{ ipadress }}](https://whatismyipaddress.com/ip/{{- ipadress }})
-            disable_web_page_preview: true
-        - service: persistent_notification.dismiss
-          data:
-            notification_id: 'http_login' 
+            notification_id: >
+                {% if 'with invalid authentication' in trigger.to_state.attributes.message | lower %}
+                    http_login
+                {% else %}
+                    ip_ban
+                {% endif %}
 
 #Уведомление о неуспешной проверке конфигурации
-    - alias: check configuration failed
+    - alias: notification check configuration failed
       mode: parallel
       initial_state: true
       trigger:
@@ -807,9 +798,20 @@
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
-            title: "{{ '\U0000203C' }} *Проверка конфигурации*"
+            title: "{{ '\U0000203C' -}} *Проверка конфигурации*"
             message: >
                 {{ trigger.to_state.attributes.message }}
+
+    - alias: notification dismiss check configuration failed
+      mode: parallel
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: 
+            - persistent_notification.homeassistant_check_config
+            - persistent_notification.invalid_config
+          to: 'notifying'
+      action:
         - service: persistent_notification.dismiss
           data:
             notification_id: >

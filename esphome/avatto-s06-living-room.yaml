@@ -128,6 +128,7 @@ binary_sensor:
             - if:
                 condition:
                     - binary_sensor.is_off: "status_connection"
+                    - lambda: 'return id(uptime_sec).state > 60;'
                 then:
                   - http_request.post:
                       url: "https://api.telegram.org/bot${telegram_api_token}/sendMessage"

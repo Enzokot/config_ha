@@ -91,3 +91,4 @@ utility_meter: !include includes/utility_meter.yaml
 smartir: 
 climate: !include includes/smartir/climate.yaml
 camera: !include includes/camera.yaml
+panel_custom: !include includes/panel_custom.yaml

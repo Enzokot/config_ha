@@ -1,0 +1,4 @@
+  - name: config/logs
+    sidebar_title: Журнал системы
+    sidebar_icon: mdi:math-log
+    module_url: any text

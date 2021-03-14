@@ -820,3 +820,30 @@
                 {% else %}
                     homeassistant_check_config
                 {% endif %}
+
+#Уведомление о перезапуске НА
+    - alias: notification start or stop home assistant
+      mode: parallel
+      initial_state: true
+      trigger:
+        - platform: homeassistant
+          event: start
+        - platform: homeassistant
+          event: shutdown
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            disable_notification: true
+            title: >
+                {% if trigger.event == 'start' -%}
+                    {{ '\U00002705' -}}
+                {% else -%}
+                    {{ '\U000026d4' -}}
+                {% endif -%} *Трекинг устройств*
+            message: >
+                {% if trigger.event == 'start' -%}
+                    Home Assistant запущен
+                {% else -%}
+                    Home Assistant *остановлен*
+                {% endif -%}

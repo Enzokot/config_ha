@@ -815,7 +815,7 @@ views:
           content: >
              **Кондиционер гостиная** 
         - type: thermostat
-          entity: climate.broadlink_ac_living_room
+          entity: climate.avatto_living_room_ac
           name: " "
 
       - type: vertical-stack

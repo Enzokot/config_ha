@@ -145,12 +145,14 @@ climate:
     sensor: temp_for_avatto_ac_living_room
     visual:
           min_temperature: 18 °C    
-    #receiver_id: receiver_s06_living_room
+    receiver_id: receiver_s06_living_room
     
 sensor:
   - platform: homeassistant
     name: "Temperature living room"
     internal: true
+    device_class: temperature
+    accuracy_decimals: 1
     entity_id: sensor.temp_for_ac_living_room
     id: temp_for_avatto_ac_living_room
 

@@ -488,6 +488,9 @@
         - platform: state
           entity_id: binary_sensor.new_version_supervisor
           to: 'on'
+      condition:
+        - condition: template
+          value_template: "{{ state_attr('sensor.supervisor_versions', 'current_version') is not none }}"
       action:
         - service: telegram_bot.send_message
           data:
@@ -847,3 +850,22 @@
                 {% else -%}
                     Home Assistant *остановлен*
                 {% endif -%}
+
+#Уведомление об утечке пароля
+    - alias: notifications loss passwords
+      mode: parallel
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: persistent_notification.supervisor_issue_pwned
+          to: 'notifying'
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: "{{ '\U0000203C' -}} *Проверка паролей*"
+            message: >
+                {{ trigger.to_state.attributes.message }}
+        - service: persistent_notification.dismiss
+          data:
+            notification_id: 'supervisor_issue_pwned'

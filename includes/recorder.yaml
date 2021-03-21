@@ -24,7 +24,6 @@
           #Трекер инета в Калуге
           - binary_sensor.availability_host_klg
           - binary_sensor.availability_mibox_klg
-          #- binary_sensor.inet_at_klg
           #Климат
           - sensor.158d00042fd6f5_pressure
           - sensor.0x00158d0004561de9_humidity
@@ -65,3 +64,6 @@
           - sensor.0x842e14fffe13a854_voltage
           #Трекер персоны
           - person.kostik
+          - device_tracker.sm_g973f
+          #Длительность запуска
+          - sensor.start_time

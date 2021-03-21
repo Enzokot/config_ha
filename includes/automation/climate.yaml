@@ -228,8 +228,17 @@
                             {%- else -%}
                               auto
                             {%- endif %}
-                - service: input_boolean.toggle
+                - service: >
+                            {% if trigger.to_state.state == 'off' -%}
+                              input_boolean.turn_off
+                            {%- else -%}
+                              input_boolean.turn_on
+                            {%- endif %}
                   entity_id: input_boolean.auto_triggered_valve_window_childrens_room
+                - service: climate.set_preset_mode
+                  data:
+                    entity_id: climate.0x5c0272fffec89454
+                    preset_mode: manual
           - conditions:  
                 - condition: template
                   value_template: >
@@ -323,6 +332,10 @@
                               input_boolean.turn_on
                             {%- endif %}
                   entity_id: input_boolean.auto_triggered_valve_window_bed_room
+                - service: climate.set_preset_mode
+                  data:
+                    entity_id: climate.0x60a423fffe968719
+                    preset_mode: manual
           - conditions:  
                 - condition: template
                   value_template: >
@@ -379,6 +392,10 @@
                               input_boolean.turn_on
                             {%- endif %}
                   entity_id: input_boolean.auto_triggered_valve_window_kitchen
+                - service: climate.set_preset_mode
+                  data:
+                    entity_id: climate.0x5c0272fffe8de819
+                    preset_mode: manual
           - conditions:  
                 - condition: template
                   value_template: >
@@ -472,6 +489,10 @@
                               input_boolean.turn_on
                             {%- endif %}
                   entity_id: input_boolean.auto_triggered_valve_window_living_room
+                - service: climate.set_preset_mode
+                  data:
+                    entity_id: climate.0x5c0272fffec9db22
+                    preset_mode: manual
           - conditions:  
                 - condition: template
                   value_template: >

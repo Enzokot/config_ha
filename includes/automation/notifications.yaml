@@ -846,7 +846,7 @@
                 {% endif -%} *Трекинг устройств*
             message: >
                 {% if trigger.event == 'start' -%}
-                    Home Assistant запущен
+                    Home Assistant запущен за {{ states('sensor.start_time') }}сек
                 {% else -%}
                     Home Assistant *остановлен*
                 {% endif -%}

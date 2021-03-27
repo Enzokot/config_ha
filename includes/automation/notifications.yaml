@@ -9,8 +9,8 @@
         for:
           minutes: 2
       action:
-        service: notify.telegram_enzokot_to_bot
-        data:
+        - service: notify.telegram_enzokot_to_bot
+          data:
             title: >-
                    {{ '\U000026a0' }} *Датчик открытия/закрытия*
             message: >-
@@ -19,6 +19,15 @@
             #     inline_keyboard:
             #       - 'Открыть:/open, Отклонить:/reject'
             #       - '-'
+        - choose:
+            - conditions:
+                - condition: state
+                  entity_id: media_player.lg_smart_tv
+                  state: 'on'
+              sequence:
+                - service: notify.lg_smart_tv
+                  data:
+                    message: 'Входная дверь: открыта более 2 минут'
 
     - alias: notification sound front door open long time
       initial_state: true
@@ -106,14 +115,23 @@
     #       - thu
     #       - fri
       action:
-        service: telegram_bot.send_message
-        data:
-            title: >-
-                   {{ '\U0001F6AA' }} *Датчик открытия/закрытия*
-            message: >-
-                     Входная дверь: открыта
-            disable_notification: true
-            target: !secret telegram_enzokot_chat_id
+        - service: telegram_bot.send_message
+          data:
+              title: >-
+                     {{ '\U0001F6AA' }} *Датчик открытия/закрытия*
+              message: >-
+                       Входная дверь: открыта
+              disable_notification: true
+              target: !secret telegram_enzokot_chat_id
+        - choose:
+            - conditions:
+                - condition: state
+                  entity_id: media_player.lg_smart_tv
+                  state: 'on'
+              sequence:
+                - service: notify.lg_smart_tv
+                  data:
+                    message: 'Входная дверь: открыта'
 
     - alias: notification front door close
       initial_state: true
@@ -133,14 +151,23 @@
     #       - thu
     #       - fri
       action:
-        service: telegram_bot.send_message
-        data:
-            title: >-
-                   {{ '\U0001f510' }} *Датчик открытия/закрытия*
-            message: >-
-                     Входная дверь: закрыта
-            disable_notification: true
-            target: !secret telegram_enzokot_chat_id
+        - service: telegram_bot.send_message
+          data:
+              title: >-
+                     {{ '\U0001f510' }} *Датчик открытия/закрытия*
+              message: >-
+                       Входная дверь: закрыта
+              disable_notification: true
+              target: !secret telegram_enzokot_chat_id
+        - choose:
+            - conditions:
+                - condition: state
+                  entity_id: media_player.lg_smart_tv
+                  state: 'on'
+              sequence:
+                - service: notify.lg_smart_tv
+                  data:
+                    message: 'Входная дверь: закрыта'
 
     - alias: notification front door open armed
       initial_state: true
@@ -323,6 +350,15 @@
             message: 'Похоже я застрял или какая то другая ошибка'
             inline_keyboard:
               - 'Найти меня (громко):/findvacuum'
+        - choose:
+            - conditions:
+                - condition: state
+                  entity_id: media_player.lg_smart_tv
+                  state: 'on'
+              sequence:
+                - service: notify.lg_smart_tv
+                  data:
+                    message: 'Степа: мне нужна помощь'
 
     - alias: "vacuum cleaner after cleaning chita"
       initial_state: true
@@ -345,6 +381,15 @@
             entity_id: input_number.total_cleaned_area_saved
             value: >-
                    {{ (state_attr('vacuum.xiaomi_vacuum_cleaner', 'total_cleaned_area') | int) }}
+        - choose:
+            - conditions:
+                - condition: state
+                  entity_id: media_player.lg_smart_tv
+                  state: 'on'
+              sequence:
+                - service: notify.lg_smart_tv
+                  data:
+                    message: 'Степа: вернулся на базу'
 
 #Датчики дыма
     - alias: "smoke detector alarm"
@@ -555,6 +600,7 @@
                         {%- if not loop.first %}, {{- '\n' -}} {% endif -%}
                         {{- '_' -}} {{- x.name -}} {{- '_' -}}
                       {% endfor %}
+
 #После рестарта НА остался включенный обогреватель
     - alias: notification safety sockets on restart
       initial_state: true
@@ -625,7 +671,16 @@
                     {%- else -%}
                         Внешний IP-адрес изменен с {{ trigger.from_state.state }} на {{ trigger.to_state.state }}
                     {%- endif -%}
-                    
+        - choose:
+            - conditions:
+                - condition: state
+                  entity_id: media_player.lg_smart_tv
+                  state: 'on'
+              sequence:
+                - service: notify.lg_smart_tv
+                  data:
+                    message: 'Интернет: возможно переключились на LTE'
+
 #Уведомление при низком уровне воды
     - alias: notification low level water
       initial_state: true
@@ -649,6 +704,16 @@
                      {{ '\U0001F6B0' }} *Увлажнители*
             message: >-
                     Пора залить воду в увлажнитель: _{{- trigger.to_state.name -}}_
+        - choose:
+            - conditions:
+                - condition: state
+                  entity_id: media_player.lg_smart_tv
+                  state: 'on'
+              sequence:
+                - service: notify.lg_smart_tv
+                  data:
+                    message: >-
+                        Нет воды: _{{- trigger.to_state.name -}}_
 
 #Уведомление обслуживания пылесоса
     - alias: notification vacuum maintenance

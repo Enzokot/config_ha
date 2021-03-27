@@ -16,9 +16,18 @@ homeassistant:
    - type: notify
      message: "\U0001F511 *Двухфакторная аутентификация*\n`{}` код для завершения авторизации Home Assistant"
 
-default_config:
-#frontend:
-#  themes: !include_dir_merge_named themes
+config:
+frontend:
+lovelace:
+  mode: yaml
+  resources: !include includes/resources.yaml
+panel_custom: !include includes/panel_custom.yaml
+
+dhcp:
+ssdp:
+system_health:
+mobile_app:
+zeroconf:
 
 http:
   login_attempts_threshold: 5
@@ -29,16 +38,8 @@ http:
     - ::1
     - 172.30.33.0/24
 
-lovelace:
-  mode: yaml
-  resources: !include includes/resources.yaml
-
 hacs:
   token: !secret HACS_github
-  appdaemon: true
-
-tts:
-  - platform: google_translate
 
 mqtt:
   broker: core-mosquitto
@@ -53,44 +54,41 @@ mqtt:
     payload: 'offline'
     retain: true
 
+history:
+logbook:
+recorder: !include includes/recorder.yaml
 logger:
   default: info
-#   logs:
-#     homeassistant.event: debug
-#     custom_components.unifiprotect: debug
-#  logs:
-#    homeassistant.components.sensor.rest: fatal
-#  logs:
-#    xiaomi_gateway: debug
 
 group: !include includes/groups.yaml
 automation: !include_dir_merge_list includes/automation
 script: !include_dir_merge_named includes/scripts
 scene: !include includes/scenes.yaml
-recorder: !include includes/recorder.yaml
+zone: !include includes/zone.yaml
+
 notify: !include includes/notify.yaml
 telegram_bot: !include includes/telegram_bot.yaml
+
 yeelight: !include includes/yeelight.yaml
 fan: !include includes/fan.yaml
+camera: !include includes/camera.yaml
+
 switch: !include_dir_merge_list includes/switches
 sensor: !include_dir_merge_list includes/sensor
 binary_sensor: !include_dir_merge_list includes/binary_sensor
+timer: !include includes/timer.yaml
+utility_meter: !include includes/utility_meter.yaml
+
 input_select: !include includes/input_select.yaml
 input_number: !include includes/input_number.yaml
 input_text: !include includes/input_text.yaml
 input_boolean: !include includes/input_boolean.yaml
 input_datetime: !include includes/input_datetime.yaml
-#device_tracker: !include includes/device_tracker.yaml
-timer: !include includes/timer.yaml
-media_player: !include includes/media_player.yaml
-wake_on_lan: !include includes/wake_on_lan.yaml
+
 webostv: !include includes/webostv.yaml
-#smartthinq_sensors: !include includes/smartthinq_sensors.yaml
-zone: !include includes/zone.yaml
-utility_meter: !include includes/utility_meter.yaml
+media_player: !include includes/media_player.yaml
 smartir: 
 climate: !include includes/smartir/climate.yaml
-
-camera: !include includes/camera.yaml
-panel_custom: !include includes/panel_custom.yaml
 start_time:
+
+#device_tracker: !include includes/device_tracker.yaml

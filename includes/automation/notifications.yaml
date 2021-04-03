@@ -516,8 +516,16 @@
       initial_state: true
       trigger:
         - platform: state
-          entity_id: binary_sensor.new_version_ha
-          to: 'on'
+          entity_id: sensor.latest_version_ha
+      condition:
+        - condition: template
+          value_template: >
+            {% set ignore = ['unknown', 'unavailable', 'none'] %}
+            {{ trigger.from_state.state not in ignore and
+               trigger.to_state.state not in ignore and
+               trigger.to_state.state != trigger.from_state.state and
+               is_state('binary_sensor.new_version_ha', 'on')
+            }}
       action:
         - service: telegram_bot.send_message
           data:
@@ -531,11 +539,17 @@
       initial_state: true
       trigger:
         - platform: state
-          entity_id: binary_sensor.new_version_supervisor
-          to: 'on'
+          entity_id: sensor.latest_version_ha
+          attribute: supervisor
       condition:
         - condition: template
-          value_template: "{{ state_attr('sensor.supervisor_versions', 'current_version') is not none }}"
+          value_template: >
+            {% set ignore = ['unknown', 'unavailable', 'none'] %}
+            {{ trigger.from_state.state not in ignore and
+               trigger.to_state.state not in ignore and
+               trigger.to_state.state != trigger.from_state.state and
+               is_state('binary_sensor.new_version_supervisor', 'on')
+            }}
       action:
         - service: telegram_bot.send_message
           data:
@@ -549,8 +563,16 @@
       initial_state: true
       trigger:
         - platform: state
-          entity_id: binary_sensor.new_version_ha_addons
-          to: 'on'
+          entity_id: sensor.supervisor_versions
+      condition:
+        - condition: template
+          value_template: >
+            {% set ignore = ['unknown', 'unavailable', 'none'] %}
+            {{ trigger.from_state.state not in ignore and
+               trigger.to_state.state not in ignore and
+               trigger.to_state.state != trigger.from_state.state and
+               is_state('binary_sensor.new_version_ha_addons', 'on')
+            }}
       action:
         - service: telegram_bot.send_message
           data:
@@ -563,8 +585,16 @@
       initial_state: true
       trigger:
         - platform: state
-          entity_id: binary_sensor.new_version_hacs_addons
-          to: 'on'
+          entity_id: sensor.hacs
+      condition:
+        - condition: template
+          value_template: >
+            {% set ignore = ['unknown', 'unavailable', 'none'] %}
+            {{ trigger.from_state.state not in ignore and
+               trigger.to_state.state not in ignore and
+               trigger.to_state.state != trigger.from_state.state and
+               is_state('binary_sensor.new_version_hacs_addons', 'on')
+            }}
       action:
         - service: telegram_bot.send_message
           data:

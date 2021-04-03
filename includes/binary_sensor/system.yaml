@@ -13,7 +13,8 @@
 
       new_version_supervisor:
         value_template: "{{ state_attr('sensor.latest_version_ha', 'supervisor') != 'unknown' and state_attr('sensor.supervisor_versions', 'current_version') != 'unknown' 
-                         and state_attr('sensor.latest_version_ha', 'supervisor') != state_attr('sensor.supervisor_versions', 'current_version') }}"
+                         and state_attr('sensor.latest_version_ha', 'supervisor') != state_attr('sensor.supervisor_versions', 'current_version') 
+                         and state_attr('sensor.supervisor_versions', 'current_version') is not none}}"
 
       new_version_hacs_addons:
         value_template: "{{ states('sensor.hacs') | int > 0 }}"

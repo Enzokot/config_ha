@@ -125,3 +125,8 @@ sensor:
       name: "ESP Xiaomi Kitchen Humidity"
     battery_level:
       name: "ESP Xiaomi Kitchen Battery Level"
+
+  - platform: xiaomi_miscale
+    mac_address: !secret xiaomi_mi_scale_mac
+    weight:
+      name: "ESP Xiaomi Mi Scale Weight"

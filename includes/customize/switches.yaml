@@ -17,6 +17,14 @@ switch.server_ac_power_socket_relay:
 switch.server_ac_power_socket_reboot_powerload:
   friendly_name: Перезапуск нагрузки
 
-switch.0x842e14fffe0e1042:
+switch.0x086bd7fffe5d13c9:
   friendly_name: Подсветка столешницы
   icon: mdi:light-switch
+
+switch.0x086bd7fffe5b7c7f_right:
+  friendly_name: Подсветка зеркала
+  icon: mdi:light-switch
+
+switch.0x086bd7fffe5b7c7f_left:
+  friendly_name: Вытяжка
+  icon: mdi:fan

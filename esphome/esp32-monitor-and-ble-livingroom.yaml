@@ -6,6 +6,10 @@ esphome:
   platform: ESP32
   board: nodemcu-32s
   comment: Monitoring HA state and BLE living room
+  on_boot:
+    priority: -10
+    then:
+      - lambda: 'id(weight_miscale).update();'
 
 wifi:
   networks:
@@ -55,6 +59,12 @@ api:
 
 ota:
   password: !secret ota_password
+
+globals:
+   - id: weight_global_float
+     type: float
+     restore_value: yes
+     initial_value: '0.0'
 
 switch:
   - platform: restart
@@ -129,4 +139,20 @@ sensor:
   - platform: xiaomi_miscale
     mac_address: !secret xiaomi_mi_scale_mac
     weight:
-      name: "ESP Xiaomi Mi Scale Weight"
+      id: weight_miscale_ble
+      internal: true
+      on_value:
+        then:
+          - lambda: |-
+              {id(weight_global_float) = x;}
+          - lambda: 'id(weight_miscale).update();'
+
+  - platform: template
+    name: "ESP Xiaomi Mi Scale Weight"
+    id: weight_miscale
+    unit_of_measurement: 'kg'
+    icon: mdi:weight-kilogram
+    accuracy_decimals: 2
+    update_interval: never
+    lambda: |-
+      {return id(weight_global_float);}

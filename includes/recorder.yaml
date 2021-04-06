@@ -67,3 +67,5 @@
           - device_tracker.sm_g973f
           #Длительность запуска
           - sensor.start_time
+          #Весы
+          - sensor.esp_xiaomi_mi_scale_weight

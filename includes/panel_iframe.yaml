@@ -1,9 +1,5 @@
 
 #   router:
 #     title: "Ultra"
-#     url: "https://xxxxxx.keenetic.pro/"
+#     url: "https://xxxxxx.xxxxxx.xx/"
 #     icon: mdi:router-wireless-settings
-#   customepshome:
-#     title: "ESPHome"
-#     url: "http://kotletochkarpi4.local:6052/"
-#     icon: mdi:chip

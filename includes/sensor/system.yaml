@@ -117,6 +117,9 @@
 
 #Public IP
   - platform: dnsip
+    resolver: 1.1.1.1
+    hostname: !secret base_url
+    name: myip
 
 #Supervisor versions
   - platform: command_line

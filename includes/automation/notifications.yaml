@@ -578,7 +578,7 @@
           data:
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Addons's Supervisor - доступно для обновления *{{ states('sensor.supervisor_versions') | int }}*."
+            message: "Addons's Supervisor - доступно для обновления *{{ states('sensor.supervisor_versions') | int }}*. Список: {% for repo in state_attr('sensor.supervisor_versions', 'addons') %}{{ repo.name }} (_{{ repo.version }}_ -> _{{ repo.version_latest }}_){%if not loop.last %}, {%endif%}{% endfor %}"
 
 #Доступны для обновления аддоны HACS
     - alias: update HACS addons available notification
@@ -600,7 +600,7 @@
           data:
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Addons's HACS - доступно для обновления *{{ states('sensor.hacs') | int }}*."
+            message: "Addons's HACS - доступно для обновления *{{ states('sensor.hacs') | int }}*. Список: {% for repo in state_attr('sensor.hacs', 'repositories') %}{{ repo.display_name }} (_{{ repo.installed_version }}_ -> _{{ repo.available_version }}_){%if not loop.last %}, {%endif%}{% endfor %}"
 
 #Низкий заряд батарей Zigbee
     - alias: notification low battery zigbee

@@ -22,6 +22,7 @@ lovelace:
   mode: yaml
   resources: !include includes/resources.yaml
 panel_custom: !include includes/panel_custom.yaml
+panel_iframe: !include includes/panel_iframe.yaml
 
 dhcp:
 ssdp:

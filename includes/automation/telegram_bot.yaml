@@ -10,6 +10,10 @@
         - service: notify.notify
           data:
             message: 'pong'
+        - service: telegram_bot.delete_message
+          data:
+            chat_id: '{{ trigger.event.data.user_id }}'
+            message_id: '{{ trigger.event.data.id }}'
         - service: telegram_bot.send_message
           data:
             target: '{{ trigger.event.data.user_id }}'
@@ -24,6 +28,10 @@
         event_data:
           command: '/tuctuc'
       action:
+        - service: telegram_bot.delete_message
+          data:
+            chat_id: '{{ trigger.event.data.user_id }}'
+            message_id: '{{ trigger.event.data.id }}'
         - service: telegram_bot.send_message
           data:
             target: '{{ trigger.event.data.user_id }}'
@@ -40,6 +48,10 @@
         event_data:
           command: '/home_alarm'
       action:
+        - service: telegram_bot.delete_message
+          data:
+            chat_id: '{{ trigger.event.data.user_id }}'
+            message_id: '{{ trigger.event.data.id }}'
         - service: telegram_bot.send_message
           data:
             target: '{{ trigger.event.data.user_id }}'
@@ -241,6 +253,10 @@
         event_data:
           command: '/vacuum'
       action:
+        - service: telegram_bot.delete_message
+          data:
+            chat_id: '{{ trigger.event.data.user_id }}'
+            message_id: '{{ trigger.event.data.id }}'
         - service: telegram_bot.send_message
           data:
             target: '{{ trigger.event.data.user_id }}'

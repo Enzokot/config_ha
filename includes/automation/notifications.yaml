@@ -834,8 +834,8 @@
                      {% endif %}
 
 #Уведомление об успешном бекапе
-    - alias: notifications control voltage
-      id: notifications control voltage
+    - alias: notifications backup db info
+      id: notifications backup db info
       initial_state: true
       mode: queued
       trigger:

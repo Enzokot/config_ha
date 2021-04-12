@@ -69,3 +69,7 @@
           - sensor.start_time
           #Весы
           - sensor.esp_xiaomi_mi_scale_weight
+          #Speedtest
+          - sensor.speedtest_ping
+          - sensor.speedtest_download
+          - sensor.speedtest_upload

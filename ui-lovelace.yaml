@@ -91,10 +91,33 @@ views:
         - type: custom:mini-graph-card
           entities:
              - entity: sensor.processor_temperature
-               #show_points: false
+          show:
+            extrema: true
+            labels: true
           hour24: true
+          font_size: 70
           points_per_hour: 6
           hours_to_show: 12
+
+        - type: 'custom:mini-graph-card'
+          entities:
+             - entity: sensor.speedtest_download
+               name: Download
+               show_state: true
+             - entity: sensor.speedtest_upload
+               name: Upload
+               show_state: true
+             - entity: sensor.speedtest_ping
+               name: Ping
+          show:
+            extrema: true
+            labels: true
+          align_state: center
+          font_size: 70
+          hour24: true
+          hours_to_show: 24
+          name: Speedtest.net
+          points_per_hour: 1
 
       - type: vertical-stack
         cards:

@@ -1,5 +1,6 @@
 
-    - alias: 'reply pong to ping'
+    - alias: reply pong to ping
+      id: reply pong to ping
       initial_state: true
       trigger:
         platform: event
@@ -20,7 +21,8 @@
             message: >-
                        {{ '\U00002139' }} pong
 
-    - alias: 'keyboard tuc tuc gateway'
+    - alias: keyboard tuc tuc gateway
+      id: keyboard tuc tuc gateway
       initial_state: true
       trigger:
         platform: event
@@ -40,7 +42,8 @@
             inline_keyboard:
               - 'Тихо:/minlevelsound, Средне:/avrlevelsound, Громко:/maxlevelsound'
 
-    - alias: 'keyboard alarm home'
+    - alias: keyboard alarm home
+      id: keyboard alarm home
       initial_state: true
       trigger:
         platform: event
@@ -68,7 +71,8 @@
                                  Включить:/alarm_home_arm
                               {%- endif %}
 
-    - alias: 'do alarm change state'
+    - alias: do alarm change state
+      id: do alarm change state
       initial_state: true
       trigger:
         - platform: event
@@ -104,7 +108,8 @@
                         Включили сигнализацию
                      {%- endif %}
 
-    - alias: 'do tuc tuc gateway'
+    - alias: do tuc tuc gateway
+      id: do tuc tuc gateway
       initial_state: true
       trigger:
         - platform: event
@@ -140,7 +145,8 @@
             callback_query_id: '{{ trigger.event.data.id }}'
             message: 'Постучали шлюзом'
 
-    - alias: 'del keyboard sync yeelight650 to switch'
+    - alias: del keyboard sync yeelight650 to switch
+      id: del keyboard sync yeelight650 to switch
       initial_state: true
       trigger:
         - platform: event
@@ -161,7 +167,8 @@
             chat_id: '{{ trigger.event.data.user_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
 
-    - alias: 'no key sync yeelight650 to switch'
+    - alias: no key sync yeelight650 to switch
+      id: no key sync yeelight650 to switch
       initial_state: true
       trigger:
         - platform: event
@@ -176,7 +183,8 @@
             callback_query_id: '{{ trigger.event.data.id }}'
             message: 'Проверим состояние позже'
 
-    - alias: 'ignor key sync yeelight650 to switch'
+    - alias: ignor key sync yeelight650 to switch
+      id: ignor key sync yeelight650 to switch
       initial_state: true
       trigger:
         - platform: event
@@ -189,7 +197,8 @@
             callback_query_id: '{{ trigger.event.data.id }}'
             message: 'Отключили проверку'
 
-    - alias: 'change keyboard sync yeelight650 to switch'
+    - alias: change keyboard sync yeelight650 to switch
+      id: change keyboard sync yeelight650 to switch
       initial_state: true
       trigger:
         - platform: event
@@ -226,7 +235,8 @@
             message: 'Изменили состояние'
 
 #Пылесос
-    - alias: 'vacuum chita answer key find vacuum'
+    - alias: vacuum chita answer key find vacuum
+      id: vacuum chita answer key find vacuum
       initial_state: true
       trigger:
         - platform: event
@@ -245,7 +255,8 @@
             callback_query_id: '{{ trigger.event.data.id }}'
             message: 'Включили поиск Степы'
             
-    - alias: 'keyboard vacuum start cleaning'
+    - alias: keyboard vacuum start cleaning
+      id: keyboard vacuum start cleaning
       initial_state: true
       trigger:
         platform: event
@@ -266,7 +277,8 @@
               - 'Сейчас:/vacuumnow, Через 10 мин.:/vacuum10, Через 20 мин.:/vacuum20'
               - 'Отменить уборку:/vacuumcancel'
 
-    - alias: 'vacuum start cleaning'
+    - alias: vacuum start cleaning
+      id: vacuum start cleaning
       initial_state: true
       trigger:
         - platform: event
@@ -285,7 +297,8 @@
             callback_query_id: '{{ trigger.event.data.id }}'
             message: 'Пылесос отправили на уборку'              
 
-    - alias: 'vacuum later start cleaning'
+    - alias: vacuum later start cleaning
+      id: vacuum later start cleaning
       initial_state: true
       trigger:
         - platform: event
@@ -325,7 +338,8 @@
               entity_id: input_text.var_chat_id_vacuum_later_start
               value: '{{ trigger.event.data.user_id }}'
 
-    - alias: 'vacuum cancel cleaning'
+    - alias: vacuum cancel cleaning
+      id: vacuum cancel cleaning
       initial_state: true
       trigger:
         - platform: event

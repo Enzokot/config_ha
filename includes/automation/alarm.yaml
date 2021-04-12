@@ -1,5 +1,6 @@
 #Кнопка вкл/выкл сигнализации
     - alias: turn_on_alarm
+      id: turn_on_alarm
       initial_state: true
       trigger:
         platform: state
@@ -23,6 +24,7 @@
           duration: 1800
         
     - alias: turn_off_alarm
+      id: turn_off_alarm
       initial_state: true
       trigger:
       - entity_id: input_boolean.alarm_gateway_button
@@ -48,6 +50,7 @@
 
 #Выключение звука сигнализации по таймеру
     - alias: alarm_gateway_stop_ringtone_timer
+      id: alarm_gateway_stop_ringtone_timer
       initial_state: true
       trigger:
       - platform: event
@@ -68,6 +71,7 @@
 
 #Вкл/выкл сигнализации по датчикам дыма
     - alias: smoke detector alarm to gateway
+      id: smoke detector alarm to gateway
       initial_state: true
       trigger:
        - platform: state
@@ -95,6 +99,7 @@
               entity_id: input_boolean.alarm_gateway_button
 
     - alias: smoke detector stop alarm to gateway
+      id: smoke detector stop alarm to gateway
       initial_state: true
       trigger:
        - platform: state
@@ -143,6 +148,7 @@
 
 #Включение сигнализации по датчикам открытия и движения
     - alias: door and motion alarm to gateway
+      id: door and motion alarm to gateway
       mode: single
       max_exceeded: silent
       initial_state: true
@@ -176,6 +182,7 @@
 
 #Выключение сигнализации по отключению режима охраны/по долгому нажатию кнопки в детской
     - alias: turn_off_alarm_disarmed_control_panel
+      id: turn_off_alarm_disarmed_control_panel
       initial_state: true
       trigger:
       - entity_id: alarm_control_panel.signalka_shliuza_alarm
@@ -195,6 +202,7 @@
 
 #Включение сигнализации по многократному нажатию кнопки в детской
     - alias: wireless switch many tap alarm to gateway
+      id: wireless switch many tap alarm to gateway
       initial_state: true
       trigger:
        - platform: state
@@ -247,6 +255,7 @@
 
 #Отключение сигнализации по кнопке мобильного приложения
     - alias: mobile app notification action turn off alarm
+      id: mobile app notification action turn off alarm
       initial_state: true
       trigger:
         platform: event

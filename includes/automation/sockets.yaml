@@ -1,6 +1,7 @@
 
 #Водонагреватель выкл/вкл на ночь
     - alias: night off water heater
+      id: night off water heater
       initial_state: true
       trigger:
         - platform: time
@@ -15,6 +16,7 @@
               entity_id: switch.0x842e14fffe13a854
 
     - alias: night oт water heater
+      id: night oт water heater
       initial_state: true
       trigger:
         - platform: time
@@ -30,6 +32,7 @@
 
 #Ночной режим обогревателя
     - alias: night mode on heater
+      id: night mode on heater
       initial_state: true
       trigger:
         - platform: time
@@ -47,6 +50,7 @@
               entity_id: timer.turn_off_heater_night_mode
 
     - alias: night mode off heater
+      id: night mode off heater
       initial_state: true
       trigger:
         - platform: time
@@ -67,6 +71,7 @@
               entity_id: switch.0x842e14fffe5047f5
 
     - alias: night mode timer heater off
+      id: night mode timer heater off
       initial_state: true
       trigger:
       - platform: event
@@ -82,6 +87,7 @@
               entity_id: timer.turn_on_heater_night_mode
 
     - alias: night mode timer heater on
+      id: night mode timer heater on
       initial_state: true
       trigger:
       - platform: event
@@ -97,6 +103,7 @@
               entity_id: timer.turn_off_heater_night_mode
               
     - alias: on off night mode heater at action time
+      id: on off night mode heater at action time
       initial_state: true
       trigger:
         - platform: state
@@ -126,6 +133,7 @@
 
 #Отключение розеток при превышении 3кВт
     - alias: safety power socets off
+      id: safety power socets off
       initial_state: true
       trigger:
       - platform: numeric_state
@@ -158,6 +166,7 @@
 
 #После рестарта НА проверить ночной режим обогревателя
     - alias: restart night mode heater after reboot
+      id: restart night mode heater after reboot
       initial_state: true
       trigger:
         - platform: homeassistant
@@ -190,6 +199,7 @@
 
 #Сохранение значений потребления при рестарте НА или z2m
     - alias: restart z2m or instance for heater
+      id: restart z2m or instance for heater
       initial_state: true
       mode: restart
       trigger:
@@ -209,6 +219,7 @@
               value: "{{ state_attr('sensor.0x842e14fffe5047f5_power', 'energy') }}"
 
     - alias: restart z2m or instance for water heater
+      id: restart z2m or instance for water heater
       initial_state: true
       mode: restart
       trigger:
@@ -228,6 +239,7 @@
               value: "{{ state_attr('sensor.0x842e14fffe13a854_power', 'energy') }}"
 
     - alias: restart z2m or instance for kitchen socket 1
+      id: restart z2m or instance for kitchen socket 1
       initial_state: true
       mode: restart
       trigger:
@@ -247,6 +259,7 @@
               value: "{{ state_attr('sensor.0x842e14fffe36661f_power', 'energy') }}"
 
     - alias: restart z2m or instance for bedroom socket 1
+      id: restart z2m or instance for bedroom socket 1
       initial_state: true
       mode: restart
       trigger:
@@ -267,6 +280,7 @@
 
 #Гирлянда в детской
     - alias: on move turn on garland childrens room
+      id: on move turn on garland childrens room
       trigger:
         - platform: state
           entity_id: binary_sensor.0x00158d00054b8d72_occupancy
@@ -297,6 +311,7 @@
             duration: 300
 
     - alias: on timer turn off garland childrens room
+      id: on timer turn off garland childrens room
       initial_state: true
       trigger:
           - platform: event

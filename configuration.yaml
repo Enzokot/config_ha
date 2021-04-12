@@ -91,5 +91,3 @@ media_player: !include includes/media_player.yaml
 smartir: 
 climate: !include includes/smartir/climate.yaml
 start_time:
-
-#device_tracker: !include includes/device_tracker.yaml

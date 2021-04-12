@@ -1,16 +1,6 @@
-  #System
-#- alias: Restart HA
-#  trigger: 
-#    platform: time
-#    at: "23:00:00"  
-#  condition:
-#    condition: time
-#    weekday:
-#    - fri
-#  action:
-#    - service: homeassistant.restart
 
 - alias: DB purge everyday
+  id: DB purge everyday
   initial_state: true
   trigger:
     - platform: time
@@ -23,6 +13,7 @@
 
 #Отслеживание питания RPi
 - alias: tracker power rpi
+  id: tracker power rpi
   initial_state: true
   trigger:
     platform: state
@@ -38,6 +29,7 @@
 
 #Перезапуск nginx для принятия нового сертификата, который получает certbot на rpi в пятницу
 - alias: restart nginx addon
+  id: restart nginx addon
   initial_state: true
   trigger:
     - platform: time
@@ -53,6 +45,7 @@
 
 #Бекап базы homeassistant в MariaDB
 - alias: backup homeassistant database
+  id: backup homeassistant database
   initial_state: true
   trigger:
     - platform: time
@@ -63,14 +56,3 @@
         addon: a0d7b954_ssh
         input: "/config/backup.sh"
 
-
-#Обновление сенсоров template, основанных на now()
-# - alias: template date time sensors update
-#   initial_state: true
-#   trigger:
-#     - platform: time_pattern
-#       minutes: '/5'
-#   action:
-#     - service: homeassistant.update_entity
-#       entity_id: 
-#           - sensor.last_boot_custom

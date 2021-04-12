@@ -1,6 +1,7 @@
 #Добавление устройств zigbee
 
     - alias: disable_zigbee_join_timer
+      id: disable_zigbee_join_timer
       initial_state: true
       trigger:
       - platform: event
@@ -13,6 +14,7 @@
               topicpayload: false
 
     - alias: start_stop_zigbee_join_timer
+      id: start_stop_zigbee_join_timer
       initial_state: true
       trigger:
       - platform: state
@@ -28,6 +30,7 @@
               entity_id: timer.zigbee_permit_join
 
     - alias: zigbee_device_joined_notification
+      id: zigbee_device_joined_notification
       trigger:
         platform: mqtt
         topic: 'zigbee2mqtt/bridge/event'
@@ -54,6 +57,7 @@
             
 #Проверка засыпания и отключения устройств zigbee
     - alias: zigbee2mqtt_devices_last_seen
+      id: zigbee2mqtt_devices_last_seen
       initial_state: 'true'
       trigger:
         - platform: time_pattern
@@ -85,15 +89,21 @@
 
 #Проверка качества связи устройств zigbee
     - alias: zigbee2mqtt_devices_link_check
+      id: zigbee2mqtt_devices_link_check
       initial_state: 'true'
       trigger:
         - platform: time_pattern
           hours: "/1"
+      condition:
+        - condition: template
+          value_template: >
+            {{ states | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.linkquality', '<', 20 ) | map(attribute = 'attributes.device.friendlyName') | unique | list | count > 0 }}
       action:  
         - service: script.zigbee2mqtt_linkuality_check
         
 #Атоматическая калибровка локальной температуры термоголовок
     - alias: auto_local_temperature_calibration_thermostats
+      id: auto_local_temperature_calibration_thermostats
       initial_state: 'true'
       trigger:
         - platform: time_pattern
@@ -127,6 +137,7 @@
 
 #Автоматическая установка boost режима во время сна
     - alias: auto_boost_mode_thermostats_at_sleeping_time
+      id: auto_boost_mode_thermostats_at_sleeping_time
       trigger:
         - platform: time
           at:
@@ -168,6 +179,7 @@
                     preset_mode: 'boost'
 
     - alias: switching_thermostat_night_mode
+      id: switching_thermostat_night_mode
       initial_state: 'true'
       trigger:
         - platform: state

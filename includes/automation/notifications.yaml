@@ -562,7 +562,7 @@
             {% set ignore = ['unknown', 'unavailable', 'none'] %}
             {{ trigger.from_state.state not in ignore and
                trigger.to_state.state not in ignore and
-               trigger.to_state.state != trigger.from_state.state and
+               trigger.to_state.attributes.supervisor != trigger.from_state.attributes.supervisor and
                is_state('binary_sensor.new_version_supervisor', 'on')
             }}
       action:
@@ -886,11 +886,11 @@
           data:
             target: !secret telegram_enzokot_chat_id
             title: >-
-                {% if 'with invalid authentication' in trigger.to_state.attributes.message | lower -%}
-                    {{ '\U0001F6AB' -}}
-                {% else -%}
-                    {{ '\U0001F6AB' -}}
-                {% endif -%} *Вход в систему*
+                {%- if 'with invalid authentication' in trigger.to_state.attributes.message | lower %}
+                    {{- '\U0001F6AB' -}}
+                {% else %}
+                    {{- '\U0001F6AB' -}}
+                {% endif %} *Вход в систему*
             message: >
                 {% set ipadress = trigger.to_state.attributes.message.split('from ')[1] | regex_replace('\s+.*') %}
                 {% if 'with invalid authentication' in trigger.to_state.attributes.message | lower %}
@@ -923,7 +923,7 @@
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
-            title: "{{ '\U0000203C' -}} *Проверка конфигурации*"
+            title: "{{ '\U0000203C' }} *Проверка конфигурации*"
             message: >
                 {{ trigger.to_state.attributes.message }}
 
@@ -963,11 +963,11 @@
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
             title: >
-                {% if trigger.event == 'start' -%}
-                    {{ '\U00002705' -}}
-                {% else -%}
-                    {{ '\U000026d4' -}}
-                {% endif -%} *Трекинг устройств*
+                {%- if trigger.event == 'start' %}
+                    {{- '\U00002705' -}}
+                {% else %}
+                    {{- '\U000026d4' -}}
+                {% endif %} *Трекинг устройств*
             message: >
                 {% if trigger.event == 'start' -%}
                     Home Assistant запущен за {{ states('sensor.start_time') }}сек
@@ -988,7 +988,7 @@
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
-            title: "{{ '\U0000203C' -}} *Проверка паролей*"
+            title: "{{ '\U0000203C' }} *Проверка паролей*"
             message: >
                 {{ trigger.to_state.attributes.message }}
         - service: persistent_notification.dismiss

@@ -7,7 +7,7 @@
   - name: Work
     latitude: !secret latitude_enzokot_work_coord
     longitude: !secret longitude_enzokot_work_coord
-    radius: 5
+    radius: 50
     icon: mdi:factory
 
   - name: Home Kaluga

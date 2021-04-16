@@ -56,3 +56,21 @@
         addon: a0d7b954_ssh
         input: "/config/backup.sh"
 
+#Перезапуск интеграции speedtest.net по недоступности сенсоров
+- alias: speedtest_integration_restart
+  id: speedtest_integration_restart
+  initial_state: 'true'
+  trigger:
+    - platform: time_pattern
+      hours: "/1"
+  condition:
+    - condition: template
+      value_template: >
+            {% set ignore = ['unknown', 'unavailable', 'none'] %}
+            {{ states('sensor.speedtest_ping') in ignore and
+               states('sensor.speedtest_download') in ignore and
+               states('sensor.speedtest_upload') in ignore
+            }}
+  action:
+    - service: rest_command.reload_integration_speedtest
+      data: {}

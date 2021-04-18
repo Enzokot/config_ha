@@ -1,6 +1,6 @@
 
     - alias: reply pong to ping
-      #id: reply pong to ping
+      id: reply pong to ping
       initial_state: true
       trigger:
         platform: event
@@ -22,7 +22,7 @@
                        {{ '\U00002139' }} pong
 
     - alias: keyboard tuc tuc gateway
-      #id: keyboard tuc tuc gateway
+      id: keyboard tuc tuc gateway
       initial_state: true
       trigger:
         platform: event
@@ -43,7 +43,7 @@
               - 'Тихо:/minlevelsound, Средне:/avrlevelsound, Громко:/maxlevelsound'
 
     - alias: keyboard alarm home
-      #id: keyboard alarm home
+      id: keyboard alarm home
       initial_state: true
       trigger:
         platform: event
@@ -72,7 +72,7 @@
                               {%- endif %}
 
     - alias: do alarm change state
-      #id: do alarm change state
+      id: do alarm change state
       initial_state: true
       trigger:
         - platform: event
@@ -109,7 +109,7 @@
                      {%- endif %}
 
     - alias: do tuc tuc gateway
-      #id: do tuc tuc gateway
+      id: do tuc tuc gateway
       initial_state: true
       trigger:
         - platform: event
@@ -146,7 +146,7 @@
             message: 'Постучали шлюзом'
 
     - alias: del keyboard sync yeelight650 to switch
-      #id: del keyboard sync yeelight650 to switch
+      id: del keyboard sync yeelight650 to switch
       initial_state: true
       trigger:
         - platform: event
@@ -168,7 +168,7 @@
             message_id: '{{ trigger.event.data.message.message_id }}'
 
     - alias: no key sync yeelight650 to switch
-      #id: no key sync yeelight650 to switch
+      id: no key sync yeelight650 to switch
       initial_state: true
       trigger:
         - platform: event
@@ -184,7 +184,7 @@
             message: 'Проверим состояние позже'
 
     - alias: ignor key sync yeelight650 to switch
-      #id: ignor key sync yeelight650 to switch
+      id: ignor key sync yeelight650 to switch
       initial_state: true
       trigger:
         - platform: event
@@ -198,7 +198,7 @@
             message: 'Отключили проверку'
 
     - alias: change keyboard sync yeelight650 to switch
-      #id: change keyboard sync yeelight650 to switch
+      id: change keyboard sync yeelight650 to switch
       initial_state: true
       trigger:
         - platform: event
@@ -236,7 +236,7 @@
 
 #Пылесос
     - alias: vacuum chita answer key find vacuum
-      #id: vacuum chita answer key find vacuum
+      id: vacuum chita answer key find vacuum
       initial_state: true
       trigger:
         - platform: event
@@ -256,7 +256,7 @@
             message: 'Включили поиск Степы'
             
     - alias: keyboard vacuum start cleaning
-      #id: keyboard vacuum start cleaning
+      id: keyboard vacuum start cleaning
       initial_state: true
       trigger:
         platform: event
@@ -278,7 +278,7 @@
               - 'Отменить уборку:/vacuumcancel'
 
     - alias: vacuum start cleaning
-      #id: vacuum start cleaning
+      id: vacuum start cleaning
       initial_state: true
       trigger:
         - platform: event
@@ -298,7 +298,7 @@
             message: 'Пылесос отправили на уборку'              
 
     - alias: vacuum later start cleaning
-      #id: vacuum later start cleaning
+      id: vacuum later start cleaning
       initial_state: true
       trigger:
         - platform: event
@@ -339,7 +339,7 @@
               value: '{{ trigger.event.data.user_id }}'
 
     - alias: vacuum cancel cleaning
-      #id: vacuum cancel cleaning
+      id: vacuum cancel cleaning
       initial_state: true
       trigger:
         - platform: event

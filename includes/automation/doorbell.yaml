@@ -1,7 +1,7 @@
 
 #Звонок входной двери
     - alias: turn_on_doorbell
-      #id: turn_on_doorbell
+      id: turn_on_doorbell
       initial_state: true
       mode: restart
       trigger:
@@ -54,7 +54,7 @@
               ringtone_vol: 45
 
     - alias: turn_on_light_doorbell
-      #id: turn_on_light_doorbell
+      id: turn_on_light_doorbell
       initial_state: true
       mode: restart
       trigger:

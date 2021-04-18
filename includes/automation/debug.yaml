@@ -1,5 +1,5 @@
     - alias: debug low level water
-      #id: debug low level water
+      id: debug low level water
       trigger:
         - platform: state
           entity_id: fan.xiaomi_miio_device

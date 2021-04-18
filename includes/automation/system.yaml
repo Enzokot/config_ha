@@ -1,6 +1,6 @@
 
 - alias: DB purge everyday
-  #id: DB purge everyday
+  id: DB purge everyday
   initial_state: true
   trigger:
     - platform: time
@@ -13,7 +13,7 @@
 
 #Отслеживание питания RPi
 - alias: tracker power rpi
-  #id: tracker power rpi
+  id: tracker power rpi
   initial_state: true
   trigger:
     platform: state
@@ -29,7 +29,7 @@
 
 #Перезапуск nginx для принятия нового сертификата, который получает certbot на rpi в пятницу
 - alias: restart nginx addon
-  #id: restart nginx addon
+  id: restart nginx addon
   initial_state: true
   trigger:
     - platform: time
@@ -45,7 +45,7 @@
 
 #Бекап базы homeassistant в MariaDB
 - alias: backup homeassistant database
-  #id: backup homeassistant database
+  id: backup homeassistant database
   initial_state: true
   trigger:
     - platform: time
@@ -58,7 +58,7 @@
 
 #Перезапуск интеграции speedtest.net по недоступности сенсоров
 - alias: speedtest_integration_restart
-  #id: speedtest_integration_restart
+  id: speedtest_integration_restart
   initial_state: 'true'
   trigger:
     - platform: time_pattern

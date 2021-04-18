@@ -1,6 +1,6 @@
     
     - alias: vacuum later start cleaning action
-      #id: vacuum later start cleaning action"
+      id: vacuum later start cleaning action"
       initial_state: true
       trigger:
            - platform: event
@@ -26,7 +26,7 @@
                 value: !secret telegram_chita_chat_id
 
     - alias: vacuum later start cleaning not docked
-      #id: vacuum later start cleaning not docked
+      id: vacuum later start cleaning not docked
       initial_state: true
       trigger:
            - platform: event

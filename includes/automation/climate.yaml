@@ -2,7 +2,7 @@
   # Xiaomi Smartmi Air Humidifier 2
 
 - alias: air humidifier target humidity changed
-  #id: air humidifier target humidity changed
+  id: air humidifier target humidity changed
   initial_state: true
   mode: queued
   max: 25
@@ -16,7 +16,7 @@
         humidity: '{{ states("input_number.xiaomi_airpurifier_target_humidity") | int }}'
 
 - alias: air humidifier led brightness change
-  #id: air humidifier led brightness change
+  id: air humidifier led brightness change
   initial_state: true
   mode: queued
   max: 25
@@ -29,8 +29,8 @@
          entity_id: fan.xiaomi_miio_device
          brightness: '{{ 2 - states("input_number.xiaomi_airpurifier_led_brightness") | int }}'
 
-- alias: air_humidifier_changed_state
-  #id: air_humidifier_changed_state
+- alias: air humidifier changed state
+  id: air humidifier changed state
   initial_state: true
   mode: restart
   trigger:
@@ -64,7 +64,7 @@
                 {%- endif %}
 
 - alias: air humidifier 1 target humidity changed
-  #id: air humidifier 1 target humidity changed
+  id: air humidifier 1 target humidity changed
   initial_state: true
   mode: queued
   max: 25
@@ -78,7 +78,7 @@
         humidity: '{{ states("input_number.xiaomi_airpurifier_1_target_humidity") | int }}'
 
 - alias: air humidifier 1 led brightness change
-  #id: air humidifier 1 led brightness change
+  id: air humidifier 1 led brightness change
   initial_state: true
   mode: queued
   max: 25
@@ -91,8 +91,8 @@
          entity_id: fan.xiaomi_miio_device_1
          brightness: '{{ states("input_number.xiaomi_airpurifier_1_led_brightness") | int }}'
 
-- alias: air_humidifier_changed_state_1
-  #id: air_humidifier_changed_state_1
+- alias: air humidifier changed state 1
+  id: air humidifier changed state 1
   initial_state: true
   mode: restart
   trigger:
@@ -127,7 +127,7 @@
 
 #Увлажнитель на ночь 1 скорость, днем авто
 - alias: air humidifier day and night speed
-  #id: air humidifier day and night speed
+  id: air humidifier day and night speed
   #initial_state: true
   mode: queued
   max: 25
@@ -170,7 +170,7 @@
 
 #Вкл/выкл климат. устройств при открытии/закрытии окна
 - alias: turn on off climate devices childrens room window open close
-  #id: turn on off climate devices childrens room window open close
+  id: turn on off climate devices childrens room window open close
   mode: single
   max_exceeded: silent
   trigger:
@@ -263,7 +263,7 @@
                   entity_id: input_boolean.auto_triggered_valve_window_childrens_room
 
 - alias: turn on off climate devices bed room window open close
-  #id: turn on off climate devices bed room window open close
+  id: turn on off climate devices bed room window open close
   mode: single
   max_exceeded: silent
   trigger:
@@ -361,7 +361,7 @@
                   entity_id: input_boolean.auto_triggered_valve_window_bed_room
 
 - alias: turn on off climate devices kitchen window open close
-  #id: turn on off climate devices kitchen window open close
+  id: turn on off climate devices kitchen window open close
   mode: single
   max_exceeded: silent
   trigger:
@@ -422,7 +422,7 @@
                   entity_id: input_boolean.auto_triggered_valve_window_kitchen
 
 - alias: turn on off climate devices living room window open close
-  #id: turn on off climate devices living room window open close
+  id: turn on off climate devices living room window open close
   mode: single
   max_exceeded: silent
   trigger:
@@ -521,7 +521,7 @@
 
 #Установка уровня воды для fan.xiaomi_miio_device
 - alias: set input number for water level humidifier in bed room
-  #id: set input number for water level humidifier in bed room
+  id: set input number for water level humidifier in bed room
   mode: single
   max_exceeded: silent
   initial_state: true
@@ -549,7 +549,7 @@
           {% endif %}
 
 - alias: set input number for water level humidifier in childrens room
-  #id: set input number for water level humidifier childrens bed room
+  id: set input number for water level humidifier childrens bed room
   mode: single
   max_exceeded: silent
   initial_state: true

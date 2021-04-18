@@ -1,6 +1,6 @@
 
     - alias: dynamic group sensor battery
-      #id: dynamic group sensor battery
+      id: dynamic group sensor battery
       initial_state: true
       trigger:
           - platform: time_pattern

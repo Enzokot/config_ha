@@ -68,3 +68,9 @@
     icon: mdi:cup-water
     min: 0
     max: 200
+
+  water_level_fan_xiaomi_miio_device_1_saved:
+    name: "Увлажнитель детская"
+    icon: mdi:cup-water
+    min: 0
+    max: 200

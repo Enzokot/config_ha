@@ -2,7 +2,7 @@
   # Xiaomi Smartmi Air Humidifier 2
 
 - alias: air humidifier target humidity changed
-  id: air humidifier target humidity changed
+  #id: air humidifier target humidity changed
   initial_state: true
   mode: queued
   max: 25
@@ -16,7 +16,7 @@
         humidity: '{{ states("input_number.xiaomi_airpurifier_target_humidity") | int }}'
 
 - alias: air humidifier led brightness change
-  id: air humidifier led brightness change
+  #id: air humidifier led brightness change
   initial_state: true
   mode: queued
   max: 25
@@ -29,51 +29,25 @@
          entity_id: fan.xiaomi_miio_device
          brightness: '{{ 2 - states("input_number.xiaomi_airpurifier_led_brightness") | int }}'
 
-- alias: air humidifier 1 target humidity changed
-  id: air humidifier 1 target humidity changed
-  initial_state: true
-  mode: queued
-  max: 25
-  trigger:
-    entity_id: input_number.xiaomi_airpurifier_1_target_humidity
-    platform: state
-  action:
-    - service: xiaomi_miio_airpurifier.fan_set_target_humidity
-      data:
-        entity_id: fan.xiaomi_miio_device_1
-        humidity: '{{ states("input_number.xiaomi_airpurifier_1_target_humidity") | int }}'
-
-- alias: air humidifier 1 led brightness change
-  id: air humidifier 1 led brightness change
-  initial_state: true
-  mode: queued
-  max: 25
-  trigger:
-    entity_id: input_number.xiaomi_airpurifier_1_led_brightness
-    platform: state
-  action:
-     - service: xiaomi_miio_airpurifier.fan_set_led_brightness
-       data:
-         entity_id: fan.xiaomi_miio_device_1
-         brightness: '{{ states("input_number.xiaomi_airpurifier_1_led_brightness") | int }}'
-
-- alias: air humidifier changed state
-  id: air humidifier changed state
+- alias: air_humidifier_changed_state
+  #id: air_humidifier_changed_state
   initial_state: true
   mode: restart
   trigger:
     - platform: state
       entity_id: fan.xiaomi_miio_device
-      attribute: target_humidity
-    - platform: state
-      entity_id: fan.xiaomi_miio_device
-      attribute: led_brightness
+    #   attribute: target_humidity
+    # - platform: state
+    #   entity_id: fan.xiaomi_miio_device
+    #   attribute: led_brightness
   condition:
-    condition: not
-    conditions:
-      - condition: state
-        entity_id: fan.xiaomi_miio_device
-        state: 'unavailable'    
+    - condition: template
+      value_template: >
+        {% set ignore = ['unknown', 'unavailable', 'none'] %}
+        {{ trigger.to_state.state not in ignore and
+           (trigger.to_state.attributes.target_humidity != trigger.from_state.attributes.target_humidity or
+           trigger.to_state.attributes.led_brightness != trigger.from_state.attributes.led_brightness)
+        }}
   action:
     - service: input_number.set_value
       entity_id: input_number.xiaomi_airpurifier_led_brightness
@@ -89,23 +63,53 @@
                   40
                 {%- endif %}
 
-- alias: air humidifier 1 changed state
-  id: air humidifier 1 changed state
+- alias: air humidifier 1 target humidity changed
+  #id: air humidifier 1 target humidity changed
+  initial_state: true
+  mode: queued
+  max: 25
+  trigger:
+    entity_id: input_number.xiaomi_airpurifier_1_target_humidity
+    platform: state
+  action:
+    - service: xiaomi_miio_airpurifier.fan_set_target_humidity
+      data:
+        entity_id: fan.xiaomi_miio_device_1
+        humidity: '{{ states("input_number.xiaomi_airpurifier_1_target_humidity") | int }}'
+
+- alias: air humidifier 1 led brightness change
+  #id: air humidifier 1 led brightness change
+  initial_state: true
+  mode: queued
+  max: 25
+  trigger:
+    entity_id: input_number.xiaomi_airpurifier_1_led_brightness
+    platform: state
+  action:
+     - service: xiaomi_miio_airpurifier.fan_set_led_brightness
+       data:
+         entity_id: fan.xiaomi_miio_device_1
+         brightness: '{{ states("input_number.xiaomi_airpurifier_1_led_brightness") | int }}'
+
+- alias: air_humidifier_changed_state_1
+  #id: air_humidifier_changed_state_1
   initial_state: true
   mode: restart
   trigger:
     - platform: state
       entity_id: fan.xiaomi_miio_device_1
-      attribute: target_humidity
-    - platform: state
-      entity_id: fan.xiaomi_miio_device_1
-      attribute: led_brightness
+    #   attribute: target_humidity
+    # - platform: state
+    #   entity_id: fan.xiaomi_miio_device_1
+    #   attribute: led_brightness
   condition:
-    condition: not
-    conditions:
-      - condition: state
-        entity_id: fan.xiaomi_miio_device_1
-        state: 'unavailable'    
+    - condition: template
+      value_template: >
+        {% set ignore = ['unknown', 'unavailable', 'none'] %}
+        {{ trigger.to_state.state not in ignore and
+           (trigger.to_state.attributes.target_humidity != trigger.from_state.attributes.target_humidity or
+           trigger.to_state.attributes.led_brightness != trigger.from_state.attributes.led_brightness)
+        }}
   action:
     - service: input_number.set_value
       entity_id: input_number.xiaomi_airpurifier_1_led_brightness
@@ -123,7 +127,7 @@
 
 #Увлажнитель на ночь 1 скорость, днем авто
 - alias: air humidifier day and night speed
-  id: air humidifier day and night speed
+  #id: air humidifier day and night speed
   #initial_state: true
   mode: queued
   max: 25
@@ -166,7 +170,7 @@
 
 #Вкл/выкл климат. устройств при открытии/закрытии окна
 - alias: turn on off climate devices childrens room window open close
-  id: turn on off climate devices childrens room window open close
+  #id: turn on off climate devices childrens room window open close
   mode: single
   max_exceeded: silent
   trigger:
@@ -259,7 +263,7 @@
                   entity_id: input_boolean.auto_triggered_valve_window_childrens_room
 
 - alias: turn on off climate devices bed room window open close
-  id: turn on off climate devices bed room window open close
+  #id: turn on off climate devices bed room window open close
   mode: single
   max_exceeded: silent
   trigger:
@@ -357,7 +361,7 @@
                   entity_id: input_boolean.auto_triggered_valve_window_bed_room
 
 - alias: turn on off climate devices kitchen window open close
-  id: turn on off climate devices kitchen window open close
+  #id: turn on off climate devices kitchen window open close
   mode: single
   max_exceeded: silent
   trigger:
@@ -418,7 +422,7 @@
                   entity_id: input_boolean.auto_triggered_valve_window_kitchen
 
 - alias: turn on off climate devices living room window open close
-  id: turn on off climate devices living room window open close
+  #id: turn on off climate devices living room window open close
   mode: single
   max_exceeded: silent
   trigger:
@@ -517,22 +521,22 @@
 
 #Установка уровня воды для fan.xiaomi_miio_device
 - alias: set input number for water level humidifier in bed room
-  id: set input number for water level humidifier in bed room
+  #id: set input number for water level humidifier in bed room
   mode: single
   max_exceeded: silent
   initial_state: true
   trigger:
     - platform: state
       entity_id: fan.xiaomi_miio_device
-      attribute: depth
+      #attribute: depth
   condition:
     - condition: template
       value_template: >- 
-                {{ 
-                  trigger.from_state.state not in ['unavailable', 'unknown', ''] and
-                  trigger.to_state.state not in ['unavailable', 'unknown', ''] and
-                  trigger.to_state.attributes.depth != states('input_number.water_level_fan_xiaomi_miio_device_saved')
-                }}
+            {% set ignore = ['unknown', 'unavailable', 'none'] %}
+            {{ trigger.to_state.state not in ignore and
+               trigger.from_state.state not in ignore and
+               trigger.to_state.attributes.depth != trigger.from_state.attributes.depth
+            }}
   action:
     - service: input_number.set_value
       data:
@@ -542,4 +546,32 @@
             {{ trigger.to_state.attributes.depth }}
           {% else %}
             {{ [state_attr('fan.xiaomi_miio_device', 'depth') | int, states('input_number.water_level_fan_xiaomi_miio_device_saved') | int] | min | int }}
+          {% endif %}
+
+- alias: set input number for water level humidifier in childrens room
+  #id: set input number for water level humidifier childrens bed room
+  mode: single
+  max_exceeded: silent
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: fan.xiaomi_miio_device_1
+      #attribute: depth
+  condition:
+    - condition: template
+      value_template: >- 
+            {% set ignore = ['unknown', 'unavailable', 'none'] %}
+            {{ trigger.to_state.state not in ignore and
+               trigger.from_state.state not in ignore and
+               trigger.to_state.attributes.depth != trigger.from_state.attributes.depth
+            }}
+  action:
+    - service: input_number.set_value
+      data:
+        entity_id: input_number.water_level_fan_xiaomi_miio_device_1_saved
+        value: >
+          {% if trigger.to_state.attributes.depth | int - states('input_number.water_level_fan_xiaomi_miio_device_1_saved') | int > 10 %}
+            {{ trigger.to_state.attributes.depth }}
+          {% else %}
+            {{ [state_attr('fan.xiaomi_miio_device_1', 'depth') | int, states('input_number.water_level_fan_xiaomi_miio_device_1_saved') | int] | min | int }}
           {% endif %}

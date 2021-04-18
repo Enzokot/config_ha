@@ -1,6 +1,6 @@
 #yeelight650 детская
     - alias: yeelight650 off
-      id: yeelight650 off
+      #id: yeelight650 off
       initial_state: true
       mode: restart
       trigger:
@@ -17,7 +17,7 @@
               entity_id: light.yeelight_650_ambilight
 
     - alias: yeelight650 on
-      id: yeelight650 on
+      #id: yeelight650 on
       initial_state: true
       mode: restart
       trigger:
@@ -37,7 +37,7 @@
               rgb_color: [255, 0, 135]
 
     - alias: yeelight650 on ambilight night mode
-      id: yeelight650 on ambilight night mode
+      #id: yeelight650 on ambilight night mode
       initial_state: true
       mode: restart
       trigger:
@@ -57,7 +57,7 @@
                 #rgb_color: [255, 167, 88]
 
     - alias: yeelight650 off ambilight night mode
-      id: yeelight650 off ambilight night mode
+      #id: yeelight650 off ambilight night mode
       initial_state: true
       mode: restart
       trigger:
@@ -78,7 +78,7 @@
 
 #Синхронизация светильника и выключателя каждые 3 минуты          
     - alias: sync yeelight650 to switch
-      id: sync yeelight650 to switch
+      #id: sync yeelight650 to switch
       initial_state: true
       trigger:
         platform: time_pattern
@@ -123,7 +123,7 @@
 
 #Подсветка шлюза при открытии входной двери
     - alias: light gateway toggle
-      id: light gateway toggle
+      #id: light gateway toggle
       initial_state: true
       trigger:
         platform: state
@@ -165,7 +165,7 @@
 
 #Подсветка шлюза утром
     - alias: light gateway go to work on
-      id: light gateway go to work on
+      #id: light gateway go to work on
       trigger:
         platform: time
         at: "07:00:00"
@@ -193,7 +193,7 @@
             brightness: 5
 
     - alias: light gateway go to work off
-      id: light gateway go to work off
+      #id: light gateway go to work off
       trigger:
         platform: time
         at: "07:20:00"

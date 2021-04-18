@@ -81,7 +81,7 @@ views:
              name: Свободное место
              unit: 'Гб'
              min: 0
-             max: 118
+             max: 109
              entity: sensor.disk_free
              severity:
                 red: 0

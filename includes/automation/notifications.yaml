@@ -1,6 +1,6 @@
 #Датчик открытия входной двери    
     - alias: notification front door open long time
-      id: notification front door open long time
+      #id: notification front door open long time
       initial_state: true
       trigger:
         platform: state
@@ -31,7 +31,7 @@
                     message: 'Входная дверь: открыта более 2 минут'
 
     - alias: notification sound front door open long time
-      id: notification sound front door open long time
+      #id: notification sound front door open long time
       initial_state: true
       trigger:
         platform: state
@@ -65,7 +65,7 @@
               ringtone_vol: 25
 
     - alias: notification sound front door open long time repeat
-      id: notification sound front door open long time repeat
+      #id: notification sound front door open long time repeat
       initial_state: true
       trigger:
            - platform: event
@@ -82,7 +82,7 @@
               ringtone_vol: 40
 
     - alias: notification sound front door open long time cancel
-      id: notification sound front door open long time cancel
+      #id: notification sound front door open long time cancel
       initial_state: true
       trigger:
            - platform: time
@@ -102,7 +102,7 @@
             entity_id: timer.front_door_ringtone
 
     - alias: notification front door open
-      id: notification front door open
+      #id: notification front door open
       initial_state: true
       trigger:
         - platform: state
@@ -139,7 +139,7 @@
                     message: 'Входная дверь: открыта'
 
     - alias: notification front door close
-      id: notification front door close
+      #id: notification front door close
       initial_state: true
       trigger:
         - platform: state
@@ -176,7 +176,7 @@
                     message: 'Входная дверь: закрыта'
 
     - alias: notification front door open armed
-      id: notification front door open armed
+      #id: notification front door open armed
       initial_state: true
       trigger:
         - platform: state
@@ -227,7 +227,7 @@
                         {{ sm_g973f_rezhim_ne_bespokoit }}
 
     - alias: notification motion detected armed
-      id: notification motion detected armed
+      #id: notification motion detected armed
       initial_state: true
       mode: queued
       trigger:
@@ -282,7 +282,7 @@
                         {{ sm_g973f_rezhim_ne_bespokoit }}
 
     - alias: notification open window armed
-      id: notification open window armed
+      #id: notification open window armed
       initial_state: true
       mode: queued
       trigger:
@@ -339,7 +339,7 @@
 
 #Пылесос
     - alias: vacuum cleaner error chita
-      id: vacuum cleaner error chita
+      #id: vacuum cleaner error chita
       initial_state: true
       trigger:
        - platform: state
@@ -371,7 +371,7 @@
                     message: 'Степа: мне нужна помощь'
 
     - alias: vacuum cleaner after cleaning chita
-      id: vacuum cleaner after cleaning chita
+      #id: vacuum cleaner after cleaning chita
       initial_state: true
       trigger:
        - platform: state
@@ -404,7 +404,7 @@
 
 #Датчики дыма
     - alias: smoke detector alarm
-      id: smoke detector alarm
+      #id: smoke detector alarm
       initial_state: true
       trigger:
        - platform: state
@@ -506,7 +506,7 @@
 
 #Срок сертификата менее 5 дней
     - alias: notification cert expired
-      id: notification cert expired
+      #id: notification cert expired
       initial_state: true
       trigger:
         platform: time
@@ -526,7 +526,7 @@
                         
 #Новая версия НА
     - alias: update HA available notification
-      id: update HA available notification
+      #id: update HA available notification
       initial_state: true
       trigger:
         - platform: state
@@ -550,7 +550,7 @@
 
 #Новая версия Supervisor
     - alias: update Supervisor available notification
-      id: update Supervisor available notification
+      #id: update Supervisor available notification
       initial_state: true
       trigger:
         - platform: state
@@ -575,7 +575,7 @@
 
 #Доступны для обновления аддоны Supervisor
     - alias: update Supervisor addons available notification
-      id: update Supervisor addons available notification
+      #id: update Supervisor addons available notification
       initial_state: true
       trigger:
         - platform: state
@@ -598,7 +598,7 @@
 
 #Доступны для обновления аддоны HACS
     - alias: update HACS addons available notification
-      id: update HACS addons available notification
+      #id: update HACS addons available notification
       initial_state: true
       trigger:
         - platform: state
@@ -621,7 +621,7 @@
 
 #Низкий заряд батарей Zigbee
     - alias: notification low battery zigbee
-      id: notification low battery zigbee
+      #id: notification low battery zigbee
       initial_state: true
       trigger:
         platform: time
@@ -651,7 +651,7 @@
 
 #После рестарта НА остался включенный обогреватель
     - alias: notification safety sockets on restart
-      id: notification safety sockets on restart
+      #id: notification safety sockets on restart
       initial_state: true
       trigger:
         - platform: homeassistant
@@ -671,7 +671,7 @@
 
 #Уведомление от розеток при превышении 3кВт
     - alias: notification safety sockets off
-      id: notification safety sockets off
+      #id: notification safety sockets off
       initial_state: true
       trigger:
           - platform: numeric_state
@@ -695,7 +695,7 @@
 
 #Уведомление о смене Public IP
     - alias: notification public ip changed
-      id: notification public ip changed
+      #id: notification public ip changed
       initial_state: true
       trigger:
           - platform: state
@@ -734,20 +734,19 @@
 
 #Уведомление при низком уровне воды
     - alias: notification low level water
-      id: notification low level water
+      #id: notification low level water
       initial_state: true
       trigger:
         - platform: numeric_state
           entity_id: input_number.water_level_fan_xiaomi_miio_device_saved
           below: 40
         - platform: numeric_state
-          entity_id: fan.xiaomi_miio_device_1
+          entity_id: input_number.water_level_fan_xiaomi_miio_device_1_saved
           below: 20
-          attribute: water_level
       condition:
         - condition: template
           value_template: >- 
-                    {{ trigger.from_state.state not in ['unavailable', 'unknown', '', 'off'] }}
+                    {{ trigger.from_state.state not in ['unavailable', 'unknown', '', 'off', 'none'] }}
       action:
         - service: telegram_bot.send_message
           data:
@@ -769,7 +768,7 @@
 
 #Уведомление обслуживания пылесоса
     - alias: notification vacuum maintenance
-      id: notification vacuum maintenance
+      #id: notification vacuum maintenance
       initial_state: true
       trigger:
         - platform: numeric_state
@@ -794,7 +793,7 @@
 
 #Уведомления по напряжению сети
     - alias: notifications control voltage
-      id: notifications control voltage
+      #id: notifications control voltage
       initial_state: true
       mode: queued
       trigger:
@@ -835,7 +834,7 @@
 
 #Уведомление об успешном бекапе
     - alias: notifications backup db info
-      id: notifications backup db info
+      #id: notifications backup db info
       initial_state: true
       mode: queued
       trigger:
@@ -872,7 +871,7 @@
 
 #Уведоление о неуспешном входе или о блокировки IP по неуспешным логинам
     - alias: notifications failed login or block IP
-      id: notifications failed login or block IP
+      #id: notifications failed login or block IP
       mode: parallel
       initial_state: true
       trigger:
@@ -910,7 +909,7 @@
 
 #Уведомление о неуспешной проверке конфигурации
     - alias: notification check configuration failed
-      id: notification check configuration failed
+      #id: notification check configuration failed
       mode: parallel
       initial_state: true
       trigger:
@@ -928,7 +927,7 @@
                 {{ trigger.to_state.attributes.message }}
 
     - alias: notification dismiss check configuration failed
-      id: notification dismiss check configuration failed
+      #id: notification dismiss check configuration failed
       mode: parallel
       initial_state: true
       trigger:
@@ -949,7 +948,7 @@
 
 #Уведомление о перезапуске НА
     - alias: notification start or stop home assistant
-      id: notification start or stop home assistant
+      #id: notification start or stop home assistant
       mode: parallel
       initial_state: true
       trigger:
@@ -977,7 +976,7 @@
 
 #Уведомление об утечке пароля
     - alias: notifications loss passwords
-      id: notifications loss passwords
+      #id: notifications loss passwords
       mode: parallel
       initial_state: true
       trigger:

@@ -118,6 +118,9 @@ views:
           hours_to_show: 24
           name: Speedtest.net
           points_per_hour: 1
+        #   tap_action:
+        #     action: call-service
+        #     service: speedtestdotnet.speedtest
 
       - type: vertical-stack
         cards:

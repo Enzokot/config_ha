@@ -3,10 +3,10 @@
       trigger:
         - platform: state
           entity_id: fan.xiaomi_miio_device
-          attribute: depth
+          #attribute: depth
         - platform: state
           entity_id: fan.xiaomi_miio_device_1
-          attribute: water_level
+          #attribute: water_level
       action:
         - service: telegram_bot.send_message
           data:

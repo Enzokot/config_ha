@@ -1,7 +1,8 @@
     
     alarm_gateway_light:
         alias: Световая сигнализация шлюза
-        mode: restart
+        mode: single
+        max_exceeded: silent
         icon: mdi:alarm-light-outline
         sequence:
          - repeat:
@@ -24,7 +25,8 @@
 
     alarm_gateway_sound:
         alias: Звуковая сигнализация шлюза
-        mode: restart
+        mode: single
+        max_exceeded: silent
         icon: mdi:alarm-light-outline
         sequence:
          - repeat:

@@ -2,7 +2,8 @@
     - alias: yeelight650 off
       id: yeelight650 off
       initial_state: true
-      mode: restart
+      mode: single
+      max_exceeded: silent
       trigger:
         - platform: state
           entity_id: binary_sensor.0x00158d0003f37a0f_contact
@@ -19,7 +20,8 @@
     - alias: yeelight650 on
       id: yeelight650 on
       initial_state: true
-      mode: restart
+      mode: single
+      max_exceeded: silent
       trigger:
         - platform: state
           entity_id: binary_sensor.0x00158d0003f37a0f_contact
@@ -39,7 +41,8 @@
     - alias: yeelight650 on ambilight night mode
       id: yeelight650 on ambilight night mode
       initial_state: true
-      mode: restart
+      mode: single
+      max_exceeded: silent
       trigger:
         - platform: state
           entity_id: sensor.0x00158d0003a360b6_action
@@ -59,7 +62,8 @@
     - alias: yeelight650 off ambilight night mode
       id: yeelight650 off ambilight night mode
       initial_state: true
-      mode: restart
+      mode: single
+      max_exceeded: silent
       trigger:
         - platform: state
           entity_id: sensor.0x00158d0003a360b6_action

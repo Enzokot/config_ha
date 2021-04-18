@@ -201,7 +201,8 @@
     - alias: restart z2m or instance for heater
       id: restart z2m or instance for heater
       initial_state: true
-      mode: restart
+      mode: single
+      max_exceeded: silent
       trigger:
         - platform: state
           entity_id: sensor.0x842e14fffe5047f5_power
@@ -223,7 +224,8 @@
     - alias: restart z2m or instance for water heater
       id: restart z2m or instance for water heater
       initial_state: true
-      mode: restart
+      mode: single
+      max_exceeded: silent
       trigger:
         - platform: state
           entity_id: sensor.0x842e14fffe13a854_power
@@ -245,7 +247,8 @@
     - alias: restart z2m or instance for kitchen socket 1
       id: restart z2m or instance for kitchen socket 1
       initial_state: true
-      mode: restart
+      mode: single
+      max_exceeded: silent
       trigger:
         - platform: state
           entity_id: sensor.0x842e14fffe36661f_power
@@ -267,7 +270,8 @@
     - alias: restart z2m or instance for bedroom socket 1
       id: restart z2m or instance for bedroom socket 1
       initial_state: true
-      mode: restart
+      mode: single
+      max_exceeded: silent
       trigger:
         - platform: state
           entity_id: sensor.0x588e81fffeff5c4f_power

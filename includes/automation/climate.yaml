@@ -32,7 +32,8 @@
 - alias: air humidifier changed state
   id: air humidifier changed state
   initial_state: true
-  mode: restart
+  mode: single
+  max_exceeded: silent
   trigger:
     - platform: state
       entity_id: fan.xiaomi_miio_device
@@ -94,7 +95,8 @@
 - alias: air humidifier changed state 1
   id: air humidifier changed state 1
   initial_state: true
-  mode: restart
+  mode: single
+  max_exceeded: silent
   trigger:
     - platform: state
       entity_id: fan.xiaomi_miio_device_1

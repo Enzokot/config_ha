@@ -52,3 +52,11 @@
     auto_triggered_ac_window_living_room:
         name: Восстановление кондиционера после закрытия окна в гостиной
         icon: mdi:window-open
+
+#Флаг остановки НА
+    instances_stoping:
+        initial: false
+
+#Флаг включенной автоматизации по уведомлениям недоступности устройств
+    automation_notifications_objects_in_unavailable_status:
+        name: Восстановление автоматизации по уведомлениям недоступности устройств

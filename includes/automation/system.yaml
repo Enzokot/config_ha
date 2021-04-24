@@ -74,3 +74,45 @@
   action:
     - service: rest_command.reload_integration_speedtest
       data: {}
+
+#Перезагрузка автоматизаций
+- alias: system_automation_reload
+  id: system_automation_reload
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: call_service
+      event_data:
+        domain: automation
+        service: reload
+    - platform: event
+      event_type: automation_reloaded
+  action:
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: automation.notifications_objects_in_unavailable_status
+              state: 'on'
+            - condition: template
+              value_template: >-
+                {{ trigger.event.event_type == 'call_service' }}
+          sequence:
+            - service: input_boolean.turn_on
+              data:
+                entity_id: input_boolean.automation_notifications_objects_in_unavailable_status
+            - service: automation.turn_off
+              entity_id: automation.notifications_objects_in_unavailable_status
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: input_boolean.automation_notifications_objects_in_unavailable_status
+              state: 'on'
+            - condition: template
+              value_template: >-
+                {{ trigger.event.event_type == 'automation_reloaded' }}
+          sequence:
+            - service: input_boolean.turn_off
+              data:
+                entity_id: input_boolean.automation_notifications_objects_in_unavailable_status
+            - service: automation.turn_on
+              entity_id: automation.notifications_objects_in_unavailable_status

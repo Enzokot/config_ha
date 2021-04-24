@@ -889,7 +889,7 @@ views:
     
                     - type: button
                       show_name: false
-                      entity: input_boolean.thermostat_childrensroom_night_mode                      
+                      entity: input_boolean.thermostat_childrensroom_night_mode
                       tap_action:
                         action: toggle
     
@@ -932,7 +932,7 @@ views:
 
                     - type: button
                       show_name: false
-                      entity: input_boolean.thermostat_bedroom_night_mode                      
+                      entity: input_boolean.thermostat_bedroom_night_mode
                       tap_action:
                         action: toggle
                       

@@ -60,6 +60,8 @@ logbook:
 recorder: !include includes/recorder.yaml
 logger:
   default: info
+system_log:
+  fire_event: true
 
 group: !include includes/groups.yaml
 automation: !include_dir_merge_list includes/automation

@@ -957,6 +957,12 @@
         - platform: homeassistant
           event: shutdown
       action:
+        - choose:
+            - conditions: "{{ trigger.event == 'shutdown' }}"
+              sequence:
+                - service: input_boolean.turn_on
+                  data:
+                    entity_id: input_boolean.instances_stoping
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -993,3 +999,65 @@
         - service: persistent_notification.dismiss
           data:
             notification_id: 'supervisor_issue_pwned'
+
+#Уведомление об ошибках выполнения автоматизаций/скриптов
+    - alias: notifications errors in automations or scripts
+      id: notifications errors in automations or scripts
+      mode: queued
+      trigger:
+        - platform: event
+          event_type: system_log_event
+          event_data:
+            level: ERROR
+      condition:
+        - condition: template
+          value_template: >-
+            {{ 
+              trigger.event.data.message | regex_search('Error while executing automation') or
+              trigger.event.data.message | regex_search('Error executing script')
+            }}
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            parse_mode: html
+            title: "{{ '\U000026d4' }} *Ошибка выполнения скрипта*"
+            message: >
+              {{ trigger.event.data.message }}.
+
+#Уведомление об объектах, которые перешли в статус недоступно
+    - alias: notifications objects in unavailable status
+      id: notifications objects in unavailable status
+      mode: queued
+      max: 30
+      trigger:
+        - platform: event
+          event_type: state_changed
+      condition:
+        - condition: state
+          entity_id: input_boolean.instances_stoping
+          state: 'off'
+        - condition: template
+          value_template: >-
+            {{ not trigger.event.data.entity_id in ['group.dynamic_group_sensor_battery'] }}
+        - condition: template
+          value_template: >-
+            {{ trigger.event.data.new_state.state != trigger.event.data.old_state.state }}
+        - condition: template
+          value_template: >-
+            {{ trigger.event.data.new_state.state in ['unknown', 'unavailable'] }}
+      action:
+        - choose:
+            - conditions: 
+                - condition: state
+                  entity_id: input_boolean.instances_stoping
+                  state: 'off'
+              sequence:
+                - service: telegram_bot.send_message
+                  data:
+                    target: !secret telegram_enzokot_chat_id
+                    disable_notification: true
+                    parse_mode: html
+                    title: "{{ '\U000026A0' }} <b>Трекинг устройств</b>"
+                    message: >
+                      <i>{{ state_attr(trigger.event.data.entity_id, 'friendly_name') }}</i> сменил статус на <b>{{ trigger.event.data.new_state.state }}</b>

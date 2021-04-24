@@ -64,7 +64,7 @@
           - sensor.0x842e14fffe13a854_voltage
           #Трекер персоны
           - person.kostik
-          - device_tracker.sm_g973f
+          #- device_tracker.sm_g973f
           #Длительность запуска
           - sensor.start_time
           #Весы

@@ -87,32 +87,38 @@
         service: reload
     - platform: event
       event_type: automation_reloaded
-  action:
-    - choose:
-        - conditions:
+  condition:
+    - condition: or
+      conditions:  
+        - condition: and
+          conditions:
             - condition: state
               entity_id: automation.notifications_objects_in_unavailable_status
               state: 'on'
             - condition: template
               value_template: >-
                 {{ trigger.event.event_type == 'call_service' }}
-          sequence:
-            - service: input_boolean.turn_on
-              data:
-                entity_id: input_boolean.automation_notifications_objects_in_unavailable_status
-            - service: automation.turn_off
-              entity_id: automation.notifications_objects_in_unavailable_status
-    - choose:
-        - conditions:
+        - condition: and
+          conditions:
             - condition: state
               entity_id: input_boolean.automation_notifications_objects_in_unavailable_status
               state: 'on'
             - condition: template
               value_template: >-
                 {{ trigger.event.event_type == 'automation_reloaded' }}
-          sequence:
-            - service: input_boolean.turn_off
-              data:
-                entity_id: input_boolean.automation_notifications_objects_in_unavailable_status
-            - service: automation.turn_on
-              entity_id: automation.notifications_objects_in_unavailable_status
+  action:
+    - service: >
+        {% if trigger.event.event_type == 'call_service' -%}
+            input_boolean.turn_on
+        {% else -%}
+            input_boolean.turn_off
+        {% endif -%}
+      data:
+        entity_id: input_boolean.automation_notifications_objects_in_unavailable_status
+    - service: > 
+        {% if trigger.event.event_type == 'call_service' -%}
+            automation.turn_off
+        {% else -%}
+            automation.turn_on
+        {% endif -%}
+      entity_id: automation.notifications_objects_in_unavailable_status

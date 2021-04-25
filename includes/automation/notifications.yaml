@@ -1039,7 +1039,10 @@
           state: 'off'
         - condition: template
           value_template: >-
-            {{ not trigger.event.data.entity_id in ['group.dynamic_group_sensor_battery'] }}
+            {{ trigger.event.data.entity_id in expand('group.important_devices_unavailable') | map(attribute='entity_id') | list }}
+        # - condition: template
+        #   value_template: >-
+        #     {{ not trigger.event.data.entity_id in ['group.dynamic_group_sensor_battery'] }}
         - condition: template
           value_template: >-
             {{ trigger.event.data.new_state.state != trigger.event.data.old_state.state }}

@@ -104,7 +104,6 @@
 #Атоматическая калибровка локальной температуры термоголовок
     - alias: auto_local_temperature_calibration_thermostats
       id: auto_local_temperature_calibration_thermostats
-      initial_state: 'true'
       trigger:
         - platform: time_pattern
           minutes: "/3"

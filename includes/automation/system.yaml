@@ -88,37 +88,33 @@
     - platform: event
       event_type: automation_reloaded
   condition:
-    - condition: or
-      conditions:  
-        - condition: and
-          conditions:
-            - condition: state
-              entity_id: automation.notifications_objects_in_unavailable_status
-              state: 'on'
-            - condition: template
-              value_template: >-
-                {{ trigger.event.event_type == 'call_service' }}
-        - condition: and
-          conditions:
-            - condition: state
-              entity_id: input_boolean.automation_notifications_objects_in_unavailable_status
-              state: 'on'
-            - condition: template
-              value_template: >-
-                {{ trigger.event.event_type == 'automation_reloaded' }}
+    - condition: template
+      value_template: >-
+        {% set auto_exclude = 'automation.system_automation_reload' %}
+        {{ trigger.event.event_type == 'call_service' and
+           states | selectattr('domain', 'eq', 'automation') | selectattr('state', 'eq', 'on') | selectattr('entity_id', 'ne', auto_exclude) | map(attribute = 'entity_id') | list | count > 0
+           or
+           trigger.event.event_type == 'automation_reloaded' and
+           expand('group.dynamic_group_automation_for_reload') | count > 0
+        }}
   action:
-    - service: >
-        {% if trigger.event.event_type == 'call_service' -%}
-            input_boolean.turn_on
-        {% else -%}
-            input_boolean.turn_off
-        {% endif -%}
-      data:
-        entity_id: input_boolean.automation_notifications_objects_in_unavailable_status
-    - service: > 
+    - choose:
+        - conditions: "{{ trigger.event.event_type == 'call_service' }}"
+          sequence:  
+            - service: group.set
+              data:
+                name: dynamic group automation for reload
+                object_id: dynamic_group_automation_for_reload
+                icon: mdi:script-text
+                entities: >-
+                  {% set auto_exclude = 'automation.system_automation_reload' %}
+                  {{ states | selectattr('domain', 'eq', 'automation') | selectattr('state', 'eq', 'on') | selectattr('entity_id', 'ne', auto_exclude) | map(attribute = 'entity_id') | list | join(', ') }}
+    - service: >- 
         {% if trigger.event.event_type == 'call_service' -%}
             automation.turn_off
         {% else -%}
             automation.turn_on
         {% endif -%}
-      entity_id: automation.notifications_objects_in_unavailable_status
+      data:
+        entity_id: >-
+          {{ expand('group.dynamic_group_automation_for_reload') | map(attribute = 'entity_id') | join(', ') }}

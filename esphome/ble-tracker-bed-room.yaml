@@ -8,6 +8,7 @@ esphome:
   comment: BLE bed room
 
 wifi:
+  power_save_mode: none
   networks:
   #Точка в спальне
   - ssid: Kotletochka

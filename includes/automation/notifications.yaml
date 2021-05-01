@@ -1016,12 +1016,17 @@
               trigger.event.data.message | regex_search('Error while executing automation') or
               trigger.event.data.message | regex_search('Error executing script')
             }}
+        - condition: template
+          value_template: >-
+            {{ 
+              trigger.event.data.message | length < 4000
+            }}
       action:
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             parse_mode: html
-            title: "{{ '\U000026d4' }} *Ошибка выполнения скрипта*"
+            title: "{{ '\U000026d4' }} <b>Ошибка выполнения скрипта</b>"
             message: >
               {{ trigger.event.data.message }}.
 

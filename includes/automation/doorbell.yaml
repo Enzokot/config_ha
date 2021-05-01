@@ -20,7 +20,7 @@
             state: 'disarmed'
           - condition: template
             value_template: >
-                              {{ trigger.to_state.state not in ['release', 'unavailable', 'unknown', ''] }}
+                              {{ trigger.to_state.state not in ['release', 'unavailable', 'unknown', '', 'None'] }}
                 #  - 'hold'
                 #  - 'single'
                 #  - 'double'
@@ -74,7 +74,7 @@
             state: 'disarmed'
           - condition: template
             value_template: >
-                              {{ trigger.to_state.state not in ['release', 'unavailable', 'unknown', ''] }}
+                              {{ trigger.to_state.state not in ['release', 'unavailable', 'unknown', '', 'None'] }}
       action:
         - service: scene.create
           data:

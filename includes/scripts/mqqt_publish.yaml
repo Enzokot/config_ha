@@ -39,7 +39,7 @@
           - service: script.turn_on
             data:
               entity_id: >
-                {% set num_low_link = states | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.linkquality', '<', 20 ) | map(attribute = 'attributes.device.friendlyName') | unique | list | count %}
+                {% set num_low_link = states | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.linkquality', 'ne', None) | selectattr('attributes.linkquality', '<', 20 ) | map(attribute = 'attributes.device.friendlyName') | unique | list | count %}
                 
                 {% if num_low_link > 0 %}
                   script.zigbee2mqtt_link_level_low
@@ -57,8 +57,8 @@
             disable_notification: true
             target: !secret telegram_enzokot_chat_id
             message: >
-                {% set low_link = states | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.linkquality', '<', 20 ) | map(attribute = 'attributes.device.friendlyName') | unique | list | join(', ') %}
-                {% set num_low_link = states | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.linkquality','<', 20 ) | map(attribute = 'attributes.device.friendlyName') | unique | list | count %}
+                {% set low_link = states | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.linkquality', 'ne', None) | selectattr('attributes.linkquality', '<', 20 ) | map(attribute = 'attributes.device.friendlyName') | unique | list | join(', ') %}
+                {% set num_low_link = states | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.linkquality', 'ne', None) | selectattr('attributes.linkquality','<', 20 ) | map(attribute = 'attributes.device.friendlyName') | unique | list | count %}
                               
                 Низкий сигнал ({{ num_low_link }}шт): {% if num_low_link > 0 %}{{low_link}}{% endif %}
     

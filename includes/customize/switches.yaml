@@ -28,3 +28,11 @@ switch.0x086bd7fffe5b7c7f_right:
 switch.0x086bd7fffe5b7c7f_left:
   friendly_name: Вытяжка
   icon: mdi:fan
+
+switch.0x086bd7fffe5aecf8_right:
+  friendly_name: Подсветка зеркала
+  icon: mdi:light-switch
+
+switch.0x086bd7fffe5aecf8_left:
+  friendly_name: Вытяжка
+  icon: mdi:fan

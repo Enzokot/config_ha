@@ -1034,7 +1034,7 @@
     - alias: notifications objects in unavailable status
       id: notifications objects in unavailable status
       mode: queued
-      max: 30
+      max: 70
       trigger:
         - platform: event
           event_type: state_changed

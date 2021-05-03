@@ -68,9 +68,10 @@
           - vacuum.xiaomi_vacuum_cleaner
           - light.yeelight_650
           - light.signalka_shliuza_light
-          - light.gateway_light_04cf8cabd77b
           - fan.xiaomi_miio_device
           - sensor.kholodilnik
           - fan.xiaomi_miio_device_1
           - media_player.lg_smart_tv
           - media_player.samsung_tv_remote
+          - sensor.0x086bd7fffe5aecf8_linkquality
+          - alarm_control_panel.signalka_shliuza_alarm

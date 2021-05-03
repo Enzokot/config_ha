@@ -224,8 +224,6 @@ views:
             - entity: switch.0x086bd7fffe5d13c9
               secondary_info: last-changed
 
-      - type: vertical-stack
-        cards:
         - type: markdown
           content: >
              **Освещение/вытяжка туалет**    
@@ -237,6 +235,19 @@ views:
             - entity: switch.0x086bd7fffe5b7c7f_right
               secondary_info: last-changed
             - entity: switch.0x086bd7fffe5b7c7f_left
+              secondary_info: last-changed
+
+        - type: markdown
+          content: >
+             **Освещение/вытяжка ванная**    
+
+        - type: entities
+          show_header_toggle: false
+          state_color: true
+          entities:
+            - entity: switch.0x086bd7fffe5aecf8_right
+              secondary_info: last-changed
+            - entity: switch.0x086bd7fffe5aecf8_left
               secondary_info: last-changed
 
   - title: Zigbee

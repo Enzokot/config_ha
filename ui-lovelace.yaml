@@ -245,9 +245,9 @@ views:
           show_header_toggle: false
           state_color: true
           entities:
-            - entity: switch.0x086bd7fffe5aecf8_right
-              secondary_info: last-changed
             - entity: switch.0x086bd7fffe5aecf8_left
+              secondary_info: last-changed
+            - entity: switch.0x086bd7fffe5aecf8_right
               secondary_info: last-changed
 
   - title: Zigbee

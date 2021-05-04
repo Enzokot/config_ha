@@ -6,7 +6,8 @@ substitutions:
 esphome:
   name: $devicename
   platform: ESP8266
-  board: esp_wroom_02
+  #board: esp_wroom_02
+  board: esp01_1m
   comment: IR and notify telegram HA state living room
 
 wifi:
@@ -83,6 +84,7 @@ status_led:
 remote_receiver:
   pin: 
     number: GPIO5
+    mode: INPUT_PULLUP
     inverted: true
   dump: all
   tolerance: 55

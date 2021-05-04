@@ -1,8 +1,8 @@
   #Перезапуск интеграции speedtest.net
-  reload_integration_speedtest:
-    url: http://kotletochkarpi4.local:8123/api/config/config_entries/entry/8a7c8a568a453f39d2a77dda05119c4b/reload
-    content_type: 'application/json'
-    method: post
-    timeout: 60
-    headers:
-      authorization: !secret restful_commands_token
+#   reload_integration_speedtest:
+#     url: http://kotletochkarpi4.local:8123/api/config/config_entries/entry/8a7c8a568a453f39d2a77dda05119c4b/reload
+#     content_type: 'application/json'
+#     method: post
+#     timeout: 60
+#     headers:
+#       authorization: !secret restful_commands_token

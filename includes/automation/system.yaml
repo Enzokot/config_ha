@@ -72,8 +72,12 @@
                states('sensor.speedtest_upload') in ignore
             }}
   action:
-    - service: rest_command.reload_integration_speedtest
-      data: {}
+    - service: homeassistant.reload_config_entry
+      data:
+        entry_id: 8a7c8a568a453f39d2a77dda05119c4b
+    # - service: rest_command.reload_integration_speedtest
+    #   data: {}
+
 
 #Перезагрузка автоматизаций
 - alias: system_automation_reload

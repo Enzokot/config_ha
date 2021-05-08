@@ -19,10 +19,3 @@
       unit_of_measurement: 's'
       force_update: true
       icon: mdi:av-timer
-
-    - platform: template
-      sensors:
-        zigbee2mqtt_coordinator_ver:
-           friendly_name: Версия стика
-           icon_template: mdi:chip
-           value_template: "{{ state_attr('sensor.zigbee2mqtt_coordinator_version', 'type') }}  rev.{{ state_attr('sensor.zigbee2mqtt_coordinator_version', 'revision')}}"

@@ -1,24 +1,3 @@
-  - platform: template
-    sensors:
-        total_heater_socket_cable:
-          unit_of_measurement: kWh
-          icon_template: mdi:horizontal-rotate-counterclockwise
-          value_template: "{{ states('input_number.total_heater_socket_saved')}}"
-          
-        total_water_heater_socket_cable:
-          unit_of_measurement: kWh
-          icon_template: mdi:horizontal-rotate-counterclockwise
-          value_template: "{{ states('input_number.total_water_heater_socket_saved')}}"
-
-        total_bedroom_socket_1_cable:
-          unit_of_measurement: kWh
-          icon_template: mdi:horizontal-rotate-counterclockwise
-          value_template: "{{ states('input_number.total_bedroom_socket1_saved')}}"
-          
-        total_kitchen_socket_1_cable:
-          unit_of_measurement: kWh
-          icon_template: mdi:horizontal-rotate-counterclockwise
-          value_template: "{{ states('input_number.total_kitchen_socket1_saved')}}"
 
   - platform: integration
     source: sensor.server_ac_power_socket_w

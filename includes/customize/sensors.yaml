@@ -233,3 +233,84 @@ sensor.esp_xiaomi_kitchen_battery_level:
 
 sensor.esp_xiaomi_living_room_battery_level:
   friendly_name: Часы гостиная
+
+sensor.zigbee2mqtt_coordinator_ver:
+  friendly_name: Версия стика
+
+sensor.vacuum_cleaner_status_sensor:
+  friendly_name: Vacuum Cleaner Status Sensor
+
+sensor.vacuum_cleaner_main_brush_left:
+  friendly_name: Основная щетка
+
+sensor.vacuum_cleaner_side_brush_left:
+  friendly_name: Боковая щетка
+
+sensor.vacuum_cleaner_filter_left:
+  friendly_name: Фильтр бачка для пыли
+
+sensor.vacuum_cleaner_sensor_dirty_left:
+  friendly_name: Датчики
+
+sensor.last_boot_custom:
+  friendly_name: Последняя перезагрузка
+
+sensor.online_custom:
+  friendly_name: Последняя перезагрузка HA
+
+sensor.cert_expiry_enzokot_domain:
+  friendly_name: Срок сертификата SSL
+
+sensor.last_google_backup_train:
+  friendly_name: Последний бэкап
+
+sensor.snapshots_in_google_drive_train:
+  friendly_name: На Googe Drive
+
+sensor.snapshots_in_hassio_train:
+  friendly_name: В Наssio
+
+sensor.158d00042fd6f5_pressure:
+  friendly_name: Атм. давление улица
+
+sensor.xiaomi_miio_device_temperature:
+  friendly_name: Т увлажнитель спальня
+
+sensor.xiaomi_miio_device_humidity:
+  friendly_name: Rh увлажнитель спальня
+
+sensor.xiaomi_miio_device_1_temperature:
+  friendly_name: Т увлажнитель детская
+
+sensor.xiaomi_miio_device_1_humidity:
+  friendly_name: Rh увлажнитель детская
+
+sensor.xiaomi_miio_device_speed:
+  friendly_name: Скорость
+
+sensor.xiaomi_miio_device_1_speed:
+  friendly_name: Скорость
+
+sensor.xiaomi_miio_device_water:
+  friendly_name: Уровень воды увлажнитель спальня
+
+sensor.xiaomi_miio_device_1_water:
+  friendly_name: Уровень воды увлажнитель детская
+
+sensor.temp_for_ac_living_room:
+  friendly_name: Температура
+
+sensor.humidity_for_ac_living_room:
+  friendly_name: Влажность
+
+sensor.thermostat_bedroom_valve_position:
+  friendly_name: Положение штока
+
+sensor.thermostat_childrens_room_valve_position:
+  friendly_name: Положение штока
+
+sensor.thermostat_living_room_valve_position:
+  friendly_name: Положение штока
+
+sensor.thermostat_kitchen_valve_position:
+  friendly_name: Положение штока

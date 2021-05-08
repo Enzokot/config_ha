@@ -1,0 +1,66 @@
+  
+  - sensor:
+# Время с последней перезагрузки
+     - name: last_boot_custom
+       state: >
+           {% set uptime = as_timestamp (now()) - as_timestamp(states('sensor.last_boot')) | int %}
+           {% set minutes = (( uptime % 3600) / 60) | int %}
+           {% set hours = ((uptime % 86400) / 3600) | int %}
+           {% set days = (uptime / 86400) | int %}
+             {% if uptime < 1 %}
+               Меньше минуты
+             {% else %}
+               {% if days > 0 %}
+                 {{ days }} д.
+               {% endif %}
+               {% if hours > 0 %}
+                 {% if days > 0 %}
+                   {{ ' ' }}
+                 {% endif %}
+                 {{ hours }} ч.
+               {% endif %}
+               {% if minutes > 0 %}
+                 {% if days > 0 or hours > 0 %}
+                   {{ ' ' }}
+                 {% endif %}
+                   {{ minutes }} мин.
+               {% endif %}
+             {% endif %}
+       icon: mdi:clock
+        
+     - name: online_custom
+       state: >
+           {% set uptime = ((as_timestamp(now()) | int - as_timestamp(states('sensor.online')) | int) / 60 ) | int %}
+           {% set minutes = (( uptime % 60) / 1) | int %}
+           {% set hours = ((uptime % 1440) / 60) | int %}
+           {% set days = (uptime / 1440) | int %}
+             {% if uptime < 1 %}
+               Меньше минуты
+             {% else %}
+               {% if days > 0 %}
+                 {{ days }} д.
+               {% endif %}
+               {% if hours > 0 %}
+                 {% if days > 0 %}
+                   {{ ' ' }}
+                 {% endif %}
+                 {{ hours }} ч.
+               {% endif %}
+               {% if minutes > 0 %}
+                 {% if days > 0 or hours > 0 %}
+                   {{ ' ' }}
+                 {% endif %}
+                   {{ minutes }} мин.
+               {% endif %}
+             {% endif %}
+       icon: mdi:clock
+     
+     - name: cert_expiry_enzokot_domain
+       unit_of_measurement: 'дн.'
+       icon: mdi:certificate-outline
+       state: >
+            {% if as_timestamp(states('sensor.cert_expiry_timestamp_enzokot_ftp_sh_8123')) | int > as_timestamp (states('sensor.date')) | int %}
+              {{ ((as_timestamp(states('sensor.cert_expiry_timestamp_enzokot_ftp_sh_8123')) - as_timestamp (states('sensor.date')) | int) / 86400) | int }}
+            {% else %}
+              0
+            {% endif %}

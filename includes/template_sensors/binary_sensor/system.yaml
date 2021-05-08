@@ -1,0 +1,21 @@
+
+    - binary_sensor :
+        - name: new_version_ha
+          state: "{{ states('sensor.latest_version_ha') != 'unknown' and states('sensor.current_version_ha') != 'unknown' 
+                         and states('sensor.current_version_ha') != states('sensor.latest_version_ha') }}"
+        
+        - name: rpi_power_inverted
+          state: "{{ is_state('binary_sensor.rpi_power_status', 'off') }}"
+          icon: 'mdi:raspberry-pi'
+          device_class: power
+        
+        - name: new_version_supervisor
+          state: "{{ state_attr('sensor.latest_version_ha', 'supervisor') != 'unknown' and state_attr('sensor.supervisor_versions', 'current_version') != 'unknown' 
+                         and state_attr('sensor.latest_version_ha', 'supervisor') != state_attr('sensor.supervisor_versions', 'current_version') 
+                         and state_attr('sensor.supervisor_versions', 'current_version') is not none}}"
+        
+        - name: new_version_hacs_addons
+          state: "{{ states('sensor.hacs') | int > 0 }}"
+        
+        - name: new_version_ha_addons
+          state: "{{ states('sensor.supervisor_versions') | int > 0 }}"

@@ -106,3 +106,6 @@ binary_sensor.0x00158d0003975b4c_contact:
 binary_sensor.0x00158d00039a2f33_contact:
   friendly_name: Прав. окно кухня
   device_class: window
+
+binary_sensor.rpi_power_inverted:
+  friendly_name: Состояние питания RPi

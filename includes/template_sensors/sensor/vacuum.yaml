@@ -1,0 +1,16 @@
+
+    - sensor:
+      - name: vacuum_cleaner_status_sensor
+        state: "{{ state_attr('vacuum.xiaomi_vacuum_cleaner', 'status') }}"
+
+      - name: vacuum_cleaner_main_brush_left
+        state: "{{ state_attr('vacuum.xiaomi_vacuum_cleaner', 'main_brush_left') }}"
+        
+      - name: vacuum_cleaner_side_brush_left
+        state: "{{ state_attr('vacuum.xiaomi_vacuum_cleaner', 'side_brush_left') }}"
+        
+      - name: vacuum_cleaner_filter_left
+        state: "{{ state_attr('vacuum.xiaomi_vacuum_cleaner', 'filter_left') }}"
+        
+      - name: vacuum_cleaner_sensor_dirty_left
+        state: "{{ state_attr('vacuum.xiaomi_vacuum_cleaner', 'sensor_dirty_left') }}"

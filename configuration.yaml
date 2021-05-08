@@ -79,6 +79,7 @@ camera: !include includes/camera.yaml
 switch: !include_dir_merge_list includes/switches
 sensor: !include_dir_merge_list includes/sensor
 binary_sensor: !include_dir_merge_list includes/binary_sensor
+template: !include_dir_merge_list includes/template_sensors
 timer: !include includes/timer.yaml
 utility_meter: !include includes/utility_meter.yaml
 rest_command: !include includes/rest_command.yaml

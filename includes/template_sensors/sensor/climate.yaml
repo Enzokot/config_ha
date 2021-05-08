@@ -1,0 +1,95 @@
+- sensor:
+     - name: 158d00042fd6f5_pressure
+       state: "{{ (states('sensor.0x00158d00042fd6f5_pressure') | float * 0.75) | round(1) }}"
+       unit_of_measurement: 'мм рт. ст.'
+       device_class: pressure
+
+     - name: xiaomi_miio_device_temperature
+       state: "{{ state_attr('fan.xiaomi_miio_device', 'temperature') }}"
+       unit_of_measurement: '°C'
+       device_class: temperature
+
+     - name: xiaomi_miio_device_humidity
+       state: "{{ state_attr('fan.xiaomi_miio_device', 'humidity') }}"
+       unit_of_measurement: '%'
+       device_class: humidity
+
+     - name: xiaomi_miio_device_1_temperature
+       state: "{{ state_attr('fan.xiaomi_miio_device_1', 'temperature') }}"
+       unit_of_measurement: '°C'
+       device_class: temperature
+
+     - name: xiaomi_miio_device_1_humidity
+       state: "{{ state_attr('fan.xiaomi_miio_device_1', 'humidity') }}"
+       unit_of_measurement: '%'
+       device_class: humidity
+
+     - name: xiaomi_miio_device_speed
+       icon: mdi:speedometer
+       unit_of_measurement: 'об/м'
+       state: "{%- if is_state('fan.xiaomi_miio_device', 'unavailable') or is_state_attr('fan.xiaomi_miio_device', 'motor_speed', 0) -%}
+                            Off
+                        {%- else -%}
+                            {{ state_attr('fan.xiaomi_miio_device', 'motor_speed') }}
+                        {%- endif -%}"
+
+     - name: xiaomi_miio_device_1_speed
+       icon: mdi:speedometer
+       unit_of_measurement: 'об/м'
+       state: "{%- if is_state('fan.xiaomi_miio_device_1', 'unavailable') or is_state_attr('fan.xiaomi_miio_device_1', 'motor_speed', 0) -%}
+                            Off
+                        {%- else -%}
+                            {{ state_attr('fan.xiaomi_miio_device_1', 'motor_speed') }}
+                        {%- endif -%}"
+
+     - name: xiaomi_miio_device_water
+       icon: mdi:cup-water
+       unit_of_measurement: '%'
+       state: "{%- if is_state('fan.xiaomi_miio_device', 'unavailable') -%}
+                            Off
+                        {%- else -%}
+                            {{ [state_attr('fan.xiaomi_miio_device', 'depth') / 1.2, 100] | min | int }}
+                        {%- endif -%}"
+
+     - name: xiaomi_miio_device_1_water
+       icon: mdi:cup-water
+       unit_of_measurement: '%'
+       state: "{%- if is_state('fan.xiaomi_miio_device_1', 'unavailable') -%}
+                            Off
+                        {%- else -%}
+                            {{ state_attr('fan.xiaomi_miio_device_1', 'water_level') }}
+                        {%- endif -%}"
+
+     - name: temp_for_ac_living_room
+       device_class: temperature
+       unit_of_measurement: '°C'
+       state: "{%- if is_state('sensor.esp_xiaomi_living_room_temperature', 'unavailable') -%}
+                            0
+                        {%- else -%}
+                            {{ states('sensor.esp_xiaomi_living_room_temperature') }}
+                        {%- endif -%}"
+
+     - name: humidity_for_ac_living_room
+       device_class: humidity
+       unit_of_measurement: '%'
+       state: "{%- if is_state('sensor.esp_xiaomi_living_room_humidity', 'unavailable') -%}
+                            0
+                        {%- else -%}
+                            {{ states('sensor.esp_xiaomi_living_room_humidity') }}
+                        {%- endif -%}"
+                        
+     - name: thermostat_bedroom_valve_position
+       unit_of_measurement: '%'
+       state: "{{ 100 - states('sensor.0x60a423fffe968719_position') | int }}"
+
+     - name: thermostat_childrens_room_valve_position
+       unit_of_measurement: '%'
+       state: "{{ 100 - states('sensor.0x5c0272fffec89454_position') | int }}"
+
+     - name: thermostat_living_room_valve_position
+       unit_of_measurement: '%'
+       state: "{{ 100 - states('sensor.0x5c0272fffec9db22_position') | int }}"
+
+     - name: thermostat_kitchen_valve_position
+       unit_of_measurement: '%'
+       state: "{{ 100 - states('sensor.0x5c0272fffe8de819_position') | int }}"

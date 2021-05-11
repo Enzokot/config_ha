@@ -314,3 +314,6 @@ sensor.thermostat_living_room_valve_position:
 
 sensor.thermostat_kitchen_valve_position:
   friendly_name: Положение штока
+
+sensor.influxdb_db_size:
+  friendly_name: Объем базы данных InfluxDB

@@ -39,9 +39,6 @@ http:
     - ::1
     - 172.30.33.0/24
 
-hacs:
-  token: !secret HACS_github
-
 mqtt:
   broker: core-mosquitto
   username: mqtt
@@ -58,6 +55,7 @@ mqtt:
 history:
 logbook:
 recorder: !include includes/recorder.yaml
+influxdb: !include includes/influxdb.yaml
 logger:
   default: info
 system_log:

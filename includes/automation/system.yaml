@@ -46,10 +46,19 @@
 #Бекап базы homeassistant в MariaDB
 - alias: backup homeassistant database
   id: backup homeassistant database
+  mode: single
+  max_exceeded: silent  
   initial_state: true
   trigger:
-    - platform: time
-      at: '00:30:00'
+    - platform: state
+      entity_id: sensor.last_backup_db_homeassistant
+  condition:
+    - condition: template
+      value_template: >- 
+        {{ 
+            trigger.from_state.state not in ['unavailable', 'unknown', ''] 
+            and trigger.to_state.state in ['10', '11', '12'] 
+        }}
   action:
     - service: hassio.addon_stdin
       data:

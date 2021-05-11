@@ -127,7 +127,7 @@ views:
 
         - type: markdown
           content: >
-             **Состояние базы** 
+             **Состояние баз** 
 
         - type: entities
           show_header_toggle: false
@@ -136,7 +136,6 @@ views:
               name: Объем базы данных Maria
               icon: mdi:database
               secondary_info: entity-id
-            - type: divider
             - type: call-service
               icon: mdi:database-minus
               name: База данных
@@ -144,6 +143,10 @@ views:
               service: automation.trigger
               service_data:
                 entity_id: automation.db_purge_everyday
+            - type: divider
+            - entity: sensor.influxdb_db_size
+              icon: mdi:database
+              secondary_info: entity-id
 
         - type: markdown
           content: >

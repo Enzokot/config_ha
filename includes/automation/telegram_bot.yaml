@@ -275,7 +275,7 @@
                        {{ '\U0000231b' }} Отправить убирать:
             inline_keyboard:
               - 'Сейчас:/vacuumnow, Через 10 мин.:/vacuum10, Через 20 мин.:/vacuum20'
-              - 'Отменить уборку:/vacuumcancel'
+              - 'Отменить уборку:/vacuumcancel, Выслать карту:/sendmap'
 
     - alias: vacuum start cleaning
       id: vacuum start cleaning
@@ -295,7 +295,7 @@
         - service: telegram_bot.answer_callback_query
           data:
             callback_query_id: '{{ trigger.event.data.id }}'
-            message: 'Пылесос отправили на уборку'              
+            message: 'Пылесос отправили на уборку'
 
     - alias: vacuum later start cleaning
       id: vacuum later start cleaning
@@ -367,3 +367,33 @@
           data:
               entity_id: input_text.var_chat_id_vacuum_later_start
               value: !secret telegram_chita_chat_id
+
+    - alias: vacuum send map
+      id: vacuum send map
+      initial_state: true
+      trigger:
+        - platform: event
+          event_type: telegram_callback
+          event_data:
+            data: '/sendmap'
+      action:
+        - variables:
+            filename: '/config/tmp/snapshot_vacuum_map_{{ now().strftime("%Y%m%d-%H%M%S") }}.jpg'
+        - service: camera.snapshot
+          data:
+            entity_id: camera.roborock_vacuum_map
+            filename: '{{ filename }}'
+        - service: telegram_bot.delete_message
+          data:
+            chat_id: '{{ trigger.event.data.user_id }}'
+            message_id: '{{ trigger.event.data.message.message_id }}'
+        - service: telegram_bot.send_photo
+          data:
+            target: '{{ trigger.event.data.user_id }}'
+            file: '{{ filename }}'
+            caption: >-
+                   {{ '\U0001F5FA' }} *Степа* {{- '\n' -}} Текущая карта уборки
+        - service: hassio.addon_stdin
+          data:
+            addon: a0d7b954_ssh
+            input: "rm -f {{ filename }}"

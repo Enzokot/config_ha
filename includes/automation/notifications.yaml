@@ -338,8 +338,8 @@
                         {{ sm_g973f_rezhim_ne_bespokoit }}
 
 #Пылесос
-    - alias: vacuum cleaner error chita
-      id: vacuum cleaner error chita
+    - alias: vacuum cleaner error to all
+      id: vacuum cleaner error to all
       initial_state: true
       trigger:
        - platform: state
@@ -352,14 +352,24 @@
          entity_id: sensor.vacuum_cleaner_status_sensor
          to: 'Charging Error'
       action:
-        - service: telegram_bot.send_message
+        - variables:
+            filename: '/config/tmp/snapshot_vacuum_map_{{ now().strftime("%Y%m%d-%H%M%S") }}.jpg'
+        - service: camera.snapshot
           data:
-            target: !secret telegram_chita_chat_id
-            title: >-
-                   {{ '\U000026a0' }} *Степа*
-            message: 'Похоже я застрял или какая то другая ошибка'
+            entity_id: camera.roborock_vacuum_map
+            filename: '{{ filename }}'
+        - service: telegram_bot.send_photo
+          data:
+            target: !secret telegram_all_chat_id
+            file: '{{ filename }}'
+            caption: >-
+                   {{ '\U000026a0' }} *Степа* {{- '\n' -}} Похоже я застрял или какая то другая ошибка
             inline_keyboard:
               - 'Найти меня (громко):/findvacuum'
+        - service: hassio.addon_stdin
+          data:
+            addon: a0d7b954_ssh
+            input: "rm -f {{ filename }}"
         - choose:
             - conditions:
                 - condition: state
@@ -382,11 +392,22 @@
           condition: template
           value_template: "{{ (state_attr('vacuum.xiaomi_vacuum_cleaner', 'total_cleaned_area') | int) > (states('input_number.total_cleaned_area_saved') | int) + 30 }}"
       action:
-        - service: notify.telegram_chita_to_bot
+        - variables:
+            filename: '/config/tmp/snapshot_vacuum_map_{{ now().strftime("%Y%m%d-%H%M%S") }}.jpg'
+        - service: camera.snapshot
           data:
-            title: >-
-                   {{ '\U0001f4af' }} *Степа*
-            message: 'Вернулся на базу, нужно снять танк с водой и заглянуть в контейнер пылесборника'
+            entity_id: camera.roborock_vacuum_map
+            filename: '{{ filename }}'
+        - service: telegram_bot.send_photo
+          data:
+            target: !secret telegram_chita_chat_id
+            file: '{{ filename }}'
+            caption: >-
+                   {{ '\U0001f4af' }} *Степа* {{- '\n' -}} Вернулся на базу, нужно снять танк с водой и заглянуть в контейнер пылесборника
+        - service: hassio.addon_stdin
+          data:
+            addon: a0d7b954_ssh
+            input: "rm -f {{ filename }}"
         - service: input_number.set_value
           data:
             entity_id: input_number.total_cleaned_area_saved
@@ -594,7 +615,7 @@
           data:
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Addons's Supervisor - доступно для обновления *{{ states('sensor.supervisor_versions') | int }}*. Список: {% for repo in state_attr('sensor.supervisor_versions', 'addons') %}{{ repo.name }} (_{{ repo.version }}_ -> _{{ repo.version_latest }}_){%if not loop.last %}, {%endif%}{% endfor %}"
+            message: "Addons's Supervisor - доступно для обновления *{{ states('sensor.supervisor_versions') | int }}*. Список: {% for repo in state_attr('sensor.supervisor_versions', 'addons') %}*{{ repo.name }}* (_{{ repo.version }}_ -> _{{ repo.version_latest }}_){%if not loop.last %}, {%endif%}{% endfor %}"
 
 #Доступны для обновления аддоны HACS
     - alias: update HACS addons available notification
@@ -617,7 +638,7 @@
           data:
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Addons's HACS - доступно для обновления *{{ states('sensor.hacs') | int }}*. Список: {% for repo in state_attr('sensor.hacs', 'repositories') %}{{ repo.display_name }} (_{{ repo.installed_version }}_ -> _{{ repo.available_version }}_){%if not loop.last %}, {%endif%}{% endfor %}"
+            message: "Addons's HACS - доступно для обновления *{{ states('sensor.hacs') | int }}*. Список: {% for repo in state_attr('sensor.hacs', 'repositories') %}*{{ repo.display_name }}* (_{{ repo.installed_version }}_ -> _{{ repo.available_version }}_){%if not loop.last %}, {%endif%}{% endfor %}"
 
 #Низкий заряд батарей Zigbee
     - alias: notification low battery zigbee
@@ -835,7 +856,6 @@
 #Уведомление об успешном бекапе
     - alias: notifications backup db info
       id: notifications backup db info
-      initial_state: true
       mode: queued
       trigger:
         - platform: state
@@ -843,9 +863,9 @@
       condition:
         - condition: template
           value_template: >- 
-            {{ trigger.from_state.state != trigger.to_state.state 
-               and (trigger.from_state.state not in ['unavailable', 'unknown', ''] 
-               or trigger.to_state.state not in ['unavailable', 'unknown', ''])
+            {{ 
+               trigger.from_state.state not in ['unavailable', 'unknown', ''] 
+               and trigger.to_state.state not in ['unavailable', 'unknown', '', '10']
             }}
       action:
         - service: homeassistant.update_entity
@@ -859,12 +879,16 @@
           data:
             target: !secret telegram_enzokot_chat_id
             title: >-
-                  {% if trigger.to_state.state == '2' %} {{ '\U000026D4' }} {% elif trigger.to_state.state == '3' %} {{ '\U000026A0' }} {%- else %} {{ '\U0001F4BD' }} {%- endif %} *Резервное копирование БД*
+                  {% if trigger.to_state.state == '2' or trigger.to_state.state == '11' %} {{ '\U000026D4' }} {% elif trigger.to_state.state == '3' or trigger.to_state.state == '12' %} {{ '\U000026A0' }} {%- else %} {{ '\U0001F4BD' }} {%- endif %} *Резервное копирование БД*
             message: >-
                   {% if trigger.to_state.state == '2' %}
-                     Бекап не создан
+                     Бекап Maria DB не создан
+                  {% elif trigger.to_state.state == '11' %}
+                     Бекап Influx DB не создан
                   {% elif trigger.to_state.state == '3' %}
-                     Создан бекап, но архивирование не удалось. Системный диск заполнен на *{{ states('sensor.disk_use_percent') -}}*%
+                     Создан бекап Maria DB и Influx DB, но архивирование не удалось. Системный диск заполнен на *{{ states('sensor.disk_use_percent') -}}*%
+                  {% elif trigger.to_state.state == '12' %}
+                     Создан бекап Influx DB, но перемещение файлов не удалось выполнить. Системный диск заполнен на *{{ states('sensor.disk_use_percent') -}}*%
                   {% else %}
                      Создана и упакована резервная копия с именем файла `{{ trigger.to_state.state -}}.7z`, системный диск заполнен на *{{ states('sensor.disk_use_percent') -}}*%
                   {% endif %}

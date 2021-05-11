@@ -66,3 +66,20 @@
     name: Last Backup DB Homeassistant
     state_topic: "last_backup_db_at"
     icon: mdi:calendar-clock
+    force_update: true
+
+#Размер базы influxdb
+  - platform: influxdb
+    host: a0d7b954-influxdb
+    port: 8086
+    username: !secret influxdb_user
+    password: !secret influxdb_password
+    queries:
+      - name: InfluxDB_DB_Size
+        unit_of_measurement: MB
+        value_template: '{{ (value | float / 1024 /1024) | round(1) }}'
+        group_function: mean
+        measurement: '"monitor"."shard"'
+        database: _internal
+        where: 'time > now() - 1m AND "database"=''homeassistant'''
+        field: diskBytes 

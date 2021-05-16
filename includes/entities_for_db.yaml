@@ -70,3 +70,6 @@
       - sensor.speedtest_ping
       - sensor.speedtest_download
       - sensor.speedtest_upload
+      #Шторы на кухне
+      - cover.0x847127fffed4907d
+      - cover.0x847127fffed62861

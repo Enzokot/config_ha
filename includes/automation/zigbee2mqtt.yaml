@@ -1,5 +1,5 @@
-#Добавление устройств zigbee
 
+#Добавление устройств zigbee
     - alias: disable_zigbee_join_timer
       id: disable_zigbee_join_timer
       initial_state: true
@@ -25,7 +25,7 @@
                   timer.start
                 {%- else -%}
                   timer.cancel
-                {%- endif %}                  
+                {%- endif %}
             data:
               entity_id: timer.zigbee_permit_join
 
@@ -41,18 +41,19 @@
         - service: telegram_bot.send_message
           data:
             title: >-
-                     {{ '\U0001f41d' }} *Добавление устройств Zigbee*
+                     {{ '\U0001f41d' }} <b>Добавление устройств Zigbee</b>
             message: >-
                       Добавлено новое устройство:
-                      {{ '\n' }}
+                      {{- '\n' -}}
                       Имя: {{trigger.payload_json.data.friendly_name}},
-                      {{ '\n' }}
+                      {{- '\n' -}}
                       Поставщик: {{trigger.payload_json.data.definition.vendor}},
-                      {{ '\n' }}
+                      {{- '\n' -}}
                       Модель: {{trigger.payload_json.data.definition.model}}
-                      {{ '\n' }}
+                      {{- '\n' -}}
                       Описание: {{trigger.payload_json.data.definition.description}}
             disable_notification: true
+            parse_mode: 'html'
             target: !secret telegram_enzokot_chat_id
             
 #Проверка засыпания и отключения устройств zigbee
@@ -220,3 +221,19 @@
                       entity_id: 
                         - input_boolean.thermostat_bedroom_night_mode
                         - input_boolean.thermostat_childrensroom_night_mode
+
+#Установка скорости мотора штор на текущую, для обновления атрибута last_seen
+    - alias: auto_set_speed_shades_drive_motor
+      id: auto_set_speed_shades_drive_motor
+      trigger:
+        - platform: time_pattern
+          minutes: "/55"
+      action:
+        - service: script.set_speed_shades_drive_motor
+          data:
+            namemotor: 'Left shades drive motor kitchen'
+            speed: "{{ state_attr('cover.0x847127fffed62861', 'motor_speed') }}"
+        - service: script.set_speed_shades_drive_motor
+          data:
+            namemotor: 'Right shades drive motor kitchen'
+            speed: "{{ state_attr('cover.0x847127fffed4907d', 'motor_speed') }}"

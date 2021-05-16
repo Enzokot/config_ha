@@ -1,0 +1,56 @@
+
+#Открытие штор на кухне, по уличному датчику света
+    - alias: open shades kitchen on outside light sensor
+      id: open shades kitchen on outside light sensor
+      trigger:
+      - platform: numeric_state
+        entity_id: sensor.0x04cf8cdf3c7d15b7_illuminance_lux
+        above: 400
+        for:
+          minutes: 10
+      condition:
+        - condition: template
+          value_template: >-
+            {{ 
+              trigger.from_state.state not in ['unknown', 'unavailable', 'none', ''] and 
+              trigger.from_state.state != trigger.to_state.state
+            }}
+        - condition: state
+          entity_id:
+            - cover.0x847127fffed4907d
+            - cover.0x847127fffed62861
+          state: "closed"
+      action:
+          - service: cover.open_cover
+            data:
+              entity_id:
+                - cover.0x847127fffed4907d
+                - cover.0x847127fffed62861
+
+#Закрытие штор на кухне, по уличному датчику света
+    - alias: close shades kitchen on outside light sensor
+      id: close shades kitchen on outside light sensor
+      trigger:
+      - platform: numeric_state
+        entity_id: sensor.0x04cf8cdf3c7d15b7_illuminance_lux
+        below: 300
+        for:
+          minutes: 10
+      condition:
+        - condition: template
+          value_template: >-
+            {{ 
+              trigger.from_state.state not in ['unknown', 'unavailable', 'none', ''] and 
+              trigger.from_state.state != trigger.to_state.state
+            }}
+        - condition: state
+          entity_id:
+            - cover.0x847127fffed4907d
+            - cover.0x847127fffed62861
+          state: "open"
+      action:
+          - service: cover.close_cover
+            data:
+              entity_id:
+                - cover.0x847127fffed4907d
+                - cover.0x847127fffed62861

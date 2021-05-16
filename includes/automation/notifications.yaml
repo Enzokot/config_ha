@@ -1049,7 +1049,7 @@
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
-            parse_mode: html
+            parse_mode: 'html'
             title: "{{ '\U000026d4' }} <b>Ошибка выполнения скрипта</b>"
             message: >
               {{ trigger.event.data.message }}.
@@ -1089,7 +1089,7 @@
                   data:
                     target: !secret telegram_enzokot_chat_id
                     disable_notification: true
-                    parse_mode: html
+                    parse_mode: 'html'
                     title: "{{ '\U000026A0' }} <b>Трекинг устройств</b>"
                     message: >
                       <i>{{ state_attr(trigger.event.data.entity_id, 'friendly_name') }}</i> сменил статус на <b>{{ trigger.event.data.new_state.state }}</b>

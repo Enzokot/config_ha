@@ -253,6 +253,21 @@ views:
             - entity: switch.0x086bd7fffe5aecf8_right
               secondary_info: last-changed
 
+      - type: vertical-stack
+        cards:
+        - type: markdown
+          content: >
+             **Шторы кухня**    
+
+        - type: 'custom:shutter-card'
+          entities:
+            - entity: cover.0x847127fffed62861
+              name: Левая
+              buttons_position: right
+            - entity: cover.0x847127fffed4907d
+              name: Правая
+              buttons_position: right
+
   - title: Zigbee
     icon: mdi:zigbee
     

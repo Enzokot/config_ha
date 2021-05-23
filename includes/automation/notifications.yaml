@@ -670,6 +670,29 @@
                         {{- '_' -}} {{- x.name -}} {{- '_' -}}
                       {% endfor %}
 
+    - alias: notification low battery zigbee trv
+      id: notification low battery zigbee trv
+      initial_state: true
+      trigger:
+        platform: state
+        entity_id:
+          - binary_sensor.0x60a423fffe968719_battery_low
+          - binary_sensor.0x5c0272fffec89454_battery_low
+          - binary_sensor.0x5c0272fffe8de819_battery_low
+          - binary_sensor.0x5c0272fffec9db22_battery_low
+        from: 'off'
+        to: 'on'
+      condition: >
+        {{ (as_timestamp(now()) - as_timestamp(trigger.from_state.last_changed)) / 3600 > 8 }}
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: >-
+                     {{ '\U0001f50b' }} *Низкий заряд Zigbee*
+            message: >-
+                      Для TRV: {{ trigger.from_state.name }}
+
 #После рестарта НА остался включенный обогреватель
     - alias: notification safety sockets on restart
       id: notification safety sockets on restart

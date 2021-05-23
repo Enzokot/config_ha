@@ -1103,6 +1103,57 @@ views:
             default_mode: go_to_target
             camera_calibration: true
 
+          - type: markdown
+            content: >
+               **Сброс обслуживания** 
+
+          - type: horizontal-stack
+            cards:
+              - type: button
+                name: Датчики
+                show_state: false
+                icon: mdi:eye-settings-outline
+                tap_action:
+                  action: call-service
+                  service: vacuum.send_command
+                  service_data:
+                    entity_id: vacuum.xiaomi_vacuum_cleaner
+                    command: reset_consumable
+                    params: ['sensor_dirty_time']
+              - type: button
+                name: Фильтр
+                show_state: false
+                icon: mdi:air-filter
+                tap_action:
+                  action: call-service
+                  service: vacuum.send_command
+                  service_data:
+                    entity_id: vacuum.xiaomi_vacuum_cleaner
+                    command: reset_consumable
+                    params: ['filter_work_time']
+              - type: button
+                name: Боковая
+                show_state: false
+                icon: mdi:bolnisi-cross
+                tap_action:
+                  action: call-service
+                  service: vacuum.send_command
+                  service_data:
+                    entity_id: vacuum.xiaomi_vacuum_cleaner
+                    command: reset_consumable
+                    params: ['side_brush_work_time']
+              - type: button
+                name: Основная
+                show_state: false
+                icon: mdi:robot-vacuum-variant
+                tap_action:
+                  action: call-service
+                  service: vacuum.send_command
+                  service_data:
+                    entity_id: vacuum.xiaomi_vacuum_cleaner
+                    command: reset_consumable
+                    params: ['main_brush_work_time']
+
   - title: Карта
     panel: true
     # badges:

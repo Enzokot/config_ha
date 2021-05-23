@@ -8,10 +8,14 @@
         above: 400
         for:
           minutes: 10
+      - platform: sun
+        event: sunrise
+        offset: "02:30:00"
       condition:
         - condition: template
           value_template: >-
             {{ 
+              trigger.platform == 'sun' or
               trigger.from_state.state not in ['unknown', 'unavailable', 'none', ''] and 
               trigger.from_state.state != trigger.to_state.state
             }}
@@ -20,6 +24,9 @@
             - cover.0x847127fffed4907d
             - cover.0x847127fffed62861
           state: "closed"
+        - condition: sun
+          before: sunrise
+          before_offset: "03:00:00"
       action:
           - service: cover.open_cover
             data:
@@ -33,13 +40,17 @@
       trigger:
       - platform: numeric_state
         entity_id: sensor.0x04cf8cdf3c7d15b7_illuminance_lux
-        below: 300
+        below: 450
         for:
           minutes: 10
+      - platform: sun
+        event: sunset
+        offset: "-00:30:00"
       condition:
         - condition: template
           value_template: >-
             {{ 
+              trigger.platform == 'sun' or
               trigger.from_state.state not in ['unknown', 'unavailable', 'none', ''] and 
               trigger.from_state.state != trigger.to_state.state
             }}
@@ -48,6 +59,9 @@
             - cover.0x847127fffed4907d
             - cover.0x847127fffed62861
           state: "open"
+        - condition: sun
+          after: sunset
+          after_offset: "-03:00:00"
       action:
           - service: cover.close_cover
             data:

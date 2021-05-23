@@ -8,7 +8,7 @@
   action:
     - service: recorder.purge
       data:
-          keep_days: 180
+          keep_days: 30
           repack: true
 
 #Отслеживание питания RPi

@@ -62,9 +62,11 @@ ota:
 #  port: 80
 
 esp32_ble_tracker:
-  scan_parameters:
-    window: 30ms
-    interval: 320ms
+ scan_parameters:
+    window: 48ms
+    interval: 512ms
+#    window: 30ms
+#    interval: 320ms
 
 sensor:
   - platform: xiaomi_lywsd02

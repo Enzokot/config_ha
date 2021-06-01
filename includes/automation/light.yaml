@@ -129,6 +129,8 @@
     - alias: light gateway toggle
       id: light gateway toggle
       initial_state: true
+      mode: single
+      max_exceeded: silent
       trigger:
         platform: state
         entity_id: binary_sensor.0x00158d000359304c_contact

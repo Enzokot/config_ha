@@ -1,0 +1,33 @@
+#Открытие/закрытие штор
+    auto_cover_open_close:
+        alias: Открытие/закрытие штор
+        icon: mdi:blinds
+        mode: queued
+        fields:
+          servicename:
+            description: 'Имя сервиса'
+            example: 'cover.close_cover'
+          groupname:
+            description: 'Имя группы'
+            example: 'group.window_shades_kitchen_group'
+          statename:
+            description: 'Имя состояния'
+            example: 'closed'
+        sequence:
+          - service: >-
+                {{ servicename }}
+            data:
+              entity_id: >-
+                {{ expand(groupname) | map(attribute = 'entity_id') | list | join(', ') }}
+          - wait_template: >-
+              {{ expand(groupname) | selectattr('state', 'eq', statename) | map(attribute = 'entity_id') | list | length == 0 }}
+            timeout: 
+              minutes: 2
+          - choose:
+              - conditions: "{{ not wait.completed }}"
+                sequence:
+                  - service: >-
+                        {{ servicename }}
+                    data:
+                      entity_id: >-
+                        {{ expand(groupname) | selectattr('state', 'eq', statename) | map(attribute = 'entity_id') | list | join(', ') }}

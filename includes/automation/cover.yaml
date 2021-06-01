@@ -19,20 +19,16 @@
               trigger.from_state.state not in ['unknown', 'unavailable', 'none', ''] and 
               trigger.from_state.state != trigger.to_state.state
             }}
-        - condition: state
-          entity_id:
-            - cover.0x847127fffed4907d
-            - cover.0x847127fffed62861
-          state: "closed"
+        - "{{ expand('group.window_shades_kitchen_group') | selectattr('state', 'eq', 'open') | map(attribute = 'entity_id') | list | length == 0 }}"
         - condition: sun
           before: sunrise
           before_offset: "03:00:00"
       action:
-          - service: cover.open_cover
-            data:
-              entity_id:
-                - cover.0x847127fffed4907d
-                - cover.0x847127fffed62861
+        - service: script.auto_cover_open_close
+          data:
+            servicename: 'cover.open_cover'
+            groupname: 'group.window_shades_kitchen_group'
+            statename: 'closed'
 
 #Закрытие штор на кухне, по уличному датчику света
     - alias: close shades kitchen on outside light sensor
@@ -54,17 +50,28 @@
               trigger.from_state.state not in ['unknown', 'unavailable', 'none', ''] and 
               trigger.from_state.state != trigger.to_state.state
             }}
-        - condition: state
-          entity_id:
-            - cover.0x847127fffed4907d
-            - cover.0x847127fffed62861
-          state: "open"
+        - "{{ expand('group.window_shades_kitchen_group') | selectattr('state', 'eq', 'closed') | map(attribute = 'entity_id') | list | length == 0 }}"
         - condition: sun
           after: sunset
           after_offset: "-03:00:00"
       action:
-          - service: cover.close_cover
-            data:
-              entity_id:
-                - cover.0x847127fffed4907d
-                - cover.0x847127fffed62861
+        - service: script.auto_cover_open_close
+          data:
+            servicename: 'cover.close_cover'
+            groupname: 'group.window_shades_kitchen_group'
+            statename: 'open'
+
+    - alias: close shades kitchen on sun and min outside lux
+      id: close shades kitchen on sun and min outside lux
+      trigger:
+      - platform: sun
+        event: sunset
+        offset: "-02:00:00"
+      condition:
+        - "{{ states('sensor.0x04cf8cdf3c7d15b7_illuminance_lux') | int <= 450 and expand('group.window_shades_kitchen_group') | selectattr('state', 'eq', 'closed') | map(attribute = 'entity_id') | list | length == 0 }}"
+      action:
+        - service: script.auto_cover_open_close
+          data:
+            servicename: 'cover.close_cover'
+            groupname: 'group.window_shades_kitchen_group'
+            statename: 'open'

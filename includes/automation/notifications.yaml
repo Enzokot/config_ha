@@ -594,6 +594,29 @@
             message: "Доступна [{{ state_attr('sensor.latest_version_ha', 'supervisor') }}](https://github.com/home-assistant/supervisor/releases/tag/{{- state_attr('sensor.latest_version_ha', 'supervisor') }}) версия Supervisor для установки, текущая *{{ state_attr('sensor.supervisor_versions', 'current_version') }}*."
             disable_web_page_preview: true
 
+    - alias: Supervisor updated notification
+      id: Supervisor updated notification
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: sensor.supervisor_versions
+          attribute: current_version
+      condition:
+        - condition: template
+          value_template: >
+            {% set ignore = ['unknown', 'unavailable', 'none'] %}
+            {{ trigger.from_state.state not in ignore and
+               trigger.to_state.state not in ignore and
+               trigger.to_state.attributes.current_version != trigger.from_state.attributes.current_version
+            }}
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: "{{ '\U0001f389' }} *Системное обновление*"
+            message: "Supervisor обновлен с версии [{{ trigger.from_state.attributes.current_version }}](https://github.com/home-assistant/supervisor/releases/tag/{{- trigger.from_state.attributes.current_version }}) на [{{ trigger.to_state.attributes.current_version }}](https://github.com/home-assistant/supervisor/releases/tag/{{- trigger.to_state.attributes.current_version }})"
+            disable_web_page_preview: true
+
 #Доступны для обновления аддоны Supervisor
     - alias: update Supervisor addons available notification
       id: update Supervisor addons available notification

@@ -28,10 +28,6 @@
         column: 'value'
         unit_of_measurement: MB 
 
-  - platform: cert_expiry
-    host: !secret certificate_host
-    port: !secret certificate_port
-
   - platform: uptime
     name: online
 
@@ -46,7 +42,7 @@
 #Public IP
   - platform: dnsip
     resolver: 1.1.1.1
-    hostname: !secret base_url
+    hostname: !secret keenetic_base_url
     name: myip
 
 #Supervisor versions
@@ -83,3 +79,10 @@
         database: _internal
         where: 'time > now() - 1m AND "database"=''homeassistant'''
         field: diskBytes 
+
+#Сенсор длительности старта НА
+#   - platform: command_line
+#     name: "HA start time"
+#     command: 'grep -m 1 -o "Home[[:space:]]Assistant[[:space:]]initialized[[:space:]]in[[:space:]][0-9]\+.[0-9]\+" /config/home-assistant.log | grep -o "[0-9]\+.[0-9]\+$" || echo -1'
+#     scan_interval: 180
+#     unit_of_measurement: "sec"

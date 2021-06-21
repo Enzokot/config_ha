@@ -90,7 +90,6 @@
   id: speedtest_integration_restart_on_event
   mode: single
   max_exceeded: silent
-  max: 3
   trigger:
     - platform: event
       event_type: state_changed
@@ -108,7 +107,7 @@
         {{ trigger.event.data.new_state.state != trigger.event.data.old_state.state }}
     - condition: template
       value_template: >-
-        {{ trigger.event.data.new_state.state in ['unknown', 'unavailable'] }}
+        {{ trigger.event.data.new_state.state in ['unknown', 'unavailable', 'none'] }}
   action:
     - choose:
         - conditions: 

@@ -72,19 +72,19 @@
           data:
             title: >-
                       {% set time_limit = as_timestamp(now()) - 4*60*60 %}
-                      {% set missing = states | selectattr('attributes.last_seen', 'defined') | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.last_seen', 'ne', None) | selectattr('attributes.last_seen', '<', time_limit * 1000 ) | map(attribute = 'attributes.device.friendlyName') | unique | list  | join(', ') %}
-                      {% set missing_count = states | selectattr('attributes.last_seen', 'defined') | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.last_seen', 'ne', None) | selectattr('attributes.last_seen', '<', time_limit * 1000 ) | map(attribute = 'attributes.device.friendlyName') | unique | list | count %}
+                      {% set missing = states | selectattr('attributes.last_seen', 'defined') | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.last_seen', 'ne', None) | selectattr('attributes.last_seen', '<', time_limit * 1000 ) | map(attribute = 'attributes.device.friendlyName') | unique | list %}
+                      {% set missing_count = missing | count %}
 
                       {%- if missing_count > 0 %} {{ '\U000026a0' }} {%- else %} {{ '\U00002705' }} {%- endif %} *Контроль устройств Zigbee*
             disable_notification: true
             target: !secret telegram_enzokot_chat_id
             message: >
               {% set time_limit = as_timestamp(now()) - 4*60*60 %}
-              {% set missing = states | selectattr('attributes.last_seen', 'defined') | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.last_seen', 'ne', None) | selectattr('attributes.last_seen', '<', time_limit * 1000 ) | map(attribute = 'attributes.device.friendlyName') | unique | list  | join(', ') %}
-              {% set missing_count = states | selectattr('attributes.last_seen', 'defined') | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.last_seen', 'ne', None) | selectattr('attributes.last_seen', '<', time_limit * 1000 ) | map(attribute = 'attributes.device.friendlyName') | unique | list | count %}
+              {% set missing = states | selectattr('attributes.last_seen', 'defined') | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.last_seen', 'ne', None) | selectattr('attributes.last_seen', '<', time_limit * 1000 ) | map(attribute = 'attributes.device.friendlyName') | unique | list %}
+              {% set missing_count = missing | count %}
               {% set z2m_uptime = ((states('sensor.zigbee2mqtt_bridge_uptime') | int) / 3600) | round(1) %}
 
-              {% if missing_count > 0 %}Более 4 часов (время работы z2m: {{z2m_uptime}}ч) не было данных от: {{ missing }}
+              {% if missing_count > 0 %}Более 4 часов (время работы z2m: {{z2m_uptime}}ч) не было данных от: {{ missing | join(', ') }}
               {% else %}Все устройства доступны.{% endif %}
 
 #Проверка качества связи устройств zigbee
@@ -112,7 +112,7 @@
             namevalve: 'Bedroom valve with thermostat'
             objectvalve: 'climate.0x60a423fffe968719'
             objectvalvewindow: 'switch.0x60a423fffe968719_window_detection'
-            objectsensortemperature: 'sensor.esp_xiaomi_living_room_temperature' #'sensor.esp_xiaomi_bed_room_temperature'
+            objectsensortemperature: 'sensor.esp_xiaomi_bed_room_temperature'
         - service: script.auto_local_temperature_calibration_thermostats
           data:
             namevalve: 'Living room valve with thermostat'

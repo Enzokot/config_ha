@@ -259,7 +259,10 @@ sensor.online_custom:
   friendly_name: Последняя перезагрузка HA
 
 sensor.cert_expiry_enzokot_domain:
-  friendly_name: Срок сертификата SSL
+  friendly_name: Сертификат SSL ftp.sh
+
+sensor.cert_expiry_keenetic_domain:
+  friendly_name: Сертификат SSL keenetic.pro
 
 sensor.last_google_backup_train:
   friendly_name: Последний бэкап

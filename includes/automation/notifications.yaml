@@ -525,17 +525,24 @@
               title: >-
                         {{ sm_g973f_rezhim_ne_bespokoit }}
 
-#Срок сертификата менее 5 дней
+#Срок сертификата SSL менее 5 дней
     - alias: notification cert expired
       id: notification cert expired
       initial_state: true
       trigger:
-        platform: time
-        at: "19:00:00"
-      condition:
-        - condition: numeric_state
-          entity_id: sensor.cert_expiry_enzokot_domain
+        - platform: numeric_state
+          entity_id:
+            - sensor.cert_expiry_enzokot_domain
+            - sensor.cert_expiry_keenetic_domain
           below: 5
+      condition:
+        - condition: template
+          value_template: >
+            {% set ignore = ['unknown', 'unavailable', 'none'] %}
+            {{ trigger.from_state.state not in ignore and
+               trigger.to_state.state not in ignore and
+               trigger.to_state.state != trigger.from_state.state
+            }}
       action:
         - service: telegram_bot.send_message
           data:
@@ -543,7 +550,7 @@
             title: >-
                      {{ '\U000026a0' }} *Сертификат SSL*
             message: >-
-                        Срок действия сертификата: {{ states('sensor.cert_expiry_enzokot_domain') }} дн.
+                        Срок действия сертификата {{ trigger.to_state.name -}}: {{ trigger.to_state.state }} дн.
                         
 #Новая версия НА
     - alias: update HA available notification
@@ -599,22 +606,21 @@
       initial_state: true
       trigger:
         - platform: state
-          entity_id: sensor.supervisor_versions
-          attribute: current_version
+          entity_id: sensor.supervisor_current_version
       condition:
         - condition: template
           value_template: >
             {% set ignore = ['unknown', 'unavailable', 'none'] %}
             {{ trigger.from_state.state not in ignore and
                trigger.to_state.state not in ignore and
-               trigger.to_state.attributes.current_version != trigger.from_state.attributes.current_version
+               trigger.to_state.state != trigger.from_state.state
             }}
       action:
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
-            title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Supervisor обновлен с версии [{{ trigger.from_state.attributes.current_version }}](https://github.com/home-assistant/supervisor/releases/tag/{{- trigger.from_state.attributes.current_version }}) на [{{ trigger.to_state.attributes.current_version }}](https://github.com/home-assistant/supervisor/releases/tag/{{- trigger.to_state.attributes.current_version }})"
+            title: "{{ '\U00002705' }} *Системное обновление*"
+            message: "Supervisor обновлен с версии [{{ trigger.from_state.state }}](https://github.com/home-assistant/supervisor/releases/tag/{{- trigger.from_state.state -}}) на [{{ trigger.to_state.state }}](https://github.com/home-assistant/supervisor/releases/tag/{{- trigger.to_state.state -}})"
             disable_web_page_preview: true
 
 #Доступны для обновления аддоны Supervisor

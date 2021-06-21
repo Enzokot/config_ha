@@ -219,3 +219,32 @@
           entity_id: light.gateway_light_04cf8cabd77b
         - service: scene.turn_on
           entity_id: scene.before_on_go_to_work
+
+#Перезапуск интеграции и реле для yeelight650 детская
+    - alias: restart integration relay yeelight 650 unavailable
+      id: restart integration relay yeelight 650 unavailable
+      initial_state: true
+      mode: single
+      max_exceeded: silent
+      trigger:
+        - platform: state
+          entity_id: light.yeelight_650
+          to: 'unavailable'
+        - platform: homeassistant
+          event: start
+      condition:
+        - condition: state
+          entity_id: light.yeelight_650
+          state: 'unavailable'
+      action:
+        - wait_for_trigger:
+            - platform: state
+              entity_id: light.yeelight_650
+              from: 'unavailable'
+          timeout: "00:02:00"      
+        - choose:
+            - conditions: "{{ not wait.completed }}"
+              sequence:
+                  - service: homeassistant.reload_config_entry
+                    data:
+                      entry_id: e506bd4af91511ea8fbf3956d4d8f578

@@ -6,9 +6,9 @@ esphome:
   platform: ESP32
   board: nodemcu-32s
   comment: BLE bed room
+  #arduino_version: 1.0.4
 
 wifi:
-  power_save_mode: none
   networks:
   #Точка в спальне
   - ssid: Kotletochka
@@ -63,10 +63,8 @@ ota:
 
 esp32_ble_tracker:
  scan_parameters:
-    window: 48ms
-    interval: 512ms
-#    window: 30ms
-#    interval: 320ms
+    window: 30ms
+    interval: 320ms
 
 sensor:
   - platform: xiaomi_lywsd02

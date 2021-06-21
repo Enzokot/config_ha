@@ -29,6 +29,7 @@ ssdp:
 system_health:
 mobile_app:
 zeroconf:
+network:
 
 http:
   login_attempts_threshold: 5
@@ -38,6 +39,7 @@ http:
     - 127.0.0.1
     - ::1
     - 172.30.33.0/24
+    - 192.168.217.1
 
 mqtt:
   broker: core-mosquitto
@@ -81,6 +83,7 @@ template: !include_dir_merge_list includes/template_sensors
 timer: !include includes/timer.yaml
 utility_meter: !include includes/utility_meter.yaml
 rest_command: !include includes/rest_command.yaml
+wake_on_lan:
 
 input_select: !include includes/input_select.yaml
 input_number: !include includes/input_number.yaml
@@ -92,4 +95,3 @@ webostv: !include includes/webostv.yaml
 media_player: !include includes/media_player.yaml
 smartir: 
 climate: !include includes/smartir/climate.yaml
-start_time:

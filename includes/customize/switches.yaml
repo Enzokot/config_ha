@@ -36,3 +36,7 @@ switch.0x086bd7fffe5aecf8_left:
 switch.0x086bd7fffe5aecf8_right:
   friendly_name: Вытяжка
   icon: mdi:fan
+
+switch.0x54ef441000096cbc:
+  friendly_name: Реле светильника
+  icon: mdi:electric-switch

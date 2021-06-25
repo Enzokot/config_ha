@@ -74,3 +74,9 @@
     icon: mdi:cup-water
     min: 0
     max: 200
+
+  total_yeelight650_relay_saved:
+    name: "Потребление реле в yeelight650 детская"
+    icon: mdi:horizontal-rotate-counterclockwise
+    min: 0
+    max: 1000000

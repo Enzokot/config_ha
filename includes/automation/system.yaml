@@ -162,3 +162,26 @@
       data:
         entity_id: >-
           {{ expand('group.dynamic_group_automation_for_reload') | map(attribute = 'entity_id') | join(', ') }}
+
+#Сохранение текущей версии Supervisor текстом
+- alias: save supervisor current version
+  id: save supervisor current version
+  initial_state: true
+  mode: single
+  max_exceeded: silent
+  trigger:
+    - platform: state
+      entity_id: sensor.supervisor_current_version
+  condition:
+    - condition: template
+      value_template: >- 
+            {% set ignore = ['unknown', 'unavailable', 'none', ''] %}
+            {{ trigger.to_state.state not in ignore and
+               trigger.from_state.state not in ignore and
+               trigger.to_state.attributes.energy != trigger.from_state.attributes.energy
+            }}
+  action:
+      - service: input_text.set_value
+        data:
+          entity_id: input_text.supervisor_current_version
+          value: "{{ states('sensor.supervisor_current_version') }}"

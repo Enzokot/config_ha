@@ -203,6 +203,8 @@ views:
               entities:          
                 - entity: binary_sensor.0x00158d0003f37a0f_contact
                   secondary_info: last-changed
+                - entity: switch.0x54ef441000096cbc
+                  secondary_info: last-changed
             - type: horizontal-stack
               cards:
                 - type: light
@@ -214,6 +216,15 @@ views:
                 - type: light
                   entity: light.yeelight_650_ambilight
                   name: Ambilight 650
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: sensor.0x54ef441000096cbc_power
+                  - entity: sensor.total_yeelight650_relay_cable_daily_electicity
+                  - entity: sensor.total_yeelight650_relay_cable_monthly_electicity
 
       - type: vertical-stack
         cards:
@@ -1066,21 +1077,21 @@ views:
                   service_data:
                     entity_id: vacuum.xiaomi_vacuum_cleaner
                     command: app_segment_clean
-                    params: [17]              
+                    params: [17]
                   icon: 'mdi:sofa'
                 - name: Уборка спальни
                   service: vacuum.send_command
                   service_data:
                     entity_id: vacuum.xiaomi_vacuum_cleaner
                     command: app_segment_clean
-                    params: [1]              
+                    params: [1]
                   icon: 'mdi:bed-king'
                 - name: Уборка детской
                   service: vacuum.send_command
                   service_data:
                     entity_id: vacuum.xiaomi_vacuum_cleaner
                     command: app_segment_clean
-                    params: [2]              
+                    params: [16]
                   icon: 'mdi:bed-queen'
                 - name: Уборка кухни
                   service: vacuum.send_command
@@ -1094,7 +1105,7 @@ views:
                   service_data:
                     entity_id: vacuum.xiaomi_vacuum_cleaner
                     command: app_segment_clean
-                    params: [18, 16, 19, 20]              
+                    params: [18, 19, 20, 21]
                   icon: 'mdi:paper-roll'
     
           - type: custom:xiaomi-vacuum-map-card

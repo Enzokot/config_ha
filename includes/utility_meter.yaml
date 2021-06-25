@@ -57,3 +57,15 @@
     cycle: monthly
     tariffs:
       - electicity
+
+  total_yeelight650_relay_cable_daily:
+    source: sensor.total_yeelight650_relay_cable
+    cycle: daily
+    tariffs:
+      - electicity
+
+  total_yeelight650_relay_cable_monthly:
+    source: sensor.total_yeelight650_relay_cable
+    cycle: monthly
+    tariffs:
+      - electicity

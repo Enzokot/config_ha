@@ -449,19 +449,20 @@
                 - condition: template
                   value_template: >
                     {{ 
-                       trigger.to_state.state == 'on' and states('climate.broadlink_ac_living_room') not in ['off', 'fan_only', 'unavailable', 'unknown', '']
-                       or trigger.to_state.state == 'off' and is_state('climate.broadlink_ac_living_room', 'off')
+                       trigger.to_state.state == 'on' and states('climate.avatto_living_room_ac') == 'cool'
+                       or trigger.to_state.state == 'off' and is_state('climate.avatto_living_room_ac', 'off')
                        and is_state('input_boolean.auto_triggered_ac_window_living_room', 'on')
                     }}
             sequence:
-                - service: >
-                            {% if trigger.to_state.state == 'on' -%}
-                              fan.turn_off
-                            {%- else -%}
-                              fan.turn_on
-                            {%- endif %}
+                - service: climate.set_hvac_mode
                   data:
-                    entity_id: climate.broadlink_ac_living_room
+                    entity_id: climate.avatto_living_room_ac
+                    hvac_mode: >
+                            {% if trigger.to_state.state == 'on' -%}
+                              off
+                            {%- else -%}
+                              cool
+                            {%- endif %}
                 - service: >
                             {% if trigger.to_state.state == 'off' -%}
                               input_boolean.turn_off
@@ -473,7 +474,7 @@
                 - condition: template
                   value_template: >
                     {{ 
-                       trigger.to_state.state == 'off' and states('climate.broadlink_ac_living_room') not in ['off', 'fan_only', 'unavailable', 'unknown', '']
+                       trigger.to_state.state == 'off' and states('climate.avatto_living_room_ac') == 'cool'
                        and is_state('input_boolean.auto_triggered_ac_window_living_room', 'on')
                     }}
             sequence:

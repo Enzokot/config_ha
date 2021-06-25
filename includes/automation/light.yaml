@@ -243,8 +243,18 @@
               from: 'unavailable'
           timeout: "00:02:00"      
         - choose:
-            - conditions: "{{ not wait.completed }}"
+            - conditions: "{{ wait.trigger == None }}"
               sequence:
+                  - service: switch.turn_off
+                    data:
+                      entity_id: switch.0x54ef441000096cbc
+                  - delay:
+                      seconds: 5
+                  - service: switch.turn_on
+                    data:
+                      entity_id: switch.0x54ef441000096cbc
+                  - delay:
+                      seconds: 30
                   - service: homeassistant.reload_config_entry
                     data:
                       entry_id: e506bd4af91511ea8fbf3956d4d8f578

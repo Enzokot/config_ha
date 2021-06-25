@@ -2,6 +2,8 @@
 #Открытие штор на кухне, по уличному датчику света
     - alias: open shades kitchen on outside light sensor
       id: open shades kitchen on outside light sensor
+      mode: single
+      max_exceeded: silent
       trigger:
       - platform: numeric_state
         entity_id: sensor.0x04cf8cdf3c7d15b7_illuminance_lux
@@ -33,6 +35,8 @@
 #Закрытие штор на кухне, по уличному датчику света
     - alias: close shades kitchen on outside light sensor
       id: close shades kitchen on outside light sensor
+      mode: single
+      max_exceeded: silent
       trigger:
       - platform: numeric_state
         entity_id: sensor.0x04cf8cdf3c7d15b7_illuminance_lux

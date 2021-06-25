@@ -334,3 +334,26 @@
           - service: switch.turn_off
             data:
               entity_id: switch.0x842e14fffe5047f5
+
+#Сохранение значения энергии при перезапуске z2m или HA
+    - alias: restart z2m or instance for childrens room relay yeelight650
+      id: restart z2m or instance for childrens room relay yeelight650
+      initial_state: true
+      mode: single
+      max_exceeded: silent
+      trigger:
+        - platform: state
+          entity_id: sensor.0x54ef441000096cbc_energy
+      condition:
+        - condition: template
+          value_template: >- 
+                {% set ignore = ['unknown', 'unavailable', 'none'] %}
+                {{ trigger.to_state.state not in ignore and
+                   trigger.from_state.state not in ignore and
+                   trigger.to_state.attributes.energy != trigger.from_state.attributes.energy
+                }}
+      action:
+          - service: input_number.set_value
+            data:
+              entity_id: input_number.total_yeelight650_relay_saved
+              value: "{{ states('sensor.0x54ef441000096cbc_energy') }}"

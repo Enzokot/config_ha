@@ -78,6 +78,7 @@
           - alarm_control_panel.signalka_shliuza_alarm
           - sensor.0x847127fffed62861_linkquality
           - sensor.0x847127fffed4907d_linkquality
+          - sensor.0x54ef441000096cbc_linkquality
 
     window_shades_kitchen_group:
         entities:

@@ -610,7 +610,7 @@
       condition:
         - condition: template
           value_template: >
-            {% set ignore = ['unknown', 'unavailable', 'none', ''] %}
+            {% set ignore = ['unknown', 'unavailable', 'none', null, ''] %}
             {{ trigger.from_state.state not in ignore and
                trigger.to_state.state not in ignore and
                trigger.to_state.state != trigger.from_state.state

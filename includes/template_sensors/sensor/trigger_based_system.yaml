@@ -3,12 +3,14 @@
   - trigger:
       - platform: template
         value_template: >
-            {% set ignore = ['unknown', 'unavailable', 'none', ''] %}
+            {% set ignore = ['unknown', 'unavailable', 'none', null, ''] %}
             {{ state_attr('sensor.supervisor_versions', 'current_version') not in ignore and
                states('sensor.supervisor_current_version') != state_attr('sensor.supervisor_versions', 'current_version')
             }}
       - platform: homeassistant
         event: start
+      - platform: event
+        event_type: event_template_reloaded
     sensor:
       - name: supervisor_current_version
         state: "{{ state_attr('sensor.supervisor_versions', 'current_version') }}"

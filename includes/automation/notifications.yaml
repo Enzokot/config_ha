@@ -606,7 +606,7 @@
       initial_state: true
       trigger:
         - platform: state
-          entity_id: input_text.supervisor_current_version
+          entity_id: sensor.supervisor_current_version
       condition:
         - condition: template
           value_template: >

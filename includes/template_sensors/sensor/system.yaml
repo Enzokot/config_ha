@@ -75,5 +75,3 @@
               0
             {% endif %}
 
-     - name: supervisor_current_version
-       state: "{{ state_attr('sensor.supervisor_versions', 'current_version') }}"

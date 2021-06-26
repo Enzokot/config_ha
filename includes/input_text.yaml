@@ -2,5 +2,3 @@
     name: Сhat id vacuum later start
     initial: !secret telegram_chita_chat_id
     mode: password
-
-  supervisor_current_version:

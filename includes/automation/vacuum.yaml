@@ -50,3 +50,37 @@
              data:
                 entity_id: input_text.var_chat_id_vacuum_later_start
                 value: !secret telegram_chita_chat_id
+
+    - alias: vacuum start stop camera map when docked cleaning
+      id: vacuum start stop camera map when docked cleaning
+      initial_state: true
+      mode: queued
+      trigger:
+        - platform: state
+          entity_id: vacuum.xiaomi_vacuum_cleaner
+        - platform: homeassistant
+          event: start
+      condition:
+        - condition: template
+          value_template: "{{ trigger.platform == 'homeassistant' or trigger.to_state.state != trigger.from_state.state }}"
+      action:
+        - choose:
+            - conditions:
+                - condition: template
+                  value_template: "{{ trigger.platform == 'homeassistant' }}"
+              sequence:
+                - service: |
+                    {% if states('vacuum.xiaomi_vacuum_cleaner') in ['docked', 'unknown', 'unavailable', 'none', None, null, ''] %}
+                      camera.turn_off
+                    {% else %}
+                      camera.turn_on
+                    {% endif %}
+                  entity_id: camera.roborock_vacuum_map
+          default:
+            - service: |
+                {% if trigger.to_state.state in ['docked', 'unknown', 'unavailable', 'none', None, null, ''] %}
+                  camera.turn_off
+                {% else %}
+                  camera.turn_on
+                {% endif %}
+              entity_id: camera.roborock_vacuum_map

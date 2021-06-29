@@ -538,7 +538,7 @@
       condition:
         - condition: template
           value_template: >
-            {% set ignore = ['unknown', 'unavailable', 'none'] %}
+            {% set ignore = ['unknown', 'unavailable', 'none', null, ''] %}
             {{ trigger.from_state.state not in ignore and
                trigger.to_state.state not in ignore and
                trigger.to_state.state != trigger.from_state.state
@@ -610,7 +610,7 @@
       condition:
         - condition: template
           value_template: >
-            {% set ignore = ['unknown', 'unavailable', 'none', null, ''] %}
+            {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
             {{ trigger.from_state.state not in ignore and
                trigger.to_state.state not in ignore and
                trigger.to_state.state != trigger.from_state.state
@@ -854,7 +854,7 @@
       condition:
         - condition: template
           value_template: >- 
-                    {{ trigger.from_state.state not in ['unavailable', 'unknown', ''] }}
+                    {{ trigger.from_state.state not in ['unavailable', 'unknown', null, ''] }}
       action:
         - service: telegram_bot.send_message
           data:

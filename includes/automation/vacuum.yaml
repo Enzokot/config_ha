@@ -67,14 +67,12 @@
         - choose:
             - conditions:
                 - condition: template
-                  value_template: "{{ trigger.platform == 'homeassistant' }}"
+                  value_template: >
+                    {{ trigger.platform == 'homeassistant' 
+                        and states('vacuum.xiaomi_vacuum_cleaner') in ['docked', 'unknown', 'unavailable', 'none', None, null, '']
+                    }}
               sequence:
-                - service: |
-                    {% if states('vacuum.xiaomi_vacuum_cleaner') in ['docked', 'unknown', 'unavailable', 'none', None, null, ''] %}
-                      camera.turn_off
-                    {% else %}
-                      camera.turn_on
-                    {% endif %}
+                - service: camera.turn_off
                   entity_id: camera.roborock_vacuum_map
           default:
             - service: |

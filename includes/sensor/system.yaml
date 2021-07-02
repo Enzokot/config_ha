@@ -41,7 +41,7 @@
 
 #Public IP
   - platform: dnsip
-    resolver: 1.1.1.1
+    resolver: 8.8.8.8
     hostname: !secret keenetic_base_url
     name: myip
 

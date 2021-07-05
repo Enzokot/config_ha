@@ -6,7 +6,7 @@
           - platform: time_pattern
             hours: "/3"
           - platform: homeassistant
-            event: start            
+            event: start
       action:
         - service: group.set
           data:
@@ -18,6 +18,28 @@
                     for state in states.sensor 
                       if is_state_attr(state.entity_id, 'device_class', 'battery') and
                       (state.entity_id.endswith("_battery") or state.entity_id.endswith("_battery_level"))
+                %}
+                    {{ state.entity_id }}{%- if not loop.last -%}, {%- endif -%}
+                {%- endfor %}
+
+    - alias: dynamic group sensor linkquality
+      id: dynamic group sensor linkquality
+      initial_state: true
+      trigger:
+          - platform: time_pattern
+            hours: "/3"
+          - platform: homeassistant
+            event: start
+      action:
+        - service: group.set
+          data:
+            name: dynamic group sensor linkquality
+            object_id: dynamic_group_sensor_linkquality
+            icon: mdi:signal
+            entities: >-
+                {%- 
+                    for state in states.sensor 
+                      if state.entity_id.endswith("_linkquality")
                 %}
                     {{ state.entity_id }}{%- if not loop.last -%}, {%- endif -%}
                 {%- endfor %}

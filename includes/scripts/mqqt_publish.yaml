@@ -39,8 +39,15 @@
           - service: script.turn_on
             data:
               entity_id: >
-                {% set num_low_link = states | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.linkquality', 'ne', None) | selectattr('attributes.linkquality', '<', 20 ) | map(attribute = 'attributes.device.friendlyName') | unique | list | count %}
-                
+                {%- set list_sensors = expand('group.dynamic_group_sensor_linkquality') | selectattr('state', 'ne', None) | selectattr('state', 'ne', 'None') -%}
+                {%- set datanames = namespace(low_linkquality=[]) -%}
+                {%- for state in list_sensors -%}
+                {%- if (state.state | int) < 20 -%}
+                {%- set datanames.low_linkquality = datanames.low_linkquality + [state] -%}
+                {%- endif -%}
+                {%- endfor -%}
+                {%- set num_low_link = datanames.low_linkquality | length -%}
+
                 {% if num_low_link > 0 %}
                   script.zigbee2mqtt_link_level_low
                 {% else %}
@@ -57,10 +64,17 @@
             disable_notification: true
             target: !secret telegram_enzokot_chat_id
             message: >
-                {% set low_link = states | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.linkquality', 'ne', None) | selectattr('attributes.linkquality', '<', 20 ) | map(attribute = 'attributes.device.friendlyName') | unique | list %}
-                {% set num_low_link = low_link | count %}
-                              
-                Низкий сигнал ({{ num_low_link }}шт): {% if num_low_link > 0 %}{{low_link | join(', ') }}{% endif %}
+                {%- set list_sensors = expand('group.dynamic_group_sensor_linkquality') | selectattr('state', 'ne', None) | selectattr('state', 'ne', 'None') -%}
+                {%- set datanames = namespace(low_linkquality=[]) -%}
+                {%- for state in list_sensors -%}
+                {%- if (state.state | int) < 20 -%}
+                {%- set datanames.low_linkquality = datanames.low_linkquality + [state] -%}
+                {%- endif -%}
+                {%- endfor -%}
+                {%- set namesfriendly = datanames.low_linkquality | map(attribute = 'attributes.device.friendlyName') | list -%}
+                {%- set num_low_link = namesfriendly | length -%}
+
+                Низкий сигнал ({{ num_low_link }}шт): {% if num_low_link > 0 %}{{namesfriendly | join(', ') }}{% endif %}
     
     zigbee2mqtt_link_level_ok:
         alias: zigbee2mqtt нормальный уровень сигнала

@@ -66,13 +66,13 @@
         - condition: template
           value_template: >
             {% set time_limit = as_timestamp(now()) - 4*60*60 %}
-            {{ states | selectattr('attributes.last_seen', 'defined') | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.last_seen', 'ne', None) | selectattr('attributes.last_seen', '<', time_limit * 1000 ) | map(attribute = 'name') | list | count  >= 1 }}
+            {{ expand('group.dynamic_group_sensor_linkquality') | selectattr('attributes.last_seen', 'defined') | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.last_seen', 'ne', None) | selectattr('attributes.last_seen', '<', time_limit * 1000 ) | map(attribute = 'name') | list | count  >= 1 }}
       action:  
         - service: telegram_bot.send_message
           data:
             title: >-
                       {% set time_limit = as_timestamp(now()) - 4*60*60 %}
-                      {% set missing = states | selectattr('attributes.last_seen', 'defined') | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.last_seen', 'ne', None) | selectattr('attributes.last_seen', '<', time_limit * 1000 ) | map(attribute = 'attributes.device.friendlyName') | unique | list %}
+                      {% set missing = expand('group.dynamic_group_sensor_linkquality') | selectattr('attributes.last_seen', 'defined') | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.last_seen', 'ne', None) | selectattr('attributes.last_seen', '<', time_limit * 1000 ) | map(attribute = 'attributes.device.friendlyName') | unique | list %}
                       {% set missing_count = missing | count %}
 
                       {%- if missing_count > 0 %} {{ '\U000026a0' }} {%- else %} {{ '\U00002705' }} {%- endif %} *Контроль устройств Zigbee*
@@ -80,7 +80,7 @@
             target: !secret telegram_enzokot_chat_id
             message: >
               {% set time_limit = as_timestamp(now()) - 4*60*60 %}
-              {% set missing = states | selectattr('attributes.last_seen', 'defined') | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.last_seen', 'ne', None) | selectattr('attributes.last_seen', '<', time_limit * 1000 ) | map(attribute = 'attributes.device.friendlyName') | unique | list %}
+              {% set missing = expand('group.dynamic_group_sensor_linkquality') | selectattr('attributes.last_seen', 'defined') | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.last_seen', 'ne', None) | selectattr('attributes.last_seen', '<', time_limit * 1000 ) | map(attribute = 'attributes.device.friendlyName') | unique | list %}
               {% set missing_count = missing | count %}
               {% set z2m_uptime = ((states('sensor.zigbee2mqtt_bridge_uptime') | int) / 3600) | round(1) %}
 
@@ -96,10 +96,17 @@
       condition:
         - condition: template
           value_template: >
-            {{ states | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.linkquality', 'ne', None) | selectattr('attributes.linkquality', '<', 20 ) | map(attribute = 'attributes.device.friendlyName') | unique | list | count > 0 }}
+                {%- set list_sensors = expand('group.dynamic_group_sensor_linkquality') | selectattr('state', 'ne', None) | selectattr('state', 'ne', 'None') -%}
+                {%- set datanames = namespace(low_linkquality=[]) -%}
+                {%- for state in list_sensors -%}
+                {%- if (state.state | int) < 20 -%}
+                {%- set datanames.low_linkquality = datanames.low_linkquality + [state] -%}
+                {%- endif -%}
+                {%- endfor -%}
+                {{ datanames.low_linkquality | length > 0}}
       action:  
         - service: script.zigbee2mqtt_linkuality_check
-        
+
 #Атоматическая калибровка локальной температуры термоголовок
     - alias: auto_local_temperature_calibration_thermostats
       id: auto_local_temperature_calibration_thermostats

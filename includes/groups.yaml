@@ -28,7 +28,7 @@
           - sensor.0x00158d00039677d9_linkquality
           - sensor.0x00158d0004561de9_linkquality
           - sensor.0x588e81fffeff5c4f_linkquality
-          - climate.0x60a423fffe968719
+          - sensor.0x60a423fffe968719_linkquality
           #- switch.ble_tracker_bed_room_restart
           - switch.ble_tracker_childrens_room_restart
           - sensor.0x00158d00054b8d72_linkquality
@@ -36,16 +36,16 @@
           - sensor.0x00158d0003953ee9_linkquality
           - remote.broadlink_ir_living_room
           - sensor.0x00158d0003d05782_linkquality
-          - climate.0x5c0272fffec89454
+          - sensor.0x5c0272fffec89454_linkquality
           - switch.esp32_monitor_and_ble_livingroom_restart
           - sensor.0x00158d000359304c_linkquality
           - sensor.0x842e14fffe5047f5_linkquality
           - sensor.0x086bd7fffe5d13c9_linkquality
           - sensor.0x842e14fffe36661f_linkquality
-          - climate.0x5c0272fffe8de819
+          - sensor.0x5c0272fffe8de819_linkquality
           - sensor.0x00158d0003975b4c_linkquality
           - sensor.0x00158d000396f197_linkquality
-          - climate.0x5c0272fffec9db22
+          - sensor.0x5c0272fffec9db22_linkquality
           - sensor.0x00158d0003a360b6_linkquality
           - sensor.0x00158d00045a78af_linkquality
           - sensor.0x04cf8cdf3c7d15b7_linkquality

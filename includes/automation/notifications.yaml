@@ -74,7 +74,7 @@
                entity_id: timer.front_door_ringtone
       action:
           - service: timer.start
-            entity_id: timer.front_door_ringtone          
+            entity_id: timer.front_door_ringtone
           - service: xiaomi_aqara.play_ringtone
             data:
               gw_mac: !secret gateway1_mac
@@ -1145,3 +1145,39 @@
                     title: "{{ '\U000026A0' }} <b>Трекинг устройств</b>"
                     message: >
                       <i>{{ state_attr(trigger.event.data.entity_id, 'friendly_name') }}</i> сменил статус на <b>{{ trigger.event.data.new_state.state }}</b>
+
+#Уведомление о начале/окончании нагрева воды в бойлере
+    - alias: notifications on off water heater
+      id: notifications on off water heater
+      mode: parallel
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: sensor.0x842e14fffe13a854_power
+      condition:
+        - condition: state
+          entity_id: input_boolean.water_heater_season
+          state: 'on'
+        - condition: template
+          value_template: >
+            {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
+            {{ trigger.from_state.state not in ignore and
+               trigger.to_state.state not in ignore and
+               trigger.to_state.state != trigger.from_state.state
+            }}
+        - condition: template
+          value_template: >
+            {{ 
+               (trigger.to_state.state | int >= 850 and trigger.from_state.state | int <= 30)
+               or
+               (trigger.to_state.state | int < 30 and trigger.from_state.state | int > 850)
+            }}
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            disable_notification: true
+            title: >
+                {%- if trigger.to_state.state | int >= 30 %} {{ '\U00002139' }} {%- else -%} {{ '\U00002705' }} {%- endif %} *Водонагреватель*
+            message: >
+                {%- if trigger.to_state.state | int >= 30 %} *Включен* {%- else -%} *Отключен* {%- endif %} нагрев воды

@@ -1,32 +1,24 @@
 
 #Водонагреватель выкл/вкл на ночь
-    - alias: night off water heater
+    - alias: night on off water heater
       id: night off water heater
       initial_state: true
       trigger:
         - platform: time
           at: '22:30:00'
-      condition:
-          - condition: state
-            entity_id: input_boolean.water_heater_season
-            state: 'on'      
-      action:
-          - service: switch.turn_off
-            data:
-              entity_id: switch.0x842e14fffe13a854
-
-    - alias: night oт water heater
-      id: night oт water heater
-      initial_state: true
-      trigger:
         - platform: time
-          at: '05:30:00'
+          at: '06:15:00'
       condition:
           - condition: state
             entity_id: input_boolean.water_heater_season
-            state: 'on'      
+            state: 'on'
       action:
-          - service: switch.turn_on
+          - service: >
+                {% if trigger.now.hour == 22 %}
+                    switch.turn_off
+                {% else %}
+                    switch.turn_on
+                {% endif %}
             data:
               entity_id: switch.0x842e14fffe13a854
 
@@ -205,7 +197,7 @@
       max_exceeded: silent
       trigger:
         - platform: state
-          entity_id: sensor.0x842e14fffe5047f5_power
+          entity_id: sensor.0x842e14fffe5047f5_energy
           #attribute: energy
       condition:
         - condition: template
@@ -213,13 +205,13 @@
                 {% set ignore = ['unknown', 'unavailable', 'none'] %}
                 {{ trigger.to_state.state not in ignore and
                    trigger.from_state.state not in ignore and
-                   trigger.to_state.attributes.energy != trigger.from_state.attributes.energy
+                   trigger.to_state.state != trigger.from_state.state
                 }}
       action:
           - service: input_number.set_value
             data:
               entity_id: input_number.total_heater_socket_saved
-              value: "{{ state_attr('sensor.0x842e14fffe5047f5_power', 'energy') }}"
+              value: "{{ trigger.to_state.state }}"
 
     - alias: restart z2m or instance for water heater
       id: restart z2m or instance for water heater
@@ -228,7 +220,7 @@
       max_exceeded: silent
       trigger:
         - platform: state
-          entity_id: sensor.0x842e14fffe13a854_power
+          entity_id: sensor.0x842e14fffe13a854_energy
           #attribute: energy
       condition:
         - condition: template
@@ -236,13 +228,13 @@
                 {% set ignore = ['unknown', 'unavailable', 'none'] %}
                 {{ trigger.to_state.state not in ignore and
                    trigger.from_state.state not in ignore and
-                   trigger.to_state.attributes.energy != trigger.from_state.attributes.energy
+                   trigger.to_state.state != trigger.from_state.state
                 }}
       action:
           - service: input_number.set_value
             data:
               entity_id: input_number.total_water_heater_socket_saved
-              value: "{{ state_attr('sensor.0x842e14fffe13a854_power', 'energy') }}"
+              value: "{{ trigger.to_state.state }}"
 
     - alias: restart z2m or instance for kitchen socket 1
       id: restart z2m or instance for kitchen socket 1
@@ -251,7 +243,7 @@
       max_exceeded: silent
       trigger:
         - platform: state
-          entity_id: sensor.0x842e14fffe36661f_power
+          entity_id: sensor.0x842e14fffe36661f_energy
           #attribute: energy
       condition:
         - condition: template
@@ -259,13 +251,13 @@
                 {% set ignore = ['unknown', 'unavailable', 'none'] %}
                 {{ trigger.to_state.state not in ignore and
                    trigger.from_state.state not in ignore and
-                   trigger.to_state.attributes.energy != trigger.from_state.attributes.energy
+                   trigger.to_state.state != trigger.from_state.state
                 }}
       action:
           - service: input_number.set_value
             data:
               entity_id: input_number.total_kitchen_socket1_saved
-              value: "{{ state_attr('sensor.0x842e14fffe36661f_power', 'energy') }}"
+              value: "{{ trigger.to_state.state }}"
 
     - alias: restart z2m or instance for bedroom socket 1
       id: restart z2m or instance for bedroom socket 1
@@ -274,7 +266,7 @@
       max_exceeded: silent
       trigger:
         - platform: state
-          entity_id: sensor.0x588e81fffeff5c4f_power
+          entity_id: sensor.0x588e81fffeff5c4f_energy
           #attribute: energy
       condition:
         - condition: template
@@ -282,13 +274,13 @@
                 {% set ignore = ['unknown', 'unavailable', 'none'] %}
                 {{ trigger.to_state.state not in ignore and
                    trigger.from_state.state not in ignore and
-                   trigger.to_state.attributes.energy != trigger.from_state.attributes.energy
+                   trigger.to_state.state != trigger.from_state.state
                 }}
       action:
           - service: input_number.set_value
             data:
               entity_id: input_number.total_bedroom_socket1_saved
-              value: "{{ state_attr('sensor.0x588e81fffeff5c4f_power', 'energy') }}"
+              value: "{{ trigger.to_state.state }}"
 
 #Гирлянда в детской
     - alias: on move turn on garland childrens room
@@ -350,10 +342,10 @@
                 {% set ignore = ['unknown', 'unavailable', 'none'] %}
                 {{ trigger.to_state.state not in ignore and
                    trigger.from_state.state not in ignore and
-                   trigger.to_state.attributes.energy != trigger.from_state.attributes.energy
+                   trigger.to_state.state != trigger.from_state.state
                 }}
       action:
           - service: input_number.set_value
             data:
               entity_id: input_number.total_yeelight650_relay_saved
-              value: "{{ states('sensor.0x54ef441000096cbc_energy') }}"
+              value: "{{ trigger.to_state.state }}"

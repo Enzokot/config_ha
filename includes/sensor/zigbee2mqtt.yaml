@@ -6,9 +6,9 @@
 
     - platform: mqtt
       name: Zigbee2mqtt Coordinator Version
-      state_topic: "zigbee2mqtt/bridge/config"
+      state_topic: "zigbee2mqtt/bridge/info"
       value_template: "{{ value_json.coordinator }}"
-      json_attributes_topic: "zigbee2mqtt/bridge/config"
+      json_attributes_topic: "zigbee2mqtt/bridge/info"
       json_attributes_template: "{{ {'revision':value_json.coordinator['meta'].revision, 'type':value_json.coordinator['type']} | tojson }}"
       icon: mdi:chip
     

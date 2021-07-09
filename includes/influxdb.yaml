@@ -3,7 +3,7 @@
     database: homeassistant
     username: !secret influxdb_user
     password: !secret influxdb_password
-    max_retries: 3
+    max_retries: 5
     default_measurement: state
     include: !include entities_for_db.yaml
     component_config:

@@ -32,7 +32,7 @@
     name: online
 
   - platform: version
-    source: hassio
+    source: supervisor
     name: Latest version HA
 
 # HA current version    

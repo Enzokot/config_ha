@@ -1,6 +1,7 @@
 
 #Переключатели увлажнителя
     xiaomi_miio_fan_change_param:
+        alias: Универсальный скрипт переключения параметров увлажнителя
         mode: queued
         max: 25
         fields:
@@ -18,6 +19,7 @@
                         {{ identity }}
 
     xiaomi_miio_fan1_change_param:
+        alias: Универсальный скрипт переключения параметров увлажнителя 1
         mode: queued
         max: 25
         fields:

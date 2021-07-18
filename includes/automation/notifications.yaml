@@ -429,19 +429,12 @@
       initial_state: true
       trigger:
        - platform: state
-         entity_id: binary_sensor.0x00158d0003943639_smoke
-         to: 'on'
-       - platform: state
-         entity_id: binary_sensor.0x00158d00039a8358_smoke
-         to: 'on'
-       - platform: state
-         entity_id: binary_sensor.0x00158d00039d9398_smoke
-         to: 'on'
-       - platform: state
-         entity_id: binary_sensor.0x00158d00045ca483_smoke
-         to: 'on'      
-       - platform: state
-         entity_id: binary_sensor.0x00158d00045cd551_smoke
+         entity_id: 
+           - binary_sensor.0x00158d0003943639_smoke
+           - binary_sensor.0x00158d00039a8358_smoke
+           - binary_sensor.0x00158d00039d9398_smoke
+           - binary_sensor.0x00158d00045ca483_smoke
+           - binary_sensor.0x00158d00045cd551_smoke
          to: 'on'
       action:
         - variables:
@@ -691,7 +684,7 @@
             title: >-
                      {{ '\U0001f50b' }} *Низкий заряд Zigbee*
             message: >-
-                      Для сенсоров:
+                      Для устройств:
                       {{- '\n' -}}
                       {%- set entities = expand('group.dynamic_group_sensor_battery') -%}
                       {% for x in entities if x.state|int <= 20 %}
@@ -957,6 +950,8 @@
            - persistent_notification.http_login
           to: 'notifying'
       action:
+        - variables:
+            hostname: !secret keenetic_ha_url
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -968,11 +963,11 @@
                 {% endif %} *Вход в систему*
             message: >
                 {% set ipadress = trigger.to_state.attributes.message.split('from ')[1] | regex_replace('\s+.*') %}
-                {% if 'with invalid authentication' in trigger.to_state.attributes.message | lower %}
+                {% if 'with invalid authentication' in trigger.to_state.attributes.message | lower -%}
                     Неудачная попытка входа в систему с адреса [{{ ipadress }}](https://whatismyipaddress.com/ip/{{- ipadress }})
-                {% else %}
+                {%- else -%}
                     Заблокирован IP адрес [{{ ipadress }}](https://whatismyipaddress.com/ip/{{- ipadress }}), 5 попыток входа
-                {% endif %}
+                {%- endif %}, [логи](https://{{- hostname -}}/config/logs)
             disable_web_page_preview: true
         - service: persistent_notification.dismiss
           data:
@@ -995,12 +990,14 @@
             - persistent_notification.invalid_config
           to: 'notifying'
       action:
+        - variables:
+            hostname: !secret keenetic_ha_url
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0000203C' }} *Проверка конфигурации*"
             message: >
-                {{ trigger.to_state.attributes.message }}
+                {{ trigger.to_state.attributes.message | replace(' and [logs](/config/logs)', ' and [logs](https://' + hostname + '/config/logs)') }} 
 
     - alias: notification dismiss check configuration failed
       id: notification dismiss check configuration failed
@@ -1098,13 +1095,15 @@
               trigger.event.data.message | length < 4000
             }}
       action:
+        - variables:
+            hostname: !secret keenetic_ha_url
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             parse_mode: 'html'
             title: "{{ '\U000026d4' }} <b>Ошибка выполнения скрипта</b>"
             message: >
-              {{ trigger.event.data.message }}.
+              {{ trigger.event.data.message -}} <a href="https://{{- hostname -}}/config/logs">Check logs.</a>
 
 #Уведомление об объектах, которые перешли в статус недоступно
     - alias: notifications objects in unavailable status
@@ -1181,3 +1180,46 @@
                 {%- if trigger.to_state.state | int >= 30 %} {{ '\U00002139' }} {%- else -%} {{ '\U00002705' }} {%- endif %} *Водонагреватель*
             message: >
                 {%- if trigger.to_state.state | int >= 30 %} *Включен* {%- else -%} *Отключен* {%- endif %} нагрев воды
+
+#Уведомление о неудачном бекапе Google Drive Backup
+    - alias: notifications stale google drive backup
+      id: notifications stale google drive backup
+      mode: single
+      max_exceeded: silent
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: binary_sensor.snapshots_stale
+          from: 'off'
+          to: 'on'
+      action:
+        - variables:
+            hostname: !secret keenetic_ha_url
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: "{{ '\U000026D4' }} *Резервное копирование БД*"
+            message: >
+                Проблема с бекапом Google Drive, [логи](https://{{- hostname -}}/hassio/addon/cebe7a76_hassio_google_drive_backup/logs)
+
+#Уведомление о найденном новом устройстве
+    - alias: notifications entry discovery
+      id: notifications entry discovery
+      mode: parallel
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: persistent_notification.config_entry_discovery
+          to: 'notifying'
+      action:
+        - variables:
+            hostname: !secret keenetic_ha_url
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: "{{ '\U0001F4DF' }} *Новое устройство*"
+            message: >
+                Найдено новое устройство в сети, [просмотреть](https://{{- hostname -}}/config/integrations)
+        - service: persistent_notification.dismiss
+          data:
+            notification_id: 'config_entry_discovery'

@@ -119,6 +119,8 @@
               entity_id: input_boolean.instances_stoping
               state: 'off'
           sequence:
+            - delay:
+                seconds: 30
             - service: homeassistant.reload_config_entry
               data:
                 entry_id: 8a7c8a568a453f39d2a77dda05119c4b

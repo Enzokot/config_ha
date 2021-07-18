@@ -75,19 +75,12 @@
       initial_state: true
       trigger:
        - platform: state
-         entity_id: binary_sensor.0x00158d0003943639_smoke
-         to: 'on'
-       - platform: state
-         entity_id: binary_sensor.0x00158d00039a8358_smoke
-         to: 'on'
-       - platform: state
-         entity_id: binary_sensor.0x00158d00039d9398_smoke
-         to: 'on'
-       - platform: state
-         entity_id: binary_sensor.0x00158d00045ca483_smoke
-         to: 'on'      
-       - platform: state
-         entity_id: binary_sensor.0x00158d00045cd551_smoke
+         entity_id: 
+           - binary_sensor.0x00158d0003943639_smoke
+           - binary_sensor.0x00158d00039a8358_smoke
+           - binary_sensor.0x00158d00039d9398_smoke
+           - binary_sensor.0x00158d00045ca483_smoke
+           - binary_sensor.0x00158d00045cd551_smoke
          to: 'on'
       condition:
        - condition: state
@@ -103,23 +96,12 @@
       initial_state: true
       trigger:
        - platform: state
-         entity_id: binary_sensor.0x00158d0003943639_smoke
-         from: 'on'
-         to: 'off'
-       - platform: state
-         entity_id: binary_sensor.0x00158d00039a8358_smoke
-         from: 'on'
-         to: 'off'
-       - platform: state
-         entity_id: binary_sensor.0x00158d00039d9398_smoke
-         from: 'on'
-         to: 'off'
-       - platform: state
-         entity_id: binary_sensor.0x00158d00045ca483_smoke
-         from: 'on'
-         to: 'off'      
-       - platform: state
-         entity_id: binary_sensor.0x00158d00045cd551_smoke
+         entity_id: 
+           - binary_sensor.0x00158d0003943639_smoke
+           - binary_sensor.0x00158d00039a8358_smoke
+           - binary_sensor.0x00158d00039d9398_smoke
+           - binary_sensor.0x00158d00045ca483_smoke
+           - binary_sensor.0x00158d00045cd551_smoke
          from: 'on'
          to: 'off'
       condition:

@@ -1,0 +1,35 @@
+
+#Сенсоры для ClimateIR
+  - trigger:
+      - platform: template
+        value_template: >
+            {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
+            {{ states('sensor.esp_xiaomi_living_room_temperature') not in ignore and
+               states('sensor.esp_xiaomi_living_room_temperature') != states('sensor.temp_for_ac_living_room')
+            }}
+      - platform: homeassistant
+        event: start
+      - platform: event
+        event_type: event_template_reloaded
+    sensor:
+      - name: temp_for_ac_living_room
+        device_class: temperature
+        unit_of_measurement: '°C'
+        state: "{{ states('sensor.esp_xiaomi_living_room_temperature') }}"
+
+  - trigger:
+      - platform: template
+        value_template: >
+            {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
+            {{ states('sensor.esp_xiaomi_living_room_humidity') not in ignore and
+               states('sensor.esp_xiaomi_living_room_humidity') != states('sensor.humidity_for_ac_living_room')
+            }}
+      - platform: homeassistant
+        event: start
+      - platform: event
+        event_type: event_template_reloaded
+    sensor:
+      - name: humidity_for_ac_living_room
+        device_class: humidity
+        unit_of_measurement: '%'
+        state: "{{ states('sensor.esp_xiaomi_living_room_humidity') }}"

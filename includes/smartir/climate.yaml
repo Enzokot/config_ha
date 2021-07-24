@@ -7,3 +7,4 @@
     temperature_sensor: sensor.temp_for_ac_living_room
     humidity_sensor: sensor.humidity_for_ac_living_room
     power_sensor: binary_sensor.0x00158d000490fe9d_contact
+    power_sensor_restore_state: true

@@ -168,3 +168,21 @@
       data:
         entity_id: >-
           {{ expand('group.dynamic_group_automation_for_reload') | map(attribute = 'entity_id') | join(', ') }}
+
+#Удаление устройств, без удаления интеграции
+- alias: device_entity_deletion_python_script
+  id: device_entity_deletion_python_script
+  initial_state: true
+  mode: queued
+  trigger:
+    - platform: event
+      event_type: device_registry_updated
+  action:
+    - service: python_script.exec
+      data:
+        device_id: "{{ trigger.event.data.device_id }}"
+        source: |
+          registry = hass.data['device_registry']
+          device = registry.async_get(data['device_id'])
+          if device and device.name_by_user == 'delete_this':
+              registry.async_remove_device(data['device_id'])

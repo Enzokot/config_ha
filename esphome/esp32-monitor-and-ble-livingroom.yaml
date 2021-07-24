@@ -12,6 +12,7 @@ esphome:
       - lambda: 'id(weight_miscale).update();'
 
 wifi:
+  fast_connect: true
   networks:
   
 #  - ssid: Kotletochka_Yi

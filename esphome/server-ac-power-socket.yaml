@@ -15,7 +15,7 @@ esphome:
 
 wifi:
   reboot_timeout: 15min
-  power_save_mode: none
+  fast_connect: true
   networks:
 #  - ssid: Kotletochka_Yi
 #    password: !secret kotletochka_wifi_password

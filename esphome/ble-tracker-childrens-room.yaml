@@ -8,6 +8,7 @@ esphome:
   comment: BLE childrens room
 
 wifi:
+  fast_connect: true
   networks:
   
 #  - ssid: Kotletochka_Yi

@@ -90,6 +90,7 @@ input_text: !include includes/input_text.yaml
 input_boolean: !include includes/input_boolean.yaml
 input_datetime: !include includes/input_datetime.yaml
 
+python_script:
 webostv: !include includes/webostv.yaml
 media_player: !include includes/media_player.yaml
 smartir: 

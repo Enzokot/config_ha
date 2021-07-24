@@ -2,9 +2,10 @@
     - alias: dynamic group sensor battery
       id: dynamic group sensor battery
       initial_state: true
+      mode: restart
       trigger:
-          - platform: time_pattern
-            hours: "/3"
+          - platform: event
+            event_type: entity_registry_updated
           - platform: homeassistant
             event: start
       action:
@@ -25,9 +26,10 @@
     - alias: dynamic group sensor linkquality
       id: dynamic group sensor linkquality
       initial_state: true
+      mode: restart
       trigger:
-          - platform: time_pattern
-            hours: "/3"
+          - platform: event
+            event_type: entity_registry_updated
           - platform: homeassistant
             event: start
       action:

@@ -695,6 +695,7 @@
     - alias: notification low battery zigbee trv
       id: notification low battery zigbee trv
       initial_state: true
+      mode: queued
       trigger:
         platform: state
         entity_id:
@@ -705,7 +706,10 @@
         from: 'off'
         to: 'on'
       condition: >
-        {{ (as_timestamp(now()) - as_timestamp(trigger.from_state.last_changed)) / 3600 > 8 }}
+        {{ 
+            state_attr('automation.notification_low_battery_zigbee_trv', 'last_triggered') == None or
+            as_local(state_attr('automation.notification_low_battery_zigbee_trv', 'last_triggered')) <= now() - timedelta(hours=8) 
+        }}
       action:
         - service: telegram_bot.send_message
           data:
@@ -713,7 +717,7 @@
             title: >-
                      {{ '\U0001f50b' }} *Низкий заряд Zigbee*
             message: >-
-                      Для TRV: {{ trigger.from_state.name }}
+                      Для TRV: {{ trigger.to_state.name }}
 
 #После рестарта НА остался включенный обогреватель
     - alias: notification safety sockets on restart
@@ -1040,6 +1044,7 @@
           data:
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
+            disable_web_page_preview: true
             title: >
                 {%- if trigger.event == 'start' %}
                     {{- '\U00002705' -}}
@@ -1048,7 +1053,7 @@
                 {% endif %} *Трекинг устройств*
             message: >
                 {% if trigger.event == 'start' -%}
-                    Home Assistant запущен за {{ states('sensor.start_time') }}сек
+                    Home Assistant (версия: [{{ states('sensor.current_version_ha') }}](https://github.com/home-assistant/core/releases/tag/{{- states('sensor.current_version_ha') }})) запущен за {{ states('sensor.start_time') }}сек
                 {% else -%}
                     Home Assistant *остановлен*
                 {% endif -%}
@@ -1202,10 +1207,10 @@
             message: >
                 Проблема с бекапом Google Drive, [логи](https://{{- hostname -}}/hassio/addon/cebe7a76_hassio_google_drive_backup/logs)
 
-#Уведомление о найденном новом устройстве
-    - alias: notifications entry discovery
-      id: notifications entry discovery
-      mode: parallel
+#Уведомление о найденном новом устройстве интеграции
+    - alias: notifications entry discovery integration
+      id: notifications entry discovery integrations
+      mode: queued
       initial_state: true
       trigger:
         - platform: state
@@ -1217,9 +1222,51 @@
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
-            title: "{{ '\U0001F4DF' }} *Новое устройство*"
+            disable_notification: true
+            title: "{{ '\U0001F4DF' }} *Устройства*"
             message: >
                 Найдено новое устройство в сети, [просмотреть](https://{{- hostname -}}/config/integrations)
         - service: persistent_notification.dismiss
           data:
             notification_id: 'config_entry_discovery'
+
+#Уведомление о новом устройстве
+    - alias: notifications entry discovery
+      id: notifications entry discovery
+      mode: queued
+      max: 100
+      max_exceeded: silent
+      initial_state: true
+      trigger:
+        - platform: event
+          event_type: entity_registry_updated
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            disable_notification: true
+            parse_mode: 'html'
+            title: "{{ '\U0001F4DF' }} <b>Устройства</b>"
+            message: "<b>{{ trigger.event.data.action | capitalize }}</b>: {{ trigger.event.data.old_entity_id + '->' if trigger.event.data.old_entity_id is defined }}{{ trigger.event.data.entity_id if trigger.event.data.entity_id is defined else 'NA' }}"
+
+#Уведомление о повторном запуске автоматизации
+    - alias: notifications automation already running
+      id: notifications automation already running
+      initial_state: true
+      mode: queued
+      trigger:
+        - platform: event
+          event_type: system_log_event
+          event_data:
+            level: WARNING
+      condition:
+        - condition: template
+          value_template: '{{ "Already running" in trigger.event.data.message[0] }}'
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            disable_notification: true
+            parse_mode: 'html'
+            title: "{{ '\U000026A0' }} <b>Выполнение автоматизаций</b>"
+            message: "Повторный запуск автоматизации: {{trigger.event.data.message[0]}}"

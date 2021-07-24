@@ -11,6 +11,7 @@ esphome:
   comment: IR and notify telegram HA state living room
 
 wifi:
+  fast_connect: true
   networks:
   #Точка в спальне
 #  - ssid: Kotletochka

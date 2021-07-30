@@ -90,6 +90,7 @@
            - platform: time
              at: "21:00:00"
            - platform: state
+             id: "binary_sensor_trigger"
              entity_id: binary_sensor.0x00158d000359304c_contact
              from: 'on'
              to: 'off'
@@ -100,6 +101,12 @@
       action:
           - service: timer.cancel
             entity_id: timer.front_door_ringtone
+          - choose:
+              - conditions: "{{ trigger.id == 'binary_sensor_trigger' }}"
+                sequence:            
+                  - service: xiaomi_aqara.stop_ringtone
+                    data:
+                      gw_mac: !secret gateway1_mac            
 
     - alias: notification front door open
       id: notification front door open
@@ -682,7 +689,7 @@
           data:
             target: !secret telegram_enzokot_chat_id
             title: >-
-                     {{ '\U0001f50b' }} *Низкий заряд Zigbee*
+                     {{ '\U0001f50b' }} *Низкий заряд*
             message: >-
                       Для устройств:
                       {{- '\n' -}}
@@ -1034,12 +1041,6 @@
         - platform: homeassistant
           event: shutdown
       action:
-        - choose:
-            - conditions: "{{ trigger.event == 'shutdown' }}"
-              sequence:
-                - service: input_boolean.turn_on
-                  data:
-                    entity_id: input_boolean.instances_stoping
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -1053,7 +1054,7 @@
                 {% endif %} *Трекинг устройств*
             message: >
                 {% if trigger.event == 'start' -%}
-                    Home Assistant (версия: [{{ states('sensor.current_version_ha') }}](https://github.com/home-assistant/core/releases/tag/{{- states('sensor.current_version_ha') }})) запущен за {{ states('sensor.start_time') }}сек
+                    Home Assistant запущен за {{ states('sensor.start_time') }}сек. (версия Core: [{{ states('sensor.current_version_ha') }}](https://github.com/home-assistant/core/releases/tag/{{- states('sensor.current_version_ha') }}))
                 {% else -%}
                     Home Assistant *остановлен*
                 {% endif -%}
@@ -1108,11 +1109,12 @@
             parse_mode: 'html'
             title: "{{ '\U000026d4' }} <b>Ошибка выполнения скрипта</b>"
             message: >
-              {{ trigger.event.data.message -}} <a href="https://{{- hostname -}}/config/logs">Check logs.</a>
+              {{ trigger.event.data.message -}} <a href="https://{{- hostname -}}/config/logs"> Check logs.</a>
 
 #Уведомление об объектах, которые перешли в статус недоступно
     - alias: notifications objects in unavailable status
       id: notifications objects in unavailable status
+      initial_state: true
       mode: queued
       max: 70
       trigger:
@@ -1125,9 +1127,6 @@
         - condition: template
           value_template: >-
             {{ trigger.event.data.entity_id in expand('group.important_devices_unavailable') | map(attribute='entity_id') | list }}
-        # - condition: template
-        #   value_template: >-
-        #     {{ not trigger.event.data.entity_id in ['group.dynamic_group_sensor_battery'] }}
         - condition: template
           value_template: >-
             {{ trigger.event.data.new_state.state != trigger.event.data.old_state.state }}
@@ -1136,10 +1135,7 @@
             {{ trigger.event.data.new_state.state in ['unknown', 'unavailable'] }}
       action:
         - choose:
-            - conditions: 
-                - condition: state
-                  entity_id: input_boolean.instances_stoping
-                  state: 'off'
+            - conditions: "{{ is_state('input_boolean.instances_stoping', 'off') }}"
               sequence:
                 - service: telegram_bot.send_message
                   data:

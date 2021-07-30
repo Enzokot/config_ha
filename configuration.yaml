@@ -71,6 +71,7 @@ zone: !include includes/zone.yaml
 
 notify: !include includes/notify.yaml
 telegram_bot: !include includes/telegram_bot.yaml
+alert: !include includes/alert.yaml
 
 yeelight: !include includes/yeelight.yaml
 fan: !include includes/fan.yaml

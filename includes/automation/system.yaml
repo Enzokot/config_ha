@@ -186,3 +186,21 @@
           device = registry.async_get(data['device_id'])
           if device and device.name_by_user == 'delete_this':
               registry.async_remove_device(data['device_id'])
+
+#Установка флага перезапуска НА
+- alias: system_event_instances_stoping_set
+  id: system_event_instances_stoping_set
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: call_service
+      event_data:
+        domain: homeassistant
+        service: restart
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.instances_stoping
+    - service: automation.turn_off
+      data:
+        entity_id: automation.notifications_objects_in_unavailable_status

@@ -235,20 +235,35 @@
               title: >-
                         {{ sm_g973f_rezhim_ne_bespokoit }}
 
-#Отключение сигнализации по кнопке мобильного приложения
-    - alias: mobile app notification action turn off alarm
-      id: mobile app notification action turn off alarm
+#Отключение сигнализации по кнопке мобильного приложения/телеграм
+    - alias: mobile app telegram notification action turn off alarm
+      id: mobile app telegram notification action turn off alarm
       initial_state: true
       trigger:
-        platform: event
-        event_type: mobile_app_notification_action
-        event_data:
-          action: stop_alarm
-      condition:
-       - condition: state
-         entity_id: input_boolean.alarm_gateway_button
-         state: 'on'
+        - platform: event
+          event_type: mobile_app_notification_action
+          event_data:
+            action: stop_alarm
+        - platform: event
+          id: 'telegram_callback_stop_alarm'
+          event_type: telegram_callback
+          event_data:
+            data: '/stop_alarm'
       action:
-          - service: input_boolean.turn_off
-            data:
-              entity_id: input_boolean.alarm_gateway_button
+          - choose:
+              - conditions: "{{ is_state('input_boolean.alarm_gateway_button', 'on') }}"
+                sequence:            
+                    - service: input_boolean.turn_off
+                      data:
+                        entity_id: input_boolean.alarm_gateway_button
+          - choose:
+              - conditions: "{{ trigger.id == 'telegram_callback_stop_alarm' }}"
+                sequence:            
+                    - service: telegram_bot.delete_message
+                      data:
+                        chat_id: '{{ trigger.event.data.user_id }}'
+                        message_id: '{{ trigger.event.data.message.message_id }}'
+                    - service: telegram_bot.answer_callback_query
+                      data:
+                        callback_query_id: '{{ trigger.event.data.id }}'
+                        message: 'Выключили сигнализацию'

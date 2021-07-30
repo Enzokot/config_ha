@@ -1,0 +1,21 @@
+
+#Уведомление о включенной сигнализации
+  repeat_notify_alarm_gateway:
+    name: "Уведомление о включенной сигназации на шлюзе"
+    title: "{{ '\U0001f6a8' }} *Сигнализация*"
+    message: "Сигнализация шлюза включена, требуется проверка."
+    entity_id: input_boolean.alarm_gateway_button
+    state: "on"
+    repeat:
+      - 10
+      - 20
+      - 30
+      - 45
+      - 60
+    can_acknowledge: true
+    skip_first: true
+    data:
+      inline_keyboard:
+        - 'Выключить сирену:/stop_alarm'
+    notifiers:
+      - telegram_enzokot_to_bot

@@ -257,4 +257,4 @@
                       seconds: 30
                   - service: homeassistant.reload_config_entry
                     data:
-                      entry_id: e506bd4af91511ea8fbf3956d4d8f578
+                      entry_id: 67a31e5041aa5f70af3066c6aba1b083

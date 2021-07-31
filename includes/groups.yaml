@@ -39,6 +39,7 @@
           - sensor.0x5c0272fffec89454_linkquality
           - switch.esp32_monitor_and_ble_livingroom_restart
           - sensor.0x00158d000359304c_linkquality
+          - sensor.0x00158d0003cfa725_linkquality
           - sensor.0x842e14fffe5047f5_linkquality
           - sensor.0x086bd7fffe5d13c9_linkquality
           - sensor.0x842e14fffe36661f_linkquality
@@ -79,6 +80,7 @@
           - sensor.0x847127fffed62861_linkquality
           - sensor.0x847127fffed4907d_linkquality
           - sensor.0x54ef441000096cbc_linkquality
+          - sensor.0x60a423fffef8d41a_linkquality
 
     window_shades_kitchen_group:
         entities:

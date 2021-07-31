@@ -28,6 +28,10 @@ binary_sensor.0x00158d00045cd551_smoke:
 binary_sensor.0x00158d000359304c_contact:
   friendly_name: Входная дверь
   device_class: door
+
+binary_sensor.0x00158d0003cfa725_contact:
+  friendly_name: Тамбурная дверь
+  device_class: door
   
 binary_sensor.0x00158d0003f37a0f_contact:
   friendly_name: Выкл. детская

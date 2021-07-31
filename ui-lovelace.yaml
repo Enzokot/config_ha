@@ -403,8 +403,12 @@ views:
             - entity: binary_sensor.0x00158d00039d9398_smoke
               show_last_changed: true
               name: Коридор
+            - entity: binary_sensor.0x00158d0003cfa725_contact
+              show_last_changed: true
+              name: 'Тамбурная'
             - entity: binary_sensor.0x00158d000359304c_contact
               show_last_changed: true
+              name: 'Входная'
             - entity: binary_sensor.0x00158d000566bde7_occupancy
               show_last_changed: true
               name: Коридор 1
@@ -432,6 +436,7 @@ views:
                 min: 30
                 entities:
                   - sensor.0x00158d000359304c_battery
+                  - sensor.0x00158d0003cfa725_battery
                   - sensor.0x00158d000490fe9d_battery          
                   - sensor.0x00158d0003f37a0f_battery
                   - sensor.0x00158d00039677d9_battery
@@ -487,6 +492,8 @@ views:
                   - sensor.esp_xiaomi_childrens_room_battery_level
           entities:          
             - entity: sensor.0x00158d000359304c_battery
+              tap_action: more-info
+            - entity: sensor.0x00158d0003cfa725_battery
               tap_action: more-info
             - entity: sensor.0x00158d0003f37a0f_battery
               tap_action: more-info
@@ -701,6 +708,22 @@ views:
                   - entity: sensor.0x588e81fffeff5c4f_power
                   - entity: sensor.total_bedroom_socket_1_cable_daily_electicity
                   - entity: sensor.total_bedroom_socket_1_cable_monthly_electicity
+
+        - type: markdown
+          content: >
+             **Розетка в спальне 2** 
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: switch.0x60a423fffef8d41a
+                    state_color: true
+                    secondary_info: last-changed
+                  - entity: sensor.0x60a423fffef8d41a_power
+                  - entity: sensor.total_bedroom_socket_2_cable_daily_electicity
+                  - entity: sensor.total_bedroom_socket_2_cable_monthly_electicity
 
   - title: Климат
     icon: mdi:home-thermometer

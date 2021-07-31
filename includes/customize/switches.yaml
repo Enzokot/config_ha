@@ -11,6 +11,9 @@ switch.0x842e14fffe36661f:
 switch.0x588e81fffeff5c4f:
   friendly_name: Вкл/выкл розетка 1 спальня
 
+switch.0x60a423fffef8d41a:
+  friendly_name: Вкл/выкл розетка 2 спальня
+
 switch.server_ac_power_socket_relay:
   friendly_name: Вкл/выкл розетка сервера
 

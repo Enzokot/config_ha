@@ -135,6 +135,7 @@
             - sensor.0x842e14fffe36661f_power
             - sensor.0x588e81fffeff5c4f_power
             - sensor.server_ac_power_socket_w
+            - sensor.0x60a423fffef8d41a_power
         above: 3000
       action:
           - service: switch.turn_off
@@ -151,6 +152,9 @@
                         {%- endif -%}
                         {% if trigger.entity_id == 'sensor.0x588e81fffeff5c4f_power' -%}
                            switch.0x588e81fffeff5c4f
+                        {%- endif -%}              
+                        {% if trigger.entity_id == 'sensor.0x60a423fffef8d41a_power' -%}
+                           switch.0x60a423fffef8d41a
                         {%- endif -%}              
                         {% if trigger.entity_id == 'sensor.server_ac_power_socket_w' -%}
                            switch.server_ac_power_socket_relay
@@ -280,6 +284,29 @@
           - service: input_number.set_value
             data:
               entity_id: input_number.total_bedroom_socket1_saved
+              value: "{{ trigger.to_state.state }}"
+
+    - alias: restart z2m or instance for bedroom socket 2
+      id: restart z2m or instance for bedroom socket 2
+      initial_state: true
+      mode: single
+      max_exceeded: silent
+      trigger:
+        - platform: state
+          entity_id: sensor.0x60a423fffef8d41a_energy
+          #attribute: energy
+      condition:
+        - condition: template
+          value_template: >- 
+                {% set ignore = ['unknown', 'unavailable', 'none'] %}
+                {{ trigger.to_state.state not in ignore and
+                   trigger.from_state.state not in ignore and
+                   trigger.to_state.state != trigger.from_state.state
+                }}
+      action:
+          - service: input_number.set_value
+            data:
+              entity_id: input_number.total_bedroom_socket2_saved
               value: "{{ trigger.to_state.state }}"
 
 #Гирлянда в детской

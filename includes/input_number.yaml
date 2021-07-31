@@ -49,6 +49,12 @@
     min: 0
     max: 1000000
 
+  total_bedroom_socket2_saved:
+    name: "Потребление розетка в спальне 2 сохраненное"
+    icon: mdi:horizontal-rotate-counterclockwise
+    min: 0
+    max: 1000000
+
   total_kitchen_socket1_saved:
     name: "Потребление розетка на кухне 1 сохраненное"
     icon: mdi:horizontal-rotate-counterclockwise

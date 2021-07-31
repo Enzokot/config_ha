@@ -14,6 +14,11 @@
           unit_of_measurement: kWh
           icon: mdi:horizontal-rotate-counterclockwise
           state: "{{ states('input_number.total_bedroom_socket1_saved')}}"
+
+        - name: total_bedroom_socket_2_cable
+          unit_of_measurement: kWh
+          icon: mdi:horizontal-rotate-counterclockwise
+          state: "{{ states('input_number.total_bedroom_socket2_saved')}}"
           
         - name: total_kitchen_socket_1_cable
           unit_of_measurement: kWh

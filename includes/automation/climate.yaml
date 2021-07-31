@@ -578,3 +578,37 @@
           {% else %}
             {{ [state_attr('fan.xiaomi_miio_device_1', 'depth') | int, states('input_number.water_level_fan_xiaomi_miio_device_1_saved') | int] | min | int }}
           {% endif %}
+
+#Перезапуск розетки для увлажнителя в спальне
+- alias: restart socket 2 for bedroom air humidifier unavailable
+  id: restart socket 2 for bedroom air humidifier unavailable
+  initial_state: true
+  mode: single
+  max_exceeded: silent
+  trigger:
+    - platform: state
+      entity_id: fan.xiaomi_miio_device
+      to: 'unavailable'
+    - platform: homeassistant
+      event: start
+  condition:
+    - condition: state
+      entity_id: fan.xiaomi_miio_device
+      state: 'unavailable'
+  action:
+    - wait_for_trigger:
+        - platform: state
+          entity_id: fan.xiaomi_miio_device
+          from: 'unavailable'
+      timeout: "00:05:00"
+    - choose:
+        - conditions: "{{ wait.trigger == None }}"
+          sequence:
+              - service: switch.turn_off
+                data:
+                  entity_id: switch.0x60a423fffef8d41a
+              - delay:
+                  seconds: 5
+              - service: switch.turn_on
+                data:
+                  entity_id: switch.0x60a423fffef8d41a

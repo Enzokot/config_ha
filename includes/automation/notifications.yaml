@@ -30,6 +30,26 @@
                   data:
                     message: 'Входная дверь: открыта более 2 минут'
 
+    - alias: notification lobby door open long time
+      id: notification lobby door open long time
+      initial_state: true
+      trigger:
+        platform: state
+        entity_id: binary_sensor.0x00158d0003cfa725_contact
+        from: 'off'
+        to: 'on'
+        for:
+          minutes: 5
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_all_chat_id
+            disable_notification: true
+            title: >-
+                   {{ '\U000026a0' }} *Датчик открытия/закрытия*
+            message: >-
+                     Тамбурная дверь: открыта более 5 минут
+
     - alias: notification sound front door open long time
       id: notification sound front door open long time
       initial_state: true
@@ -689,7 +709,7 @@
           data:
             target: !secret telegram_enzokot_chat_id
             title: >-
-                     {{ '\U0001f50b' }} *Низкий заряд*
+                     {{ '\U0001f50b' -}} *Низкий заряд*
             message: >-
                       Для устройств:
                       {{- '\n' -}}
@@ -722,7 +742,7 @@
           data:
             target: !secret telegram_enzokot_chat_id
             title: >-
-                     {{ '\U0001f50b' }} *Низкий заряд Zigbee*
+                     {{ '\U0001f50b' -}} *Низкий заряд*
             message: >-
                       Для TRV: {{ trigger.to_state.name }}
 
@@ -758,6 +778,7 @@
                 - sensor.0x588e81fffeff5c4f_power
                 - sensor.0x842e14fffe36661f_power
                 - sensor.server_ac_power_socket_w
+                - sensor.0x60a423fffef8d41a_power
             above: 3000
       action:
         - service: telegram_bot.send_message
@@ -1114,7 +1135,7 @@
 #Уведомление об объектах, которые перешли в статус недоступно
     - alias: notifications objects in unavailable status
       id: notifications objects in unavailable status
-      initial_state: true
+      initial_state: false
       mode: queued
       max: 70
       trigger:
@@ -1266,3 +1287,28 @@
             parse_mode: 'html'
             title: "{{ '\U000026A0' }} <b>Выполнение автоматизаций</b>"
             message: "Повторный запуск автоматизации: {{trigger.event.data.message[0]}}"
+
+#Уведомление о критических ошибках в системном журнале
+    - alias: system log critical error notify
+      id: system log critical error notify
+      initial_state: true
+      mode: queued
+      trigger:
+        - platform: event
+          event_type: system_log_event
+          event_data:
+            level: FATAL
+        - platform: event
+          event_type: system_log_event
+          event_data:
+            level: CRITICAL
+      action:
+        - variables:
+            hostname: !secret keenetic_ha_url
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            parse_mode: 'html'
+            title: "{{ '\U000026d4' }} <b>Ошибки системного журнала</b>"
+            message: >
+              {{ trigger.event.data.message -}} <a href="https://{{- hostname -}}/config/logs"> Check logs.</a>      

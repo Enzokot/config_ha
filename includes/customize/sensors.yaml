@@ -102,6 +102,10 @@ sensor.0x00158d000359304c_battery:
   device_class: battery
   friendly_name: Входная дверь  
 
+sensor.0x00158d0003cfa725_battery:
+  device_class: battery
+  friendly_name: Тамбурная дверь  
+
 sensor.0x00158d000490fe9d_battery:
   device_class: battery
   friendly_name: Питание кондиционер
@@ -144,6 +148,12 @@ sensor.total_bedroom_socket_1_cable_daily_electicity:
 sensor.total_bedroom_socket_1_cable_monthly_electicity:
   friendly_name: Спальня роз. 1 потреб. мес.
 
+sensor.total_bedroom_socket_2_cable_daily_electicity:
+  friendly_name: Спальня роз. 2 потреб. день
+  
+sensor.total_bedroom_socket_2_cable_monthly_electicity:
+  friendly_name: Спальня роз. 2 потреб. мес.
+
 sensor.total_server_socket_cable_daily_electicity:
   friendly_name: Сервер потреб. день
   
@@ -172,6 +182,9 @@ sensor.0x842e14fffe36661f_power:
   friendly_name: Тек. мощность
 
 sensor.0x588e81fffeff5c4f_power:
+  friendly_name: Тек. мощность
+
+sensor.0x60a423fffef8d41a_power:
   friendly_name: Тек. мощность
   
 sensor.server_ac_power_socket_w:

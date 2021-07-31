@@ -55,4 +55,4 @@
 
 #Флаг остановки НА
     instances_stoping:
-        initial: false
+        initial: true

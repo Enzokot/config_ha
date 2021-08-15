@@ -1,5 +1,5 @@
 
-    - binary_sensor :
+    - binary_sensor:
         - name: new_version_ha
           state: "{{ states('sensor.latest_version_ha') != 'unknown' and states('sensor.current_version_ha') != 'unknown' 
                          and states('sensor.current_version_ha') != states('sensor.latest_version_ha') }}"

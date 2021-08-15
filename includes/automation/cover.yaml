@@ -40,7 +40,7 @@
       trigger:
       - platform: numeric_state
         entity_id: sensor.0x04cf8cdf3c7d15b7_illuminance_lux
-        below: 450
+        below: 350
         for:
           minutes: 10
       - platform: sun

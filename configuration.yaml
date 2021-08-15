@@ -6,6 +6,7 @@ homeassistant:
   elevation: 161
   unit_system: metric
   time_zone: Europe/Moscow
+  currency: RUB
   customize: !include_dir_merge_named includes/customize
   allowlist_external_dirs:
    - /config
@@ -54,6 +55,8 @@ mqtt:
     payload: 'offline'
     retain: true
 
+websocket_api:
+
 history:
 logbook:
 recorder: !include includes/recorder.yaml
@@ -74,7 +77,6 @@ telegram_bot: !include includes/telegram_bot.yaml
 alert: !include includes/alert.yaml
 
 yeelight: !include includes/yeelight.yaml
-fan: !include includes/fan.yaml
 camera: !include includes/camera.yaml
 
 switch: !include_dir_merge_list includes/switches

@@ -43,6 +43,35 @@
       data:
           addon: 'core_nginx_proxy'
 
+#Перезапуск аддона ssh перед бекапом, не всегда стартует Home Assistant STDIN service
+- alias: restart ssh and web terminal addon
+  id: restart ssh and web terminal addon
+  initial_state: true
+  trigger:
+    - platform: time
+      at: '23:00:00'
+    - platform: homeassistant
+      event: start
+  action:
+    - variables:
+        username: !secret mqtt_broker_username
+        password: !secret mqtt_broker_password
+    - service: hassio.addon_stdin
+      data:
+        addon: a0d7b954_ssh
+        input: >-
+                /config/check_addon_stdin.sh {{ username }} {{ password }}
+    - wait_for_trigger:
+        - platform: state
+          entity_id: sensor.last_date_check_addon_ssh_stdin
+      timeout: "00:02:00"
+    - choose:
+        - conditions: "{{ wait.trigger == None }}"
+          sequence:
+            - service: hassio.addon_restart
+              data:
+                  addon: 'a0d7b954-ssh'
+
 #Бекап базы homeassistant в MariaDB
 - alias: backup homeassistant database
   id: backup homeassistant database
@@ -60,10 +89,14 @@
             and trigger.to_state.state in ['10', '11', '12'] 
         }}
   action:
+    - variables:
+        username: !secret mqtt_broker_username
+        password: !secret mqtt_broker_password
     - service: hassio.addon_stdin
       data:
         addon: a0d7b954_ssh
-        input: "/config/backup.sh"
+        input: >-
+                /config/backup.sh {{ username }} {{ password }}
 
 #Перезапуск интеграции speedtest.net по недоступности сенсоров
 - alias: speedtest_integration_restart
@@ -192,31 +225,11 @@
   id: system_event_instances_starting_stoping_set
   initial_state: true
   trigger:
-    - platform: event
-      event_type: call_service
-      event_data:
-        domain: homeassistant
-        service: restart
-    - platform: event
-      event_type: call_service
-      event_data:
-        domain: homeassistant
-        service: stop
-    - platform: event
-      event_type: call_service
-      event_data:
-        domain: hassio
-        service: host_reboot
-    - platform: event
-      event_type: call_service
-      event_data:
-        domain: hassio
-        service: host_shutdown
     - platform: homeassistant
-      event: shutdown
-    - platform: homeassistant
-      id: 'homeassistant_start'
       event: start
+      id: 'homeassistant_start'
+    - platform: event
+      event_type: homeassistant_stop
   action:
     - service: >
         {% if trigger.id == 'homeassistant_start' -%}
@@ -234,3 +247,15 @@
         {% endif %}
       data:
         entity_id: automation.notifications_objects_in_unavailable_status
+
+#Обновление данных entity каждые 30мин
+- alias: homeassistant_update_entity_30min
+  id: homeassistant_update_entity_30min
+  trigger:
+    - platform: time_pattern
+      minutes: "/30"
+  action:
+    - service: homeassistant.update_entity
+      entity_id: 
+        - sensor.huawei_e3372h_320_sms_unread
+        - binary_sensor.huawei_e3372h_320_sms_storage_full

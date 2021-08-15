@@ -86,3 +86,16 @@
 #     command: 'grep -m 1 -o "Home[[:space:]]Assistant[[:space:]]initialized[[:space:]]in[[:space:]][0-9]\+.[0-9]\+" /config/home-assistant.log | grep -o "[0-9]\+.[0-9]\+$" || echo -1'
 #     scan_interval: 180
 #     unit_of_measurement: "sec"
+
+#Сенсор даты проверки состояния stdin дляаддона ssh
+  - platform: mqtt
+    name: last date check addon ssh stdin
+    state_topic: "check_ssh_addon_stdin"
+    icon: mdi:calendar-clock
+    force_update: true
+
+#Сенсор с датой любого link down на Keenetic
+  - platform: mqtt
+    name: check keenetic link down
+    state_topic: "network_diagnostics/check_keenetic_link_down"
+    icon: mdi:calendar-clock

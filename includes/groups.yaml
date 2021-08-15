@@ -69,9 +69,9 @@
           - vacuum.xiaomi_vacuum_cleaner
           - light.yeelight_650
           - light.signalka_shliuza_light
-          - fan.xiaomi_miio_device
+          - humidifier.zhimi_humidifier_ca4
           - sensor.kholodilnik
-          - fan.xiaomi_miio_device_1
+          - humidifier.zhimi_humidifier_cb1
           - media_player.lg_smart_tv
           - media_player.samsung_tv_remote
           - media_player.sony_bravia_tv
@@ -81,6 +81,7 @@
           - sensor.0x847127fffed4907d_linkquality
           - sensor.0x54ef441000096cbc_linkquality
           - sensor.0x60a423fffef8d41a_linkquality
+          - sensor.huawei_e3372h_320_sinr
 
     window_shades_kitchen_group:
         entities:

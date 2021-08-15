@@ -1,34 +1,20 @@
 
 # Xiaomi Smartmi Air Humidifier 2
-  xiaomi_airpurifier_target_humidity:
+  zhimi_humidifier_cb1_target_humidity:
     name: "Целевая влажность"
     min: 40
     max: 80
     step: 10
     icon: "mdi:water-percent"
     unit_of_measurement: "%"
-  
-  xiaomi_airpurifier_led_brightness:
-    name: "Яркость индикации"
-    min: 0
-    max: 2
-    step: 1
-    icon: "mdi:lightbulb-outline"
 
-  xiaomi_airpurifier_1_target_humidity:
+  zhimi_humidifier_ca4_target_humidity:
     name: "Целевая влажность"
     min: 40
     max: 80
     step: 10
     icon: "mdi:water-percent"
     unit_of_measurement: "%"
-  
-  xiaomi_airpurifier_1_led_brightness:
-    name: "Яркость индикации"
-    min: 0
-    max: 2
-    step: 1
-    icon: "mdi:lightbulb-outline"
 
 # Сохраняемое значение кВт от розеток
   total_heater_socket_saved:
@@ -67,19 +53,6 @@
     icon: mdi:square-circle
     min: 0
     max: 1000000
-
-#Сохраненное значение уровня воды в увлажнителе
-  water_level_fan_xiaomi_miio_device_saved:
-    name: "Увлажнитель спальня"
-    icon: mdi:cup-water
-    min: 0
-    max: 200
-
-  water_level_fan_xiaomi_miio_device_1_saved:
-    name: "Увлажнитель детская"
-    icon: mdi:cup-water
-    min: 0
-    max: 200
 
   total_yeelight650_relay_saved:
     name: "Потребление реле в yeelight650 детская"

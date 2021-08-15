@@ -5,3 +5,15 @@ vacuum.xiaomi_vacuum_cleaner:
 
 camera.roborock_vacuum_map:
   friendly_name: Карта уборки
+
+binary_sensor.vacuum_cleaner_main_brush_maintenance:
+  friendly_name: Основная щетка
+
+binary_sensor.vacuum_cleaner_side_brush_maintenance:
+  friendly_name: Боковая щетка
+
+binary_sensor.vacuum_cleaner_filter_maintenance:
+  friendly_name: Фильтр бачка для пыли
+
+binary_sensor.vacuum_cleaner_sensor_dirty_maintenance:
+  friendly_name: Датчики

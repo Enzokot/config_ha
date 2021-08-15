@@ -253,18 +253,6 @@ sensor.zigbee2mqtt_coordinator_ver:
 sensor.vacuum_cleaner_status_sensor:
   friendly_name: Vacuum Cleaner Status Sensor
 
-sensor.vacuum_cleaner_main_brush_left:
-  friendly_name: Основная щетка
-
-sensor.vacuum_cleaner_side_brush_left:
-  friendly_name: Боковая щетка
-
-sensor.vacuum_cleaner_filter_left:
-  friendly_name: Фильтр бачка для пыли
-
-sensor.vacuum_cleaner_sensor_dirty_left:
-  friendly_name: Датчики
-
 sensor.last_boot_custom:
   friendly_name: Последняя перезагрузка
 
@@ -289,29 +277,17 @@ sensor.snapshots_in_hassio_train:
 sensor.158d00042fd6f5_pressure:
   friendly_name: Атм. давление улица
 
-sensor.xiaomi_miio_device_temperature:
+sensor.zhimi_humidifier_cb1_temperature:
   friendly_name: Т увлажнитель спальня
 
-sensor.xiaomi_miio_device_humidity:
+sensor.zhimi_humidifier_cb1_humidity:
   friendly_name: Rh увлажнитель спальня
 
-sensor.xiaomi_miio_device_1_temperature:
+sensor.zhimi_humidifier_ca4_temperature:
   friendly_name: Т увлажнитель детская
 
-sensor.xiaomi_miio_device_1_humidity:
+sensor.zhimi_humidifier_ca4_humidity:
   friendly_name: Rh увлажнитель детская
-
-sensor.xiaomi_miio_device_speed:
-  friendly_name: Скорость
-
-sensor.xiaomi_miio_device_1_speed:
-  friendly_name: Скорость
-
-sensor.xiaomi_miio_device_water:
-  friendly_name: Уровень воды увлажнитель спальня
-
-sensor.xiaomi_miio_device_1_water:
-  friendly_name: Уровень воды увлажнитель детская
 
 sensor.temp_for_ac_living_room:
   friendly_name: Температура

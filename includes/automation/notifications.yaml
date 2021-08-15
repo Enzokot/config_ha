@@ -34,21 +34,25 @@
       id: notification lobby door open long time
       initial_state: true
       trigger:
-        platform: state
-        entity_id: binary_sensor.0x00158d0003cfa725_contact
-        from: 'off'
-        to: 'on'
-        for:
-          minutes: 5
+        - platform: state
+          id: 'door_open'
+          entity_id: binary_sensor.lobby_door_open_long_time
+          from: 'off'
+          to: 'on'
+        - platform: state
+          id: 'door_close'
+          entity_id: binary_sensor.lobby_door_open_long_time
+          from: 'on'
+          to: 'off'
       action:
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_all_chat_id
             disable_notification: true
             title: >-
-                   {{ '\U000026a0' }} *Датчик открытия/закрытия*
+                   {% if trigger.id == 'door_open' -%} {{ '\U000026a0' }} {%- else -%} {{ '\U0001f510' }} {% endif -%} *Датчик открытия/закрытия*
             message: >-
-                     Тамбурная дверь: открыта более 5 минут
+                     Тамбурная дверь: {% if trigger.id == 'door_open' -%} открыта более 5 минут {%- else -%} закрыта {% endif -%}
 
     - alias: notification sound front door open long time
       id: notification sound front door open long time
@@ -77,7 +81,7 @@
                 before: '21:00:00'
       action:
           - service: timer.start
-            entity_id: timer.front_door_ringtone          
+            entity_id: timer.front_door_ringtone
           - service: xiaomi_aqara.play_ringtone
             data:
               gw_mac: !secret gateway1_mac
@@ -216,9 +220,9 @@
       action:
         - variables:
               sm_g973f_rezhim_zvonka: >-
-                                     {{ states('sensor.sm_g973f_rezhim_zvonka') }}
+                                     {{ states('sensor.sm_g973f_ringer_mode') }}
               sm_g973f_rezhim_ne_bespokoit: >-
-                                            {{ states('sensor.sm_g973f_rezhim_ne_bespokoit') }}
+                                            {{ states('sensor.sm_g973f_do_not_disturb_sensor') }}
         - service: notify.notify
           data:
               message: 'command_ringer_mode'
@@ -242,6 +246,11 @@
               actions:
                 - action: "stop_alarm"
                   title: "Выключить сирену"
+        - service: notify.huawei_lte
+          data:
+            message: >-
+                     Обнаружено вскрытие {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
+            target: !secret sms_phone_all
         - service: notify.mobile_app_sm_g973f
           data:
               message: 'command_ringer_mode'
@@ -271,9 +280,9 @@
       action:
         - variables:
               sm_g973f_rezhim_zvonka: >-
-                                     {{ states('sensor.sm_g973f_rezhim_zvonka') }}
+                                     {{ states('sensor.sm_g973f_ringer_mode') }}
               sm_g973f_rezhim_ne_bespokoit: >-
-                                     {{ states('sensor.sm_g973f_rezhim_ne_bespokoit') }}
+                                     {{ states('sensor.sm_g973f_do_not_disturb_sensor') }}
         - service: notify.notify
           data:
               message: 'command_ringer_mode'
@@ -297,6 +306,11 @@
               actions:
                 - action: "stop_alarm"
                   title: "Выключить сирену"
+        - service: notify.huawei_lte
+          data:
+            message: >-
+                     Обнаружено движение {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
+            target: !secret sms_phone_all
         - service: notify.mobile_app_sm_g973f
           data:
               message: 'command_ringer_mode'
@@ -327,9 +341,9 @@
       action:
         - variables:
               sm_g973f_rezhim_zvonka: >-
-                                     {{ states('sensor.sm_g973f_rezhim_zvonka') }}
+                                     {{ states('sensor.sm_g973f_ringer_mode') }}
               sm_g973f_rezhim_ne_bespokoit: >-
-                                     {{ states('sensor.sm_g973f_rezhim_ne_bespokoit') }}
+                                     {{ states('sensor.sm_g973f_do_not_disturb_sensor') }}
         - service: notify.notify
           data:
               message: 'command_ringer_mode'
@@ -353,6 +367,11 @@
               actions:
                 - action: "stop_alarm"
                   title: "Выключить сирену"
+        - service: notify.huawei_lte
+          data:
+            message: >-
+                     Обнаружено вскрытие окна {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
+            target: !secret sms_phone_all
         - service: notify.mobile_app_sm_g973f
           data:
               message: 'command_ringer_mode'
@@ -466,9 +485,9 @@
       action:
         - variables:
               sm_g973f_rezhim_zvonka: >-
-                                     {{ states('sensor.sm_g973f_rezhim_zvonka') }}
+                                     {{ states('sensor.sm_g973f_ringer_mode') }}
               sm_g973f_rezhim_ne_bespokoit: >-
-                                            {{ states('sensor.sm_g973f_rezhim_ne_bespokoit') }}
+                                            {{ states('sensor.sm_g973f_do_not_disturb_sensor') }}
         - service: notify.notify
           data:
               message: 'command_ringer_mode'
@@ -534,6 +553,32 @@
                            Спальня
                         {{- '\n' }}
                         {%- endif -%}
+        - service: notify.huawei_lte
+          data:
+            message: >-
+                        Сработали датчики дыма:
+                        {{ '\n' }}
+                        {%- if is_state('binary_sensor.0x00158d0003943639_smoke', 'on') -%}
+                           Кухня
+                        {{- '\n' }}
+                        {%- endif -%} 
+                        {%- if is_state('binary_sensor.0x00158d00039a8358_smoke', 'on') -%}
+                           Гостиная
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {% if is_state('binary_sensor.0x00158d00039d9398_smoke', 'on') -%}
+                           Коридор
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {% if is_state('binary_sensor.0x00158d00045ca483_smoke', 'on') -%}
+                           Детская
+                        {{- '\n' }}
+                        {%- endif -%}
+                        {%- if is_state('binary_sensor.0x00158d00045cd551_smoke', 'on') -%}
+                           Спальня
+                        {{- '\n' }}
+                        {%- endif -%}
+            target: !secret sms_phone_all
         - service: notify.mobile_app_sm_g973f
           data:
               message: 'command_ringer_mode'
@@ -550,19 +595,12 @@
       id: notification cert expired
       initial_state: true
       trigger:
-        - platform: numeric_state
+        - platform: state
           entity_id:
-            - sensor.cert_expiry_enzokot_domain
-            - sensor.cert_expiry_keenetic_domain
-          below: 5
-      condition:
-        - condition: template
-          value_template: >
-            {% set ignore = ['unknown', 'unavailable', 'none', null, ''] %}
-            {{ trigger.from_state.state not in ignore and
-               trigger.to_state.state not in ignore and
-               trigger.to_state.state != trigger.from_state.state
-            }}
+            - binary_sensor.cert_expired_enzokot_domain
+            - binary_sensor.cert_expired_keenetic_domain
+          from: 'off'
+          to: 'on'
       action:
         - service: telegram_bot.send_message
           data:
@@ -570,8 +608,9 @@
             title: >-
                      {{ '\U000026a0' }} *Сертификат SSL*
             message: >-
-                        Срок действия сертификата {{ trigger.to_state.name -}}: {{ trigger.to_state.state }} дн.
-                        
+                        {%- set entity_name = trigger.entity_id | regex_replace('binary_', '') | regex_replace('_expired_', '_expiry_') -%}
+                        Срок действия сертификата для _{{ trigger.to_state.name -}}_: *{{- states(entity_name) -}}* дн.
+
 #Новая версия НА
     - alias: update HA available notification
       id: update HA available notification
@@ -689,7 +728,7 @@
             title: "{{ '\U0001f389' }} *Системное обновление*"
             message: "Addons's HACS - доступно для обновления *{{ states('sensor.hacs') | int }}*. Список: {% for repo in state_attr('sensor.hacs', 'repositories') %}*{{ repo.display_name }}* (_{{ repo.installed_version }}_ -> _{{ repo.available_version }}_){%if not loop.last %}, {%endif%}{% endfor %}"
 
-#Низкий заряд батарей Zigbee
+#Низкий заряд батарей
     - alias: notification low battery zigbee
       id: notification low battery zigbee
       initial_state: true
@@ -697,13 +736,14 @@
         platform: time
         at: "20:00:00"
       condition: >
-                      {% macro entities_low_level() %}
-                      {%- set entities = expand('group.dynamic_group_sensor_battery') -%}
-                      {% for x in entities if x.state|int <= 20 %}
-                        {{- x.name -}}
-                      {% endfor %}
-                      {% endmacro %}
-                      {{ entities_low_level() | trim != "" }}
+                    {%- set entities = expand('group.dynamic_group_sensor_battery') -%}
+                    {%- set datanames = namespace(entity_name=[]) -%}
+                    {% for x in entities -%}
+                      {% if (not x.entity_id.endswith("_low_battery") and x.state | int <= 20) or (x.entity_id.endswith("_low_battery") and x.state | string == 'on') -%}
+                        {% set datanames.entity_name = datanames.entity_name + ['_' + x.name + '_'] -%}
+                      {% endif %}
+                    {%- endfor %}
+                    {{ datanames.entity_name | list | count > 0 }}
       action:
         - service: telegram_bot.send_message
           data:
@@ -711,40 +751,16 @@
             title: >-
                      {{ '\U0001f50b' -}} *Низкий заряд*
             message: >-
-                      Для устройств:
-                      {{- '\n' -}}
-                      {%- set entities = expand('group.dynamic_group_sensor_battery') -%}
-                      {% for x in entities if x.state|int <= 20 %}
-                        {%- if not loop.first %}, {{- '\n' -}} {% endif -%}
-                        {{- '_' -}} {{- x.name -}} {{- '_' -}}
-                      {% endfor %}
-
-    - alias: notification low battery zigbee trv
-      id: notification low battery zigbee trv
-      initial_state: true
-      mode: queued
-      trigger:
-        platform: state
-        entity_id:
-          - binary_sensor.0x60a423fffe968719_battery_low
-          - binary_sensor.0x5c0272fffec89454_battery_low
-          - binary_sensor.0x5c0272fffe8de819_battery_low
-          - binary_sensor.0x5c0272fffec9db22_battery_low
-        from: 'off'
-        to: 'on'
-      condition: >
-        {{ 
-            state_attr('automation.notification_low_battery_zigbee_trv', 'last_triggered') == None or
-            as_local(state_attr('automation.notification_low_battery_zigbee_trv', 'last_triggered')) <= now() - timedelta(hours=8) 
-        }}
-      action:
-        - service: telegram_bot.send_message
-          data:
-            target: !secret telegram_enzokot_chat_id
-            title: >-
-                     {{ '\U0001f50b' -}} *Низкий заряд*
-            message: >-
-                      Для TRV: {{ trigger.to_state.name }}
+                        Для устройств:
+                        {{- '\n' -}}
+                        {%- set entities = expand('group.dynamic_group_sensor_battery') -%}
+                        {%- set datanames = namespace(entity_name=[]) -%}
+                        {% for x in entities -%}
+                          {% if (not x.entity_id.endswith("_low_battery") and x.state | int <= 20) or (x.entity_id.endswith("_low_battery") and x.state | string == 'on') -%}
+                            {% set datanames.entity_name = datanames.entity_name + ['_' + x.name + '_'] -%}
+                          {% endif %}
+                        {%- endfor %}
+                        {{- datanames.entity_name | list | join(', \n') }}
 
 #После рестарта НА остался включенный обогреватель
     - alias: notification safety sockets on restart
@@ -835,16 +851,14 @@
       id: notification low level water
       initial_state: true
       trigger:
-        - platform: numeric_state
-          entity_id: input_number.water_level_fan_xiaomi_miio_device_saved
-          below: 40
-        - platform: numeric_state
-          entity_id: input_number.water_level_fan_xiaomi_miio_device_1_saved
-          below: 20
-      condition:
-        - condition: template
-          value_template: >- 
-                    {{ trigger.from_state.state not in ['unavailable', 'unknown', '', 'off', 'none'] }}
+        # - platform: state
+        #   entity_id: sensor.zhimi_humidifier_cb1_low_water_level
+        #   from: 'off'
+        #   to: 'on'
+        - platform: state
+          entity_id: sensor.zhimi_humidifier_ca4_low_water_level
+          from: 'off'
+          to: 'on'
       action:
         - service: telegram_bot.send_message
           data:
@@ -852,7 +866,7 @@
             title: >-
                      {{ '\U0001F6B0' }} *Увлажнители*
             message: >-
-                    Пора залить воду в увлажнитель: _{{- trigger.to_state.name -}}_
+                    Пора залить воду в увлажнитель: _{{- device_attr(trigger.entity_id, 'name') -}}_
         - choose:
             - conditions:
                 - condition: state
@@ -862,24 +876,22 @@
                 - service: notify.lg_smart_tv
                   data:
                     message: >-
-                        Нет воды: _{{- trigger.to_state.name -}}_
+                        Нет воды: _{{- device_attr(trigger.entity_id, 'name') -}}_
 
 #Уведомление обслуживания пылесоса
     - alias: notification vacuum maintenance
       id: notification vacuum maintenance
       initial_state: true
+      mode: queued
       trigger:
-        - platform: numeric_state
+        - platform: state
           entity_id: 
-            - sensor.vacuum_cleaner_main_brush_left
-            - sensor.vacuum_cleaner_side_brush_left
-            - sensor.vacuum_cleaner_filter_left
-            - sensor.vacuum_cleaner_sensor_dirty_left
-          below: 2
-      condition:
-        - condition: template
-          value_template: >- 
-                    {{ trigger.from_state.state not in ['unavailable', 'unknown', null, ''] }}
+            - binary_sensor.vacuum_cleaner_main_brush_maintenance
+            - binary_sensor.vacuum_cleaner_side_brush_maintenance
+            - binary_sensor.vacuum_cleaner_filter_maintenance
+            - binary_sensor.vacuum_cleaner_sensor_dirty_maintenance
+          from: 'off'
+          to: 'on'
       action:
         - service: telegram_bot.send_message
           data:
@@ -1312,3 +1324,59 @@
             title: "{{ '\U000026d4' }} <b>Ошибки системного журнала</b>"
             message: >
               {{ trigger.event.data.message -}} <a href="https://{{- hostname -}}/config/logs"> Check logs.</a>      
+
+#Уведомление о непрочитанных/заполнении памяти sms на модеме
+    - alias: notifications sms unread or full storage
+      id: notifications sms unread or full storage
+      initial_state: true
+      mode: single
+      max_exceeded: silent
+      trigger:
+        - platform: state
+          entity_id: sensor.huawei_e3372h_320_sms_unread
+        - platform: state
+          id: 'full_storage'
+          entity_id: binary_sensor.huawei_e3372h_320_sms_storage_full
+          from: 'off'
+          to: 'on'
+      condition:
+        - condition: template
+          value_template: >
+            {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
+            {{ trigger.id == 'full_storage' or
+               trigger.to_state.state not in ignore and
+               trigger.to_state.state | int > trigger.from_state.state | int
+            }}
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            disable_notification: true
+            title: >
+                {% if trigger.id == 'full_storage' -%} {{ '\U0001F4EE' }} {%- else -%} {{ '\U00002709' }} {%- endif %} *SMS через модем*
+            message: >
+                Обнаружено {% if trigger.id == 'full_storage' -%} заполнение памяти {%- else -%} *{{ trigger.to_state.state }}* непрочитанное(ых) {%- endif -%} sms на {{ device_attr(trigger.entity_id, 'name') }}
+
+#Уведомление об отсутствии link на Keenetic
+    - alias: notifications link down keenetic
+      id: notifications link down keenetic
+      initial_state: true
+      mode: single
+      max_exceeded: silent
+      trigger:
+        - platform: state
+          entity_id: sensor.check_keenetic_link_down
+      condition:
+        - condition: template
+          value_template: >
+            {% set ignore = ['unknown', 'unavailable', 'none', None, null, '', 'null'] %}
+            {{ 
+               trigger.to_state.state not in ignore and
+               trigger.to_state.state != trigger.from_state.state
+            }}
+      action:
+        - service: notify.huawei_lte
+          data:
+            message: >-
+                     {{ trigger.to_state.state }} Keenetic link is down
+            target: !secret sms_phone_enzokot

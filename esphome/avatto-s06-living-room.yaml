@@ -157,7 +157,7 @@ sensor:
     internal: true
     device_class: temperature
     accuracy_decimals: 1
-    entity_id: sensor.temp_for_ac_living_room
+    entity_id: sensor.esp_xiaomi_living_room_temperature
     id: temp_for_avatto_ac_living_room
 
   - platform: uptime

@@ -113,3 +113,30 @@ binary_sensor.0x00158d00039a2f33_contact:
 
 binary_sensor.rpi_power_inverted:
   friendly_name: Состояние питания RPi
+
+#Для debounce бинарника батареейки TRV
+binary_sensor.debounce_trv_bedroom_low_battery:
+  friendly_name: Термоголовка спальня
+
+binary_sensor.debounce_trv_childrens_room_low_battery:
+  friendly_name: Термоголовка детская
+
+binary_sensor.debounce_trv_kitchen_low_battery:
+  friendly_name: Термоголовка кухня
+
+binary_sensor.debounce_trv_living_room_low_battery:
+  friendly_name: Термоголовка гостиная
+
+#Низкий уровень воды увлажнители
+binary_sensor.zhimi_humidifier_ca4_low_water_level:
+  friendly_name: Увлажнитель детская
+
+# binary_sensor.zhimi_humidifier_cb1_low_water_level:
+#   friendly_name: Увлажнитель спальня
+
+#Сертификат ssl на собственные домены
+binary_sensor.cert_expired_enzokot_domain:
+  friendly_name: !secret base_url
+
+binary_sensor.cert_expired_keenetic_domain:
+  friendly_name: !secret keenetic_base_url

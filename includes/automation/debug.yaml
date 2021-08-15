@@ -1,21 +1,19 @@
-    - alias: debug low level water
-      id: debug low level water
+
+    - alias: debug this for automations
+      id: debug this for automations
       trigger:
-        - platform: state
-          entity_id: fan.xiaomi_miio_device
-          #attribute: depth
-        - platform: state
-          entity_id: fan.xiaomi_miio_device_1
-          #attribute: water_level
+        - platform: time_pattern
+          minutes: "/1"
+      condition: >
+        {{ 
+            as_local(this.attributes.last_triggered) <= now() - timedelta(minutes=1, seconds = 30) 
+        }}
       action:
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
+            parse_mode: 'html'
             title: >-
-                     {{ '\U0001F41B' }} *Отладка*
+                     {{ '\U0001F41B' }} <b>Отладка</b>
             message: >-
-                  {% if trigger.to_state.entity_id == 'fan.xiaomi_miio_device' %}
-                    {{ trigger.to_state.name }} -> {{ trigger.from_state.attributes.depth }} -> {{ trigger.to_state.attributes.depth }}
-                  {% else %}
-                    {{ trigger.to_state.name }} -> {{ trigger.from_state.attributes.water_level }} -> {{ trigger.to_state.attributes.water_level }}
-                  {% endif %}
+                    last_triggered: {{ this.attributes.last_triggered }} -> now: {{ now() }}

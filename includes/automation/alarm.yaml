@@ -197,9 +197,9 @@
       action:
           - variables:
               sm_g973f_rezhim_zvonka: >-
-                                     {{ states('sensor.sm_g973f_rezhim_zvonka') }}
+                                     {{ states('sensor.sm_g973f_ringer_mode') }}
               sm_g973f_rezhim_ne_bespokoit: >-
-                                            {{ states('sensor.sm_g973f_rezhim_ne_bespokoit') }}
+                                            {{ states('sensor.sm_g973f_do_not_disturb_sensor') }}
           - service: notify.notify
             data:
               message: 'command_ringer_mode'
@@ -224,6 +224,10 @@
                   actions:
                     - action: "stop_alarm"
                       title: "Выключить сирену"
+          - service: notify.huawei_lte
+            data:
+              message: 'Нажатие тревожной кнопки в детской'
+              target: !secret sms_phone_all
           - service: notify.mobile_app_sm_g973f
             data:
               message: 'command_ringer_mode'

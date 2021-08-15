@@ -749,32 +749,43 @@ views:
             - type: entities
               show_header_toggle: false
               entities:
-                  - entity: fan.xiaomi_miio_device_1
+                  - entity: humidifier.zhimi_humidifier_ca4
                     type: custom:custom-fan-card
                     name: 'Вкл/Выкл'
                     state_color: true
+                    model: 'zhimi.humidifier.ca4'
             - type: horizontal-stack
               cards:
                   - type: entities
                     show_header_toggle: false
                     entities:
-                        - entity: sensor.xiaomi_miio_device_1_water
+                        - entity: sensor.zhimi_humidifier_ca4_water_level
                           name: 'Вода'
                   - type: entities
                     show_header_toggle: false
                     entities:
-                        - entity: sensor.xiaomi_miio_device_1_speed
+                        - entity: sensor.zhimi_humidifier_ca4_actual_speed
+                          name: 'Об/м'
             - type: entities
               show_header_toggle: false
               entities:
-                  - entity: input_number.xiaomi_airpurifier_1_target_humidity
-                  - entity: switch.xiaomi_miio_device_1_buzzer
+                  - type: conditional
+                    conditions:
+                      - entity: binary_sensor.zhimi_humidifier_ca4_current_mode
+                        state: 'on'
+                    row:
+                        entity: input_number.zhimi_humidifier_ca4_target_humidity
+                  - entity: switch.zhimi_humidifier_ca4_buzzer
                     state_color: true
-                  - entity: input_number.xiaomi_airpurifier_1_led_brightness
-                  - entity: switch.xiaomi_miio_device_1_dry
+                    name: Звуки
+                  - entity: select.zhimi_humidifier_ca4_led_brightness
+                    name: Яркость LED
+                  - entity: switch.zhimi_humidifier_ca4_dry_mode
                     state_color: true
-                  - entity: switch.xiaomi_miio_device_1_child_lock
+                    name: Осущение
+                  - entity: switch.zhimi_humidifier_ca4_child_lock
                     state_color: true
+                    name: Защита от детей
 
         - type: markdown
           content: >
@@ -785,38 +796,43 @@ views:
             - type: entities
               show_header_toggle: false
               entities:
-                  - entity: fan.xiaomi_miio_device
+                  - entity: humidifier.zhimi_humidifier_cb1
                     type: custom:custom-fan-card
                     name: 'Вкл/Выкл'
                     state_color: true
+                    model: 'zhimi.humidifier.cb1'
             - type: horizontal-stack
               cards:
+        #           - type: entities
+        #             show_header_toggle: false
+        #             entities:
+        #                 - entity: sensor.xiaomi_miio_device_water
+        #                   name: 'Вода'
                   - type: entities
                     show_header_toggle: false
                     entities:
-                        - entity: sensor.xiaomi_miio_device_water
-                          name: 'Вода'
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                        - entity: sensor.xiaomi_miio_device_speed
+                        - entity: sensor.zhimi_humidifier_cb1_motor_speed
+                          name: 'Об/м'
             - type: entities
               show_header_toggle: false
               entities:
-                  - entity: input_number.xiaomi_airpurifier_target_humidity
-                  - entity: switch.xiaomi_miio_device_buzzer
+                  - type: conditional
+                    conditions:
+                      - entity: binary_sensor.zhimi_humidifier_cb1_current_mode
+                        state: 'on'
+                    row:
+                        entity: input_number.zhimi_humidifier_cb1_target_humidity
+                  - entity: switch.zhimi_humidifier_cb1_buzzer
                     state_color: true
-                  - entity: input_number.xiaomi_airpurifier_led_brightness
-                  - entity: switch.xiaomi_miio_device_dry
+                    name: Звуки
+                  - entity: select.zhimi_humidifier_cb1_led_brightness
+                    name: Яркость LED
+                  - entity: switch.zhimi_humidifier_cb1_dry_mode
                     state_color: true
-                  - entity: switch.xiaomi_miio_device_child_lock
+                    name: Осущение
+                  - entity: switch.zhimi_humidifier_cb1_child_lock
                     state_color: true
-                #   - type: conditional
-                #     conditions:
-                #       - entity: switch.xiaomi_miio_device_child_lock
-                #          state: 'on'
-                #     row:
-                #         entity: input_number.xiaomi_airpurifier_target_humidity
+                    name: Защита от детей
 
       - type: vertical-stack
         cards:
@@ -856,12 +872,12 @@ views:
                   - type: entities
                     show_header_toggle: false
                     entities:
-                        - entity: sensor.xiaomi_miio_device_1_temperature
+                        - entity: sensor.zhimi_humidifier_ca4_temperature
                           name: Т увлаж.
                   - type: entities
                     show_header_toggle: false
                     entities:
-                        - entity: sensor.xiaomi_miio_device_1_humidity
+                        - entity: sensor.zhimi_humidifier_ca4_humidity
                           name: RH увлаж.
             - type: horizontal-stack
               cards:
@@ -898,12 +914,12 @@ views:
                   - type: entities
                     show_header_toggle: false
                     entities:
-                        - entity: sensor.xiaomi_miio_device_temperature
+                        - entity: sensor.zhimi_humidifier_cb1_temperature
                           name: Т увлаж.
                   - type: entities
                     show_header_toggle: false
                     entities:
-                        - entity: sensor.xiaomi_miio_device_humidity
+                        - entity: sensor.zhimi_humidifier_cb1_humidity
                           name: RH увлаж.
             - type: horizontal-stack
               cards:
@@ -959,7 +975,7 @@ views:
     
                     - type: entity
                       name: Низкий заряд
-                      entity: binary_sensor.0x5c0272fffec89454_battery_low
+                      entity: binary_sensor.debounce_trv_childrens_room_low_battery
 
         - type: markdown
           content: >
@@ -1002,7 +1018,7 @@ views:
                       
                     - type: entity
                       name: Низкий заряд
-                      entity: binary_sensor.0x60a423fffe968719_battery_low
+                      entity: binary_sensor.debounce_trv_bedroom_low_battery
 
         - type: markdown
           content: >
@@ -1031,7 +1047,7 @@ views:
                       
                     - type: entity
                       name: Низкий заряд
-                      entity: binary_sensor.0x5c0272fffec9db22_battery_low
+                      entity: binary_sensor.debounce_trv_living_room_low_battery
 
         - type: markdown
           content: >
@@ -1060,7 +1076,7 @@ views:
                       
                     - type: entity
                       name: Низкий заряд
-                      entity: binary_sensor.0x5c0272fffe8de819_battery_low
+                      entity: binary_sensor.debounce_trv_kitchen_low_battery
 
   - title: Пылесос
     #panel: true

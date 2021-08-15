@@ -1,0 +1,27 @@
+
+    - binary_sensor:
+#Сенсоры низкого уровня воды в увлажнителях
+        - name: zhimi_humidifier_ca4_low_water_level
+          icon: mdi:water-off
+          availability: "{{ not is_state('sensor.zhimi_humidifier_ca4_water_level', 'unavailable') }}"
+          state: "{{ states('sensor.zhimi_humidifier_ca4_water_level') | int < 40 }}"
+          delay_on:
+            minutes: 1
+          delay_off:
+            minutes: 1
+        
+        # - name: zhimi_humidifier_cb1_low_water_level
+        #   icon: mdi:water-off
+        #   availability: "{{ not is_state('sensor.zhimi_humidifier_ca4_water_level', 'unavailable') }}"
+        #   state: "{{ states('sensor.zhimi_humidifier_cb1_water_level') | int < 20 }}"
+        #   delay_on:
+        #     minutes: 1
+        #   delay_off:
+        #     minutes: 1
+
+#Сенсор текущего режима увлажнителей для карточки conditional в UI
+        - name: zhimi_humidifier_ca4_current_mode
+          state: "{{ is_state('humidifier.zhimi_humidifier_ca4', 'on') and is_state_attr('humidifier.zhimi_humidifier_ca4', 'mode', 'Auto') }}"
+
+        - name: zhimi_humidifier_cb1_current_mode
+          state: "{{ is_state('humidifier.zhimi_humidifier_cb1', 'on') and is_state_attr('humidifier.zhimi_humidifier_cb1', 'mode', 'Auto') }}"

@@ -109,15 +109,15 @@ class CustomFanCard extends Polymer.Element {
 
         let speed;
         if (stateObj && stateObj.attributes) {
-            speed = stateObj.attributes.speed || this.getNameSpeed('Auto', stateObj.attributes.model);
+            speed = stateObj.attributes.mode || this.getNameSpeed('Auto', this._config.model);
         }
 
         this.setProperties({
             _stateObj: stateObj,
-            _isAuto: speed === this.getNameSpeed('Auto', stateObj.attributes.model) && stateObj.state === 'on',
-            _isOneSpeed: speed === this.getNameSpeed('Silent', stateObj.attributes.model) && stateObj.state === 'on',
-            _isTwoSpeed: speed === this.getNameSpeed('Medium', stateObj.attributes.model) && stateObj.state === 'on',
-            _isThreeSpeed: speed === this.getNameSpeed('High', stateObj.attributes.model) && stateObj.state === 'on',
+            _isAuto: speed === this.getNameSpeed('Auto', this._config.model) && stateObj.state === 'on',
+            _isOneSpeed: speed === this.getNameSpeed('Silent', this._config.model) && stateObj.state === 'on',
+            _isTwoSpeed: speed === this.getNameSpeed('Medium', this._config.model) && stateObj.state === 'on',
+            _isThreeSpeed: speed === this.getNameSpeed('High', this._config.model) && stateObj.state === 'on',
 			_isOff: stateObj.state === 'off'
         });
     }
@@ -130,17 +130,15 @@ class CustomFanCard extends Polymer.Element {
         const stateObj = this.hass.states[this._config.entity];
         if (stateObj && stateObj.attributes)
         {
-			if (stateObj.state === 'off' && stateObj.attributes.model === 'zhimi.humidifier.ca4') {
-				this.hass.callService('fan', 'turn_on', {
+			if (stateObj.state === 'off') {
+				this.hass.callService('humidifier', 'turn_on', {
 				entity_id: this._config.entity
 				});
 			};
-			if (stateObj.attributes.depth > 0 || stateObj.attributes.water_level > 0) {
-				const speed = e.currentTarget.getAttribute('name');
-				this.hass.callService('fan', 'set_speed', {
-					entity_id: this._config.entity, speed: this.getNameSpeed(speed, stateObj.attributes.model)
-				});
-			};
+			const speed = e.currentTarget.getAttribute('name');
+			this.hass.callService('humidifier', 'set_mode', {
+				entity_id: this._config.entity, mode: this.getNameSpeed(speed, this._config.model)
+			});
         }
     }
 	
@@ -148,7 +146,7 @@ class CustomFanCard extends Polymer.Element {
         const stateObj = this.hass.states[this._config.entity];
         if (stateObj && stateObj.attributes && stateObj.state === 'on')
         {
-			this.hass.callService('fan', 'turn_off', {
+			this.hass.callService('humidifier', 'turn_off', {
 			entity_id: this._config.entity
 			});
         }

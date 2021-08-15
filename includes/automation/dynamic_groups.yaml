@@ -15,13 +15,22 @@
             object_id: dynamic_group_sensor_battery
             icon: mdi:battery-unknown
             entities: >-
-                {%- 
-                    for state in states.sensor 
-                      if is_state_attr(state.entity_id, 'device_class', 'battery') and
-                      (state.entity_id.endswith("_battery") or state.entity_id.endswith("_battery_level"))
-                %}
-                    {{ state.entity_id }}{%- if not loop.last -%}, {%- endif -%}
-                {%- endfor %}
+                        {%- set datanames = namespace(entity_name=[]) -%}
+                        {%- 
+                            for state in states.sensor 
+                              if is_state_attr(state.entity_id, 'device_class', 'battery') and
+                              (state.entity_id.endswith("_battery") or state.entity_id.endswith("_battery_level"))
+                        %}
+                            {% set datanames.entity_name = datanames.entity_name + [state.entity_id] -%}
+                        {%- endfor %}
+                        {%- 
+                            for state in states.binary_sensor 
+                              if is_state_attr(state.entity_id, 'device_class', 'battery') and
+                              state.entity_id.endswith("_low_battery")
+                        %}
+                            {% set datanames.entity_name = datanames.entity_name + [state.entity_id] -%}
+                        {%- endfor %}
+                        {{ datanames.entity_name | list | join(', ')}}
 
     - alias: dynamic group sensor linkquality
       id: dynamic group sensor linkquality

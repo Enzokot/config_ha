@@ -87,3 +87,13 @@
         entities:
           - cover.0x847127fffed4907d
           - cover.0x847127fffed62861
+
+    temperature_summary_group_to_bot:
+        entities:
+          - sensor.0x00158d00042fd6f5_temperature
+          - sensor.esp_xiaomi_childrens_room_temperature
+          - sensor.esp_xiaomi_bed_room_temperature
+          - sensor.esp_xiaomi_living_room_temperature
+          - sensor.0x00158d0004561de9_temperature
+          - sensor.esp_xiaomi_kitchen_temperature
+          

@@ -2,6 +2,8 @@
     - alias: reply pong to ping
       id: reply pong to ping
       initial_state: true
+      mode: single
+      max_exceeded: silent  
       trigger:
         platform: event
         event_type: telegram_command
@@ -24,6 +26,8 @@
     - alias: keyboard tuc tuc gateway
       id: keyboard tuc tuc gateway
       initial_state: true
+      mode: single
+      max_exceeded: silent  
       trigger:
         platform: event
         event_type: telegram_command
@@ -45,6 +49,8 @@
     - alias: keyboard alarm home
       id: keyboard alarm home
       initial_state: true
+      mode: single
+      max_exceeded: silent  
       trigger:
         platform: event
         event_type: telegram_command
@@ -74,6 +80,8 @@
     - alias: do alarm change state
       id: do alarm change state
       initial_state: true
+      mode: single
+      max_exceeded: silent  
       trigger:
         - platform: event
           event_type: telegram_callback
@@ -111,6 +119,8 @@
     - alias: do tuc tuc gateway
       id: do tuc tuc gateway
       initial_state: true
+      mode: single
+      max_exceeded: silent  
       trigger:
         - platform: event
           event_type: telegram_callback
@@ -148,6 +158,8 @@
     - alias: del keyboard sync yeelight650 to switch
       id: del keyboard sync yeelight650 to switch
       initial_state: true
+      mode: single
+      max_exceeded: silent  
       trigger:
         - platform: event
           event_type: telegram_callback
@@ -170,6 +182,8 @@
     - alias: no key sync yeelight650 to switch
       id: no key sync yeelight650 to switch
       initial_state: true
+      mode: single
+      max_exceeded: silent  
       trigger:
         - platform: event
           event_type: telegram_callback
@@ -185,6 +199,8 @@
 
     - alias: ignor key sync yeelight650 to switch
       id: ignor key sync yeelight650 to switch
+      mode: single
+      max_exceeded: silent  
       initial_state: true
       trigger:
         - platform: event
@@ -199,6 +215,8 @@
 
     - alias: change keyboard sync yeelight650 to switch
       id: change keyboard sync yeelight650 to switch
+      mode: single
+      max_exceeded: silent  
       initial_state: true
       trigger:
         - platform: event
@@ -237,6 +255,8 @@
 #Пылесос
     - alias: vacuum chita answer key find vacuum
       id: vacuum chita answer key find vacuum
+      mode: single
+      max_exceeded: silent  
       initial_state: true
       trigger:
         - platform: event
@@ -257,6 +277,8 @@
             
     - alias: keyboard vacuum start cleaning
       id: keyboard vacuum start cleaning
+      mode: single
+      max_exceeded: silent  
       initial_state: true
       trigger:
         platform: event
@@ -280,6 +302,8 @@
     - alias: vacuum start cleaning
       id: vacuum start cleaning
       initial_state: true
+      mode: single
+      max_exceeded: silent  
       trigger:
         - platform: event
           event_type: telegram_callback
@@ -300,6 +324,8 @@
     - alias: vacuum later start cleaning
       id: vacuum later start cleaning
       initial_state: true
+      mode: single
+      max_exceeded: silent  
       trigger:
         - platform: event
           event_type: telegram_callback
@@ -341,6 +367,8 @@
     - alias: vacuum cancel cleaning
       id: vacuum cancel cleaning
       initial_state: true
+      mode: single
+      max_exceeded: silent  
       trigger:
         - platform: event
           event_type: telegram_callback
@@ -371,6 +399,8 @@
     - alias: vacuum send map
       id: vacuum send map
       initial_state: true
+      mode: single
+      max_exceeded: silent  
       trigger:
         - platform: event
           event_type: telegram_callback
@@ -397,3 +427,29 @@
           data:
             addon: a0d7b954_ssh
             input: "rm -f {{ filename }}"
+
+#Отправка данных по температуре
+    - alias: send climate summary
+      id: send climate summary
+      initial_state: true
+      mode: single
+      max_exceeded: silent  
+      trigger:
+        platform: event
+        event_type: telegram_command
+        event_data:
+          command: '/climate_summary'
+      action:
+        - service: telegram_bot.delete_message
+          data:
+            chat_id: '{{ trigger.event.data.user_id }}'
+            message_id: '{{ trigger.event.data.id }}'
+        - service: telegram_bot.send_message
+          data:
+            target: '{{ trigger.event.data.user_id }}'
+            title: "{{ '\U0001F321' }} *Климатические сенсоры*"
+            message: >-
+                {% set temp_array = expand('group.temperature_summary_group_to_bot') | selectattr('state', 'defined') | selectattr('state', 'ne', None) %}
+                {%- for state in temp_array -%}
+                  {%- if loop.first -%}_Данные температуры_: {{-'\n'-}}{%- endif -%} {{- state.name -}}: *{{ state.state -}}*°C {%- if not loop.last -%}{{-'\n'-}} {%- endif -%} 
+                {%- endfor %}

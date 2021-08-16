@@ -50,7 +50,7 @@
             target: !secret telegram_all_chat_id
             disable_notification: true
             title: >-
-                   {% if trigger.id == 'door_open' -%} {{ '\U000026a0' }} {%- else -%} {{ '\U0001f510' }} {% endif -%} *Датчик открытия/закрытия*
+                   {% if trigger.id == 'door_open' -%} {{ '\U0001F513' }} {%- else -%} {{ '\U0001f510' }} {%- endif %} *Датчик открытия/закрытия*
             message: >-
                      Тамбурная дверь: {% if trigger.id == 'door_open' -%} открыта более 5 минут {%- else -%} закрыта {% endif -%}
 
@@ -1355,7 +1355,7 @@
             title: >
                 {% if trigger.id == 'full_storage' -%} {{ '\U0001F4EE' }} {%- else -%} {{ '\U00002709' }} {%- endif %} *SMS через модем*
             message: >
-                Обнаружено {% if trigger.id == 'full_storage' -%} заполнение памяти {%- else -%} *{{ trigger.to_state.state }}* непрочитанное(ых) {%- endif -%} sms на {{ device_attr(trigger.entity_id, 'name') }}
+                Обнаружено {% if trigger.id == 'full_storage' -%} заполнение памяти {%- else -%} *{{ trigger.to_state.state }}* непрочитанное(ых) {%- endif %} sms на {{ device_attr(trigger.entity_id, 'name') }}
 
 #Уведомление об отсутствии link на Keenetic
     - alias: notifications link down keenetic

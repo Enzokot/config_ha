@@ -247,15 +247,3 @@
         {% endif %}
       data:
         entity_id: automation.notifications_objects_in_unavailable_status
-
-#Обновление данных entity каждые 30мин
-- alias: homeassistant_update_entity_30min
-  id: homeassistant_update_entity_30min
-  trigger:
-    - platform: time_pattern
-      minutes: "/30"
-  action:
-    - service: homeassistant.update_entity
-      entity_id: 
-        - sensor.huawei_e3372h_320_sms_unread
-        - binary_sensor.huawei_e3372h_320_sms_storage_full

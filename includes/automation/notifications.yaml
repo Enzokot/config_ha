@@ -1070,24 +1070,36 @@
       initial_state: true
       trigger:
         - platform: homeassistant
+          id: 'homeassistant_start'
           event: start
         - platform: homeassistant
           event: shutdown
       action:
+        - choose:
+              conditions:
+                - condition: trigger
+                  id: homeassistant_start
+              sequence:
+                - service: homeassistant.update_entity
+                  target:
+                    entity_id: 
+                      - sensor.errors_in_system_log_command_line
+                      - sensor.warnings_in_system_log_command_line
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
             disable_web_page_preview: true
             title: >
-                {%- if trigger.event == 'start' %}
+                {%- if trigger.id == 'homeassistant_start' %}
                     {{- '\U00002705' -}}
                 {% else %}
                     {{- '\U000026d4' -}}
                 {% endif %} *Трекинг устройств*
             message: >
-                {% if trigger.event == 'start' -%}
-                    Home Assistant запущен за {{ states('sensor.start_time') }}сек. (версия Core: [{{ states('sensor.current_version_ha') }}](https://github.com/home-assistant/core/releases/tag/{{- states('sensor.current_version_ha') }}))
+                {% if trigger.id == 'homeassistant_start' -%}
+                    Home Assistant запущен за {{ states('sensor.start_time') }}сек. (версия Core: [{{ states('sensor.current_version_ha') }}](https://github.com/home-assistant/core/releases/tag/{{- states('sensor.current_version_ha') }})) {{- '\n' -}}
+                    Ошибок: *{{ states('sensor.errors_in_system_log_command_line') }}*, предупреждений: *{{ states('sensor.warnings_in_system_log_command_line') }}*
                 {% else -%}
                     Home Assistant *остановлен*
                 {% endif -%}

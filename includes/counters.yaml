@@ -1,0 +1,4 @@
+
+#Счетчик событий link down для лога Keenetic
+    counter_keenetic_link_down:
+      name: 'Счетчик событий link down для лога Keenetic'

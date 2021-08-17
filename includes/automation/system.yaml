@@ -256,3 +256,24 @@
         {% endif %}
       data:
         entity_id: automation.notifications_objects_in_unavailable_status
+
+#Счетчик числа событий link down для лога Keenetic
+- alias: counter increment link down keenetic
+  id: counter increment link down keenetic
+  initial_state: true
+  mode: single
+  max_exceeded: silent
+  trigger:
+    - platform: state
+      entity_id: sensor.check_keenetic_link_down
+  condition:
+    - condition: template
+      value_template: >
+        {% set ignore = ['unknown', 'unavailable', 'none', None, null, '', 'null'] %}
+        {{ 
+           trigger.to_state.state not in ignore and trigger.from_state.state != '' and
+           trigger.to_state.state != trigger.from_state.state
+        }}
+  action:
+    - service: counter.increment
+      entity_id: counter.counter_keenetic_link_down

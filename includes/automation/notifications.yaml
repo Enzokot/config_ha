@@ -1355,7 +1355,7 @@
             title: >
                 {% if trigger.id == 'full_storage' -%} {{ '\U0001F4EE' }} {%- else -%} {{ '\U00002709' }} {%- endif %} *SMS через модем*
             message: >
-                Обнаружено {% if trigger.id == 'full_storage' -%} заполнение памяти {%- else -%} *{{ trigger.to_state.state }}* непрочитанное(ых) {%- endif %} sms на {{ device_attr(trigger.entity_id, 'name') }}
+                Обнаружено {% if trigger.id == 'full_storage' -%} заполнение памяти {%- else -%} *{{ trigger.to_state.state }}* {{ trigger.to_state.state | int | format(morph='непрочитанное', as_text=false) | replace(trigger.to_state.state + ' ', '') }} {%- endif %} sms на {{ device_attr(trigger.entity_id, 'name') }}
 
 #Уведомление об отсутствии link на Keenetic
     - alias: notifications link down keenetic
@@ -1365,18 +1365,27 @@
       max_exceeded: silent
       trigger:
         - platform: state
-          entity_id: sensor.check_keenetic_link_down
+          entity_id: binary_sensor.check_keenetic_link_down
+          from: 'on'
+          to: 'off'
+        - platform: state
+          entity_id: binary_sensor.check_keenetic_link_down
+          id: 'to_on'
+          from: 'off'
+          to: 'on'
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
       condition:
-        - condition: template
-          value_template: >
-            {% set ignore = ['unknown', 'unavailable', 'none', None, null, '', 'null'] %}
-            {{ 
-               trigger.to_state.state not in ignore and
-               trigger.to_state.state != trigger.from_state.state
-            }}
+        - condition: numeric_state
+          entity_id: counter.counter_keenetic_link_down
+          above: 0
       action:
         - service: notify.huawei_lte
           data:
             message: >-
-                     {{ trigger.to_state.state }} Keenetic link is down
+                     {{ states('sensor.check_keenetic_link_down') }} Keenetic link is down
             target: !secret sms_phone_enzokot
+        - service: counter.reset
+          entity_id: counter.counter_keenetic_link_down

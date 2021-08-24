@@ -54,16 +54,6 @@
                {% endif %}
              {% endif %}
        icon: mdi:clock
-     
-     - name: cert_expiry_enzokot_domain
-       unit_of_measurement: 'дн.'
-       icon: mdi:certificate-outline
-       state: >
-            {% if as_timestamp(states('sensor.cert_expiry_timestamp_enzokot_ftp_sh_8123')) | int > as_timestamp(states('sensor.date')) | int %}
-              {{ ((as_timestamp(states('sensor.cert_expiry_timestamp_enzokot_ftp_sh_8123')) - as_timestamp(states('sensor.date')) | int) / 86400) | int }}
-            {% else %}
-              0
-            {% endif %}
 
      - name: cert_expiry_keenetic_domain
        unit_of_measurement: 'дн.'

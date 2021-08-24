@@ -112,3 +112,17 @@
     command: grep -c -E "^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} WARNING .*$" /config/home-assistant.log || true
     scan_interval: 600
     unit_of_measurement: pc
+
+#Сенсор external_url для чтения данных с конфига
+  - platform: python_script
+    name: instance external url config
+    scan_interval: '00:05:00'
+    source: |
+        from homeassistant.helpers import network
+        try:
+            self.state = network.get_url(
+                self.hass,
+                allow_internal=False,
+            )
+        except network.NoURLAvailableError:
+            raise MyInvalidValueError("Failed to find suitable URL for my integration")

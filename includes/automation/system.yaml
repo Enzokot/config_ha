@@ -27,22 +27,6 @@
                  {{ '\U000026a0' }} *Мониторинг устройств*
         message: "Необходимо проверить питание RPi"
 
-#Перезапуск nginx для принятия нового сертификата, который получает certbot на rpi в пятницу
-- alias: restart nginx addon
-  id: restart nginx addon
-  initial_state: true
-  trigger:
-    - platform: time
-      at: '04:00:00'
-  condition:
-    condition: time
-    weekday:
-      - sat      
-  action:
-    - service: hassio.addon_restart
-      data:
-          addon: 'core_nginx_proxy'
-
 #Перезапуск аддона ssh перед бекапом, не всегда стартует Home Assistant STDIN service
 - alias: restart ssh and web terminal addon
   id: restart ssh and web terminal addon

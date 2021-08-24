@@ -24,7 +24,6 @@ views:
               icon: mdi:clock-outline
             - entity: sensor.last_boot_custom
             - entity: sensor.online_custom
-            - entity: sensor.cert_expiry_enzokot_domain
             - entity: sensor.cert_expiry_keenetic_domain
             - entity: binary_sensor.rpi_power_inverted
 

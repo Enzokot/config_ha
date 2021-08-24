@@ -10,7 +10,7 @@ homeassistant:
   customize: !include_dir_merge_named includes/customize
   allowlist_external_dirs:
    - /config
-  external_url: !secret external_url_enzokot
+  external_url: !secret external_url
   internal_url: "http://kotletochkarpi4:8123/"
   auth_mfa_modules:
    - type: totp
@@ -76,8 +76,8 @@ notify: !include includes/notify.yaml
 telegram_bot: !include includes/telegram_bot.yaml
 alert: !include includes/alert.yaml
 
-yeelight: !include includes/yeelight.yaml
 camera: !include includes/camera.yaml
+sun:
 
 switch: !include_dir_merge_list includes/switches
 sensor: !include_dir_merge_list includes/sensor

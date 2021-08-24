@@ -33,13 +33,6 @@
             hours: 12
 
 #Просроченные сертификаты ssl
-        - name: cert_expired_enzokot_domain
-          state: "{{ states('sensor.cert_expiry_enzokot_domain') | int <= 5 }}"
-          delay_on:
-            minutes: 1
-          delay_off:
-            minutes: 1
-
         - name: cert_expired_keenetic_domain
           state: "{{ states('sensor.cert_expiry_keenetic_domain') | int <= 5 }}"
           delay_on:

@@ -390,13 +390,10 @@
       trigger:
        - platform: state
          entity_id: sensor.vacuum_cleaner_status_sensor
-         to: 'Error'
-       - platform: state
-         entity_id: sensor.vacuum_cleaner_status_sensor
-         to: 'In Error'
-       - platform: state
-         entity_id: sensor.vacuum_cleaner_status_sensor
-         to: 'Charging Error'
+         to: 
+           - 'Error'
+           - 'In Error'
+           - 'Charging Error'
       action:
         - variables:
             filename: '/config/tmp/snapshot_vacuum_map_{{ now().strftime("%Y%m%d-%H%M%S") }}.jpg'
@@ -596,9 +593,7 @@
       initial_state: true
       trigger:
         - platform: state
-          entity_id:
-            - binary_sensor.cert_expired_enzokot_domain
-            - binary_sensor.cert_expired_keenetic_domain
+          entity_id: binary_sensor.cert_expired_keenetic_domain
           from: 'off'
           to: 'on'
       action:
@@ -994,8 +989,6 @@
            - persistent_notification.http_login
           to: 'notifying'
       action:
-        - variables:
-            hostname: !secret keenetic_ha_url
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -1011,7 +1004,7 @@
                     Неудачная попытка входа в систему с адреса [{{ ipadress }}](https://whatismyipaddress.com/ip/{{- ipadress }})
                 {%- else -%}
                     Заблокирован IP адрес [{{ ipadress }}](https://whatismyipaddress.com/ip/{{- ipadress }}), 5 попыток входа
-                {%- endif %}, [логи](https://{{- hostname -}}/config/logs)
+                {%- endif %}, [логи]({{- states('sensor.instance_external_url_config') -}}/config/logs)
             disable_web_page_preview: true
         - service: persistent_notification.dismiss
           data:
@@ -1034,14 +1027,12 @@
             - persistent_notification.invalid_config
           to: 'notifying'
       action:
-        - variables:
-            hostname: !secret keenetic_ha_url
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0000203C' }} *Проверка конфигурации*"
             message: >
-                {{ trigger.to_state.attributes.message | replace(' and [logs](/config/logs)', ' and [logs](https://' + hostname + '/config/logs)') }} 
+                {{ trigger.to_state.attributes.message | replace(' and [logs](/config/logs)', ' and [logs](' + states('sensor.instance_external_url_config') + '/config/logs)') }} 
 
     - alias: notification dismiss check configuration failed
       id: notification dismiss check configuration failed
@@ -1146,15 +1137,13 @@
               trigger.event.data.message | length < 4000
             }}
       action:
-        - variables:
-            hostname: !secret keenetic_ha_url
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             parse_mode: 'html'
             title: "{{ '\U000026d4' }} <b>Ошибка выполнения скрипта</b>"
             message: >
-              {{ trigger.event.data.message -}} <a href="https://{{- hostname -}}/config/logs"> Check logs.</a>
+              {{ trigger.event.data.message -}} <a href="{{- states('sensor.instance_external_url_config') -}}/config/logs"> Check logs.</a>
 
 #Уведомление об объектах, которые перешли в статус недоступно
     - alias: notifications objects in unavailable status
@@ -1239,14 +1228,12 @@
           from: 'off'
           to: 'on'
       action:
-        - variables:
-            hostname: !secret keenetic_ha_url
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U000026D4' }} *Резервное копирование БД*"
             message: >
-                Проблема с бекапом Google Drive, [логи](https://{{- hostname -}}/hassio/addon/cebe7a76_hassio_google_drive_backup/logs)
+                Проблема с бекапом Google Drive, [логи]({{- states('sensor.instance_external_url_config') -}}/hassio/addon/cebe7a76_hassio_google_drive_backup/logs)
 
 #Уведомление о найденном новом устройстве интеграции
     - alias: notifications entry discovery integration
@@ -1258,15 +1245,13 @@
           entity_id: persistent_notification.config_entry_discovery
           to: 'notifying'
       action:
-        - variables:
-            hostname: !secret keenetic_ha_url
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
             title: "{{ '\U0001F4DF' }} *Устройства*"
             message: >
-                Найдено новое устройство в сети, [просмотреть](https://{{- hostname -}}/config/integrations)
+                Найдено новое устройство в сети, [просмотреть]({{- states('sensor.instance_external_url_config') -}}/config/integrations)
         - service: persistent_notification.dismiss
           data:
             notification_id: 'config_entry_discovery'
@@ -1327,15 +1312,13 @@
           event_data:
             level: CRITICAL
       action:
-        - variables:
-            hostname: !secret keenetic_ha_url
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             parse_mode: 'html'
             title: "{{ '\U000026d4' }} <b>Ошибки системного журнала</b>"
             message: >
-              {{ trigger.event.data.message -}} <a href="https://{{- hostname -}}/config/logs"> Check logs.</a>      
+              {{ trigger.event.data.message -}} <a href="{{- states('sensor.instance_external_url_config') -}}/config/logs"> Check logs.</a>      
 
 #Уведомление о непрочитанных/заполнении памяти sms на модеме
     - alias: notifications sms unread or full storage

@@ -1,7 +1,6 @@
 
   - platform: webhooks
     api_key: !secret telegram_api
-    url: !secret url_telegram_webhooks
     allowed_chat_ids:
       - !secret telegram_enzokot_chat_id
       - !secret telegram_chita_chat_id

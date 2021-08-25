@@ -126,3 +126,11 @@
             )
         except network.NoURLAvailableError:
             raise MyInvalidValueError("Failed to find suitable URL for my integration")
+
+#Сенсор internal_url для чтения данных с конфига
+  - platform: python_script
+    name: instance internal url config
+    scan_interval: '00:05:00'
+    source: |
+        from homeassistant.helpers.network import get_url
+        self.state = get_url(self.hass)

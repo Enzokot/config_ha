@@ -395,24 +395,14 @@
            - 'In Error'
            - 'Charging Error'
       action:
-        - variables:
-            filename: '/config/tmp/snapshot_vacuum_map_{{ now().strftime("%Y%m%d-%H%M%S") }}.jpg'
-        - service: camera.snapshot
-          data:
-            entity_id: camera.roborock_vacuum_map
-            filename: '{{ filename }}'
         - service: telegram_bot.send_photo
           data:
             target: !secret telegram_all_chat_id
-            file: '{{ filename }}'
+            url: "{{- states('sensor.instance_internal_url_config') + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
             caption: >-
                    {{ '\U000026a0' }} *Степа* {{- '\n' -}} Похоже я застрял или какая то другая ошибка
             inline_keyboard:
               - 'Найти меня (громко):/findvacuum'
-        - service: hassio.addon_stdin
-          data:
-            addon: a0d7b954_ssh
-            input: "rm -f {{ filename }}"
         - choose:
             - conditions:
                 - condition: state
@@ -435,22 +425,12 @@
           condition: template
           value_template: "{{ (state_attr('vacuum.xiaomi_vacuum_cleaner', 'total_cleaned_area') | int) > (states('input_number.total_cleaned_area_saved') | int) + 30 }}"
       action:
-        - variables:
-            filename: '/config/tmp/snapshot_vacuum_map_{{ now().strftime("%Y%m%d-%H%M%S") }}.jpg'
-        - service: camera.snapshot
-          data:
-            entity_id: camera.roborock_vacuum_map
-            filename: '{{ filename }}'
         - service: telegram_bot.send_photo
           data:
             target: !secret telegram_chita_chat_id
-            file: '{{ filename }}'
+            url: "{{- states('sensor.instance_internal_url_config') + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
             caption: >-
                    {{ '\U0001f4af' }} *Степа* {{- '\n' -}} Вернулся на базу, нужно снять танк с водой и заглянуть в контейнер пылесборника
-        - service: hassio.addon_stdin
-          data:
-            addon: a0d7b954_ssh
-            input: "rm -f {{ filename }}"
         - service: input_number.set_value
           data:
             entity_id: input_number.total_cleaned_area_saved

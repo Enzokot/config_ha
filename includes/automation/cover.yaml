@@ -43,21 +43,18 @@
         below: 350
         for:
           minutes: 10
-      - platform: sun
-        event: sunset
-        offset: "-00:30:00"
       condition:
         - condition: template
           value_template: >-
             {{ 
-              trigger.platform == 'sun' or
               trigger.from_state.state not in ['unknown', 'unavailable', 'none', ''] and 
               trigger.from_state.state != trigger.to_state.state
             }}
         - "{{ expand('group.window_shades_kitchen_group') | selectattr('state', 'eq', 'closed') | map(attribute = 'entity_id') | list | length == 0 }}"
-        - condition: sun
-          after: sunset
-          after_offset: "-03:00:00"
+        - condition: numeric_state
+          entity_id: sun.sun
+          attribute: elevation
+          below: 2
       action:
         - service: script.auto_cover_open_close
           data:
@@ -68,11 +65,12 @@
     - alias: close shades kitchen on sun and min outside lux
       id: close shades kitchen on sun and min outside lux
       trigger:
-      - platform: sun
-        event: sunset
-        offset: "-02:00:00"
+      - platform: numeric_state
+        entity_id: sun.sun
+        attribute: elevation
+        below: -1
       condition:
-        - "{{ states('sensor.0x04cf8cdf3c7d15b7_illuminance_lux') | int <= 450 and expand('group.window_shades_kitchen_group') | selectattr('state', 'eq', 'closed') | map(attribute = 'entity_id') | list | length == 0 }}"
+        - "{{ states('sensor.0x04cf8cdf3c7d15b7_illuminance_lux') | int <= 350 and expand('group.window_shades_kitchen_group') | selectattr('state', 'eq', 'closed') | map(attribute = 'entity_id') | list | length == 0 }}"
       action:
         - service: script.auto_cover_open_close
           data:

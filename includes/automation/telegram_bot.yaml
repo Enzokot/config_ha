@@ -407,12 +407,6 @@
           event_data:
             data: '/sendmap'
       action:
-        - variables:
-            filename: '/config/tmp/snapshot_vacuum_map_{{ now().strftime("%Y%m%d-%H%M%S") }}.jpg'
-        - service: camera.snapshot
-          data:
-            entity_id: camera.roborock_vacuum_map
-            filename: '{{ filename }}'
         - service: telegram_bot.delete_message
           data:
             chat_id: '{{ trigger.event.data.user_id }}'
@@ -420,13 +414,9 @@
         - service: telegram_bot.send_photo
           data:
             target: '{{ trigger.event.data.user_id }}'
-            file: '{{ filename }}'
+            url: "{{- states('sensor.instance_internal_url_config') + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
             caption: >-
                    {{ '\U0001F5FA' }} *Степа* {{- '\n' -}} Текущая карта уборки
-        - service: hassio.addon_stdin
-          data:
-            addon: a0d7b954_ssh
-            input: "rm -f {{ filename }}"
 
 #Отправка данных по температуре
     - alias: send climate summary

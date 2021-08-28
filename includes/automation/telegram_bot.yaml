@@ -12,7 +12,8 @@
       action:
         - service: notify.notify
           data:
-            message: 'pong'
+            title: "{{ '\U00002139' }} Check notification's"
+            message: pong
         - service: telegram_bot.delete_message
           data:
             chat_id: '{{ trigger.event.data.user_id }}'
@@ -21,7 +22,20 @@
           data:
             target: '{{ trigger.event.data.user_id }}'
             message: >-
-                       {{ '\U00002139' }} pong
+                      {{ '\U00002139' }} pong
+        - service: notify.huawei_lte
+          data:
+            message: >-
+                     {{ '\U00002139' }} pong
+            target: !secret sms_phone_enzokot
+        - service: notify.html5_notifier
+          data:
+            title: "{{ '\U00002139' }} Check notification's"
+            message: pong
+        - service: notify.email_enzokot_ha
+          data:
+            title: "{{ '\U00002139' }} Check notification's"
+            message: pong
 
     - alias: keyboard tuc tuc gateway
       id: keyboard tuc tuc gateway

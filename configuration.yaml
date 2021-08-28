@@ -99,3 +99,4 @@ webostv: !include includes/webostv.yaml
 media_player: !include includes/media_player.yaml
 smartir: 
 climate: !include includes/smartir/climate.yaml
+feedreader: !include includes/feedreader.yaml

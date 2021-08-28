@@ -236,7 +236,7 @@
             target: !secret telegram_all_chat_id
         - service: notify.notify
           data:
-            title: 'Сигнализация'
+            title: "{{ '\U0001f6a8' }} Сигнализация"
             message: >-
                      Обнаружено вскрытие {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
             data:
@@ -296,7 +296,7 @@
             target: !secret telegram_all_chat_id
         - service: notify.notify
           data:
-            title: 'Сигнализация'
+            title: "{{ '\U0001f6a8' }} Сигнализация"
             message: >-
                      Обнаружено движение {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
             data:
@@ -357,7 +357,7 @@
             target: !secret telegram_all_chat_id
         - service: notify.notify
           data:
-            title: 'Сигнализация'
+            title: "{{ '\U0001f6a8' }} Сигнализация"
             message: >-
                      Обнаружено вскрытие окна {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
             data:
@@ -506,7 +506,7 @@
               actions:
                 - action: "stop_alarm"
                   title: "Выключить сирену"
-            title: 'Датчик дыма'
+            title: "{{ '\U0001f6a8' }} Датчик дыма"
             message: >-
                         Сработали датчики:
                         {{ '\n' }}
@@ -1010,6 +1010,7 @@
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
+            disable_web_page_preview: true
             title: "{{ '\U0000203C' }} *Проверка конфигурации*"
             message: >
                 {{ trigger.to_state.attributes.message | replace(' and [logs](/config/logs)', ' and [logs](' + states('sensor.instance_external_url_config') + '/config/logs)') }} 
@@ -1121,6 +1122,7 @@
           data:
             target: !secret telegram_enzokot_chat_id
             parse_mode: 'html'
+            disable_web_page_preview: true
             title: "{{ '\U000026d4' }} <b>Ошибка выполнения скрипта</b>"
             message: >
               {{ trigger.event.data.message -}} <a href="{{- states('sensor.instance_external_url_config') -}}/config/logs"> Check logs.</a>
@@ -1211,6 +1213,7 @@
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
+            disable_web_page_preview: true
             title: "{{ '\U000026D4' }} *Резервное копирование БД*"
             message: >
                 Проблема с бекапом Google Drive, [логи]({{- states('sensor.instance_external_url_config') -}}/hassio/addon/cebe7a76_hassio_google_drive_backup/logs)
@@ -1296,6 +1299,7 @@
           data:
             target: !secret telegram_enzokot_chat_id
             parse_mode: 'html'
+            disable_web_page_preview: true
             title: "{{ '\U000026d4' }} <b>Ошибки системного журнала</b>"
             message: >
               {{ trigger.event.data.message -}} <a href="{{- states('sensor.instance_external_url_config') -}}/config/logs"> Check logs.</a>      
@@ -1359,7 +1363,26 @@
         - service: notify.huawei_lte
           data:
             message: >-
-                     {{ states('sensor.check_keenetic_link_down') }} Keenetic link is down
+                     {{ '\U0000203C' }} {{ states('sensor.check_keenetic_link_down') }} Keenetic link is down
             target: !secret sms_phone_enzokot
         - service: counter.reset
           entity_id: counter.counter_keenetic_link_down
+
+#Уведомление о новых записях в RSS ленте
+    - alias: notifications new rss posts
+      id: notifications new rss posts
+      mode: queued
+      trigger:
+        - platform: event
+          event_type: feedreader
+      condition:
+        - "{{ trigger.event.data.feed_url != 'https://home-assistant.io/atom.xml' or as_timestamp(now()) - as_timestamp(states('sensor.online')) | int > 60 }}"
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            disable_notification: true
+            disable_web_page_preview: true
+            title: "{{ '\U0001F4F0' }} *RSS новости*"
+            message: >
+                [{{- trigger.event.data.title -}}]({{- trigger.event.data.link -}})

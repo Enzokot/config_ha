@@ -215,7 +215,7 @@
               target: !secret telegram_all_chat_id
           - service: notify.notify
             data:
-              title: 'Сигнализация'
+              title: "{{ '\U0001f6a8' }} Сигнализация"
               message: 'Нажатие тревожной кнопки в детской'
               data:
                   ttl: 0

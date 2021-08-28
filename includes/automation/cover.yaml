@@ -7,24 +7,27 @@
       trigger:
       - platform: numeric_state
         entity_id: sensor.0x04cf8cdf3c7d15b7_illuminance_lux
-        above: 400
+        above: 250
         for:
           minutes: 10
-      - platform: sun
-        event: sunrise
-        offset: "02:30:00"
+      - platform: numeric_state
+        id: 'sun'
+        entity_id: sun.sun
+        attribute: elevation
+        above: 5
       condition:
         - condition: template
           value_template: >-
             {{ 
-              trigger.platform == 'sun' or
+              trigger.id == 'sun' or
               trigger.from_state.state not in ['unknown', 'unavailable', 'none', ''] and 
               trigger.from_state.state != trigger.to_state.state
             }}
         - "{{ expand('group.window_shades_kitchen_group') | selectattr('state', 'eq', 'open') | map(attribute = 'entity_id') | list | length == 0 }}"
-        - condition: sun
-          before: sunrise
-          before_offset: "03:00:00"
+        - condition: numeric_state
+          entity_id: sun.sun
+          attribute: elevation
+          above: 0
       action:
         - service: script.auto_cover_open_close
           data:
@@ -40,7 +43,7 @@
       trigger:
       - platform: numeric_state
         entity_id: sensor.0x04cf8cdf3c7d15b7_illuminance_lux
-        below: 350
+        below: 200
         for:
           minutes: 10
       condition:
@@ -54,7 +57,7 @@
         - condition: numeric_state
           entity_id: sun.sun
           attribute: elevation
-          below: 2
+          below: 7
       action:
         - service: script.auto_cover_open_close
           data:
@@ -68,9 +71,9 @@
       - platform: numeric_state
         entity_id: sun.sun
         attribute: elevation
-        below: -1
+        below: 2
       condition:
-        - "{{ states('sensor.0x04cf8cdf3c7d15b7_illuminance_lux') | int <= 350 and expand('group.window_shades_kitchen_group') | selectattr('state', 'eq', 'closed') | map(attribute = 'entity_id') | list | length == 0 }}"
+        - "{{ states('sensor.0x04cf8cdf3c7d15b7_illuminance_lux') | int <= 200 and expand('group.window_shades_kitchen_group') | selectattr('state', 'eq', 'closed') | map(attribute = 'entity_id') | list | length == 0 }}"
       action:
         - service: script.auto_cover_open_close
           data:

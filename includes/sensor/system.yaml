@@ -41,8 +41,8 @@
 
 #Public IP
   - platform: dnsip
-    resolver: 8.8.8.8
-    hostname: !secret keenetic_base_url
+    #resolver: 8.8.8.8
+    #hostname: !secret keenetic_base_url
     name: myip
 
 #Supervisor versions

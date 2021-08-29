@@ -10,6 +10,7 @@ esphome:
 
 wifi:
   fast_connect: true
+  output_power: 20.5dB
   networks:
   #Точка в спальне
   - ssid: Kotletochka

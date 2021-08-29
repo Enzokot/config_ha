@@ -63,6 +63,8 @@ recorder: !include includes/recorder.yaml
 influxdb: !include includes/influxdb.yaml
 logger:
   default: info
+  logs:
+    homeassistant.components.mqtt: warn
 system_log:
   fire_event: true
 

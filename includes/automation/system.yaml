@@ -158,7 +158,7 @@
     - condition: template
       value_template: >-
         {{ trigger.event.event_type == 'call_service' and
-           states | selectattr('domain', 'eq', 'automation') | selectattr('state', 'eq', 'on') | selectattr('entity_id', 'ne', this.entity_id) | map(attribute = 'entity_id') | list | count > 0
+           states.automation | selectattr('state', 'eq', 'on') | selectattr('entity_id', 'ne', this.entity_id) | map(attribute = 'entity_id') | list | count > 0
            or
            trigger.event.event_type == 'automation_reloaded' and
            expand('group.dynamic_group_automation_for_reload') | count > 0
@@ -173,7 +173,14 @@
                 object_id: dynamic_group_automation_for_reload
                 icon: mdi:script-text
                 entities: >-
-                  {{ states | selectattr('domain', 'eq', 'automation') | selectattr('state', 'eq', 'on') | selectattr('entity_id', 'ne', this.entity_id) | map(attribute = 'entity_id') | list | join(', ') }}
+                  {{ states.automation | selectattr('state', 'eq', 'on') | selectattr('entity_id', 'ne', this.entity_id) | map(attribute = 'entity_id') | list | join(', ') }}
+            - service: group.set
+              data:
+                name: dynamic group all automation before reload
+                object_id: dynamic_group_all_automation_before_reload
+                icon: mdi:script-text
+                entities: >-
+                  {{ states.automation | selectattr('state', 'ne', 'unavailable') | selectattr('entity_id', 'ne', this.entity_id) | map(attribute = 'entity_id') | list | join(', ') }}
     - service: >- 
         {% if trigger.event.event_type == 'call_service' -%}
             automation.turn_off
@@ -182,18 +189,18 @@
         {% endif -%}
       data:
         entity_id: >-
-          {{ expand('group.dynamic_group_automation_for_reload') | map(attribute = 'entity_id') | join(', ') }}
+          {{ expand('group.dynamic_group_automation_for_reload') | selectattr('state', 'ne', 'unavailable') | map(attribute = 'entity_id')  | join(', ') }}
     - choose:
         - conditions: > 
                 {{ 
                   trigger.event.event_type == 'automation_reloaded' and 
-                  states.automation | selectattr('entity_id', 'ne', this.entity_id) | map(attribute = 'entity_id') | reject('in', expand('group.dynamic_group_automation_for_reload') | map(attribute = 'entity_id') | list) | list | count > 0 
+                  expand('group.dynamic_group_all_automation_before_reload') | selectattr('state', 'ne', 'unavailable') | map(attribute = 'entity_id') | reject('in', expand('group.dynamic_group_automation_for_reload') | map(attribute = 'entity_id') | list) | list | count > 0 
                 }}
           sequence:  
             - service: automation.turn_off 
               data:
                 entity_id: >-
-                  {{ states.automation | selectattr('entity_id', 'ne', this.entity_id) | map(attribute = 'entity_id') | reject('in', expand('group.dynamic_group_automation_for_reload') | map(attribute = 'entity_id') | list) | list | join(', ') }}
+                  {{ expand('group.dynamic_group_all_automation_before_reload') | selectattr('state', 'ne', 'unavailable') | map(attribute = 'entity_id') | reject('in', expand('group.dynamic_group_automation_for_reload') | map(attribute = 'entity_id') | list) | list | join(', ') }}
 
 #Удаление устройств, без удаления интеграции
 - alias: device_entity_deletion_python_script

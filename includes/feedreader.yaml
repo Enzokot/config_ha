@@ -5,6 +5,7 @@
     - https://wonderland.v8.1c.ru/rss/
     - https://moscow.mchs.gov.ru/deyatelnost/press-centr/operativnaya-informaciya/shtormovye-i-ekstrennye-preduprezhdeniya/rss
     - https://50.mchs.gov.ru/deyatelnost/press-centr/operativnaya-informaciya/shtormovye-i-ekstrennye-preduprezhdeniya/rss
+    - https://shelly.cloud/feed/
   scan_interval:
     minutes: 15
   max_entries: 3

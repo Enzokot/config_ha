@@ -206,7 +206,8 @@
 - alias: device_entity_deletion_python_script
   id: device_entity_deletion_python_script
   initial_state: true
-  mode: queued
+  mode: parallel
+  max: 200
   trigger:
     - platform: event
       event_type: device_registry_updated

@@ -1302,7 +1302,7 @@
             disable_web_page_preview: true
             title: "{{ '\U000026d4' }} <b>Ошибки системного журнала</b>"
             message: >
-              {{ trigger.event.data.message -}} <a href="{{- states('sensor.instance_external_url_config') -}}/config/logs"> Check logs.</a>      
+              {{ trigger.event.data.message -}} <a href="{{- states('sensor.instance_external_url_config') -}}/config/logs"> Check logs.</a>
 
 #Уведомление о непрочитанных/заполнении памяти sms на модеме
     - alias: notifications sms unread or full storage
@@ -1378,11 +1378,21 @@
       condition:
         - "{{ trigger.event.data.feed_url != 'https://home-assistant.io/atom.xml' or as_timestamp(now()) - as_timestamp(states('sensor.online')) | int > 60 }}"
       action:
+        - variables:
+            all_chat_id: !secret telegram_all_chat_id
+            enzokot_chat_id: !secret telegram_enzokot_chat_id
+            this_mchs_notification: "{{ trigger.event.data.feed_url is search('mchs.gov.ru', ignorecase=True) }}"
         - service: telegram_bot.send_message
           data:
-            target: !secret telegram_enzokot_chat_id
-            disable_notification: true
+            target: >
+                {% if this_mchs_notification %}
+                    {{ all_chat_id }}
+                {% else %}
+                    {{ enzokot_chat_id }}
+                {% endif %}
+            disable_notification: "{{ not this_mchs_notification }}"
             disable_web_page_preview: true
-            title: "{{ '\U0001F4F0' }} *RSS новости*"
+            parse_mode: 'html'
+            title: "{{ '\U0001F4F0' }} <b>RSS новости</b>"
             message: >
-                [{{- trigger.event.data.title -}}]({{- trigger.event.data.link -}})
+                <a href="{{- trigger.event.data.link -}}">{{- trigger.event.data.title -}}</a>

@@ -131,8 +131,8 @@ binary_sensor.debounce_trv_living_room_low_battery:
 binary_sensor.zhimi_humidifier_ca4_low_water_level:
   friendly_name: Увлажнитель детская
 
-# binary_sensor.zhimi_humidifier_cb1_low_water_level:
-#   friendly_name: Увлажнитель спальня
+binary_sensor.zhimi_humidifier_cb1_low_water_level:
+  friendly_name: Увлажнитель спальня
 
 #Сертификат ssl на собственные домены
 binary_sensor.cert_expired_keenetic_domain:

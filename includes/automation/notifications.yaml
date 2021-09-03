@@ -826,10 +826,10 @@
       id: notification low level water
       initial_state: true
       trigger:
-        # - platform: state
-        #   entity_id: sensor.zhimi_humidifier_cb1_low_water_level
-        #   from: 'off'
-        #   to: 'on'
+        - platform: state
+          entity_id: sensor.zhimi_humidifier_cb1_low_water_level
+          from: 'off'
+          to: 'on'
         - platform: state
           entity_id: sensor.zhimi_humidifier_ca4_low_water_level
           from: 'off'

@@ -802,11 +802,11 @@ views:
                     model: 'zhimi.humidifier.cb1'
             - type: horizontal-stack
               cards:
-        #           - type: entities
-        #             show_header_toggle: false
-        #             entities:
-        #                 - entity: sensor.zhimi_humidifier_cb1_water_level
-        #                   name: 'Вода'
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.zhimi_humidifier_cb1_water_level
+                          name: 'Вода'
                   - type: entities
                     show_header_toggle: false
                     entities:

@@ -41,9 +41,13 @@
 
 #Public IP
   - platform: dnsip
-    #resolver: 8.8.8.8
-    #hostname: !secret keenetic_base_url
     name: myip
+
+  - platform: dnsip
+    resolver: 8.8.8.8
+    scan_interval: 60
+    hostname: !secret keenetic_base_url
+    name: myip_keenetic
 
 #Supervisor versions
   - platform: command_line

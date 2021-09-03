@@ -18,3 +18,24 @@
     #                  {{ '\U0001F41B' }} <b>Отладка</b>
     #         message: >-
     #                 last_triggered: {{ this.attributes.last_triggered }} -> now: {{ now() }}
+
+    - alias: notification public ip compare debug
+      id: notification public ip compare debug
+      trigger:
+          - platform: state
+            entity_id: sensor.myip_keenetic
+      condition: >
+            {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
+            {{ trigger.from_state.state not in ignore and
+               trigger.to_state.state not in ignore and
+               trigger.from_state.state != trigger.to_state.state and
+               trigger.to_state.state != states('sensor.myip')
+            }}
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: >-
+                     {{ '\U0001f4f6' }} *Трекинг устройств*
+            message: >-
+                    Внешний IP-адрес keendns `{{ trigger.to_state.state }}` не равен физическому `{{ states('sensor.myip') }}`

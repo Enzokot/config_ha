@@ -315,3 +315,6 @@ sensor.total_yeelight650_relay_cable_monthly_electicity:
 
 sensor.0x54ef441000096cbc_power:
   friendly_name: Тек. мощность
+
+sensor.hacs:
+  icon: mdi:github

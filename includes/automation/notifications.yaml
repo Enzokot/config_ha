@@ -1206,7 +1206,7 @@
       initial_state: true
       trigger:
         - platform: state
-          entity_id: binary_sensor.snapshots_stale
+          entity_id: binary_sensor.backups_stale
           from: 'off'
           to: 'on'
       action:
@@ -1381,18 +1381,49 @@
         - variables:
             all_chat_id: !secret telegram_all_chat_id
             enzokot_chat_id: !secret telegram_enzokot_chat_id
-            this_mchs_notification: "{{ trigger.event.data.feed_url is search('mchs.gov.ru', ignorecase=True) }}"
+            stormy_notification: "{{ trigger.event.data.feed_url is search('shtormovye-i-ekstrennye-preduprezhdeniya', ignorecase=True) }}"
         - service: telegram_bot.send_message
           data:
             target: >
-                {% if this_mchs_notification %}
+                {% if stormy_notification %}
                     {{ all_chat_id }}
                 {% else %}
                     {{ enzokot_chat_id }}
                 {% endif %}
-            disable_notification: "{{ not this_mchs_notification }}"
+            disable_notification: "{{ not stormy_notification }}"
             disable_web_page_preview: true
             parse_mode: 'html'
             title: "{{ '\U0001F4F0' }} <b>RSS новости</b>"
             message: >
                 <a href="{{- trigger.event.data.link -}}">{{- trigger.event.data.title -}}</a>
+
+#Уведомление о наличии warning и error в syslog HA
+    - alias: notifications warnings or errors in syslog
+      id: notifications warnings or errors in syslog
+      initial_state: true
+      mode: single
+      max_exceeded: silent
+      trigger:
+        - platform: time_pattern
+          hours: "/2"
+          minutes: 30
+      condition:
+        - "{{ states('counter.system_log_error_counter') | int > 0 or states('counter.system_log_warning_counter') | int > 0 }}"
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            disable_notification: true
+            title: "{{ '\U0001F4D6' }} *Данные системного журнала*"
+            message: |-
+                {% if states('counter.system_log_error_counter') | int > 0 -%}
+                    Ошибок в логе: *{{ states('counter.system_log_error_counter') }}*
+                {% endif -%}
+                {% if states('counter.system_log_warning_counter') | int > 0 -%}
+                    Предупреждений в логе: *{{ states('counter.system_log_warning_counter') }}*
+                {% endif %}
+        - service: counter.reset
+          data:
+            entity_id:
+              - counter.system_log_error_counter
+              - counter.system_log_warning_counter

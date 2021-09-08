@@ -2,3 +2,10 @@
 #Счетчик событий link down для лога Keenetic
     counter_keenetic_link_down:
       name: 'Счетчик событий link down для лога Keenetic'
+
+#Счетчики событий warning и error в syslog HA
+    system_log_error_counter:
+      name: 'Счетчик событий error в syslog HA'
+      
+    system_log_warning_counter:
+      name: 'Счетчик событий warning в syslog HA'

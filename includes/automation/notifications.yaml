@@ -1421,7 +1421,8 @@
                 {% endif -%}
                 {% if states('counter.system_log_warning_counter') | int > 0 -%}
                     Предупреждений в логе: *{{ states('counter.system_log_warning_counter') }}*
-                {% endif %}
+                {% endif -%}
+                [Просмотр логов]({{- states('sensor.instance_external_url_config') -}}/config/logs)
         - service: counter.reset
           data:
             entity_id:

@@ -249,8 +249,10 @@
         - service: notify.huawei_lte
           data:
             message: >-
-                     Обнаружено вскрытие {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
+                     {{ '\U0001f6a8' }} Обнаружено вскрытие {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
             target: !secret sms_phone_all
+            data:
+              url: 'http://192.168.8.1/'
         - service: notify.mobile_app_sm_g973f
           data:
               message: 'command_ringer_mode'
@@ -309,8 +311,10 @@
         - service: notify.huawei_lte
           data:
             message: >-
-                     Обнаружено движение {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
+                     {{ '\U0001f6a8' }} Обнаружено движение {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
             target: !secret sms_phone_all
+            data:
+              url: 'http://192.168.8.1/'
         - service: notify.mobile_app_sm_g973f
           data:
               message: 'command_ringer_mode'
@@ -370,8 +374,10 @@
         - service: notify.huawei_lte
           data:
             message: >-
-                     Обнаружено вскрытие окна {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
+                     {{ '\U0001f6a8' }} Обнаружено вскрытие окна {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
             target: !secret sms_phone_all
+            data:
+              url: 'http://192.168.8.1/'
         - service: notify.mobile_app_sm_g973f
           data:
               message: 'command_ringer_mode'
@@ -533,7 +539,7 @@
         - service: notify.huawei_lte
           data:
             message: >-
-                        Сработали датчики дыма:
+                        {{ '\U0001f6a8' }} Сработали датчики дыма:
                         {{ '\n' }}
                         {%- if is_state('binary_sensor.0x00158d0003943639_smoke', 'on') -%}
                            Кухня
@@ -556,6 +562,8 @@
                         {{- '\n' }}
                         {%- endif -%}
             target: !secret sms_phone_all
+            data:
+              url: 'http://192.168.8.1/'
         - service: notify.mobile_app_sm_g973f
           data:
               message: 'command_ringer_mode'
@@ -1365,6 +1373,8 @@
             message: >-
                      {{ '\U0000203C' }} {{ states('sensor.check_keenetic_link_down') }} Keenetic link is down
             target: !secret sms_phone_enzokot
+            data:
+              url: 'http://192.168.8.1/'
         - service: counter.reset
           entity_id: counter.counter_keenetic_link_down
 
@@ -1405,10 +1415,13 @@
       max_exceeded: silent
       trigger:
         - platform: time_pattern
-          hours: "/2"
+          hours: "/1"
           minutes: 30
       condition:
         - "{{ states('counter.system_log_error_counter') | int > 0 or states('counter.system_log_warning_counter') | int > 0 }}"
+        - condition: time
+          after: '8:30:00'
+          before: '23:00:00'
       action:
         - service: telegram_bot.send_message
           data:
@@ -1423,8 +1436,3 @@
                     Предупреждений в логе: *{{ states('counter.system_log_warning_counter') }}*
                 {% endif -%}
                 [Просмотр логов]({{- states('sensor.instance_external_url_config') -}}/config/logs)
-        - service: counter.reset
-          data:
-            entity_id:
-              - counter.system_log_error_counter
-              - counter.system_log_warning_counter

@@ -294,3 +294,50 @@
       data:
         entity_id: >- 
             {{ 'counter.system_log_' + trigger.event.data.level | lower + '_counter' }}
+
+- alias: system log clear warning and error reset counter
+  id: system log clear warning and error reset counter
+  initial_state: true
+  mode: queued
+  max_exceeded: silent
+  trigger:
+    - platform: event
+      event_type: call_service
+      event_data:
+        domain: system_log
+        service: clear
+  action:
+    - service: counter.reset
+      data:
+        entity_id:
+          - counter.system_log_error_counter
+          - counter.system_log_warning_counter
+
+#Перезапуск модема, по переходу в статус unavailable
+- alias: restart e3372h 320 modem unavailable
+  id: restart e3372h 320 modem unavailable
+  initial_state: true
+  mode: single
+  max_exceeded: silent
+  trigger:
+    - platform: state
+      entity_id: sensor.huawei_e3372h_320_sinr
+      to: 'unavailable'
+    - platform: homeassistant
+      event: start
+  condition:
+    - condition: state
+      entity_id: sensor.huawei_e3372h_320_sinr
+      state: 'unavailable'
+  action:
+    - wait_for_trigger:
+        - platform: state
+          entity_id: sensor.huawei_e3372h_320_sinr
+          from: 'unavailable'
+      timeout: "00:05:00"
+    - choose:
+        - conditions: "{{ wait.trigger == None }}"
+          sequence:
+              - service: huawei_lte.reboot
+                data:
+                  url: 'http://192.168.8.1/'

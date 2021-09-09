@@ -226,8 +226,10 @@
                       title: "Выключить сирену"
           - service: notify.huawei_lte
             data:
-              message: 'Нажатие тревожной кнопки в детской'
+              message: "{{ '\U0001f6a8' }} Нажатие тревожной кнопки в детской"
               target: !secret sms_phone_all
+              data:
+                url: 'http://192.168.8.1/'
           - service: notify.mobile_app_sm_g973f
             data:
               message: 'command_ringer_mode'

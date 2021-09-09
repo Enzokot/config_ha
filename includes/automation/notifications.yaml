@@ -617,6 +617,12 @@
             title: "{{ '\U0001f389' }} *Системное обновление*"
             message: "Доступна [{{ states('sensor.latest_version_ha') }}](https://github.com/home-assistant/core/releases/tag/{{- states('sensor.latest_version_ha') }}) версия Core для установки, текущая *{{ states('sensor.current_version_ha') }}*."
             disable_web_page_preview: true
+        - service: notify.html5_notifier_n550jk
+          data:
+            title: "{{ '\U0001f389' }} *Системное обновление*"
+            message: "Доступна {{ states('sensor.latest_version_ha') }} версия Core для установки, текущая {{ states('sensor.current_version_ha') }}"
+            data:
+              url: "https://github.com/home-assistant/core/releases/tag/{{- states('sensor.latest_version_ha') }}"
 
 #Новая версия Supervisor
     - alias: update Supervisor available notification
@@ -642,6 +648,12 @@
             title: "{{ '\U0001f389' }} *Системное обновление*"
             message: "Доступна [{{ state_attr('sensor.latest_version_ha', 'supervisor') }}](https://github.com/home-assistant/supervisor/releases/tag/{{- state_attr('sensor.latest_version_ha', 'supervisor') }}) версия Supervisor для установки, текущая *{{ state_attr('sensor.supervisor_versions', 'current_version') }}*."
             disable_web_page_preview: true
+        - service: notify.html5_notifier_n550jk
+          data:
+            title: "{{ '\U0001f389' }} *Системное обновление*"
+            message: "Доступна {{ state_attr('sensor.latest_version_ha', 'supervisor') }} версия Supervisor для установки, текущая {{ state_attr('sensor.supervisor_versions', 'current_version') }}."
+            data:
+              url: "https://github.com/home-assistant/supervisor/releases/tag/{{- state_attr('sensor.latest_version_ha', 'supervisor') }}"
 
     - alias: Supervisor updated notification
       id: Supervisor updated notification
@@ -686,7 +698,13 @@
           data:
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Addons's Supervisor - доступно для обновления *{{ states('sensor.supervisor_versions') | int }}*. Список: {% for repo in state_attr('sensor.supervisor_versions', 'addons') %}*{{ repo.name }}* (_{{ repo.version }}_ -> _{{ repo.version_latest }}_){%if not loop.last %}, {%endif%}{% endfor %}"
+            message: "Addon's Supervisor - доступно для обновления *{{ states('sensor.supervisor_versions') | int }}*. Список: {% for repo in state_attr('sensor.supervisor_versions', 'addons') %}*{{ repo.name }}* (_{{ repo.version }}_ -> _{{ repo.version_latest }}_){%if not loop.last %}, {%endif%}{% endfor %}"
+        - service: notify.html5_notifier_n550jk
+          data:
+            title: "{{ '\U0001f389' }} *Системное обновление*"
+            message: "Addon's Supervisor - доступно для обновления {{ states('sensor.supervisor_versions') | int }}. Список: {% for repo in state_attr('sensor.supervisor_versions', 'addons') %}{{ repo.name }} ({{ repo.version }} -> {{ repo.version_latest }}){%if not loop.last %}, {%endif%}{% endfor %}"
+            data:
+              url: "{{- states('sensor.instance_internal_url_config') -}}/hassio/dashboard"
 
 #Доступны для обновления аддоны HACS
     - alias: update HACS addons available notification
@@ -709,7 +727,13 @@
           data:
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Addons's HACS - доступно для обновления *{{ states('sensor.hacs') | int }}*. Список: {% for repo in state_attr('sensor.hacs', 'repositories') %}*{{ repo.display_name }}* (_{{ repo.installed_version }}_ -> _{{ repo.available_version }}_){%if not loop.last %}, {%endif%}{% endfor %}"
+            message: "Addon's HACS - доступно для обновления *{{ states('sensor.hacs') | int }}*. Список: {% for repo in state_attr('sensor.hacs', 'repositories') %}*{{ repo.display_name }}* (_{{ repo.installed_version }}_ -> _{{ repo.available_version }}_){%if not loop.last %}, {%endif%}{% endfor %}"
+        - service: notify.html5_notifier_n550jk
+          data:
+            title: "{{ '\U0001f389' }} *Системное обновление*"
+            message: "Addon's HACS - доступно для обновления {{ states('sensor.hacs') | int }}. Список: {% for repo in state_attr('sensor.hacs', 'repositories') %}{{ repo.display_name }} ({{ repo.installed_version }} -> {{ repo.available_version }}){%if not loop.last %}, {%endif%}{% endfor %}"
+            data:
+              url: "{{- states('sensor.instance_internal_url_config') -}}/hacs/entry"
 
 #Низкий заряд батарей
     - alias: notification low battery zigbee

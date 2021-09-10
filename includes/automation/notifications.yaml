@@ -623,6 +623,7 @@
             message: "Доступна {{ states('sensor.latest_version_ha') }} версия Core для установки, текущая {{ states('sensor.current_version_ha') }}"
             data:
               url: "https://github.com/home-assistant/core/releases/tag/{{- states('sensor.latest_version_ha') }}"
+              tag: notify_update_ha
 
 #Новая версия Supervisor
     - alias: update Supervisor available notification
@@ -654,6 +655,7 @@
             message: "Доступна {{ state_attr('sensor.latest_version_ha', 'supervisor') }} версия Supervisor для установки, текущая {{ state_attr('sensor.supervisor_versions', 'current_version') }}."
             data:
               url: "https://github.com/home-assistant/supervisor/releases/tag/{{- state_attr('sensor.latest_version_ha', 'supervisor') }}"
+              tag: notify_update_supervisor
 
     - alias: Supervisor updated notification
       id: Supervisor updated notification
@@ -705,6 +707,7 @@
             message: "Addon's Supervisor - доступно для обновления {{ states('sensor.supervisor_versions') | int }}. Список: {% for repo in state_attr('sensor.supervisor_versions', 'addons') %}{{ repo.name }} ({{ repo.version }} -> {{ repo.version_latest }}){%if not loop.last %}, {%endif%}{% endfor %}"
             data:
               url: "{{- states('sensor.instance_internal_url_config') -}}/hassio/dashboard"
+              tag: notify_update_ha_addons
 
 #Доступны для обновления аддоны HACS
     - alias: update HACS addons available notification
@@ -734,6 +737,7 @@
             message: "Addon's HACS - доступно для обновления {{ states('sensor.hacs') | int }}. Список: {% for repo in state_attr('sensor.hacs', 'repositories') %}{{ repo.display_name }} ({{ repo.installed_version }} -> {{ repo.available_version }}){%if not loop.last %}, {%endif%}{% endfor %}"
             data:
               url: "{{- states('sensor.instance_internal_url_config') -}}/hacs/entry"
+              tag: notify_update_hacs_addons
 
 #Низкий заряд батарей
     - alias: notification low battery zigbee
@@ -1460,3 +1464,26 @@
                     Предупреждений в логе: *{{ states('counter.system_log_warning_counter') }}*
                 {% endif -%}
                 [Просмотр логов]({{- states('sensor.instance_external_url_config') -}}/config/logs)
+
+#Отключение HTML push уведомлений, после установки обновлений
+    - alias: dismiss notifications html push after update core or addons
+      id: dismiss notifications html push after update core or addons
+      initial_state: true
+      mode: parallel
+      max_exceeded: silent
+      trigger:
+        - platform: state
+          entity_id: 
+            - binary_sensor.new_version_ha
+            - binary_sensor.new_version_supervisor
+            - binary_sensor.new_version_ha_addons
+            - binary_sensor.new_version_hacs_addons
+          from: 'on'
+          to: 'off'
+      action:
+        - service: html5.dismiss
+          data:
+            target: n550jk
+            data:
+              tag: >
+                  {{ 'notify_update_' + replace(trigger.entity_id, 'binary_sensor.new_version_') }}

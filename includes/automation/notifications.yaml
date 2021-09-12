@@ -768,7 +768,7 @@
                         {%- set datanames = namespace(entity_name=[]) -%}
                         {% for x in entities -%}
                           {% if (not x.entity_id.endswith("_low_battery") and x.state | int <= 20) or (x.entity_id.endswith("_low_battery") and x.state | string == 'on') -%}
-                            {% set datanames.entity_name = datanames.entity_name + ['_' + x.name + '_'] -%}
+                            {% set datanames.entity_name = datanames.entity_name + ['_' + x.name + '_' + ': *' + x.state + '*%'] -%}
                           {% endif %}
                         {%- endfor %}
                         {{- datanames.entity_name | list | join(', \n') }}

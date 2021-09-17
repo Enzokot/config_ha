@@ -1486,4 +1486,4 @@
             target: n550jk
             data:
               tag: >
-                  {{ 'notify_update_' + replace(trigger.entity_id, 'binary_sensor.new_version_') }}
+                  {{ 'notify_update_' + trigger.entity_id | replace('binary_sensor.new_version_', '') }}

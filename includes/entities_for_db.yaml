@@ -55,6 +55,8 @@
       - sensor.total_server_socket_cable_monthly_electicity
       - sensor.total_yeelight650_relay_cable_daily_electicity
       - sensor.total_yeelight650_relay_cable_monthly_electicity
+      - sensor.total_shelly_em_cable_daily_electicity
+      - sensor.total_shelly_em_cable_monthly_electicity
       #Датчик освещенности улица
       - sensor.0x04cf8cdf3c7d15b7_illuminance_lux
       #Положение штока термоголовок
@@ -64,6 +66,7 @@
       - sensor.thermostat_kitchen_valve_position
       #Напряжение в сети
       - sensor.0x842e14fffe13a854_voltage
+      - sensor.shelly_em_voltage
       #Трекер персоны
       - person.kostik
       #- device_tracker.sm_g973f
@@ -78,3 +81,13 @@
       #Шторы на кухне
       - cover.0x847127fffed4907d
       - cover.0x847127fffed62861
+      #Объекты энергии
+      - sensor.shelly_em_energy
+      - sensor.shelly_em_energy_returned
+      - sensor.0x588e81fffeff5c4f_energy
+      - sensor.0x60a423fffef8d41a_energy
+      - sensor.0x842e14fffe5047f5_energy
+      - sensor.0x842e14fffe36661f_energy
+      - sensor.0x842e14fffe13a854_energy
+      - sensor.0x54ef441000096cbc_energy
+      - sensor.server_ac_power_socket_e

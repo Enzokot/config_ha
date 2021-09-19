@@ -82,6 +82,7 @@
           - sensor.0x54ef441000096cbc_linkquality
           - sensor.0x60a423fffef8d41a_linkquality
           - sensor.huawei_e3372h_320_sinr
+          - switch.shelly_em
 
     window_shades_kitchen_group:
         entities:

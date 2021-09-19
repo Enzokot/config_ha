@@ -148,6 +148,14 @@ sensor:
       name: ${devicename}_W
       icon: mdi:flash-outline
       unit_of_measurement: W
+    energy:
+      name: ${devicename}_E
+      icon: mdi:lightning-bolt
+      unit_of_measurement: kWh
+      device_class: energy
+      accuracy_decimals: 2
+      filters:
+        - lambda: return x * 0.001;
     change_mode_every: 8
     update_interval: 10s
  

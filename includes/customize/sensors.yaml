@@ -318,3 +318,15 @@ sensor.0x54ef441000096cbc_power:
 
 sensor.hacs:
   icon: mdi:github
+
+sensor.total_shelly_em_cable_daily_electicity:
+  friendly_name: Общее потреб. день
+  
+sensor.total_shelly_em_cable_monthly_electicity:
+  friendly_name: Общее потреб. мес.
+
+sensor.shelly_em_power:
+  friendly_name: Тек. мощность
+
+sensor.shelly_em_voltage:
+  friendly_name: Напряжение сети

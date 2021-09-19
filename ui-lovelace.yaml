@@ -639,7 +639,21 @@ views:
 
       - type: vertical-stack
         cards:
-                
+
+        - type: markdown
+          content: >
+             **Входная э/э** 
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: sensor.shelly_em_voltage
+                  - entity: sensor.shelly_em_power
+                  - entity: sensor.total_shelly_em_cable_daily_electicity
+                  - entity: sensor.total_shelly_em_cable_monthly_electicity
+
         - type: markdown
           content: >
              **Розетка водонагревателя** 

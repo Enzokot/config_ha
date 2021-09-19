@@ -376,3 +376,26 @@
             data:
               entity_id: input_number.total_yeelight650_relay_saved
               value: "{{ trigger.to_state.state }}"
+
+#Сохранение значения энергии при перезапуске HA
+    - alias: restart instance for shelly EM
+      id: restart instance for shelly EM
+      initial_state: true
+      mode: single
+      max_exceeded: silent
+      trigger:
+        - platform: state
+          entity_id: sensor.shelly_em_energy
+      condition:
+        - condition: template
+          value_template: >- 
+                {% set ignore = ['unknown', 'unavailable', 'none'] %}
+                {{ trigger.to_state.state not in ignore and
+                   trigger.from_state.state not in ignore and
+                   trigger.to_state.state != trigger.from_state.state
+                }}
+      action:
+          - service: input_number.set_value
+            data:
+              entity_id: input_number.total_shelly_em_saved
+              value: "{{ trigger.to_state.state }}"

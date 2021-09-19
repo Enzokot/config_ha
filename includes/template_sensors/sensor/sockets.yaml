@@ -29,3 +29,8 @@
           unit_of_measurement: kWh
           icon: mdi:horizontal-rotate-counterclockwise
           state: "{{ states('input_number.total_yeelight650_relay_saved')}}"
+
+        - name: total_shelly_em_cable
+          unit_of_measurement: kWh
+          icon: mdi:horizontal-rotate-counterclockwise
+          state: "{{ states('input_number.total_shelly_em_saved')}}"

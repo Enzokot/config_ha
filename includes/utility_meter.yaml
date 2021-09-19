@@ -81,3 +81,15 @@
     cycle: monthly
     tariffs:
       - electicity
+
+  total_shelly_em_cable_daily:
+    source: sensor.total_shelly_em_cable
+    cycle: daily
+    tariffs:
+      - electicity
+
+  total_shelly_em_cable_monthly:
+    source: sensor.total_shelly_em_cable
+    cycle: monthly
+    tariffs:
+      - electicity

@@ -919,13 +919,13 @@
       mode: queued
       trigger:
         - platform: numeric_state
-          entity_id: sensor.0x842e14fffe13a854_voltage
+          entity_id: sensor.shelly_em_voltage
           above: 250
         - platform: numeric_state
-          entity_id: sensor.0x842e14fffe13a854_voltage
+          entity_id: sensor.shelly_em_voltage
           below: 180
         - platform: numeric_state
-          entity_id: sensor.0x842e14fffe13a854_voltage
+          entity_id: sensor.shelly_em_voltage
           above: 179.9
           below: 250.1
       condition:
@@ -1487,3 +1487,22 @@
             data:
               tag: >
                   {{ 'notify_update_' + trigger.entity_id | replace('binary_sensor.new_version_', '') }}
+
+#Доступны для обновления прошивки Shelly
+    - alias: update Shelly firmware available notification
+      id: update Shelly firmware available notification
+      initial_state: true
+      mode: queued
+      max_exceeded: silent
+      trigger:
+        - platform: state
+          entity_id: 
+            - binary_sensor.shelly_em_firmware_update
+          from: 'off'
+          to: 'on'
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: "{{ '\U0001f389' }} *Системное обновление*"
+            message: "Обновление прошивки для *{{ device_attr(trigger.entity_id, 'name') }}*."

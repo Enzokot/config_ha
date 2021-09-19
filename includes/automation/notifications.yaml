@@ -1488,6 +1488,46 @@
               tag: >
                   {{ 'notify_update_' + trigger.entity_id | replace('binary_sensor.new_version_', '') }}
 
+    - alias: dismiss notifications html push after core restart
+      id: dismiss notifications html push after core restart
+      initial_state: true
+      trigger:
+        - platform: homeassistant
+          event: start
+      action:
+        - choose:
+            - conditions: "{{ is_state('binary_sensor.new_version_ha', 'off') }}"
+              sequence:
+                - service: html5.dismiss
+                  data:
+                    target: n550jk
+                    data:
+                      tag: 'notify_update_ha'
+        - choose:
+            - conditions: "{{ is_state('binary_sensor.new_version_supervisor', 'off') }}"
+              sequence:
+                - service: html5.dismiss
+                  data:
+                    target: n550jk
+                    data:
+                      tag: 'notify_update_supervisor'
+        - choose:
+            - conditions: "{{ is_state('binary_sensor.new_version_ha_addons', 'off') }}"
+              sequence:
+                - service: html5.dismiss
+                  data:
+                    target: n550jk
+                    data:
+                      tag: 'notify_update_ha_addons'
+        - choose:
+            - conditions: "{{ is_state('binary_sensor.new_version_hacs_addons', 'off') }}"
+              sequence:
+                - service: html5.dismiss
+                  data:
+                    target: n550jk
+                    data:
+                      tag: 'notify_update_hacs_addons'
+
 #Доступны для обновления прошивки Shelly
     - alias: update Shelly firmware available notification
       id: update Shelly firmware available notification

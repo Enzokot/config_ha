@@ -767,9 +767,12 @@
                         {%- set entities = expand('group.dynamic_group_sensor_battery') -%}
                         {%- set datanames = namespace(entity_name=[]) -%}
                         {% for x in entities -%}
-                          {% if (not x.entity_id.endswith("_low_battery") and x.state | int <= 20) or (x.entity_id.endswith("_low_battery") and x.state | string == 'on') -%}
+                          {% if (not x.entity_id.endswith("_low_battery") and x.state | int <= 20) -%}
                             {% set datanames.entity_name = datanames.entity_name + ['_' + x.name + '_' + ': *' + x.state + '*%'] -%}
-                          {% endif %}
+                          {% endif -%}
+                          {% if (x.entity_id.endswith("_low_battery") and x.state | string == 'on') -%}
+                            {% set datanames.entity_name = datanames.entity_name + ['_' + x.name + '_'] -%}
+                          {% endif %}                          
                         {%- endfor %}
                         {{- datanames.entity_name | list | join(', \n') }}
 
@@ -863,11 +866,11 @@
       initial_state: true
       trigger:
         - platform: state
-          entity_id: sensor.zhimi_humidifier_cb1_low_water_level
+          entity_id: binary_sensor.zhimi_humidifier_cb1_low_water_level
           from: 'off'
           to: 'on'
         - platform: state
-          entity_id: sensor.zhimi_humidifier_ca4_low_water_level
+          entity_id: binary_sensor.zhimi_humidifier_ca4_low_water_level
           from: 'off'
           to: 'on'
       action:
@@ -934,8 +937,8 @@
                     {{ trigger.from_state.state not in ['unavailable', 'unknown', ''] and
                         (
                         trigger.above == None or trigger.below == None or
-                        (trigger.from_state.state | float >= trigger.below
-                        or trigger.from_state.state | float <= trigger.above)
+                        (trigger.from_state.state | float(0.0) >= trigger.below
+                        or trigger.from_state.state | float(0.0) <= trigger.above)
                         )
                     }}
       action:
@@ -945,9 +948,9 @@
             title: >-
                      {% if trigger.above != None and trigger.below != None  %} {{ '\U00002705' }} {% else %} {{ '\U000026a0' }} {% endif -%} *Контроль напряжения*
             message: >-
-                     {% if trigger.above != None and trigger.below == None and trigger.to_state.state | float >= trigger.above | float %}
+                     {% if trigger.above != None and trigger.below == None and trigger.to_state.state | float(0.0) >= trigger.above | float(0.0) %}
                         Обнаружено *повышенное* напряжение сети {{ trigger.to_state.state }}В
-                     {% elif trigger.above == None and trigger.below != None and trigger.to_state.state | float <= trigger.below | float %}
+                     {% elif trigger.above == None and trigger.below != None and trigger.to_state.state | float(0.0) <= trigger.below | float(0.0) %}
                         Обнаружено *пониженное* напряжение сети {{ trigger.to_state.state }}В
                      {% else %}
                         В сети *нормальное* напряжение {{ trigger.to_state.state }}В
@@ -1165,7 +1168,7 @@
 
 #Уведомление об объектах, которые перешли в статус недоступно
     - alias: notifications objects in unavailable status
-      id: notifications objects in unavailable status
+      #id: notifications objects in unavailable status
       initial_state: false
       mode: queued
       max: 70
@@ -1184,7 +1187,7 @@
             {{ trigger.event.data.new_state.state != trigger.event.data.old_state.state }}
         - condition: template
           value_template: >-
-            {{ trigger.event.data.new_state.state in ['unknown', 'unavailable'] }}
+            {{ trigger.event.data.new_state.state in ['unknown', 'unavailable'] }}            
       action:
         - choose:
             - conditions: "{{ is_state('input_boolean.instances_stoping', 'off') }}"
@@ -1413,8 +1416,6 @@
       trigger:
         - platform: event
           event_type: feedreader
-      condition:
-        - "{{ trigger.event.data.feed_url != 'https://home-assistant.io/atom.xml' or as_timestamp(now()) - as_timestamp(states('sensor.online')) | int > 60 }}"
       action:
         - variables:
             all_chat_id: !secret telegram_all_chat_id
@@ -1464,69 +1465,6 @@
                     Предупреждений в логе: *{{ states('counter.system_log_warning_counter') }}*
                 {% endif -%}
                 [Просмотр логов]({{- states('sensor.instance_external_url_config') -}}/config/logs)
-
-#Отключение HTML push уведомлений, после установки обновлений
-    - alias: dismiss notifications html push after update core or addons
-      id: dismiss notifications html push after update core or addons
-      initial_state: true
-      mode: parallel
-      max_exceeded: silent
-      trigger:
-        - platform: state
-          entity_id: 
-            - binary_sensor.new_version_ha
-            - binary_sensor.new_version_supervisor
-            - binary_sensor.new_version_ha_addons
-            - binary_sensor.new_version_hacs_addons
-          from: 'on'
-          to: 'off'
-      action:
-        - service: html5.dismiss
-          data:
-            target: n550jk
-            data:
-              tag: >
-                  {{ 'notify_update_' + trigger.entity_id | replace('binary_sensor.new_version_', '') }}
-
-    - alias: dismiss notifications html push after core restart
-      id: dismiss notifications html push after core restart
-      initial_state: true
-      trigger:
-        - platform: homeassistant
-          event: start
-      action:
-        - choose:
-            - conditions: "{{ is_state('binary_sensor.new_version_ha', 'off') }}"
-              sequence:
-                - service: html5.dismiss
-                  data:
-                    target: n550jk
-                    data:
-                      tag: 'notify_update_ha'
-        - choose:
-            - conditions: "{{ is_state('binary_sensor.new_version_supervisor', 'off') }}"
-              sequence:
-                - service: html5.dismiss
-                  data:
-                    target: n550jk
-                    data:
-                      tag: 'notify_update_supervisor'
-        - choose:
-            - conditions: "{{ is_state('binary_sensor.new_version_ha_addons', 'off') }}"
-              sequence:
-                - service: html5.dismiss
-                  data:
-                    target: n550jk
-                    data:
-                      tag: 'notify_update_ha_addons'
-        - choose:
-            - conditions: "{{ is_state('binary_sensor.new_version_hacs_addons', 'off') }}"
-              sequence:
-                - service: html5.dismiss
-                  data:
-                    target: n550jk
-                    data:
-                      tag: 'notify_update_hacs_addons'
 
 #Доступны для обновления прошивки Shelly
     - alias: update Shelly firmware available notification

@@ -1,10 +1,10 @@
 
     # - alias: debug this for automations
-    #   id: debug this for automations
+    #   #id: debug this for automations
     #   initial_state: true
     #   trigger:
     #     - platform: time_pattern
-    #       minutes: "/1"
+    #       minutes: "/10"
     #   condition: >
     #     {{ 
     #         as_local(this.attributes.last_triggered) <= now() - timedelta(minutes=1, seconds = 30) 
@@ -39,3 +39,24 @@
                      {{ '\U0001f4f6' }} *Трекинг устройств*
             message: >-
                     Внешний IP-адрес keendns `{{ trigger.to_state.state }}` не равен физическому `{{ states('sensor.myip') }}`
+
+#Установка скорости мотора штор на текущую, для обновления атрибута last_seen
+    - alias: auto_set_speed_shades_drive_motor
+      trigger:
+        - platform: time_pattern
+          minutes: "/55"
+      action:
+        - choose:
+            - conditions: "{{ state_attr('cover.0x847127fffed62861', 'motor_speed') | int(0) > 0 }}"
+              sequence:      
+                - service: script.set_speed_shades_drive_motor
+                  data:
+                    namemotor: 'Left shades drive motor kitchen'
+                    speed: "{{ state_attr('cover.0x847127fffed62861', 'motor_speed') }}"
+        - choose:
+            - conditions: "{{ state_attr('cover.0x847127fffed4907d', 'motor_speed') | int(0) > 0 }}"
+              sequence:      
+                - service: script.set_speed_shades_drive_motor
+                  data:
+                    namemotor: 'Right shades drive motor kitchen'
+                    speed: "{{ state_attr('cover.0x847127fffed4907d', 'motor_speed') }}"

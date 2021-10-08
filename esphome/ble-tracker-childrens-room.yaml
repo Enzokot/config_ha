@@ -53,6 +53,8 @@ logger:
 api:
   password: !secret api_password
   reboot_timeout: 0s
+  encryption:
+    key: !secret ble_tracker_childrens_room_encryption_key  
 
 ota:
   password: !secret ota_password

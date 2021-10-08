@@ -83,6 +83,7 @@
           - sensor.0x60a423fffef8d41a_linkquality
           - sensor.huawei_e3372h_320_sinr
           - switch.shelly_em
+          - media_player.yandex_station_ff98f029b620413b35e5e278
 
     window_shades_kitchen_group:
         entities:

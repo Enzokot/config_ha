@@ -273,6 +273,7 @@ sensor.snapshots_in_hassio_train:
 
 sensor.158d00042fd6f5_pressure:
   friendly_name: Атм. давление улица
+  icon: mdi:gauge
 
 sensor.zhimi_humidifier_cb1_temperature:
   friendly_name: Т увлажнитель спальня

@@ -1,0 +1,23 @@
+
+#Алисой с заданной громкостью в локальном режиме
+  alice_custom_tts_volume:
+    alias: 'Воспроизведение текста Алисой с заданной громкостью'
+    icon: mdi:text-to-speech
+    mode: parallel
+    fields:
+      entity:
+        description: 'entity_id колонки'
+        example: 'media_player.yandex_station_ff'
+      text:
+        description: 'Текст для воспроизведения'
+        example: 'Внимание! Важное сообщение...'
+      vol_level:
+        description: 'Уровень громкости'
+        example: '0.8'  
+    sequence:
+      - service: tts.yandex_station_say
+        data:
+          entity_id: '{{ entity }}'
+          message: '{{ text }}'
+          options:
+            volume_level: '{{ vol_level }}'

@@ -103,7 +103,7 @@
                   data:
                     entity_id: humidifier.zhimi_humidifier_cb1
                     speed: >-
-                          {% if '08:00:00' <= as_timestamp(trigger.now) | timestamp_custom('%H:%M:%S')  < '22:00:00' %}
+                          {% if '08:00:00' <= as_timestamp(trigger.now, 0) | timestamp_custom('%H:%M:%S', true, 0)  < '22:00:00' %}
                             Auto
                           {% else %}  
                             Silent 
@@ -118,7 +118,7 @@
                   data:
                     entity_id: humidifier.zhimi_humidifier_ca4
                     speed: >-
-                          {% if '08:00:00' <= as_timestamp(trigger.now) | timestamp_custom('%H:%M:%S')  < '22:00:00' %}
+                          {% if '08:00:00' <= as_timestamp(trigger.now, 0) | timestamp_custom('%H:%M:%S', true, 0)  < '22:00:00' %}
                             Auto
                           {% else %}  
                             Low 

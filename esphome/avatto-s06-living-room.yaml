@@ -54,6 +54,8 @@ logger:
 api:
   password: !secret api_password
   reboot_timeout: 0s
+  encryption:
+    key: !secret avatto_s06_living_room_encryption_key  
   services:
     - service: send_samsung_command
       variables:

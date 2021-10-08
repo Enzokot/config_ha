@@ -99,6 +99,10 @@ input_datetime: !include includes/input_datetime.yaml
 counter: !include includes/counters.yaml
 
 python_script:
+yandex_smart_home: !include includes/yandex_smart_home.yaml
+yandex_station:
+  recognition_lang: ru-RU
+conversation: !include includes/conversation.yaml
 webostv: !include includes/webostv.yaml
 media_player: !include includes/media_player.yaml
 smartir: 

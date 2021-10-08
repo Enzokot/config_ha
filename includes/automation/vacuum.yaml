@@ -60,25 +60,20 @@
           entity_id: vacuum.xiaomi_vacuum_cleaner
         - platform: homeassistant
           event: start
+        - platform: event
+          event_type: event_xiaomi_cloud_map_extractor_reloaded
       condition:
         - condition: template
-          value_template: "{{ trigger.platform == 'homeassistant' or trigger.to_state.state != trigger.from_state.state }}"
+          value_template: >
+                {{ 
+                    trigger.platform != 'state'
+                    or trigger.to_state.state != trigger.from_state.state
+                }}
       action:
-        - choose:
-            - conditions:
-                - condition: template
-                  value_template: >
-                    {{ trigger.platform == 'homeassistant' 
-                        and states('vacuum.xiaomi_vacuum_cleaner') in ['docked', 'unknown', 'unavailable', 'none', None, null, '']
-                    }}
-              sequence:
-                - service: camera.turn_off
-                  entity_id: camera.roborock_vacuum_map
-          default:
-            - service: |
-                {% if trigger.to_state.state in ['docked', 'unknown', 'unavailable', 'none', None, null, ''] %}
-                  camera.turn_off
-                {% else %}
-                  camera.turn_on
-                {% endif %}
-              entity_id: camera.roborock_vacuum_map
+        - service: |
+            {% if states('vacuum.xiaomi_vacuum_cleaner') in ['docked', 'unknown', 'unavailable', 'none', None, null, ''] %}
+              camera.turn_off
+            {% else %}
+              camera.turn_on
+            {% endif %}
+          entity_id: camera.roborock_vacuum_map

@@ -1,7 +1,12 @@
 
   - sensor:
      - name: last_google_backup_train
-       state: "{{ (as_timestamp(state_attr('sensor.backup_state', 'last_backup'))) | timestamp_custom('%d.%m.%Y %H:%M') }}"
+       state: >
+            {% if states('sensor.backup_state') == 'unknown' %}
+                unknown
+            {% else %}
+                {{ (as_timestamp(state_attr('sensor.backup_state', 'last_backup'), 0)) | timestamp_custom('%d.%m.%Y %H:%M', true, 0) }}
+            {% endif %}
        icon: mdi:calendar-check-outline
 
      - name: snapshots_in_google_drive_train

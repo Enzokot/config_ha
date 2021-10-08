@@ -35,3 +35,4 @@
       - calibration_points
       - vacuum_room
       - room_numbers
+      - vacuum_position

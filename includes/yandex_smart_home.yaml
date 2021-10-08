@@ -1,0 +1,59 @@
+
+  notifier:
+    - oauth_token: !secret yandex_oauth_token
+      skill_id: !secret yandex_skill_id
+      user_id: !secret yandex_user_id
+  settings:
+    pressure_unit: mmHg
+  filter:
+    include_entities:
+      - switch.0x086bd7fffe5d13c9
+      - switch.0x086bd7fffe5b7c7f_right
+      - switch.0x086bd7fffe5b7c7f_left
+      - switch.0x086bd7fffe5aecf8_left
+      - switch.0x086bd7fffe5aecf8_right
+      - cover.0x847127fffed62861
+      - cover.0x847127fffed4907d
+      - climate.avatto_living_room_ac
+      - media_player.sony_bravia_tv
+      - sensor.0x00158d00042fd6f5_temperature
+      - sensor.esp_xiaomi_childrens_room_temperature
+      - sensor.0x00158d0004561de9_temperature
+      - sensor.esp_xiaomi_kitchen_temperature
+      - sensor.esp_xiaomi_bed_room_temperature
+      - sensor.esp_xiaomi_living_room_temperature
+      - vacuum.xiaomi_vacuum_cleaner
+  entity_config:
+    media_player.sony_bravia_tv:
+      modes:
+        input_source:
+          one: ['YouTube']
+          two: ['Мульт']
+          three: ['Дисней']
+          four: ['КАРУСЕЛЬ']
+    sensor.0x00158d00042fd6f5_temperature:
+        properties:
+          - type: humidity
+            entity: sensor.0x00158d00042fd6f5_humidity
+          - type: pressure
+            entity: sensor.0x00158d00042fd6f5_pressure
+    sensor.esp_xiaomi_living_room_temperature:
+        properties:
+          - type: humidity
+            entity: sensor.esp_xiaomi_living_room_humidity
+    sensor.esp_xiaomi_bed_room_temperature:
+        properties:
+          - type: humidity
+            entity: sensor.esp_xiaomi_bed_room_humidity
+    sensor.esp_xiaomi_kitchen_temperature:
+        properties:
+          - type: humidity
+            entity: sensor.esp_xiaomi_kitchen_humidity
+    sensor.0x00158d0004561de9_temperature:
+        properties:
+          - type: humidity
+            entity: sensor.0x00158d0004561de9_humidity
+    sensor.esp_xiaomi_childrens_room_temperature:
+        properties:
+          - type: humidity
+            entity: sensor.esp_xiaomi_childrens_room_humidity

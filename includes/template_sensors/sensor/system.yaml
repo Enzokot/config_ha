@@ -3,7 +3,7 @@
 # Время с последней перезагрузки
      - name: last_boot_custom
        state: >
-           {% set uptime = as_timestamp(now()) - as_timestamp(states('sensor.last_boot')) | int %}
+           {% set uptime = as_timestamp(now(), 0) - as_timestamp(states('sensor.last_boot'), 0) | int %}
            {% set minutes = (( uptime % 3600) / 60) | int %}
            {% set hours = ((uptime % 86400) / 3600) | int %}
            {% set days = (uptime / 86400) | int %}
@@ -30,7 +30,7 @@
         
      - name: online_custom
        state: >
-           {% set uptime = ((as_timestamp(now()) | int - as_timestamp(states('sensor.online')) | int) / 60 ) | int %}
+           {% set uptime = ((as_timestamp(now(), 0) | int - as_timestamp(states('sensor.online'), 0) | int) / 60 ) | int %}
            {% set minutes = (( uptime % 60) / 1) | int %}
            {% set hours = ((uptime % 1440) / 60) | int %}
            {% set days = (uptime / 1440) | int %}
@@ -59,8 +59,8 @@
        unit_of_measurement: 'дн.'
        icon: mdi:certificate-outline
        state: >
-            {% if as_timestamp(states('sensor.cert_expiry_timestamp_enzokot_keenetic_pro')) | int > as_timestamp(states('sensor.date')) | int %}
-              {{ ((as_timestamp(states('sensor.cert_expiry_timestamp_enzokot_keenetic_pro')) - as_timestamp(states('sensor.date')) | int) / 86400) | int }}
+            {% if as_timestamp(states('sensor.cert_expiry_timestamp_enzokot_keenetic_pro'), 0) | int > as_timestamp(states('sensor.date'), 0) | int %}
+              {{ ((as_timestamp(states('sensor.cert_expiry_timestamp_enzokot_keenetic_pro'), 0) - as_timestamp(states('sensor.date'), 0) | int) / 86400) | int }}
             {% else %}
               0
             {% endif %}

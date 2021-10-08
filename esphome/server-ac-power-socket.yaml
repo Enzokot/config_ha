@@ -57,6 +57,8 @@ logger:
 api:
   password: !secret api_password
   reboot_timeout: 0s
+  encryption:
+    key: !secret server_ac_power_socket_encryption_key  
 
 ota:
   password: !secret ota_password

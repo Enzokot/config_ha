@@ -202,8 +202,10 @@ views:
               entities:          
                 - entity: binary_sensor.0x00158d0003f37a0f_contact
                   secondary_info: last-changed
+                  state_color: true
                 - entity: switch.0x54ef441000096cbc
                   secondary_info: last-changed
+                  state_color: true
             - type: horizontal-stack
               cards:
                 - type: light

@@ -24,7 +24,7 @@
     db_url: !secret connection_string
     queries:
       - name: Maria DB size
-        query: 'SELECT table_schema "database", Round(Sum(data_length + index_length) / 1048576, 2) "value" FROM information_schema.tables WHERE table_schema="homeassistant" GROUP BY table_schema;'
+        query: 'SELECT table_schema "database", round(Sum(data_length + index_length) / 1048576, 2) "value" FROM information_schema.tables WHERE table_schema="homeassistant" GROUP BY table_schema;'
         column: 'value'
         unit_of_measurement: MB 
 
@@ -77,7 +77,7 @@
     queries:
       - name: InfluxDB_DB_Size
         unit_of_measurement: MB
-        value_template: '{{ (value | float / 1024 /1024) | round(1) }}'
+        value_template: '{{ (value | float(0.0) / 1024 /1024) | round(1, "ceil", 0) }}'
         group_function: mean
         measurement: '"monitor"."shard"'
         database: _internal

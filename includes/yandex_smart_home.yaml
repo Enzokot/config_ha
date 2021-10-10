@@ -23,6 +23,8 @@
       - sensor.esp_xiaomi_bed_room_temperature
       - sensor.esp_xiaomi_living_room_temperature
       - vacuum.xiaomi_vacuum_cleaner
+      - humidifier.zhimi_humidifier_cb1
+      - humidifier.zhimi_humidifier_ca4
   entity_config:
     media_player.sony_bravia_tv:
       modes:
@@ -57,3 +59,103 @@
         properties:
           - type: humidity
             entity: sensor.esp_xiaomi_childrens_room_humidity
+            
+#Увлажнитель детская
+    humidifier.zhimi_humidifier_ca4:
+        modes:
+            heat:
+              max: ['bright']
+              min: ['off']
+              normal: ['dim']
+        custom_modes:
+            heat:
+              state_entity_id: select.zhimi_humidifier_ca4_led_brightness
+              set_mode:
+                service: select.select_option
+                data:
+                  entity_id: select.zhimi_humidifier_ca4_led_brightness
+                  option: '{{ mode }}'
+        properties:
+          - type: temperature
+            entity: sensor.zhimi_humidifier_ca4_temperature
+          - type: humidity
+            entity: sensor.zhimi_humidifier_ca4_humidity
+          - type: water_level
+            entity: sensor.zhimi_humidifier_ca4_water_level
+          - type: power
+            entity: sensor.zhimi_humidifier_ca4_actual_speed
+        custom_toggles:
+          mute:
+            state_entity_id: switch.zhimi_humidifier_ca4_buzzer
+            turn_on:
+              service: switch.turn_on
+              entity_id: switch.zhimi_humidifier_ca4_buzzer
+            turn_off:
+              service: switch.turn_off
+              entity_id: switch.zhimi_humidifier_ca4_buzzer
+          controls_locked:
+            state_entity_id: switch.zhimi_humidifier_ca4_child_lock
+            turn_on:
+              service: switch.turn_on
+              entity_id: switch.zhimi_humidifier_ca4_child_lock
+            turn_off:
+              service: switch.turn_off
+              entity_id: switch.zhimi_humidifier_ca4_child_lock
+          ionization:
+            state_entity_id: switch.zhimi_humidifier_ca4_dry_mode
+            turn_on:
+              service: switch.turn_on
+              entity_id: switch.zhimi_humidifier_ca4_dry_mode
+            turn_off:
+              service: switch.turn_off
+              entity_id: switch.zhimi_humidifier_ca4_dry_mode
+
+#Увлажнитель спальня
+    humidifier.zhimi_humidifier_cb1:
+        modes:
+            heat:
+              max: ['bright']
+              min: ['off']
+              normal: ['dim']
+        custom_modes:
+            heat:
+              state_entity_id: select.zhimi_humidifier_cb1_led_brightness
+              set_mode:
+                service: select.select_option
+                data:
+                  entity_id: select.zhimi_humidifier_cb1_led_brightness
+                  option: '{{ mode }}'
+        properties:
+          - type: temperature
+            entity: sensor.zhimi_humidifier_cb1_temperature
+          - type: humidity
+            entity: sensor.zhimi_humidifier_cb1_humidity
+          - type: water_level
+            entity: sensor.zhimi_humidifier_cb1_water_level
+          - type: power
+            entity: sensor.zhimi_humidifier_cb1_motor_speed
+        custom_toggles:
+          mute:
+            state_entity_id: switch.zhimi_humidifier_cb1_buzzer
+            turn_on:
+              service: switch.turn_on
+              entity_id: switch.zhimi_humidifier_cb1_buzzer
+            turn_off:
+              service: switch.turn_off
+              entity_id: switch.zhimi_humidifier_cb1_buzzer
+          controls_locked:
+            state_entity_id: switch.zhimi_humidifier_cb1_child_lock
+            turn_on:
+              service: switch.turn_on
+              entity_id: switch.zhimi_humidifier_cb1_child_lock
+            turn_off:
+              service: switch.turn_off
+              entity_id: switch.zhimi_humidifier_cb1_child_lock
+          ionization:
+            state_entity_id: switch.zhimi_humidifier_cb1_dry_mode
+            turn_on:
+              service: switch.turn_on
+              entity_id: switch.zhimi_humidifier_cb1_dry_mode
+            turn_off:
+              service: switch.turn_off
+              entity_id: switch.zhimi_humidifier_cb1_dry_mode

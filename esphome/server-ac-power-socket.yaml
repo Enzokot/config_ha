@@ -57,8 +57,8 @@ logger:
 api:
   password: !secret api_password
   reboot_timeout: 0s
-  encryption:
-    key: !secret server_ac_power_socket_encryption_key  
+#  encryption:
+#    key: !secret server_ac_power_socket_encryption_key  
 
 ota:
   password: !secret ota_password
@@ -144,7 +144,7 @@ sensor:
       unit_of_measurement: A
     voltage:
       name: ${devicename}_V
-      icon: mdi:flash-circle
+      icon: mdi:lightning-bolt-circle
       unit_of_measurement: V
     power:
       name: ${devicename}_W

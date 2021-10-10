@@ -880,7 +880,7 @@
             title: >-
                      {{ '\U0001F6B0' }} *Увлажнители*
             message: >-
-                    Пора залить воду в увлажнитель: _{{- device_attr(trigger.entity_id, 'name') -}}_
+                    Пора залить воду в увлажнитель: _{{- trigger.to_state.name -}}_
         - choose:
             - conditions:
                 - condition: state

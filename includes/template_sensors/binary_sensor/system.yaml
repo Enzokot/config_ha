@@ -19,3 +19,7 @@
 
         - name: new_version_ha_addons
           state: "{{ states('sensor.supervisor_versions') | int > 0 }}"
+
+        - name: supervisor_is_healthy
+          state: "{{ state_attr('sensor.supervisor_versions', 'healthy') }}"
+          availability: "{{ state_attr('sensor.supervisor_versions', 'healthy') != 'unknown' }}"

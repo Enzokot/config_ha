@@ -1484,3 +1484,20 @@
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0001f389' }} *Системное обновление*"
             message: "Обновление прошивки для *{{ device_attr(trigger.entity_id, 'name') }}*."
+
+#Увемодомление о переходе Supervisor в unhealthy
+    - alias: Supervisor is unhealthy notification
+      id: Supervisor is unhealthy notification
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: 
+            - binary_sensor.supervisor_is_healthy
+          from: 'on'
+          to: 'off'
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: "{{ '\U0000203C' }} *Контроль системы*"
+            message: "Supervisor перешел в состояние *unhealthy*."

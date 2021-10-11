@@ -25,6 +25,7 @@
       - vacuum.xiaomi_vacuum_cleaner
       - humidifier.zhimi_humidifier_cb1
       - humidifier.zhimi_humidifier_ca4
+      - media_player.lg_smart_tv
   entity_config:
     media_player.sony_bravia_tv:
       modes:
@@ -33,6 +34,11 @@
           two: ['Мульт']
           three: ['Дисней']
           four: ['КАРУСЕЛЬ']
+    media_player.lg_smart_tv:
+      modes:
+        input_source:
+          one: ['YouTube']
+          two: ['ТВ (LiveTV)']
     sensor.0x00158d00042fd6f5_temperature:
         properties:
           - type: humidity

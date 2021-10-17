@@ -88,6 +88,7 @@ timer: !include includes/timer.yaml
 energy:
 utility_meter: !include includes/utility_meter.yaml
 rest_command: !include includes/rest_command.yaml
+cover: !include includes/cover.yaml
 
 input_select: !include includes/input_select.yaml
 input_number: !include includes/input_number.yaml
@@ -98,8 +99,8 @@ counter: !include includes/counters.yaml
 
 python_script:
 yandex_smart_home: !include includes/yandex_smart_home.yaml
-yandex_station:
-  recognition_lang: ru-RU
+yandex_station: !include includes/yandex_station.yaml
+
 conversation: !include includes/conversation.yaml
 webostv: !include includes/webostv.yaml
 media_player: !include includes/media_player.yaml

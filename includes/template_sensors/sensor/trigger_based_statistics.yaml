@@ -1,0 +1,15 @@
+
+#Количество дней без сигарет
+  - trigger:
+      - platform: time_pattern
+        hours: 0
+        minutes: 0
+      - platform: homeassistant
+        event: start
+      - platform: event
+        event_type: event_template_reloaded        
+    sensor:
+      - name: non smoking
+        state: '{{ ( ( as_timestamp(now()) - as_timestamp(strptime("22.09.2021", "%d.%m.%Y")) ) / 86400 ) | round(0, "common", 0) }}'
+        unit_of_measurement: "Days"
+        icon: mdi:smoking-off

@@ -87,6 +87,11 @@
               gw_mac: !secret gateway1_mac
               ringtone_id: 10004
               ringtone_vol: 25
+          - service: script.alice_custom_tts_volume
+            data:
+              entity: 'media_player.yandex_station_ff98f029b620413b35e5e278'
+              text: 'Внимание! Входная дверь открыта!!!'
+              vol_level: '0.45'
 
     - alias: notification sound front door open long time repeat
       id: notification sound front door open long time repeat
@@ -103,7 +108,12 @@
             data:
               gw_mac: !secret gateway1_mac
               ringtone_id: 10004
-              ringtone_vol: 40
+              ringtone_vol: 35
+          - service: script.alice_custom_tts_volume
+            data:
+              entity: 'media_player.yandex_station_ff98f029b620413b35e5e278'
+              text: 'Внимание! Входная дверь открыта!!!'
+              vol_level: '0.55'
 
     - alias: notification sound front door open long time cancel
       id: notification sound front door open long time cancel
@@ -1493,7 +1503,6 @@
         - platform: state
           entity_id: 
             - binary_sensor.supervisor_is_healthy
-          from: 'on'
           to: 'off'
       action:
         - service: telegram_bot.send_message

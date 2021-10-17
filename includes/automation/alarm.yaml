@@ -18,6 +18,9 @@
       - service: script.turn_on
         data:
           entity_id: script.alarm_gateway_sound
+      - service: script.turn_on
+        data:
+          entity_id: script.alarm_tts_yandex_stations
       - service: timer.start
         data:
           entity_id: timer.alarm_gateway_sound
@@ -37,6 +40,9 @@
       - service: script.turn_off
         data:
           entity_id: script.alarm_gateway_sound
+      - service: script.turn_off
+        data:
+          entity_id: script.alarm_tts_yandex_stations
       - service: light.turn_off
         entity_id: light.gateway_light_04cf8cabd77b
       - service: xiaomi_aqara.stop_ringtone
@@ -65,6 +71,9 @@
       - service: script.turn_off
         data:
           entity_id: script.alarm_gateway_sound
+      - service: script.turn_off
+        data:
+          entity_id: script.alarm_tts_yandex_stations
       - service: xiaomi_aqara.stop_ringtone
         data:
           gw_mac: !secret gateway1_mac

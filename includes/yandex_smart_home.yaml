@@ -26,6 +26,8 @@
       - humidifier.zhimi_humidifier_cb1
       - humidifier.zhimi_humidifier_ca4
       - media_player.lg_smart_tv
+      - media_player.yandex_intents
+      - cover.cover_group_kitchen
   entity_config:
     media_player.sony_bravia_tv:
       modes:

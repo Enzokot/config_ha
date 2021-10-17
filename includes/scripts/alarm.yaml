@@ -9,7 +9,7 @@
              while:
                 - condition: template
                   value_template: >
-                        {{ true }}                  
+                        {{ true }}
              sequence:
                 - service: light.turn_on
                   entity_id: light.gateway_light_04cf8cabd77b
@@ -33,7 +33,7 @@
              while:
                 - condition: template
                   value_template: >
-                        {{ true }}                  
+                        {{ true }}
              sequence:
                 - service: xiaomi_aqara.play_ringtone
                   data:
@@ -45,3 +45,23 @@
                 - service: xiaomi_aqara.stop_ringtone
                   data:
                     gw_mac: !secret gateway1_mac
+
+    alarm_tts_yandex_stations:
+        alias: Звуковая сигнализация яндекс станции
+        mode: single
+        max_exceeded: silent
+        icon: mdi:alarm-light-outline
+        sequence:
+         - repeat:
+             while:
+                - condition: template
+                  value_template: >
+                        {{ true }}
+             sequence:
+                - service: script.alice_custom_tts_volume
+                  data:
+                    entity: 'media_player.yandex_station_ff98f029b620413b35e5e278'
+                    text: 'Внимание! Сработала домашняя сигнализация!!!'
+                    vol_level: '0.65'
+                - delay:
+                    seconds: 30

@@ -54,3 +54,26 @@
                 %}
                     {{ state.entity_id }}{%- if not loop.last -%}, {%- endif -%}
                 {%- endfor %}
+
+    # - alias: dynamic group sensor last seen
+    #   id: dynamic group sensor last seen
+    #   initial_state: true
+    #   mode: restart
+    #   trigger:
+    #       - platform: event
+    #         event_type: entity_registry_updated
+    #       - platform: homeassistant
+    #         event: start
+    #   action:
+    #     - service: group.set
+    #       data:
+    #         name: dynamic group sensor last seen
+    #         object_id: dynamic_group_sensor_last_seen
+    #         icon: mdi:clock
+    #         entities: >-
+    #             {%- 
+    #                 for state in states.sensor 
+    #                   if state.entity_id.endswith("_last_seen")
+    #             %}
+    #                 {{ state.entity_id }}{%- if not loop.last -%}, {%- endif -%}
+    #             {%- endfor %}

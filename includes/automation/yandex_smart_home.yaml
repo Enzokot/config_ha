@@ -1,0 +1,89 @@
+
+#Выключение звуков активации Алисы и подтверждения выполнения команд
+    - alias: change mute on alice activation sounds
+      id: change mute on alice activation sounds
+      initial_state: true
+      max_exceeded: silent
+      trigger:
+        - platform: homeassistant
+          event: start
+        - platform: time
+          at:
+            - "13:30:00"
+            - "21:30:00"
+      condition:
+        - condition: or
+          conditions:
+            - condition: time
+              after: "13:30:00"
+              before: "17:30:00"
+            - condition: time
+              after: "21:30:00"
+              before: "8:30:00"
+      action:
+        - service: media_player.play_media
+          entity_id: media_player.yandex_station_ff98f029b620413b35e5e278
+          data:
+           media_content_id: 'без лишних слов: да'
+           media_content_type: settings
+        - delay: 2
+        - service: media_player.play_media
+          entity_id: media_player.yandex_station_ff98f029b620413b35e5e278
+          data:
+           media_content_id: 'звук активации: нет'
+           media_content_type: settings
+
+#Включение звуков активации Алисы и подтверждения выполнения команд
+    - alias: change mute off alice activation sounds
+      id: change mute off alice activation sounds
+      initial_state: true
+      max_exceeded: silent
+      trigger:
+        - platform: homeassistant
+          event: start
+        - platform: time
+          at:
+            - "8:30:00"
+            - "17:30:00"
+      condition:
+        - condition: or
+          conditions:
+            - condition: time
+              after: "8:30:00"
+              before: "13:30:00"
+            - condition: time
+              after: "17:30:00"
+              before: "21:30:00"
+      action:
+        - service: media_player.play_media
+          entity_id: media_player.yandex_station_ff98f029b620413b35e5e278
+          data:
+           media_content_id: 'без лишних слов: нет'
+           media_content_type: settings
+        - delay: 2
+        - service: media_player.play_media
+          entity_id: media_player.yandex_station_ff98f029b620413b35e5e278
+          data:
+           media_content_id: 'звук активации: да'
+           media_content_type: settings
+
+#Изменение имени управляющей команды Алиса/Яндекс
+    - alias: change name activation for voice assistant
+      id: change name activation for voice assistant
+      initial_state: true
+      max_exceeded: silent
+      trigger:
+        - platform: event
+          event_type: yandex_intent
+          event_data:
+            text: откликайся на алису
+        - platform: event
+          event_type: yandex_intent
+          event_data:
+            text: откликайся на яндекс
+      action:
+        - service: media_player.play_media
+          entity_id: media_player.yandex_station_ff98f029b620413b35e5e278
+          data:
+           media_content_id: "имя: {{ trigger.event.data.text | replace('откликайся на ', '') | replace('у', 'а') }}"
+           media_content_type: settings

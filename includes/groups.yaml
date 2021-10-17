@@ -85,11 +85,6 @@
           - switch.shelly_em
           - media_player.yandex_station_ff98f029b620413b35e5e278
 
-    window_shades_kitchen_group:
-        entities:
-          - cover.0x847127fffed4907d
-          - cover.0x847127fffed62861
-
     temperature_summary_group_to_bot:
         entities:
           - sensor.0x00158d00042fd6f5_temperature

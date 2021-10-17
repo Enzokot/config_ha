@@ -20,9 +20,9 @@
               entity_id: >-
                 {{ expand(groupname) | map(attribute = 'entity_id') | list | join(', ') }}
           - wait_template: >-
-              {{ expand(groupname) | selectattr('state', 'eq', statename) | map(attribute = 'entity_id') | list | length == 0 }}
+              {{ states.cover | selectattr('entity_id', 'in', state_attr(groupname, 'entity_id')) | selectattr('state', 'eq', statename) | map(attribute='entity_id') | list | length == 0 }}
             timeout: 
-              minutes: 2
+              minutes: 1
           - choose:
               - conditions: "{{ not wait.completed }}"
                 sequence:
@@ -30,4 +30,4 @@
                         {{ servicename }}
                     data:
                       entity_id: >-
-                        {{ expand(groupname) | selectattr('state', 'eq', statename) | map(attribute = 'entity_id') | list | join(', ') }}
+                        {{ states.cover | selectattr('entity_id', 'in', state_attr(groupname, 'entity_id')) | selectattr('state', 'eq', statename) | map(attribute='entity_id') | list | join(', ') }}

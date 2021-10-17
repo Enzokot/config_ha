@@ -78,7 +78,7 @@
     queries:
       - name: InfluxDB_DB_Size
         unit_of_measurement: MB
-        value_template: '{{ (value | float(0.0) / 1024 /1024) | round(1, "ceil", 0) }}'
+        value_template: '{{ (value | float(0.0) / 1024 /1024) | round(1, "common", 0) }}'
         group_function: mean
         measurement: '"monitor"."shard"'
         database: _internal

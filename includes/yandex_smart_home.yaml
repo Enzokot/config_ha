@@ -28,6 +28,7 @@
       - media_player.lg_smart_tv
       - media_player.yandex_intents
       - cover.cover_group_kitchen
+      - media_player.samsung_tv_remote
   entity_config:
     media_player.sony_bravia_tv:
       modes:
@@ -36,11 +37,24 @@
           two: ['Мульт']
           three: ['Дисней']
           four: ['КАРУСЕЛЬ']
+      custom_ranges:
+        channel:
+          set_value:
+            service: script.set_sony_braviatv_channel_number
+            data:
+              entity: remote.sony_bravia_tv
+              channel: '{{ value }}'
+          range:
+            min: 1
+            max: 204
     media_player.lg_smart_tv:
+      channel_set_via_media_content_id: true
       modes:
         input_source:
           one: ['YouTube']
           two: ['ТВ (LiveTV)']
+    media_player.samsung_tv_remote:
+      channel_set_via_media_content_id: true
     sensor.0x00158d00042fd6f5_temperature:
         properties:
           - type: humidity

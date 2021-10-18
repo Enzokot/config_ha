@@ -1,0 +1,33 @@
+
+#Установить цифровой канал на sony
+  set_sony_braviatv_channel_number:
+    alias: 'Установка канала ТВ по переданному номеру'
+    icon: mdi:television-guide
+    mode: queued
+    fields:
+      entity:
+        description: 'entity_id remote от sony ТВ'
+        example: 'remote.sony_bravia_tv'
+      channel:
+        description: 'номер канала'
+        example: '15'
+    sequence:
+      - variables:
+          text_command: >
+            {% set str_ch = channel | string %}
+            {% set str_ch_len = str_ch | length %}
+            {% set datanames = namespace(ch=[]) %}
+            {% for x in range(0, str_ch_len) %}
+              {% set datanames.ch = datanames.ch + ['Num' + str_ch[x]] %}
+              {%- if loop.last %} 
+                {% set datanames.ch = datanames.ch + ['Enter'] %}
+              {% endif %}
+            {% endfor %}
+            {{ datanames.ch | to_json }}
+      - choose:
+          conditions: "{{ text_command | string | from_json | count > 0 }}"
+          sequence:
+            - service: remote.send_command
+              data:
+                entity_id: '{{ entity }}'
+                command: '{{ text_command | string | from_json | list }}'

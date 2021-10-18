@@ -82,16 +82,17 @@
       action:
           - service: timer.start
             entity_id: timer.front_door_ringtone
-          - service: xiaomi_aqara.play_ringtone
-            data:
-              gw_mac: !secret gateway1_mac
-              ringtone_id: 10004
-              ringtone_vol: 25
           - service: script.alice_custom_tts_volume
             data:
               entity: 'media_player.yandex_station_ff98f029b620413b35e5e278'
               text: 'Внимание! Входная дверь открыта!!!'
-              vol_level: '0.45'
+              vol_level: '0.65'
+          - delay: 4
+          - service: xiaomi_aqara.play_ringtone
+            data:
+              gw_mac: !secret gateway1_mac
+              ringtone_id: 10004
+              ringtone_vol: 15
 
     - alias: notification sound front door open long time repeat
       id: notification sound front door open long time repeat
@@ -104,16 +105,17 @@
       action:
           - service: timer.start
             entity_id: timer.front_door_ringtone
-          - service: xiaomi_aqara.play_ringtone
-            data:
-              gw_mac: !secret gateway1_mac
-              ringtone_id: 10004
-              ringtone_vol: 35
           - service: script.alice_custom_tts_volume
             data:
               entity: 'media_player.yandex_station_ff98f029b620413b35e5e278'
               text: 'Внимание! Входная дверь открыта!!!'
-              vol_level: '0.55'
+              vol_level: '0.65'
+          - delay: 4
+          - service: xiaomi_aqara.play_ringtone
+            data:
+              gw_mac: !secret gateway1_mac
+              ringtone_id: 10004
+              ringtone_vol: 15
 
     - alias: notification sound front door open long time cancel
       id: notification sound front door open long time cancel
@@ -140,7 +142,7 @@
                 sequence:            
                   - service: xiaomi_aqara.stop_ringtone
                     data:
-                      gw_mac: !secret gateway1_mac            
+                      gw_mac: !secret gateway1_mac
 
     - alias: notification front door open
       id: notification front door open

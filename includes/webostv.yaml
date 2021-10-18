@@ -7,6 +7,5 @@
         command: 'b64:JgBYAAABI5URFBEUEjgRFBEUERQRFREUETgSOBEUETkROBE5ETgSOBEUERQRFBI4ERQRFBEUEhQROBI4ETgRFRA5ETkROBI4EQAFJwABJkwRAAxeAAElSxIADQU='
     customize:
       sources:
-        - livetv
-        - youtube
-        - netflix
+        - ТВ (LiveTV)
+        - YouTube

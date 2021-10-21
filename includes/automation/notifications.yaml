@@ -1512,3 +1512,22 @@
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0000203C' }} *Контроль системы*"
             message: "Supervisor перешел в состояние *unhealthy*."
+
+#Недоступность telegram
+    - alias: telegram is offline for instance notification
+      id: telegram is offline for instance notification
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: 
+            - sensor.telegram_status
+          from: 'online'
+          to: 'offline'
+      action:
+        - service: notify.huawei_lte
+          data:
+            message: >-
+                     {{ '\U0000203C' }} Telegram API недоступно
+            target: !secret sms_phone_all
+            data:
+              url: 'http://192.168.8.1/'

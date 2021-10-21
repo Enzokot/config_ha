@@ -341,3 +341,18 @@
               - service: huawei_lte.reboot
                 data:
                   url: 'http://192.168.8.1/'
+
+#Обновление Telegram bot API token в input text
+- alias: update input text telegram bot api token
+  id: update input text telegram bot api token
+  initial_state: true
+  mode: queued
+  max_exceeded: silent
+  trigger:
+    - platform: event
+      event_type: "event_telegram_reloaded"
+  action:
+    - service: input_text.set_value
+      data:
+        entity_id: input_text.var_telegram_bot_api_token
+        value: !secret telegram_api

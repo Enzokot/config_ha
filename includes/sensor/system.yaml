@@ -139,3 +139,8 @@
     source: |
         from homeassistant.helpers.network import get_url
         self.state = get_url(self.hass)
+
+#Доступность Telegram API
+  - platform: command_line
+    name: telegram status
+    command: "curl --silent --fail -m 5 -o /dev/null -G https://api.telegram.org/bot{{ states('input_text.var_telegram_bot_api_token') }}/getMe && echo online || echo offline"

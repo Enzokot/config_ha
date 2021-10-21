@@ -1200,7 +1200,7 @@ views:
               - type: button
                 name: Боковая
                 show_state: false
-                icon: mdi:bolnisi-cross
+                icon: mdi:cross-bolnisi
                 tap_action:
                   action: call-service
                   service: vacuum.send_command

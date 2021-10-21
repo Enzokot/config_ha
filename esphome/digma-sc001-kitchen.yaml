@@ -1,7 +1,5 @@
 substitutions:
   devicename: digma-sc001-kitchen
-  telegram_api_token: !secret telegram_api
-  telegram_chat_id: !secret telegram_enzokot_chat_id  
 
 esphome:
   name: $devicename

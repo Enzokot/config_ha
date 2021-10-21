@@ -1,5 +1,10 @@
+
  - platform: samsungtv_encrypted 
    host: 192.168.217.83 
    token: !secret samsungtv_kit_token 
    sessionid: 1 
    port: 8080
+   turn_on_action:
+     - service: esphome.digma_sc001_kitchen_send_samsung_command
+       data:
+         data: '0xE0E040BF'

@@ -1528,6 +1528,6 @@
           data:
             message: >-
                      {{ '\U0000203C' }} Telegram API недоступно
-            target: !secret sms_phone_all
+            target: !secret sms_phone_enzokot
             data:
               url: 'http://192.168.8.1/'

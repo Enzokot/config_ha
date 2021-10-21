@@ -1,5 +1,5 @@
 substitutions:
-  devicename: avatto-s06-living-room
+  devicename: avatto-s06-kitchen
   telegram_api_token: !secret telegram_api
   telegram_chat_id: !secret telegram_enzokot_chat_id  
 
@@ -8,39 +8,24 @@ esphome:
   platform: ESP8266
   board: esp_wroom_02
   #board: esp01_1m
-  comment: IR and notify telegram HA state living room
+  comment: IR for kitchen
 
 wifi:
   fast_connect: true
   networks:
-  #Точка в спальне
-#  - ssid: Kotletochka
-#    password: !secret kotletochka_wifi_password
-#    bssid: "50:ff:20:4b:10:73"
-#    priority: 1
 
   #Точка на кухне
-#  - ssid: Kotletochka
-#    password: !secret kotletochka_wifi_password
-#    bssid: "50:ff:20:4a:bf:cd"
-#    priority: 1
-
-  #Основная точка
   - ssid: Kotletochka
     password: !secret kotletochka_wifi_password
-    bssid: "50:ff:20:3c:2b:74"
-    priority: 2
-  
-#  - ssid: Kotletochka_Yi
-#    password: !secret kotletochka_wifi_password
-#    hidden: true
-#    priority: 1
-    
-#  - ssid: Kotletochka_kit
-#    password: !secret kotletochka_wifi_password
-#    hidden: true
-#    priority: 1
+    bssid: "50:ff:20:4a:bf:cd"
+    priority: 1
 
+  #Основная точка
+#  - ssid: Kotletochka
+#    password: !secret kotletochka_wifi_password
+#    bssid: "50:ff:20:3c:2b:74"
+#    priority: 2
+  
   ap:
     ssid: "${devicename}"
     password: !secret kotletochka_wifi_password
@@ -55,7 +40,7 @@ api:
   password: !secret api_password
   reboot_timeout: 0s
   encryption:
-    key: !secret avatto_s06_living_room_encryption_key  
+    key: !secret avatto_s06_kitchen_encryption_key  
   services:
     - service: send_samsung_command
       variables:
@@ -91,14 +76,14 @@ remote_receiver:
     inverted: true
   dump: all
   tolerance: 55
-  id: "receiver_s06_living_room"
+  id: "receiver_s06_kitchen"
 
 remote_transmitter:
   pin: 
     number: GPIO14
     inverted: false
   carrier_duty_percent: 50%
-  id: "transmitter_s06_living_room"
+  id: "transmitter_s06_kitchen"
 
 binary_sensor:
   - platform: gpio
@@ -107,7 +92,7 @@ binary_sensor:
       inverted: true
     internal: true
     name: "${devicename}_Button"
-    id: "button_s06_living_room"
+    id: "button_s06_kitchen"
 
   - platform: status
     name: "$devicename Status"
@@ -145,23 +130,7 @@ binary_sensor:
                         parse_mode: "HTML"
                         text: "\U000026d4 <b>Трекинг устройств</b>\n${devicename}: Home Assistant <b>недоступен</b>"
     
-climate:
-  - platform: fujitsu_general
-    name: "Avatto living room AC"
-    sensor: temp_for_avatto_ac_living_room
-    visual:
-          min_temperature: 18 °C    
-    receiver_id: receiver_s06_living_room
-    
 sensor:
-  - platform: homeassistant
-    name: "Temperature living room"
-    internal: true
-    device_class: temperature
-    accuracy_decimals: 1
-    entity_id: sensor.esp_xiaomi_living_room_temperature
-    id: temp_for_avatto_ac_living_room
-
   - platform: uptime
     name: "$devicename Uptime Sensor"
     id: uptime_sec

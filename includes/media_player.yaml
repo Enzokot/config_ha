@@ -5,17 +5,10 @@
    sessionid: 1 
    port: 8080
    turn_on_action:
-     - condition: or
+     - condition: and
        conditions:
-         - condition: state
-           entity_id: media_player.samsung_tv_remote
-           state: 'off'
-         - condition: state
-           entity_id: media_player.samsung_tv_remote
-           state: 'unknown'
-         - condition: state
-           entity_id: media_player.samsung_tv_remote
-           state: 'unavailable'
+         - condition: template
+           value_template: "{{ states('media_player.samsung_tv_remote') in ['off', 'unknown', 'unavailable'] }}"
      - service: esphome.digma_sc001_kitchen_send_samsung_command
        data:
          data: '0xE0E040BF'

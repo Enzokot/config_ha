@@ -44,6 +44,8 @@
             data:
               entity: remote.sony_bravia_tv
               channel: '{{ value }}'
+              ext_channel_name: 'Мульт'
+              media_entity: media_player.sony_bravia_tv
           range:
             min: 1
             max: 204

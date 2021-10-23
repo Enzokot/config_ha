@@ -1,17 +1,10 @@
   - host: 192.168.217.84
     name: LG Smart TV
     turn_on_action:
-      - condition: or
+      - condition: and
         conditions:
-          - condition: state
-            entity_id: media_player.lg_smart_tv
-            state: 'off'
-          - condition: state
-            entity_id: media_player.lg_smart_tv
-            state: 'unknown'
-          - condition: state
-            entity_id: media_player.lg_smart_tv
-            state: 'unavailable'
+          - condition: template
+            value_template: "{{ states('media_player.lg_smart_tv') in ['off', 'unknown', 'unavailable'] }}"
       - service: remote.send_command
         data:
           entity_id: remote.broadlink_ir_rm4_mini

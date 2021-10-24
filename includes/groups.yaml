@@ -86,6 +86,7 @@
           - media_player.yandex_station_ff98f029b620413b35e5e278
           - media_player.yandex_station_lr0000000000000252130000de5d13d0
           - switch.digma_sc001_kitchen_restart
+          - switch.r4s1_kettle_boil
 
     temperature_summary_group_to_bot:
         entities:

@@ -29,6 +29,7 @@
       - media_player.yandex_intents
       - cover.cover_group_kitchen
       - media_player.samsung_tv_remote
+      - switch.r4s1_kettle_boil
   entity_config:
     media_player.sony_bravia_tv:
       modes:
@@ -83,7 +84,45 @@
         properties:
           - type: humidity
             entity: sensor.esp_xiaomi_childrens_room_humidity
-            
+    switch.r4s1_kettle_boil:
+        properties:
+          - type: temperature
+            entity: climate.r4s1_kettle_temp
+            attribute: current_temperature
+        custom_toggles:
+          mute:
+            state_entity_id: switch.r4s1_kettle_beep
+            turn_on:
+              service: switch.turn_off
+              entity_id: switch.r4s1_kettle_beep
+            turn_off:
+              service: switch.turn_on
+              entity_id: switch.r4s1_kettle_beep
+          oscillation:
+            state_entity_id: switch.r4s1_kettle_backlight
+            turn_on:
+              service: switch.turn_on
+              entity_id: switch.r4s1_kettle_backlight
+            turn_off:
+              service: switch.turn_off
+              entity_id: switch.r4s1_kettle_backlight
+          backlight:
+            state_entity_id: light.r4s1_kettle_light
+            turn_on:
+              service: light.turn_on
+              entity_id: light.r4s1_kettle_light
+            turn_off:
+              service: light.turn_off
+              entity_id: light.r4s1_kettle_light
+          keep_warm:
+            state_entity_id: switch.r4s1_kettle_heat
+            turn_on:
+              service: switch.turn_on
+              entity_id: switch.r4s1_kettle_heat
+            turn_off:
+              service: switch.turn_off
+              entity_id: switch.r4s1_kettle_heat
+
 #Увлажнитель детская
     humidifier.zhimi_humidifier_ca4:
         modes:

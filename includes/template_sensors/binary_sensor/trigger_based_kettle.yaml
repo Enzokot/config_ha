@@ -1,0 +1,18 @@
+
+#Сенсоры нужны для УДЯ
+  - trigger:
+      - platform: state
+        entity_id: switch.r4s1_kettle_beep
+        from:
+          - "on"
+          - "off"
+        to:
+          - "on"
+          - "off"
+      - platform: homeassistant
+        event: start
+      - platform: event
+        event_type: event_template_reloaded
+    binary_sensor:
+      - name: r4s1_kettle_beep_inverted
+        state: "{{ not states('switch.r4s1_kettle_beep') }}"

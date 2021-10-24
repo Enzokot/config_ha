@@ -1,0 +1,20 @@
+
+#Сенсоры нужны для УДЯ
+  - trigger:
+      - platform: state
+        entity_id: climate.r4s1_kettle_temp
+        attribute: temperature
+      - platform: homeassistant
+        event: start
+      - platform: event
+        event_type: event_template_reloaded
+    sensor:
+      - name: r4s1_kettle_temp_current_temp
+        device_class: temperature
+        unit_of_measurement: '°C'
+        state: >
+            {% if state_attr('climate.r4s1_kettle_temp', 'temperature') | int(40) == 0 %}
+                40
+            {% else %}
+                {{ state_attr('climate.r4s1_kettle_temp', 'temperature') | int(40) }}
+            {% endif %}

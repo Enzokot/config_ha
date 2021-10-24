@@ -85,13 +85,14 @@
           - type: humidity
             entity: sensor.esp_xiaomi_childrens_room_humidity
     switch.r4s1_kettle_boil:
+        type: devices.types.cooking.kettle
         properties:
           - type: temperature
             entity: climate.r4s1_kettle_temp
             attribute: current_temperature
         custom_toggles:
           mute:
-            state_entity_id: switch.r4s1_kettle_beep
+            state_entity_id: binary_sensor.r4s1_kettle_beep_inverted
             turn_on:
               service: switch.turn_off
               entity_id: switch.r4s1_kettle_beep
@@ -122,6 +123,18 @@
             turn_off:
               service: switch.turn_off
               entity_id: switch.r4s1_kettle_heat
+        custom_ranges:
+          temperature:
+            state_entity_id: sensor.r4s1_kettle_temp_current_temp
+            set_value:
+              service: climate.set_temperature
+              data:
+                entity_id: climate.r4s1_kettle_temp
+                temperature: '{{ value }}'
+            range:
+              min: 40
+              max: 85
+              precision: 15
 
 #Увлажнитель детская
     humidifier.zhimi_humidifier_ca4:

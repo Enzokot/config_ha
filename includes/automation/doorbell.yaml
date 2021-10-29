@@ -54,6 +54,42 @@
               ringtone_id: 10001
               ringtone_vol: 45
 
+    - alias: turn_on_doorbell_alice_custom_tts
+      id: turn_on_doorbell_alice_custom_tts
+      initial_state: true
+      mode: single
+      max_exceeded: silent
+      trigger:
+        - platform: state
+          entity_id: sensor.0x00158d00045a78af_action
+      condition:
+          - condition: or
+            conditions:
+                - condition: time
+                  after: '8:00:00'
+                  before: '14:00:00'
+                - condition: time
+                  after: '17:30:00'
+                  before: '21:00:00'
+          - condition: state
+            entity_id: timer.doorbell_timer_restart_automation
+            state: 'idle'
+          - condition: state
+            entity_id: input_boolean.alarm_gateway_button
+            state: 'off'
+          - condition: state
+            entity_id: alarm_control_panel.signalka_shliuza_alarm
+            state: 'disarmed'
+          - condition: template
+            value_template: >
+                              {{ trigger.to_state.state not in ['release', 'unavailable', 'unknown', '', 'None'] }}
+      action:
+          - service: script.alice_custom_tts_volume
+            data:
+              entity: 'media_player.yandex_station_ff98f029b620413b35e5e278'
+              text: 'Кто то звонит в дверь'
+              vol_level: '0.65'
+
     - alias: turn_on_light_doorbell
       id: turn_on_light_doorbell
       initial_state: true

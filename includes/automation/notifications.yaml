@@ -596,6 +596,10 @@
           entity_id: binary_sensor.cert_expired_keenetic_domain
           from: 'off'
           to: 'on'
+        - platform: state
+          entity_id: binary_sensor.cert_expired_asuscomm_domain_klg
+          from: 'off'
+          to: 'on'
       action:
         - service: telegram_bot.send_message
           data:
@@ -603,8 +607,8 @@
             title: >-
                      {{ '\U000026a0' }} *Сертификат SSL*
             message: >-
-                        {%- set entity_name = trigger.entity_id | regex_replace('binary_', '') | regex_replace('_expired_', '_expiry_') -%}
-                        Срок действия сертификата для _{{ trigger.to_state.name -}}_: *{{- states(entity_name) -}}* дн.
+                        {%- set entity_name = trigger.entity_id | replace('binary_', '') | replace('_expired_', '_expiry_') -%}
+                        Срок действия сертификата для _{{ trigger.to_state.name -}}_: *{{- states(entity_name) -}}* {{ state_attr(entity_name, 'unit_of_measurement') }}
 
 #Новая версия НА
     - alias: update HA available notification

@@ -39,3 +39,10 @@
             minutes: 1
           delay_off:
             minutes: 1
+
+        - name: cert_expired_asuscomm_domain_klg
+          state: "{{ states('sensor.cert_expiry_asuscomm_domain_klg') | int <= 5 }}"
+          delay_on:
+            minutes: 1
+          delay_off:
+            minutes: 1

@@ -47,17 +47,69 @@
               channel: '{{ value }}'
               ext_channel_name: 'Мульт'
               media_entity: media_player.sony_bravia_tv
+          increase_value:
+            service: remote.send_command
+            data:
+              entity_id: remote.sony_bravia_tv
+              command: 'ChannelUp'
+          decrease_value:
+            service: remote.send_command
+            data:
+              entity_id: remote.sony_bravia_tv
+              command: 'ChannelDown'
           range:
             min: 1
             max: 204
     media_player.lg_smart_tv:
-      channel_set_via_media_content_id: true
       modes:
         input_source:
           one: ['YouTube']
           two: ['ТВ (LiveTV)']
+      custom_ranges:
+        channel:
+          set_value:
+            service: media_player.play_media
+            data:
+              entity_id: media_player.lg_smart_tv
+              media_content_id: "{{ value }}"
+              media_content_type: "channel"
+          increase_value:
+            service: webostv.button
+            data:
+              entity_id: media_player.lg_smart_tv
+              button: 'CHANNELUP'
+          decrease_value:
+            service: webostv.button
+            data:
+              entity_id: media_player.lg_smart_tv
+              button: 'CHANNELDOWN'
+          range:
+            min: 1
+            max: 156
     media_player.samsung_tv_remote:
-      channel_set_via_media_content_id: true
+      custom_ranges:
+        channel:
+          set_value:
+            service: media_player.play_media
+            data:
+              entity_id: media_player.samsung_tv_remote
+              media_content_id: "{{ value }}"
+              media_content_type: "channel"
+          increase_value:
+            service: media_player.play_media
+            data:
+              entity_id: media_player.samsung_tv_remote
+              media_content_id: "KEY_CHUP"
+              media_content_type: "send_key"
+          decrease_value:
+            service: media_player.play_media
+            data:
+              entity_id: media_player.samsung_tv_remote
+              media_content_id: "KEY_CHDOWN"
+              media_content_type: "send_key"
+          range:
+            min: 1
+            max: 204
     sensor.0x00158d00042fd6f5_temperature:
         properties:
           - type: humidity

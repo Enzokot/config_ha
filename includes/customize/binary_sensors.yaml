@@ -137,3 +137,6 @@ binary_sensor.zhimi_humidifier_cb1_low_water_level:
 #Сертификат ssl на собственные домены
 binary_sensor.cert_expired_keenetic_domain:
   friendly_name: !secret keenetic_base_url
+
+binary_sensor.cert_expired_asuscomm_domain_klg:
+  friendly_name: !secret asuscomm_base_url_klg

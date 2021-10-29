@@ -65,3 +65,12 @@
               0
             {% endif %}
 
+     - name: cert_expiry_asuscomm_domain_klg
+       unit_of_measurement: 'дн.'
+       icon: mdi:certificate-outline
+       state: >
+            {% if as_timestamp(states('sensor.cert_expiry_timestamp_motkot_asuscomm_com_8443'), 0) | int > as_timestamp(states('sensor.date'), 0) | int %}
+              {{ ((as_timestamp(states('sensor.cert_expiry_timestamp_motkot_asuscomm_com_8443'), 0) - as_timestamp(states('sensor.date'), 0) | int) / 86400) | int }}
+            {% else %}
+              0
+            {% endif %}

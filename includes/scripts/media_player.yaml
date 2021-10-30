@@ -52,3 +52,25 @@
                 data:
                   entity_id: '{{ entity }}'
                   command: '{{ text_command | string | from_json | list }}'
+
+#Отправка в асинхроне команды media_player
+  media_player_play_media_content_type:
+    alias: 'Выполнение команды для media_player по переданным параметрам'
+    icon: mdi:play-network-outline
+    mode: queued
+    fields:
+      entity:
+        description: 'entity_id remote от sony ТВ'
+        example: 'media_player.samsung_tv_remote'
+      content_id:
+        description: 'параметр команды'
+        example: 'KEY_CHUP'
+      content_type:
+        description: 'имя команды'
+        example: 'send_key'
+    sequence:
+      - service: media_player.play_media
+        data:
+          entity_id: "{{ entity }}"
+          media_content_id: "{{ content_id }}"
+          media_content_type: "{{ content_type }}"

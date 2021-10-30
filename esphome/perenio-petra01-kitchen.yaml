@@ -1,0 +1,143 @@
+substitutions:
+  devicename: perenio-petra01-kitchen
+  telegram_api_token: !secret telegram_api
+  telegram_chat_id: !secret telegram_enzokot_chat_id  
+
+esphome:
+  name: $devicename
+  platform: ESP8266
+  board: esp_wroom_02
+  comment: IR and notify telegram HA state kithcen
+
+wifi:
+  fast_connect: true
+  networks:
+
+  #Точка на кухне
+  - ssid: Kotletochka
+    password: !secret kotletochka_wifi_password
+    bssid: "50:ff:20:4a:bf:cd"
+    priority: 2
+
+  ap:
+    ssid: "${devicename}"
+    password: !secret kotletochka_wifi_password
+
+captive_portal:
+
+http_request:
+
+logger:
+
+api:
+  password: !secret api_password
+  reboot_timeout: 0s
+  services:
+    - service: send_samsung_command
+      variables:
+        data: string
+      then:
+        - remote_transmitter.transmit_samsung:
+            data: !lambda 'return strtoul(data.c_str(), nullptr, 16);'
+    - service: send_lg_command
+      variables:
+        data: string
+        nbits: int
+      then:
+        - remote_transmitter.transmit_lg:
+            data: !lambda 'return strtoul(data.c_str(), nullptr, 16);'
+            nbits: !lambda 'return nbits;'
+    - service: send_raw_command
+      variables:
+        data: int[]
+      then:
+        - remote_transmitter.transmit_raw:
+            code: !lambda 'return data;'
+
+ota:
+  password: !secret ota_password
+
+status_led:
+  pin: GPIO4
+
+remote_receiver:
+  pin: 
+    number: GPIO5
+    mode: INPUT_PULLUP
+    inverted: true
+  dump: all
+  tolerance: 55
+  id: "receiver_petra01_kitchen"
+
+remote_transmitter:
+  pin: 
+    number: GPIO14
+    inverted: false
+  carrier_duty_percent: 50%
+  id: "transmitter_petra01_kitchen"
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO13
+      inverted: true
+    internal: true
+    name: "${devicename}_Button"
+    id: "button_petra01_kitchen"
+
+  - platform: status
+    name: "$devicename Status"
+    id: status_connection
+    internal: true
+    on_state:
+          then:
+            - if:
+                condition:
+                    - binary_sensor.is_on: "status_connection"
+                    - lambda: 'return id(uptime_sec).state > 60;'
+                then:
+                  - http_request.post:
+                      url: "https://api.telegram.org/bot${telegram_api_token}/sendMessage"
+                      verify_ssl: false
+                      headers:
+                        Content-Type: application/json
+                      json:
+                        chat_id: "${telegram_chat_id}"
+                        parse_mode: "HTML"
+                        text: "\U00002705 <b>Трекинг устройств</b>\n${devicename}: Home Assistant доступен"
+
+            - if:
+                condition:
+                    - binary_sensor.is_off: "status_connection"
+                    - lambda: 'return id(uptime_sec).state > 60;'
+                then:
+                  - http_request.post:
+                      url: "https://api.telegram.org/bot${telegram_api_token}/sendMessage"
+                      verify_ssl: false
+                      headers:
+                        Content-Type: application/json
+                      json:
+                        chat_id: "${telegram_chat_id}"
+                        parse_mode: "HTML"
+                        text: "\U000026d4 <b>Трекинг устройств</b>\n${devicename}: Home Assistant <b>недоступен</b>"
+    
+sensor:
+  - platform: uptime
+    name: "$devicename Uptime Sensor"
+    id: uptime_sec
+    update_interval: 15s    
+
+  - platform: wifi_signal
+    name: "$devicename WiFi RSSI"
+    update_interval: 60s
+
+switch:
+  - platform: restart
+    name: "$devicename Restart"
+
+text_sensor:
+  - platform: wifi_info
+    ssid:
+      name: "${devicename} Connected SSID"
+    bssid:
+      name: "${devicename} Connected BSSID" 

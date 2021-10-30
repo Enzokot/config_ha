@@ -90,11 +90,14 @@
       custom_ranges:
         channel:
           set_value:
-            service: media_player.play_media
+          #Для асинхронной смены абсолютного значения канала, т.к. интеграция выполняет данную команду с большой задержкой
+            service: script.turn_on
             data:
-              entity_id: media_player.samsung_tv_remote
-              media_content_id: "{{ value }}"
-              media_content_type: "channel"
+              entity_id: script.media_player_play_media_content_type
+              variables:
+                entity: media_player.samsung_tv_remote
+                content_id: "{{ value }}"
+                content_type: "channel"
           increase_value:
             service: media_player.play_media
             data:

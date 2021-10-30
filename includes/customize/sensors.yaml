@@ -335,3 +335,4 @@ sensor.shelly_em_voltage:
 sensor.r4s1_kettle_energy:
   icon: mdi:lightning-bolt
   friendly_name: Kettle-G200S energy
+  state_class: total_increasing

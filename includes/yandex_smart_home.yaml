@@ -41,12 +41,15 @@
       custom_ranges:
         channel:
           set_value:
-            service: script.set_sony_braviatv_channel_number
+          #Для асинхронной смены абсолютного значения канала, т.к. интеграция выполняет данную команду с большой задержкой
+            service: script.turn_on
             data:
-              entity: remote.sony_bravia_tv
-              channel: '{{ value }}'
-              ext_channel_name: 'Мульт'
-              media_entity: media_player.sony_bravia_tv
+              entity_id: script.set_sony_braviatv_channel_number
+              variables:
+                entity: remote.sony_bravia_tv
+                channel: '{{ value }}'
+                ext_channel_name: 'Мульт'
+                media_entity: media_player.sony_bravia_tv
           increase_value:
             service: remote.send_command
             data:

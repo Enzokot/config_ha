@@ -336,3 +336,27 @@ sensor.r4s1_kettle_energy:
   icon: mdi:lightning-bolt
   friendly_name: Kettle-G200S energy
   #state_class: total_increasing
+
+sensor.0x5c0272fffec89454_local_temperature_calibration:
+  friendly_name: Коэффициент калибровки Т для TRV в детской
+
+sensor.0x60a423fffe968719_local_temperature_calibration:
+  friendly_name: Коэффициент калибровки Т для TRV в спальне
+
+sensor.0x5c0272fffec9db22_local_temperature_calibration:
+  friendly_name: Коэффициент калибровки Т для TRV в гостиной
+
+sensor.0x5c0272fffe8de819_local_temperature_calibration:
+  friendly_name: Коэффициент калибровки Т для TRV на кухне
+
+sensor.0x5c0272fffec89454_local_temperature:
+  friendly_name: Значение Т для TRV в детской
+
+sensor.0x60a423fffe968719_local_temperature:
+  friendly_name: Значение Т для TRV в спальне
+
+sensor.0x5c0272fffec9db22_local_temperature:
+  friendly_name: Значение Т для TRV в гостиной
+
+sensor.0x5c0272fffe8de819_local_temperature:
+  friendly_name: Значение Т для TRV на кухне

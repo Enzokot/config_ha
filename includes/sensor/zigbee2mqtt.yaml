@@ -19,3 +19,57 @@
       unit_of_measurement: 's'
       force_update: true
       icon: mdi:av-timer
+
+#Текущее значение калибровки температуры TRV
+    - platform: "mqtt"
+      state_topic: "zigbee2mqtt/Childrens room valve with thermostat"
+      name: "0x5c0272fffec89454_local_temperature_calibration"
+      availability_topic: "zigbee2mqtt/bridge/state"
+      value_template: "{{ value_json.local_temperature_calibration }}"
+
+    - platform: "mqtt"
+      state_topic: "zigbee2mqtt/Bedroom valve with thermostat"
+      name: "0x60a423fffe968719_local_temperature_calibration"
+      availability_topic: "zigbee2mqtt/bridge/state"
+      value_template: "{{ value_json.local_temperature_calibration }}"
+
+    - platform: "mqtt"
+      state_topic: "zigbee2mqtt/Living room valve with thermostat"
+      name: "0x5c0272fffec9db22_local_temperature_calibration"
+      availability_topic: "zigbee2mqtt/bridge/state"
+      value_template: "{{ value_json.local_temperature_calibration }}"
+
+    - platform: "mqtt"
+      state_topic: "zigbee2mqtt/Kitchen valve with thermostat"
+      name: "0x5c0272fffe8de819_local_temperature_calibration"
+      availability_topic: "zigbee2mqtt/bridge/state"
+      value_template: "{{ value_json.local_temperature_calibration }}"
+
+#Текущее значение температуры
+    - platform: "mqtt"
+      state_topic: "zigbee2mqtt/Childrens room valve with thermostat"
+      name: "0x5c0272fffec89454_local_temperature"
+      availability_topic: "zigbee2mqtt/bridge/state"
+      value_template: "{{ value_json.local_temperature }}"
+      unit_of_measurement: "°C"
+
+    - platform: "mqtt"
+      state_topic: "zigbee2mqtt/Bedroom valve with thermostat"
+      name: "0x60a423fffe968719_local_temperature"
+      availability_topic: "zigbee2mqtt/bridge/state"
+      value_template: "{{ value_json.local_temperature }}"
+      unit_of_measurement: "°C"
+
+    - platform: "mqtt"
+      state_topic: "zigbee2mqtt/Living room valve with thermostat"
+      name: "0x5c0272fffec9db22_local_temperature"
+      availability_topic: "zigbee2mqtt/bridge/state"
+      value_template: "{{ value_json.local_temperature }}"
+      unit_of_measurement: "°C"
+
+    - platform: "mqtt"
+      state_topic: "zigbee2mqtt/Kitchen valve with thermostat"
+      name: "0x5c0272fffe8de819_local_temperature"
+      availability_topic: "zigbee2mqtt/bridge/state"
+      value_template: "{{ value_json.local_temperature }}"
+      unit_of_measurement: "°C"

@@ -64,41 +64,53 @@
           hours: "/1"
       condition:
         - condition: template
-#{{ expand('group.dynamic_group_sensor_last_seen') | selectattr('state', 'ne', None) | selectattr('state', '<', time_limit * 1000 ) | list | count  >= 1 }}
           value_template: >
-            {% set time_limit = as_timestamp(now(), 0) - 3*60*60 %}
-            {{ expand('group.dynamic_group_sensor_linkquality') | selectattr('attributes.last_seen', 'defined') | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.last_seen', 'ne', None) | selectattr('attributes.last_seen', '<', time_limit * 1000 ) | map(attribute = 'entity_id') | list | count  >= 1 }}
+            {%- set time_limit = as_timestamp(now(), 0) - 3*60*60 -%}
+            {%- set list_sensors = expand('group.dynamic_group_sensor_last_seen') | selectattr('state', 'ne', None) | selectattr('state', 'ne', 'None') -%}
+            {%- set datanames = namespace(last_seen=[]) -%}
+            {%- for state in list_sensors -%}
+            {%- if (state.state | int) < time_limit * 1000 -%}
+            {%- set datanames.last_seen = datanames.last_seen + [state] -%}
+            {%- endif -%}
+            {%- endfor -%}
+            {{ datanames.last_seen | length > 0 }}
       action:  
         - service: telegram_bot.send_message
           data:
-#{% set missing = expand('group.dynamic_group_sensor_last_seen') | selectattr('state', 'ne', None) | selectattr('state', '<', time_limit * 1000 ) | map(attribute = 'entity_id') | unique | list %}
             title: >-
-                      {% set time_limit = as_timestamp(now(), 0) - 3*60*60 %}
-                      {% set missing = expand('group.dynamic_group_sensor_linkquality') | selectattr('attributes.last_seen', 'defined') | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.last_seen', 'ne', None) | selectattr('attributes.last_seen', '<', time_limit * 1000 ) | map(attribute = 'entity_id') | unique | list %}
-                      {% set missing_count = missing | count %}
-
-                      {%- if missing_count > 0 %} {{ '\U000026a0' }} {%- else %} {{ '\U00002705' }} {%- endif %} *Контроль устройств Zigbee*
+                    {%- set time_limit = as_timestamp(now(), 0) - 3*60*60 -%}
+                    {%- set list_sensors = expand('group.dynamic_group_sensor_last_seen') | selectattr('state', 'ne', None) | selectattr('state', 'ne', 'None') -%}
+                    {%- set datanames = namespace(last_seen=[]) -%}
+                    {%- for state in list_sensors -%}
+                    {%- if (state.state | int) < time_limit * 1000 -%}
+                    {%- set datanames.last_seen = datanames.last_seen + [state] -%}
+                    {%- endif -%}
+                    {%- endfor -%}
+                    
+                    {%- set missing_count = datanames.last_seen | length -%}
+                    {%- if missing_count > 0 %} {{ '\U000026a0' }} {%- else %} {{ '\U00002705' }} {%- endif %} *Контроль устройств Zigbee*
             disable_notification: true
             target: !secret telegram_enzokot_chat_id
-#{% set missing_space = expand('group.dynamic_group_sensor_last_seen') | selectattr('state', 'ne', None) | selectattr('state', '<', time_limit * 1000 ) %}
             message: >
-                {% set time_limit = as_timestamp(now(), 0) - 3*60*60 %}
-                {% set missing_space = expand('group.dynamic_group_sensor_linkquality') | selectattr('attributes.last_seen', 'defined') | selectattr('attributes.linkquality', 'defined') | selectattr('attributes.last_seen', 'ne', None) | selectattr('attributes.last_seen', '<', time_limit * 1000 ) %}
-                {%- set datanames = namespace(device_name=[]) -%}
-                {%- for state in missing_space -%}
-                {% if device_attr(state.entity_id, 'name_by_user') != none %}
-                  {%- set datanames.device_name = datanames.device_name + [device_attr(state.entity_id, 'name_by_user')] -%}
-                {% else %}
-                  {%- set datanames.device_name = datanames.device_name + [device_attr(state.entity_id, 'name')] -%}
-                {% endif %}
-                {%- endfor -%}
-                {%- set missing = datanames.device_name | list -%}
-                
-                {% set missing_count = missing | count %}
-                {% set z2m_uptime = ((states('sensor.zigbee2mqtt_bridge_uptime') | int) / 3600) | round(1, 'common', 0) %}
-                
-                {% if missing_count > 0 %}Более 3 часов (время работы z2m: {{z2m_uptime}}ч) не было данных от: {{ missing | join(', ') }}
-                {% else %}Все устройства доступны.{% endif %}
+                    {%- set time_limit = as_timestamp(now(), 0) - 3*60*60 -%}
+                    {%- set list_sensors = expand('group.dynamic_group_sensor_last_seen') | selectattr('state', 'ne', None) | selectattr('state', 'ne', 'None') -%}
+                    {%- set datanames = namespace(device_name=[]) -%}
+                    {%- for state in list_sensors -%}
+                    {%- if (state.state | int) < time_limit * 1000 -%}
+                    {% if device_attr(state.entity_id, 'name_by_user') != none %}
+                      {%- set datanames.device_name = datanames.device_name + [device_attr(state.entity_id, 'name_by_user')] -%}
+                    {% else %}
+                      {%- set datanames.device_name = datanames.device_name + [device_attr(state.entity_id, 'name')] -%}
+                    {% endif %}
+                    {%- endif -%}
+                    {%- endfor -%}
+
+                    {%- set missing = datanames.device_name | list -%}
+                    {% set missing_count = missing | count %}
+                    {% set z2m_uptime = ((states('sensor.zigbee2mqtt_bridge_uptime') | int) / 3600) | round(1, 'common', 0) %}
+                    
+                    {% if missing_count > 0 %}Более 3 часов (время работы z2m: {{z2m_uptime}}ч) не было данных от: {{ missing | join(', ') }}
+                    {% else %}Все устройства доступны.{% endif %}
 
 #Проверка качества связи устройств zigbee
     - alias: zigbee2mqtt_devices_link_check
@@ -116,7 +128,7 @@
                 {%- set datanames.low_linkquality = datanames.low_linkquality + [state] -%}
                 {%- endif -%}
                 {%- endfor -%}
-                {{ datanames.low_linkquality | length > 0}}
+                {{ datanames.low_linkquality | length > 0 }}
       action:  
         - service: script.zigbee2mqtt_linkuality_check
 

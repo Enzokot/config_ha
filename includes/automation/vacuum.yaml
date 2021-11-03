@@ -10,7 +10,7 @@
       condition:
         - condition: state
           entity_id: vacuum.xiaomi_vacuum_cleaner
-          state: 'docked'            
+          state: 'docked'
       action:
            - service: vacuum.start
              entity_id: vacuum.xiaomi_vacuum_cleaner
@@ -35,10 +35,10 @@
                entity_id: timer.vacumm_ten_minutes
       condition:
           condition: not
-          conditions:      
+          conditions:
             - condition: state
               entity_id: vacuum.xiaomi_vacuum_cleaner
-              state: 'docked'            
+              state: 'docked'
       action:
            - service: telegram_bot.send_message
              data:

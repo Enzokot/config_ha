@@ -1535,3 +1535,36 @@
             target: !secret sms_phone_enzokot
             data:
               url: 'http://192.168.8.1/'
+
+#Яндекс станция перешла из/в локальный режим
+    - alias: yandex station to or from local mode notification
+      id: yandex station to or from local mode notification
+      initial_state: true
+      trigger:
+        - platform: state
+          id: 'from_local'
+          entity_id: 
+            - media_player.yandex_station_ff98f029b620413b35e5e278
+            - media_player.yandex_station_lr0000000000000252130000de5d13d0
+          attribute: connection_class
+          from: 
+            - 'local_push'
+            - 'local_poll'
+          to: 'assumed'
+        - platform: state
+          id: 'to_local'
+          entity_id: 
+            - media_player.yandex_station_ff98f029b620413b35e5e278
+            - media_player.yandex_station_lr0000000000000252130000de5d13d0
+          attribute: connection_class
+          from: 'assumed'
+          to: 
+            - 'local_push'
+            - 'local_poll'
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            disable_notification: true
+            title: "{% if trigger.id == 'from_local' -%} {{ '\U000026A0' }} {%- else -%} {{ '\U00002705' }} {%- endif -%} *Трекинг устройств*"
+            message: "Станция *{{- trigger.to_state.name -}}* {% if trigger.id == 'from_local' -%} перешла в локальный режим управления {%- else -%} отключила локальный режим управления {% endif %}"

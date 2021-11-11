@@ -1,4 +1,0 @@
-
-    - sensor:
-      - name: vacuum_cleaner_status_sensor
-        state: "{{ state_attr('vacuum.xiaomi_vacuum_cleaner', 'status') }}"

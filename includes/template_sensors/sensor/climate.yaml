@@ -16,20 +16,20 @@
 
      - name: thermostat_bedroom_valve_position
        unit_of_measurement: '%'
-       state: "{{ 100 - states('sensor.0x60a423fffe968719_position') | int }}"
+       state: "{{ 100 - states('sensor.0x60a423fffe968719_position') | int(0) }}"
        availability: "{{ (states('sensor.0x60a423fffe968719_position') | int(-1)) > -1 }}"
 
      - name: thermostat_childrens_room_valve_position
        unit_of_measurement: '%'
-       state: "{{ 100 - states('sensor.0x5c0272fffec89454_position') | int }}"
+       state: "{{ 100 - states('sensor.0x5c0272fffec89454_position') | int(0) }}"
        availability: "{{ (states('sensor.0x5c0272fffec89454_position') | int(-1)) > -1 }}"
 
      - name: thermostat_living_room_valve_position
        unit_of_measurement: '%'
-       state: "{{ 100 - states('sensor.0x5c0272fffec9db22_position') | int }}"
+       state: "{{ 100 - states('sensor.0x5c0272fffec9db22_position') | int(0) }}"
        availability: "{{ (states('sensor.0x5c0272fffec9db22_position') | int(-1)) > -1 }}"
 
      - name: thermostat_kitchen_valve_position
        unit_of_measurement: '%'
-       state: "{{ 100 - states('sensor.0x5c0272fffe8de819_position') | int }}"
+       state: "{{ 100 - states('sensor.0x5c0272fffe8de819_position') | int(0) }}"
        availability: "{{ (states('sensor.0x5c0272fffe8de819_position') | int(-1)) > -1 }}"

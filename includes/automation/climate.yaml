@@ -13,7 +13,7 @@
     - service: humidifier.set_humidity
       data:
         entity_id: humidifier.zhimi_humidifier_cb1
-        humidity: '{{ states("input_number.zhimi_humidifier_cb1_target_humidity") | int }}'
+        humidity: '{{ states("input_number.zhimi_humidifier_cb1_target_humidity") | int(0) }}'
 
 - alias: sensor target humidity cb1 changed state
   id: sensor target humidity cb1 changed state
@@ -35,8 +35,8 @@
       entity_id: input_number.zhimi_humidifier_cb1_target_humidity
       data:
         value: >-
-                {% if trigger.to_state.state | int != 0 -%}
-                  {{ trigger.to_state.state | int }}
+                {% if trigger.to_state.state | int(0) != 0 -%}
+                  {{ trigger.to_state.state | int(0) }}
                 {%- else -%}
                   40
                 {%- endif %}
@@ -53,7 +53,7 @@
     - service: humidifier.set_humidity
       data:
         entity_id: humidifier.zhimi_humidifier_ca4
-        humidity: '{{ states("input_number.zhimi_humidifier_ca4_target_humidity") | int }}'
+        humidity: '{{ states("input_number.zhimi_humidifier_ca4_target_humidity") | int(0) }}'
 
 - alias: sensor target humidity ca4 changed state
   id: sensor target humidity ca4 changed state
@@ -75,8 +75,8 @@
       entity_id: input_number.zhimi_humidifier_ca4_target_humidity
       data:
         value: >-
-                {% if trigger.to_state.state | int != 0 -%}
-                  {{ trigger.to_state.state | int }}
+                {% if trigger.to_state.state | int(0) != 0 -%}
+                  {{ trigger.to_state.state | int(0) }}
                 {%- else -%}
                   40
                 {%- endif %}

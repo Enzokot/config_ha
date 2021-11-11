@@ -87,3 +87,67 @@
           data:
            media_content_id: "имя: {{ trigger.event.data.text | replace('откликайся на ', '') | replace('у', 'а') }}"
            media_content_type: settings
+
+#Уборка конкретных комнат
+    - alias: clean one room by comand from voice assistant
+      id: clean one room by comand from voice assistant
+      initial_state: true
+      max_exceeded: silent
+      trigger:
+        - platform: event
+          event_type: yandex_speaker
+          event_data:
+            instance: phrase_action
+            value: "уборка спальни"
+        - platform: event
+          event_type: yandex_speaker
+          event_data:
+            instance: phrase_action
+            value: "уборка детской"
+        - platform: event
+          event_type: yandex_speaker
+          event_data:
+            instance: phrase_action
+            value: "уборка гостиной"
+        - platform: event
+          event_type: yandex_speaker
+          event_data:
+            instance: phrase_action
+            value: "уборка ванной"
+        - platform: event
+          event_type: yandex_speaker
+          event_data:
+            instance: phrase_action
+            value: "уборка гардероба"
+        - platform: event
+          event_type: yandex_speaker
+          event_data:
+            instance: phrase_action
+            value: "уборка туалета"
+        - platform: event
+          event_type: yandex_speaker
+          event_data:
+            instance: phrase_action
+            value: "уборка коридора"
+        - platform: event
+          event_type: yandex_speaker
+          event_data:
+            instance: phrase_action
+            value: "уборка кухни"
+      action:
+        - service: vacuum.send_command
+          data:
+            entity_id: vacuum.xiaomi_vacuum_cleaner
+            command: app_segment_clean
+            params: >
+                {{ trigger.event.data.value | replace('уборка ', '') 
+                    | replace('детской', '16') 
+                    | replace('спальни', '1') 
+                    | replace('гостиной', '17') 
+                    | replace('кухни', '2') 
+                    | replace('ванной', '18') 
+                    | replace('гардероба', '19') 
+                    | replace('туалета', '20') 
+                    | replace('коридора', '21') 
+                    | int(0)
+                }}

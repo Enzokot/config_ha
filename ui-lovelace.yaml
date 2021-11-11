@@ -1106,33 +1106,26 @@ views:
             #map: camera.roborock_vacuum_map
             stats:
               default:
-                - attribute: filter_left
+                - entity_id: sensor.xiaomi_vacuum_cleaner_filter_left
                   unit: ч.
                   subtitle: Фильтр
-                - attribute: side_brush_left
+                - entity_id: sensor.xiaomi_vacuum_cleaner_side_brush_left
                   unit: ч.
                   subtitle: Боковая щетка
-                - attribute: main_brush_left
+                - entity_id: sensor.xiaomi_vacuum_cleaner_main_brush_left
                   unit: ч.
                   subtitle: Основная щетка
-                - attribute: sensor_dirty_left
+                - entity_id: sensor.xiaomi_vacuum_cleaner_sensor_dirty_left
                   unit: ч.
                   subtitle: Датчики
               cleaning:
-                - attribute: cleaned_area
+                - entity_id: sensor.xiaomi_vacuum_cleaner_last_clean_area
                   unit: м2
                   subtitle: Убрано
-                - attribute: cleaning_time
+                - entity_id: sensor.xiaomi_vacuum_cleaner_last_clean_duration
                   unit: мин.
                   subtitle: Длительность
-            actions:
-                - name: Уборка в гостиной
-                  service: vacuum.send_command
-                  service_data:
-                    entity_id: vacuum.xiaomi_vacuum_cleaner
-                    command: app_segment_clean
-                    params: [17]
-                  icon: 'mdi:sofa'
+            shortcuts:
                 - name: Уборка спальни
                   service: vacuum.send_command
                   service_data:
@@ -1147,12 +1140,19 @@ views:
                     command: app_segment_clean
                     params: [16]
                   icon: 'mdi:bed-queen'
+                - name: Уборка в гостиной
+                  service: vacuum.send_command
+                  service_data:
+                    entity_id: vacuum.xiaomi_vacuum_cleaner
+                    command: app_segment_clean
+                    params: [17]
+                  icon: 'mdi:sofa'
                 - name: Уборка кухни
                   service: vacuum.send_command
                   service_data:
                     entity_id: vacuum.xiaomi_vacuum_cleaner
                     command: app_segment_clean
-                    params: [3]              
+                    params: [2]
                   icon: 'mdi:silverware-fork-knife'
                 - name: Коридор, санузлы, гардероб
                   service: vacuum.send_command

@@ -407,7 +407,8 @@
       initial_state: true
       trigger:
        - platform: state
-         entity_id: sensor.vacuum_cleaner_status_sensor
+         entity_id: vacuum.xiaomi_vacuum_cleaner
+         attribute: status
          to: 
            - 'Error'
            - 'In Error'
@@ -441,19 +442,19 @@
          to: 'docked'
       condition:
           condition: template
-          value_template: "{{ (state_attr('vacuum.xiaomi_vacuum_cleaner', 'total_cleaned_area') | int) > (states('input_number.total_cleaned_area_saved') | int) + 30 }}"
+          value_template: "{{ (states('sensor.xiaomi_vacuum_cleaner_total_clean_area') | int(0) ) > (states('input_number.total_cleaned_area_saved') | int(0) ) + 30 }}"
       action:
         - service: telegram_bot.send_photo
           data:
             target: !secret telegram_chita_chat_id
             url: "{{- states('sensor.instance_internal_url_config') + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
             caption: >-
-                   {{ '\U0001f4af' }} *Степа* {{- '\n' -}} Вернулся на базу, нужно снять танк с водой и заглянуть в контейнер пылесборника
+                   {{ '\U0001f4af' }} *Степа* {{- '\n' -}} Вернулся на базу, нужно снять бак с водой и заглянуть в контейнер пылесборника
         - service: input_number.set_value
           data:
             entity_id: input_number.total_cleaned_area_saved
             value: >-
-                   {{ (state_attr('vacuum.xiaomi_vacuum_cleaner', 'total_cleaned_area') | int) }}
+                   {{ (states('sensor.xiaomi_vacuum_cleaner_total_clean_area') | int(0) ) }}
         - choose:
             - conditions:
                 - condition: state
@@ -716,11 +717,11 @@
           data:
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Addon's Supervisor - доступно для обновления *{{ states('sensor.supervisor_versions') | int }}*. Список: {% for repo in state_attr('sensor.supervisor_versions', 'addons') %}*{{ repo.name }}* (_{{ repo.version }}_ -> _{{ repo.version_latest }}_){%if not loop.last %}, {%endif%}{% endfor %}"
+            message: "Addon's Supervisor - доступно для обновления *{{ states('sensor.supervisor_versions') | int(0) }}*. Список: {% for repo in state_attr('sensor.supervisor_versions', 'addons') %}*{{ repo.name }}* (_{{ repo.version }}_ -> _{{ repo.version_latest }}_){%if not loop.last %}, {%endif%}{% endfor %}"
         - service: notify.html5_notifier_n550jk
           data:
             title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Addon's Supervisor - доступно для обновления {{ states('sensor.supervisor_versions') | int }}. Список: {% for repo in state_attr('sensor.supervisor_versions', 'addons') %}{{ repo.name }} ({{ repo.version }} -> {{ repo.version_latest }}){%if not loop.last %}, {%endif%}{% endfor %}"
+            message: "Addon's Supervisor - доступно для обновления {{ states('sensor.supervisor_versions') | int(0) }}. Список: {% for repo in state_attr('sensor.supervisor_versions', 'addons') %}{{ repo.name }} ({{ repo.version }} -> {{ repo.version_latest }}){%if not loop.last %}, {%endif%}{% endfor %}"
             data:
               url: "{{- states('sensor.instance_internal_url_config') -}}/hassio/dashboard"
               tag: notify_update_ha_addons
@@ -746,11 +747,11 @@
           data:
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Addon's HACS - доступно для обновления *{{ states('sensor.hacs') | int }}*. Список: {% for repo in state_attr('sensor.hacs', 'repositories') %}*{{ repo.display_name }}* (_{{ repo.installed_version }}_ -> _{{ repo.available_version }}_){%if not loop.last %}, {%endif%}{% endfor %}"
+            message: "Addon's HACS - доступно для обновления *{{ states('sensor.hacs') | int(0) }}*. Список: {% for repo in state_attr('sensor.hacs', 'repositories') %}*{{ repo.display_name }}* (_{{ repo.installed_version }}_ -> _{{ repo.available_version }}_){%if not loop.last %}, {%endif%}{% endfor %}"
         - service: notify.html5_notifier_n550jk
           data:
             title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Addon's HACS - доступно для обновления {{ states('sensor.hacs') | int }}. Список: {% for repo in state_attr('sensor.hacs', 'repositories') %}{{ repo.display_name }} ({{ repo.installed_version }} -> {{ repo.available_version }}){%if not loop.last %}, {%endif%}{% endfor %}"
+            message: "Addon's HACS - доступно для обновления {{ states('sensor.hacs') | int(0) }}. Список: {% for repo in state_attr('sensor.hacs', 'repositories') %}{{ repo.display_name }} ({{ repo.installed_version }} -> {{ repo.available_version }}){%if not loop.last %}, {%endif%}{% endfor %}"
             data:
               url: "{{- states('sensor.instance_internal_url_config') -}}/hacs/entry"
               tag: notify_update_hacs_addons
@@ -766,7 +767,7 @@
                     {%- set entities = expand('group.dynamic_group_sensor_battery') -%}
                     {%- set datanames = namespace(entity_name=[]) -%}
                     {% for x in entities -%}
-                      {% if (not x.entity_id.endswith("_low_battery") and x.state | int <= 20) or (x.entity_id.endswith("_low_battery") and x.state | string == 'on') -%}
+                      {% if (not x.entity_id.endswith("_low_battery") and x.state | int(0) <= 20) or (x.entity_id.endswith("_low_battery") and x.state | string == 'on') -%}
                         {% set datanames.entity_name = datanames.entity_name + ['_' + x.name + '_'] -%}
                       {% endif %}
                     {%- endfor %}
@@ -783,7 +784,7 @@
                         {%- set entities = expand('group.dynamic_group_sensor_battery') -%}
                         {%- set datanames = namespace(entity_name=[]) -%}
                         {% for x in entities -%}
-                          {% if (not x.entity_id.endswith("_low_battery") and x.state | int <= 20) -%}
+                          {% if (not x.entity_id.endswith("_low_battery") and x.state | int(0) <= 20) -%}
                             {% set datanames.entity_name = datanames.entity_name + ['_' + x.name + '_' + ': *' + x.state + '*%'] -%}
                           {% endif -%}
                           {% if (x.entity_id.endswith("_low_battery") and x.state | string == 'on') -%}
@@ -1239,9 +1240,9 @@
         - condition: template
           value_template: >
             {{ 
-               (trigger.to_state.state | int >= 850 and trigger.from_state.state | int <= 30)
+               (trigger.to_state.state | int(0) >= 850 and trigger.from_state.state | int(0) <= 30)
                or
-               (trigger.to_state.state | int < 30 and trigger.from_state.state | int > 850)
+               (trigger.to_state.state | int(0) < 30 and trigger.from_state.state | int(0) > 850)
             }}
       action:
         - service: telegram_bot.send_message
@@ -1249,9 +1250,9 @@
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
             title: >
-                {%- if trigger.to_state.state | int >= 30 %} {{ '\U00002139' }} {%- else -%} {{ '\U00002705' }} {%- endif %} *Водонагреватель*
+                {%- if trigger.to_state.state | int(0) >= 30 %} {{ '\U00002139' }} {%- else -%} {{ '\U00002705' }} {%- endif %} *Водонагреватель*
             message: >
-                {%- if trigger.to_state.state | int >= 30 %} *Включен* {%- else -%} *Отключен* {%- endif %} нагрев воды
+                {%- if trigger.to_state.state | int(0) >= 30 %} *Включен* {%- else -%} *Отключен* {%- endif %} нагрев воды
 
 #Уведомление о неудачном бекапе Google Drive Backup
     - alias: notifications stale google drive backup
@@ -1379,7 +1380,7 @@
             {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
             {{ trigger.id == 'full_storage' or
                trigger.to_state.state not in ignore and
-               trigger.to_state.state | int > trigger.from_state.state | int
+               trigger.to_state.state | int(0) > trigger.from_state.state | int(0)
             }}
       action:
         - service: telegram_bot.send_message
@@ -1389,7 +1390,7 @@
             title: >
                 {% if trigger.id == 'full_storage' -%} {{ '\U0001F4EE' }} {%- else -%} {{ '\U00002709' }} {%- endif %} *SMS через модем*
             message: >
-                Обнаружено {% if trigger.id == 'full_storage' -%} заполнение памяти {%- else -%} *{{ trigger.to_state.state }}* {{ trigger.to_state.state | int | format(morph='непрочитанное', as_text=false) | replace(trigger.to_state.state + ' ', '') }} {%- endif %} sms на {{ device_attr(trigger.entity_id, 'name') }}
+                Обнаружено {% if trigger.id == 'full_storage' -%} заполнение памяти {%- else -%} *{{ trigger.to_state.state }}* {{ trigger.to_state.state | int(0) | format(morph='непрочитанное', as_text=false) | replace(trigger.to_state.state + ' ', '') }} {%- endif %} sms на {{ device_attr(trigger.entity_id, 'name') }}
 
 #Уведомление об отсутствии link на Keenetic
     - alias: notifications link down keenetic
@@ -1463,7 +1464,7 @@
           hours: "/1"
           minutes: 30
       condition:
-        - "{{ states('counter.system_log_error_counter') | int > 0 or states('counter.system_log_warning_counter') | int > 0 }}"
+        - "{{ states('counter.system_log_error_counter') | int(0) > 0 or states('counter.system_log_warning_counter') | int(0) > 0 }}"
         - condition: time
           after: '8:30:00'
           before: '23:00:00'
@@ -1474,10 +1475,10 @@
             disable_notification: true
             title: "{{ '\U0001F4D6' }} *Данные системного журнала*"
             message: |-
-                {% if states('counter.system_log_error_counter') | int > 0 -%}
+                {% if states('counter.system_log_error_counter') | int(0) > 0 -%}
                     Ошибок в логе: *{{ states('counter.system_log_error_counter') }}*
                 {% endif -%}
-                {% if states('counter.system_log_warning_counter') | int > 0 -%}
+                {% if states('counter.system_log_warning_counter') | int(0) > 0 -%}
                     Предупреждений в логе: *{{ states('counter.system_log_warning_counter') }}*
                 {% endif -%}
                 [Просмотр логов]({{- states('sensor.instance_external_url_config') -}}/config/logs)
@@ -1539,32 +1540,43 @@
 #Яндекс станция перешла из/в локальный режим
     - alias: yandex station to or from local mode notification
       id: yandex station to or from local mode notification
+      mode: queued
       initial_state: true
       trigger:
         - platform: state
-          id: 'from_local'
           entity_id: 
             - media_player.yandex_station_ff98f029b620413b35e5e278
             - media_player.yandex_station_lr0000000000000252130000de5d13d0
           attribute: connection_class
-          from: 
-            - 'local_push'
-            - 'local_poll'
-          to: 'assumed'
-        - platform: state
-          id: 'to_local'
-          entity_id: 
-            - media_player.yandex_station_ff98f029b620413b35e5e278
-            - media_player.yandex_station_lr0000000000000252130000de5d13d0
-          attribute: connection_class
-          from: 'assumed'
-          to: 
-            - 'local_push'
-            - 'local_poll'
+      condition:
+        - condition: template
+          value_template: >
+            {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
+            {{ 
+                trigger.to_state.state not in ignore and trigger.to_state.attributes.connection_class == 'assumed' or
+                trigger.from_state.state not in ignore and trigger.from_state.attributes.connection_class == 'assumed'
+            }}
       action:
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
-            title: "{% if trigger.id == 'from_local' -%} {{ '\U000026A0' }} {%- else -%} {{ '\U00002705' }} {%- endif -%} *Трекинг устройств*"
-            message: "Станция *{{- trigger.to_state.name -}}* {% if trigger.id == 'from_local' -%} перешла в локальный режим управления {%- else -%} отключила локальный режим управления {% endif %}"
+            parse_mode: 'html'
+            title: >
+                {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
+                {% set non_local = trigger.from_state.state in ignore or trigger.to_state.state in ignore %}
+                {% if non_local or trigger.to_state.attributes.connection_class == 'assumed' %} {{ '\U000026A0' }} {% else %} {{ '\U00002705' }} {% endif -%} <b>Трекинг устройств</b>
+            message: >
+                {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
+                {% set non_local = trigger.from_state.state in ignore or trigger.to_state.state in ignore %}
+                {% if trigger.from_state.state in ignore %}
+                    {% set state_from = trigger.from_state.state %}
+                {% else %}
+                    {% set state_from = trigger.from_state.attributes.connection_class %}
+                {% endif %}
+                {% if trigger.to_state.state in ignore %}
+                    {% set state_to = trigger.to_state.state %}
+                {% else %}
+                    {% set state_to = trigger.to_state.attributes.connection_class %}
+                {% endif %}
+                Станция <b>{{- trigger.to_state.name -}}</b> {% if non_local or trigger.to_state.attributes.connection_class == 'assumed' -%} отключила локальный режим управления {%- else -%} перешла в локальный режим управления {%- endif %} ({{ state_from + '->' + state_to }})

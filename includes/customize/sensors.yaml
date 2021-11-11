@@ -250,9 +250,6 @@ sensor.esp_xiaomi_living_room_battery_level:
 sensor.zigbee2mqtt_coordinator_ver:
   friendly_name: Версия стика
 
-sensor.vacuum_cleaner_status_sensor:
-  friendly_name: Vacuum Cleaner Status Sensor
-
 sensor.last_boot_custom:
   friendly_name: Последняя перезагрузка
 

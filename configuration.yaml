@@ -64,6 +64,11 @@ recorder: !include includes/recorder.yaml
 influxdb: !include includes/influxdb.yaml
 logger:
   default: warn
+  filters:
+    homeassistant.components.xiaomi_miio:
+      - "Timeout fetching Увлажнитель детская data"
+      - "Timeout fetching Увлажнитель спальня data"
+      - "Timeout fetching Xiaomi Vacuum cleaner data"
 system_log:
   fire_event: true
 

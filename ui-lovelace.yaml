@@ -12,7 +12,7 @@ views:
         - type: markdown
           content: >
              **Текущее состояние**
-             
+
         - type: entities
           show_header_toggle: false
           entities:
@@ -30,7 +30,7 @@ views:
         - type: markdown
           content: >
              **Резервное копирование**
-             
+
         - type: entities
           show_header_toggle: false
           entities:
@@ -47,20 +47,20 @@ views:
         - type: horizontal-stack
           cards:
 
-           - type: gauge
-             name: Загрузка CPU
-             unit: '%'
-             entity: sensor.processor_use
-             severity:
+            - type: gauge
+              name: Загрузка CPU
+              unit: '%'
+              entity: sensor.processor_use
+              severity:
                 green: 0
                 yellow: 60
                 red: 85
-             
-           - type: gauge
-             name: Загрузка ОЗУ
-             unit: '%'
-             entity: sensor.memory_use_percent
-             severity:
+
+            - type: gauge
+              name: Использование ОЗУ
+              unit: '%'
+              entity: sensor.memory_use_percent
+              severity:
                 green: 0
                 yellow: 60
                 red: 85
@@ -68,29 +68,29 @@ views:
         - type: horizontal-stack
           cards:
 
-           - type: gauge
-             name: Диск заполнен
-             unit: '%'
-             entity: sensor.disk_use_percent
-             severity:
+            - type: gauge
+              name: Диск заполнен
+              unit: '%'
+              entity: sensor.disk_use_percent
+              severity:
                 green: 0
                 yellow: 60
                 red: 85    
                 
-           - type: gauge
-             name: Свободное место
-             unit: 'Гб'
-             min: 0
-             max: 109
-             entity: sensor.disk_free
-             severity:
+            - type: gauge
+              name: Свободное место
+              unit: 'Гб'
+              min: 0
+              max: 109
+              entity: sensor.disk_free
+              severity:
                 red: 0
                 yellow: 3
                 green: 8
 
         - type: custom:mini-graph-card
           entities:
-             - entity: sensor.processor_temperature
+            - entity: sensor.processor_temperature
           show:
             extrema: true
             labels: true
@@ -101,14 +101,14 @@ views:
 
         - type: 'custom:mini-graph-card'
           entities:
-             - entity: sensor.speedtest_download
-               name: Download
-               show_state: true
-             - entity: sensor.speedtest_upload
-               name: Upload
-               show_state: true
-             - entity: sensor.speedtest_ping
-               name: Ping
+            - entity: sensor.speedtest_download
+              name: Download
+              show_state: true
+            - entity: sensor.speedtest_upload
+              name: Upload
+              show_state: true
+            - entity: sensor.speedtest_ping
+              name: Ping
           show:
             extrema: true
             labels: true
@@ -300,7 +300,7 @@ views:
 
                 - type: alarm-panel
                   entity: alarm_control_panel.signalka_shliuza_alarm
-                  name: 'Охрана:'
+                  name: 'GW: '
                   states:
                     - arm_away
 
@@ -423,7 +423,7 @@ views:
         - type: markdown
           content: >
              **Уровень заряда** 
-             
+
         - type: custom:battery-state-card
           color_gradient:
               - "#ff0000" # red
@@ -560,7 +560,7 @@ views:
         - type: markdown
           content: >
              **Самотестирование датчиков дыма** 
-             
+
         - type: horizontal-stack
           cards:
 
@@ -1000,7 +1000,7 @@ views:
             - type: custom:vertical-stack-in-card
               horizontal: true
               cards:
-                 
+
                 - type: gauge
                   entity: sensor.thermostat_bedroom_valve_position
     
@@ -1097,128 +1097,195 @@ views:
     #panel: true
     icon: mdi:robot-vacuum
     cards:
-    
-      - type: custom:vertical-stack-in-card
-        cards:
-        
-          - type: 'custom:vacuum-card'
-            entity: vacuum.xiaomi_vacuum_cleaner
-            #map: camera.roborock_vacuum_map
-            stats:
-              default:
-                - entity_id: sensor.xiaomi_vacuum_cleaner_filter_left
-                  unit: ч.
-                  subtitle: Фильтр
-                - entity_id: sensor.xiaomi_vacuum_cleaner_side_brush_left
-                  unit: ч.
-                  subtitle: Боковая щетка
-                - entity_id: sensor.xiaomi_vacuum_cleaner_main_brush_left
-                  unit: ч.
-                  subtitle: Основная щетка
-                - entity_id: sensor.xiaomi_vacuum_cleaner_sensor_dirty_left
-                  unit: ч.
-                  subtitle: Датчики
-              cleaning:
-                - entity_id: sensor.xiaomi_vacuum_cleaner_last_clean_area
-                  unit: м2
-                  subtitle: Убрано
-                - entity_id: sensor.xiaomi_vacuum_cleaner_last_clean_duration
-                  unit: мин.
-                  subtitle: Длительность
-            shortcuts:
-                - name: Уборка спальни
-                  service: vacuum.send_command
-                  service_data:
-                    entity_id: vacuum.xiaomi_vacuum_cleaner
-                    command: app_segment_clean
-                    params: [1]
-                  icon: 'mdi:bed-king'
-                - name: Уборка детской
-                  service: vacuum.send_command
-                  service_data:
-                    entity_id: vacuum.xiaomi_vacuum_cleaner
-                    command: app_segment_clean
-                    params: [16]
-                  icon: 'mdi:bed-queen'
-                - name: Уборка в гостиной
-                  service: vacuum.send_command
-                  service_data:
-                    entity_id: vacuum.xiaomi_vacuum_cleaner
-                    command: app_segment_clean
-                    params: [17]
-                  icon: 'mdi:sofa'
-                - name: Уборка кухни
-                  service: vacuum.send_command
-                  service_data:
-                    entity_id: vacuum.xiaomi_vacuum_cleaner
-                    command: app_segment_clean
-                    params: [2]
-                  icon: 'mdi:silverware-fork-knife'
-                - name: Коридор, санузлы, гардероб
-                  service: vacuum.send_command
-                  service_data:
-                    entity_id: vacuum.xiaomi_vacuum_cleaner
-                    command: app_segment_clean
-                    params: [18, 19, 20, 21]
-                  icon: 'mdi:paper-roll'
-    
-          - type: custom:xiaomi-vacuum-map-card
-            entity: vacuum.xiaomi_vacuum_cleaner
-            map_camera: camera.roborock_vacuum_map
-            language: ru
-            default_mode: go_to_target
-            camera_calibration: true
 
-          - type: markdown
-            content: >
-               **Сброс обслуживания** 
-
-          - type: horizontal-stack
-            cards:
-              - type: button
-                name: Датчики
-                show_state: false
-                icon: mdi:eye-settings-outline
-                tap_action:
-                  action: call-service
-                  service: vacuum.send_command
-                  service_data:
-                    entity_id: vacuum.xiaomi_vacuum_cleaner
-                    command: reset_consumable
-                    params: ['sensor_dirty_time']
-              - type: button
-                name: Фильтр
-                show_state: false
-                icon: mdi:air-filter
-                tap_action:
-                  action: call-service
-                  service: vacuum.send_command
-                  service_data:
-                    entity_id: vacuum.xiaomi_vacuum_cleaner
-                    command: reset_consumable
-                    params: ['filter_work_time']
-              - type: button
-                name: Боковая
-                show_state: false
-                icon: mdi:cross-bolnisi
-                tap_action:
-                  action: call-service
-                  service: vacuum.send_command
-                  service_data:
-                    entity_id: vacuum.xiaomi_vacuum_cleaner
-                    command: reset_consumable
-                    params: ['side_brush_work_time']
-              - type: button
-                name: Основная
-                show_state: false
-                icon: mdi:robot-vacuum-variant
-                tap_action:
-                  action: call-service
-                  service: vacuum.send_command
-                  service_data:
-                    entity_id: vacuum.xiaomi_vacuum_cleaner
-                    command: reset_consumable
-                    params: ['main_brush_work_time']
+      - type: custom:xiaomi-vacuum-map-card
+        entity: vacuum.xiaomi_vacuum_cleaner
+        map_locked: true
+        map_source:
+          camera: camera.roborock_vacuum_map
+        calibration_source:
+          camera: true
+        map_modes:
+          - template: vacuum_clean_zone
+          - name: Комнаты
+            icon: mdi:floor-plan
+            selection_type: ROOM
+            max_selections: 8
+            repeats_type: INTERNAL
+            max_repeats: 3
+            service_call_schema:
+              service: vacuum.send_command
+              service_data:
+                params: "[[selection]]"
+                entity_id: "[[entity_id]]"
+                command: app_segment_clean
+            predefined_selections:
+              - id: 1
+                outline: [[19697, 23978], [22693, 23978], [22682, 23147], [22441, 23147], [22462, 19658], [19645, 19668]]
+                label:
+                  text: "Спальня"
+                  x: 20953
+                  y: 21654
+                  offset_y: 35
+                icon:
+                  name: "mdi:bed-king"
+                  x: 20953
+                  y: 21654
+              - id: 16
+                outline: [[19727, 24250], [22427, 24266], [22427, 28415], [19661, 28415]]
+                label:
+                  text: "Детская"
+                  x: 20953
+                  y: 26835
+                  offset_y: 35
+                icon:
+                  name: "mdi:bed-queen"
+                  x: 20953
+                  y: 26835
+              - id: 18
+                outline: [[23818, 23150], [25596, 23150], [25596, 24276], [23818, 24285]]
+                icon:
+                  name: "mdi:bathtub"
+                  x: 24682
+                  y: 23695
+              - id: 17
+                outline: [[22657, 26657], [26115, 26657], [26115, 31398], [22657, 31398]]
+                label:
+                  text: "Гостиная"
+                  x: 24510
+                  y: 29349
+                  offset_y: 35
+                icon:
+                  name: "mdi:sofa"
+                  x: 24510
+                  y: 29349
+              - id: 20
+                outline: [[27721, 27885], [28849, 27885], [28849, 26383], [27721, 26383]]
+                icon:
+                  name: "mdi:paper-roll"
+                  x: 28285
+                  y: 27174
+              - id: 19
+                outline: [[27721, 26383], [28849, 26383], [28849, 25562], [27721, 25562]]
+                icon:
+                  name: "mdi:hanger"
+                  x: 28285
+                  y: 25967
+              - id: 2
+                outline: [[27451, 27972], [26250, 27972], [26250, 31427], [27310, 32477], [28695, 32477], [28711, 28933], [28122, 28933], [28122, 28584], [27451, 28584]]
+                label:
+                  text: "Кухня"
+                  x: 27486
+                  y: 30348
+                  offset_y: 35
+                icon:
+                  name: "mdi:silverware-fork-knife"
+                  x: 27486
+                  y: 30348
+              - id: 21
+                outline: [[23638, 23142], [22703, 23142], [22703, 26588], [26247, 26588], [26247, 27932], [27600, 27932], [27600, 25151], [23638, 25151]]
+                label:
+                  text: "Коридор"
+                  x: 24913
+                  y: 25830
+                icon:
+                  name: "mdi:shoe-print"
+                  x: 23626
+                  y: 25830
+          - template: vacuum_goto
+          - template: vacuum_follow_path
+        tiles:
+          - label: 'Статус'
+            entity: vacuum.xiaomi_vacuum_cleaner
+            attribute: status
+            icon: mdi:robot-vacuum
+          - label: 'Заряд'
+            entity: vacuum.xiaomi_vacuum_cleaner
+            attribute: battery_level
+            icon: mdi:battery-charging-100
+            unit: '%'
+          - label: 'Режим'
+            entity: vacuum.xiaomi_vacuum_cleaner
+            attribute: fan_speed
+            icon: mdi:fan
+            conditions:
+              - entity: vacuum.xiaomi_vacuum_cleaner
+                value: docked
+          - label: 'Площадь'
+            entity: sensor.xiaomi_vacuum_cleaner_total_clean_area
+            icon: mdi:texture-box
+            unit: 'м²'
+            precision: 0
+            conditions:
+              - entity: vacuum.xiaomi_vacuum_cleaner
+                value: docked
+          - label: 'Длительность'
+            entity: sensor.xiaomi_vacuum_cleaner_last_clean_duration
+            icon: mdi:timer-sand
+            unit: 'c'
+            conditions:
+              - entity: vacuum.xiaomi_vacuum_cleaner
+                value_not: docked
+          - label: 'Площадь'
+            entity: sensor.xiaomi_vacuum_cleaner_last_clean_area
+            icon: mdi:texture-box
+            unit: 'м²'
+            precision: 0
+            conditions:
+              - entity: vacuum.xiaomi_vacuum_cleaner
+                value_not: docked
+          - label: 'Датчики'
+            entity: sensor.xiaomi_vacuum_cleaner_sensor_dirty_left
+            icon: mdi:eye-settings-outline
+            multiplier: 0.00027777777
+            precision: 0
+            unit: 'ч'
+            double_tap_action:
+              action: call-service
+              service: vacuum.send_command
+              service_data:
+                entity_id: vacuum.xiaomi_vacuum_cleaner
+                command: reset_consumable
+                params: ['sensor_dirty_time']
+          - label: 'Фильтр'
+            entity: sensor.xiaomi_vacuum_cleaner_filter_left
+            multiplier: 0.00027777777
+            precision: 0
+            icon: mdi:air-filter
+            unit: 'ч'
+            double_tap_action:
+              action: call-service
+              service: vacuum.send_command
+              service_data:
+                entity_id: vacuum.xiaomi_vacuum_cleaner
+                command: reset_consumable
+                params: ['filter_work_time']
+          - label: 'Боковая'
+            entity: sensor.xiaomi_vacuum_cleaner_side_brush_left
+            multiplier: 0.00027777777
+            precision: 0
+            icon: mdi:cross-bolnisi
+            unit: 'ч'
+            double_tap_action:
+              action: call-service
+              service: vacuum.send_command
+              service_data:
+                entity_id: vacuum.xiaomi_vacuum_cleaner
+                command: reset_consumable
+                params: ['side_brush_work_time']
+          - label: 'Основная'
+            entity: sensor.xiaomi_vacuum_cleaner_main_brush_left
+            multiplier: 0.00027777777
+            precision: 0
+            icon: mdi:robot-vacuum-variant
+            unit: 'ч'
+            double_tap_action:
+              action: call-service
+              service: vacuum.send_command
+              service_data:
+                entity_id: vacuum.xiaomi_vacuum_cleaner
+                command: reset_consumable
+                params: ['main_brush_work_time']
 
   - title: Карта
     panel: true

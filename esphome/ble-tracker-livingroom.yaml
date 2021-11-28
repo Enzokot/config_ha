@@ -1,5 +1,5 @@
 substitutions:
-  devicename: esp32-monitor-and-ble-livingroom
+  devicename: ble-tracker-livingroom
 
 esphome:
   name: $devicename

@@ -37,7 +37,7 @@
           - remote.broadlink_ir_rm4_mini
           - sensor.0x00158d0003d05782_linkquality
           - sensor.0x5c0272fffec89454_linkquality
-          - switch.esp32_monitor_and_ble_livingroom_restart
+          - switch.ble_tracker_livingroom_restart
           - sensor.0x00158d000359304c_linkquality
           - sensor.0x00158d0003cfa725_linkquality
           - sensor.0x842e14fffe5047f5_linkquality

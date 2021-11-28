@@ -9,13 +9,13 @@ homeassistant:
   currency: RUB
   customize: !include_dir_merge_named includes/customize
   allowlist_external_dirs:
-   - /config
+    - /config
   external_url: !secret external_url
   internal_url: "http://kotletochkarpi4.local:8123/"
   auth_mfa_modules:
-   - type: totp
-   - type: notify
-     message: "\U0001F511 *Двухфакторная аутентификация*\n`{}` код для завершения авторизации Home Assistant"
+    - type: totp
+    - type: notify
+      message: "\U0001F511 *Двухфакторная аутентификация*\n`{}` код для завершения авторизации Home Assistant"
 
 config:
 frontend:

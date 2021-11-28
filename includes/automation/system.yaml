@@ -356,3 +356,21 @@
       data:
         entity_id: input_text.var_telegram_bot_api_token
         value: !secret telegram_api
+
+#Перезапуск интеграции проверки длительности сертификата для asuscomm по недоступности сенсоров
+- alias: cert_expiry_timestamp_asuscomm_unavailable
+  id: cert_expiry_timestamp_asuscomm_unavailable
+  trigger:
+    - platform: state
+      entity_id: sensor.cert_expiry_timestamp_asuscomm
+      to: 'unavailable'
+    - platform: homeassistant
+      event: start
+  condition:
+    - condition: state
+      entity_id: sensor.cert_expiry_timestamp_asuscomm
+      state: 'unavailable'
+  action:
+    - service: homeassistant.reload_config_entry
+      data:
+        entry_id: fdb5881ebf65f782988d39f4d15c6a96

@@ -1,0 +1,8 @@
+
+#   - platform: rest
+#     resource: http://homeassistant.local.hass.io:8123/api/states/sensor.esp_xiaomi_living_room_temperature
+#     name: test_rest_living_room_temperature
+#     value_template: "{{ value_json.state }}"
+#     unit_of_measurement: "°C"
+#     headers:
+#       authorization: !secret event_observer_token

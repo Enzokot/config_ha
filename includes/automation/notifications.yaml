@@ -417,7 +417,7 @@
         - service: telegram_bot.send_photo
           data:
             target: !secret telegram_all_chat_id
-            url: "{{- states('sensor.instance_internal_url_config') + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
+            url: "{{- 'http://homeassistant.local.hass.io:8123' + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
             caption: >-
                    {{ '\U000026a0' }} *Степа* {{- '\n' -}} Похоже я застрял или какая то другая ошибка
             inline_keyboard:
@@ -447,7 +447,7 @@
         - service: telegram_bot.send_photo
           data:
             target: !secret telegram_chita_chat_id
-            url: "{{- states('sensor.instance_internal_url_config') + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
+            url: "{{- 'http://homeassistant.local.hass.io:8123' + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
             caption: >-
                    {{ '\U0001f4af' }} *Степа* {{- '\n' -}} Вернулся на базу, нужно снять бак с водой и заглянуть в контейнер пылесборника
         - service: input_number.set_value

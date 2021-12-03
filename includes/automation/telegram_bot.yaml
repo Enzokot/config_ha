@@ -430,7 +430,7 @@
         - service: telegram_bot.send_photo
           data:
             target: '{{ trigger.event.data.user_id }}'
-            url: "{{- states('sensor.instance_internal_url_config') + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
+            url: "{{- 'http://homeassistant.local.hass.io:8123' + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
             caption: >-
                    {{ '\U0001F5FA' }} *Степа* {{- '\n' -}} Текущая карта уборки
 

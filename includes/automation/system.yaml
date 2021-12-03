@@ -371,6 +371,14 @@
       entity_id: sensor.cert_expiry_timestamp_asuscomm
       state: 'unavailable'
   action:
-    - service: homeassistant.reload_config_entry
-      data:
-        entry_id: fdb5881ebf65f782988d39f4d15c6a96
+    - wait_for_trigger:
+        - platform: state
+          entity_id: sensor.cert_expiry_timestamp_asuscomm
+          from: 'unavailable'
+      timeout: "00:01:00"
+    - choose:
+        - conditions: "{{ wait.trigger == None }}"
+          sequence:
+            - service: homeassistant.reload_config_entry
+              data:
+                entry_id: 859d99dc60fc9116bb39f260696b465a

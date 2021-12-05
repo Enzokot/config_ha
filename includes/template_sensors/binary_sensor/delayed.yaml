@@ -35,6 +35,7 @@
 #Просроченные сертификаты ssl
         - name: cert_expired_keenetic_domain
           state: "{{ states('sensor.cert_expiry_keenetic_domain') | int(0) <= 5 }}"
+          availability: "{{ not is_state('sensor.cert_expiry_keenetic_domain', 'unavailable') }}"
           delay_on:
             minutes: 1
           delay_off:
@@ -42,6 +43,7 @@
 
         - name: cert_expired_asuscomm_domain_klg
           state: "{{ states('sensor.cert_expiry_asuscomm_domain_klg') | int(0) <= 5 }}"
+          availability: "{{ not is_state('sensor.cert_expiry_asuscomm_domain_klg', 'unavailable') }}"
           delay_on:
             minutes: 1
           delay_off:

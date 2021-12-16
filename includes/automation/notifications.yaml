@@ -974,20 +974,24 @@
                      {% endif %}
 
 #Уведомление об успешном бекапе
-    - alias: notifications backup db info
-      id: notifications backup db info
+    - alias: notifications backup instance info
+      id: notifications backup instance info
       mode: queued
       trigger:
         - platform: state
-          entity_id: sensor.last_backup_db_homeassistant
+          entity_id: sensor.last_google_backup_train
       condition:
         - condition: template
           value_template: >- 
-            {{ 
-               trigger.from_state.state not in ['unavailable', 'unknown', ''] 
-               and trigger.to_state.state not in ['unavailable', 'unknown', '', '10']
+            {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
+            {{
+               trigger.from_state.state not in ignore
+               and trigger.to_state.state not in ignore
+               and state_attr('sensor.backup_state', 'backups') | count > 0
             }}
       action:
+        - variables:
+            index_backup: "{{ (state_attr('sensor.backup_state', 'backups') | count) - 1 }}"
         - service: homeassistant.update_entity
           entity_id: sensor.disk_use_percent
         - wait_for_trigger:
@@ -999,19 +1003,9 @@
           data:
             target: !secret telegram_enzokot_chat_id
             title: >-
-                  {% if trigger.to_state.state == '2' or trigger.to_state.state == '11' %} {{ '\U000026D4' }} {% elif trigger.to_state.state == '3' or trigger.to_state.state == '12' %} {{ '\U000026A0' }} {%- else %} {{ '\U0001F4BD' }} {%- endif %} *Резервное копирование БД*
+                  {{ '\U0001F4BD' }} *Резервное копирование*
             message: >-
-                  {% if trigger.to_state.state == '2' %}
-                     Бекап Maria DB не создан
-                  {% elif trigger.to_state.state == '11' %}
-                     Бекап Influx DB не создан
-                  {% elif trigger.to_state.state == '3' %}
-                     Создан бекап Maria DB и Influx DB, но архивирование не удалось. Системный диск заполнен на *{{ states('sensor.disk_use_percent') -}}*%
-                  {% elif trigger.to_state.state == '12' %}
-                     Создан бекап Influx DB, но перемещение файлов не удалось выполнить. Системный диск заполнен на *{{ states('sensor.disk_use_percent') -}}*%
-                  {% else %}
-                     Создана и упакована резервная копия с именем файла `{{ trigger.to_state.state -}}.7z`, системный диск заполнен на *{{ states('sensor.disk_use_percent') -}}*%
-                  {% endif %}
+                     Создана резервная копия с именем `{{ state_attr('sensor.backup_state', 'backups')[index_backup].name }}`, системный диск заполнен на *{{ states('sensor.disk_use_percent') -}}*%
 
 #Уведоление о неуспешном входе или о блокировки IP по неуспешным логинам
     - alias: notifications failed login or block IP
@@ -1544,18 +1538,18 @@
       initial_state: true
       trigger:
         - platform: state
+          id: 'non_local'
           entity_id: 
-            - media_player.yandex_station_ff98f029b620413b35e5e278
-            - media_player.yandex_station_lr0000000000000252130000de5d13d0
-          attribute: connection_class
-      condition:
-        - condition: template
-          value_template: >
-            {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
-            {{ 
-                trigger.to_state.state not in ignore and trigger.to_state.attributes.connection_class == 'assumed' or
-                trigger.from_state.state not in ignore and trigger.from_state.attributes.connection_class == 'assumed'
-            }}
+            - binary_sensor.yandex_station_ff98f029b620413b35e5e278_assumed_state
+            - binary_sensor.yandex_station_lr0000000000000252130000de5d13d0_assumed_state
+          from: 'off'
+          to: 'on'
+        - platform: state
+          entity_id: 
+            - binary_sensor.yandex_station_ff98f029b620413b35e5e278_assumed_state
+            - binary_sensor.yandex_station_lr0000000000000252130000de5d13d0_assumed_state
+          from: 'on'
+          to: 'off'
       action:
         - service: telegram_bot.send_message
           data:
@@ -1563,20 +1557,6 @@
             disable_notification: true
             parse_mode: 'html'
             title: >
-                {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
-                {% set non_local = trigger.from_state.state in ignore or trigger.to_state.state in ignore %}
-                {% if non_local or trigger.to_state.attributes.connection_class == 'assumed' %} {{ '\U000026A0' }} {% else %} {{ '\U00002705' }} {% endif -%} <b>Трекинг устройств</b>
+                {% if trigger.id == 'non_local' %} {{ '\U000026A0' }} {% else %} {{ '\U00002705' }} {% endif -%} <b>Трекинг устройств</b>
             message: >
-                {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
-                {% set non_local = trigger.from_state.state in ignore or trigger.to_state.state in ignore %}
-                {% if trigger.from_state.state in ignore %}
-                    {% set state_from = trigger.from_state.state %}
-                {% else %}
-                    {% set state_from = trigger.from_state.attributes.connection_class %}
-                {% endif %}
-                {% if trigger.to_state.state in ignore %}
-                    {% set state_to = trigger.to_state.state %}
-                {% else %}
-                    {% set state_to = trigger.to_state.attributes.connection_class %}
-                {% endif %}
-                Станция <b>{{- trigger.to_state.name -}}</b> {% if non_local or trigger.to_state.attributes.connection_class == 'assumed' -%} отключила локальный режим управления {%- else -%} перешла в локальный режим управления {%- endif %} ({{ state_from + '->' + state_to }})
+                Станция <b>{{- trigger.to_state.name -}}</b> {% if trigger.id == 'non_local' -%} отключила локальный режим управления {%- else -%} перешла в локальный режим управления {%- endif %}

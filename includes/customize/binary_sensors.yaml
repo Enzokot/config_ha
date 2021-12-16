@@ -43,6 +43,9 @@ binary_sensor.neptun_bathroom:
 binary_sensor.neptun_wc:
   friendly_name: Neptun WI-FI туалет
 
+binary_sensor.entware_keenetic:
+  friendly_name: Доступность entware на роутере Keenetic
+
 # binary_sensor.neptun_bathroom_ping:
 #   friendly_name: Ping Neptun ванная
 
@@ -140,3 +143,10 @@ binary_sensor.cert_expired_keenetic_domain:
 
 binary_sensor.cert_expired_asuscomm_domain_klg:
   friendly_name: !secret asuscomm_base_url_klg
+
+#Отключение локального режима ястанций
+binary_sensor.yandex_station_ff98f029b620413b35e5e278_assumed_state:
+  friendly_name: Яндекс станция мини кухня
+
+binary_sensor.yandex_station_lr0000000000000252130000de5d13d0_assumed_state:
+  friendly_name: Яндекс станция лайт детская

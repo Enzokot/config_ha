@@ -899,26 +899,6 @@ views:
                   - type: entities
                     show_header_toggle: false
                     entities:
-                        - entity: sensor.0x00158d0004561de9_temperature
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                        - entity: sensor.0x00158d0004561de9_humidity
-            - type: horizontal-stack
-              cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                        - entity: sensor.esp_xiaomi_kitchen_temperature
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                        - entity: sensor.esp_xiaomi_kitchen_humidity
-            - type: horizontal-stack
-              cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
                         - entity: sensor.esp_xiaomi_bed_room_temperature
                   - type: entities
                     show_header_toggle: false
@@ -936,6 +916,26 @@ views:
                     entities:
                         - entity: sensor.zhimi_humidifier_cb1_humidity
                           name: RH увлаж.
+            - type: horizontal-stack
+              cards:
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.0x00158d0004561de9_temperature
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.0x00158d0004561de9_humidity
+            - type: horizontal-stack
+              cards:
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.esp_xiaomi_kitchen_temperature
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.esp_xiaomi_kitchen_humidity
             - type: horizontal-stack
               cards:
                   - type: entities

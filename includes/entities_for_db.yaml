@@ -16,6 +16,8 @@
       - binary_sensor.0x00158d0003953ee9_occupancy
       #Движение детская
       - binary_sensor.0x00158d00054b8d72_occupancy
+      #Трекер entware на роутере Keenetic
+      - binary_sensor.entware_keenetic
       #Трекер WI-FI защиты от протечки
       - binary_sensor.neptun_bathroom
       - binary_sensor.neptun_wc

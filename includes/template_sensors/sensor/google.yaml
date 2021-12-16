@@ -5,7 +5,7 @@
             {% if states('sensor.backup_state') == 'unknown' %}
                 unknown
             {% else %}
-                {{ (as_timestamp(state_attr('sensor.backup_state', 'last_backup'), 0)) | timestamp_custom('%d.%m.%Y %H:%M', true, 0) }}
+                {{ as_timestamp(state_attr('sensor.backup_state', 'last_backup'), 0) | timestamp_custom('%d.%m.%Y %H:%M', true, 0) }}
             {% endif %}
        icon: mdi:calendar-check-outline
 

@@ -2,6 +2,7 @@
     - alias: tracker water leaks wifi bathroom
       id: tracker water leaks wifi bathroom
       initial_state: true
+      mode: queued
       trigger:
         platform: state
         entity_id: binary_sensor.neptun_bathroom
@@ -23,7 +24,8 @@
     - alias: tracker water leaks wifi wc
       id: tracker water leaks wifi wc
       initial_state: true
-      trigger:        
+      mode: queued
+      trigger:
         platform: state
         entity_id: binary_sensor.neptun_wc
       action:
@@ -45,6 +47,7 @@
     - alias: tracker mibox klg
       id: tracker mibox klg
       initial_state: true
+      mode: queued
       trigger:
         platform: state
         entity_id: binary_sensor.availability_mibox_klg
@@ -66,6 +69,7 @@
     - alias: tracker router klg
       id: tracker router klg
       initial_state: true
+      mode: queued
       trigger:
         platform: state
         entity_id: binary_sensor.availability_host_klg
@@ -125,3 +129,25 @@
                     message: 'Калуга: Роутер *не в* сети'
                     disable_notification: true
                     target: !secret telegram_enzokot_chat_id
+
+#Отслеживание доступности entware на роутере Keenetic
+    - alias: tracker entware router keenetic
+      id: tracker entware router keenetic
+      initial_state: true
+      mode: queued
+      trigger:
+        platform: state
+        entity_id: binary_sensor.entware_keenetic
+      action:
+        service: telegram_bot.send_message
+        data:
+            title: >-
+                     {%- if trigger.to_state.state == 'on' %} {{ '\U00002705' }} {%- else %} {{ '\U000026d4' }} {%- endif %} *Трекинг устройств*
+            message: >
+                    {%- if trigger.to_state.state == 'on' -%}
+                        Keenetic: entware доступен
+                    {%- else -%}
+                        Keenetic: entware *не* доступен
+                    {%- endif -%}
+            disable_notification: true
+            target: !secret telegram_enzokot_chat_id

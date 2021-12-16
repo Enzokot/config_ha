@@ -15,9 +15,16 @@
         description: 'Уровень громкости'
         example: '0.8'  
     sequence:
-      - service: tts.yandex_station_say
-        data:
-          entity_id: '{{ entity }}'
-          message: '{{ text }}'
-          options:
-            volume_level: '{{ vol_level }}'
+    #   - service: tts.yandex_station_say
+    #     data:
+    #       entity_id: '{{ entity }}'
+    #       message: '{{ text }}'
+    #       options:
+    #         volume_level: '{{ vol_level }}'
+       - service: media_player.play_media
+         data:
+           entity_id: '{{ entity }}'
+           media_content_id: '{{ text }}'
+           media_content_type: text  # поддерживается text и dialog
+           extra:
+             volume_level: '{{ vol_level }}'

@@ -27,3 +27,10 @@
     payload_on: "1"
     payload_off: "0"
     device_class: connectivity
+
+  - platform: mqtt
+    name: entware_keenetic
+    state_topic: "network_diagnostics/availability_entware_keenetic"
+    payload_on: "1"
+    payload_off: "0"
+    device_class: connectivity

@@ -1,0 +1,19 @@
+    - binary_sensor:
+#Сенсоры отключения колонками локального режима
+        - name: yandex_station_ff98f029b620413b35e5e278_assumed_state
+          icon: mdi:cloud-alert
+          availability: "{{ not is_state('media_player.yandex_station_ff98f029b620413b35e5e278', 'unavailable') }}"
+          state: "{{ is_state_attr('media_player.yandex_station_ff98f029b620413b35e5e278', 'assumed_state', true) }}"
+          delay_on:
+            seconds: 5
+          delay_off:
+            seconds: 5
+
+        - name: yandex_station_lr0000000000000252130000de5d13d0_assumed_state
+          icon: mdi:cloud-alert
+          availability: "{{ not is_state('media_player.yandex_station_lr0000000000000252130000de5d13d0', 'unavailable') }}"
+          state: "{{ is_state_attr('media_player.yandex_station_lr0000000000000252130000de5d13d0', 'assumed_state', true) }}"
+          delay_on:
+            seconds: 5
+          delay_off:
+            seconds: 5

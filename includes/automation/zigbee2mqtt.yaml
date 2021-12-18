@@ -253,3 +253,37 @@
                       entity_id: 
                         - input_boolean.thermostat_bedroom_night_mode
                         - input_boolean.thermostat_childrensroom_night_mode
+
+#Автоматическое проворачивание TRV два раза в месяц
+    - alias: auto_scrolling_thermostats_at_month
+      id: auto_scrolling_thermostats_at_month
+      trigger:
+        - platform: time
+          at: "10:00:00"
+      condition:
+        - "{{ now().timestamp() | timestamp_custom('%d') | int(0) in [1, 15] }}"
+      action:
+        - service: climate.set_hvac_mode
+          data:
+            entity_id: 
+              - climate.0x5c0272fffec89454
+              - climate.0x60a423fffe968719
+              - climate.0x5c0272fffec9db22
+              - climate.0x5c0272fffe8de819
+            hvac_mode: 'off'
+        - delay: "00:02:00"
+        - service: climate.set_hvac_mode
+          data:
+            entity_id: 
+              - climate.0x5c0272fffec89454
+              - climate.0x60a423fffe968719
+              - climate.0x5c0272fffec9db22
+              - climate.0x5c0272fffe8de819
+            hvac_mode: 'heat'
+        - delay: "00:01:00"
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            disable_notification: true
+            title: "{{ '\U0001F527' }} *Обслуживание устройств*"
+            message: "Выполнено обслуживание TRV, необходимо проверить состояние и физическое положение штоков."

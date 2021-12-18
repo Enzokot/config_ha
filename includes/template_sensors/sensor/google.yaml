@@ -2,7 +2,10 @@
   - sensor:
      - name: last_google_backup_train
        state: >
-            {% if states('sensor.backup_state') == 'unknown' %}
+            {% if states('sensor.backup_state') == 'unknown'
+               or (state_attr('sensor.backup_state', 'backups') | count) - 1 < 0
+               or state_attr('sensor.backup_state', 'backups')[(state_attr('sensor.backup_state', 'backups') | count) - 1].state == 'Pending'
+            %}
                 unknown
             {% else %}
                 {{ as_timestamp(state_attr('sensor.backup_state', 'last_backup'), 0) | timestamp_custom('%d.%m.%Y %H:%M', true, 0) }}

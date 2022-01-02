@@ -321,10 +321,10 @@
         condition: or
         conditions:
             - condition: time
-              after: '09:30:00'
-              before: '12:00:00'
+              after: '08:30:00'
+              before: '12:30:00'
             - condition: time
-              after: '17:00:00'
+              after: '16:30:00'
               before: '21:00:00'
       action:
         - choose:

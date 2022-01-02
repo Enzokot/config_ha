@@ -66,10 +66,10 @@
         - condition: template
           value_template: >
             {%- set time_limit = as_timestamp(now(), 0) - 3*60*60 -%}
-            {%- set list_sensors = expand('group.dynamic_group_sensor_last_seen') | selectattr('state', 'ne', None) | selectattr('state', 'ne', 'None') -%}
+            {%- set list_sensors = expand('group.dynamic_group_sensor_last_seen') | selectattr('state', 'ne', None) | selectattr('state', 'ne', 'None') | selectattr('state', 'ne', 'unknown') -%}
             {%- set datanames = namespace(last_seen=[]) -%}
             {%- for state in list_sensors -%}
-            {%- if (state.state | int) < time_limit * 1000 -%}
+            {%- if (state.state | int(time_limit * 1000)) < time_limit * 1000 -%}
             {%- set datanames.last_seen = datanames.last_seen + [state] -%}
             {%- endif -%}
             {%- endfor -%}
@@ -79,10 +79,10 @@
           data:
             title: >-
                     {%- set time_limit = as_timestamp(now(), 0) - 3*60*60 -%}
-                    {%- set list_sensors = expand('group.dynamic_group_sensor_last_seen') | selectattr('state', 'ne', None) | selectattr('state', 'ne', 'None') -%}
+                    {%- set list_sensors = expand('group.dynamic_group_sensor_last_seen') | selectattr('state', 'ne', None) | selectattr('state', 'ne', 'None') | selectattr('state', 'ne', 'unknown') -%}
                     {%- set datanames = namespace(last_seen=[]) -%}
                     {%- for state in list_sensors -%}
-                    {%- if (state.state | int) < time_limit * 1000 -%}
+                    {%- if (state.state | int(time_limit * 1000)) < time_limit * 1000 -%}
                     {%- set datanames.last_seen = datanames.last_seen + [state] -%}
                     {%- endif -%}
                     {%- endfor -%}
@@ -93,10 +93,10 @@
             target: !secret telegram_enzokot_chat_id
             message: >
                     {%- set time_limit = as_timestamp(now(), 0) - 3*60*60 -%}
-                    {%- set list_sensors = expand('group.dynamic_group_sensor_last_seen') | selectattr('state', 'ne', None) | selectattr('state', 'ne', 'None') -%}
+                    {%- set list_sensors = expand('group.dynamic_group_sensor_last_seen') | selectattr('state', 'ne', None) | selectattr('state', 'ne', 'None') | selectattr('state', 'ne', 'unknown') -%}
                     {%- set datanames = namespace(device_name=[]) -%}
                     {%- for state in list_sensors -%}
-                    {%- if (state.state | int) < time_limit * 1000 -%}
+                    {%- if (state.state | int(time_limit * 1000)) < time_limit * 1000 -%}
                     {% if device_attr(state.entity_id, 'name_by_user') != none %}
                       {%- set datanames.device_name = datanames.device_name + [device_attr(state.entity_id, 'name_by_user')] -%}
                     {% else %}
@@ -107,7 +107,7 @@
 
                     {%- set missing = datanames.device_name | list -%}
                     {% set missing_count = missing | count %}
-                    {% set z2m_uptime = ((states('sensor.zigbee2mqtt_bridge_uptime') | int) / 3600) | round(1, 'common', 0) %}
+                    {% set z2m_uptime = ((states('sensor.zigbee2mqtt_bridge_uptime') | int(0)) / 3600) | round(1, 'common', 0) %}
                     
                     {% if missing_count > 0 %}Более 3 часов (время работы z2m: {{z2m_uptime}}ч) не было данных от: {{ missing | join(', ') }}
                     {% else %}Все устройства доступны.{% endif %}
@@ -124,7 +124,7 @@
                 {%- set list_sensors = expand('group.dynamic_group_sensor_linkquality') | selectattr('state', 'ne', None) | selectattr('state', 'ne', 'None') -%}
                 {%- set datanames = namespace(low_linkquality=[]) -%}
                 {%- for state in list_sensors -%}
-                {%- if (state.state | int) < 20 -%}
+                {%- if (state.state | int(20)) < 20 -%}
                 {%- set datanames.low_linkquality = datanames.low_linkquality + [state] -%}
                 {%- endif -%}
                 {%- endfor -%}

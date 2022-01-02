@@ -403,7 +403,7 @@ views:
           entities:
             - entity: binary_sensor.0x00158d00039d9398_smoke
               show_last_changed: true
-              name: Коридор
+              name: 'Коридор'
             - entity: binary_sensor.0x00158d0003cfa725_contact
               show_last_changed: true
               name: 'Тамбурная'
@@ -412,10 +412,22 @@ views:
               name: 'Входная'
             - entity: binary_sensor.0x00158d000566bde7_occupancy
               show_last_changed: true
-              name: Коридор 1
+              name: 'Коридор 1'
             - entity: binary_sensor.0x00158d0003953ee9_occupancy
               show_last_changed: true
-              name: Коридор 2
+              name: 'Коридор 2'
+
+        - type: markdown
+          content: >
+             **Горячее водоснабжение** 
+        
+        - type: glance
+          columns: 5
+          entities:
+            - entity: sensor.0x00158d0006c5f21e_temperature
+              name: 'Ванная'
+            - entity: sensor.0x00158d0006b860cf_temperature
+              name: 'Санузел'
 
       - type: vertical-stack
         cards:
@@ -455,9 +467,9 @@ views:
                 min: 30
                 entities:
                   - sensor.0x00158d00039a8358_battery
-                  - sensor.0x00158d00039d9398_battery          
+                  - sensor.0x00158d00039d9398_battery
                   - sensor.0x00158d00045ca483_battery
-                  - sensor.0x00158d00045cd551_battery          
+                  - sensor.0x00158d00045cd551_battery
                   - sensor.0x00158d0003943639_battery
               - name: 'Т&Rh (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
@@ -465,7 +477,9 @@ views:
                 min: 30
                 entities:
                   - sensor.0x00158d0004561de9_battery
-                  - sensor.0x00158d00042fd6f5_battery          
+                  - sensor.0x00158d00042fd6f5_battery
+                  - sensor.0x00158d0006c5f21e_battery
+                  - sensor.0x00158d0006b860cf_battery
               - name: 'Движения (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
                 icon: 'mdi:motion-sensor'
@@ -499,6 +513,10 @@ views:
             - entity: sensor.0x00158d0003f37a0f_battery
               tap_action: more-info
             - entity: sensor.0x00158d00042fd6f5_battery
+              tap_action: more-info
+            - entity: sensor.0x00158d0006c5f21e_battery
+              tap_action: more-info
+            - entity: sensor.0x00158d0006b860cf_battery
               tap_action: more-info
             - entity: sensor.0x00158d0004561de9_battery
               tap_action: more-info
@@ -1111,7 +1129,7 @@ views:
             icon: mdi:floor-plan
             selection_type: ROOM
             max_selections: 8
-            repeats_type: INTERNAL
+            repeats_type: NONE
             max_repeats: 3
             service_call_schema:
               service: vacuum.send_command

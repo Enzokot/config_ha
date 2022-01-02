@@ -88,8 +88,8 @@
         platform: time_pattern
         minutes: "/3"
       condition:
-          - "{{ (state_attr('automation.yeelight650_on', 'current')|int) == 0 }}"
-          - "{{ (state_attr('automation.yeelight650_off', 'current')|int) == 0 }}"
+          - "{{ (state_attr('automation.yeelight650_on', 'current') | int(0)) == 0 }}"
+          - "{{ (state_attr('automation.yeelight650_off', 'current') | int(0)) == 0 }}"
           - condition: or
             conditions:
               - condition: and

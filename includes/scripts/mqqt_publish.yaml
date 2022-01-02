@@ -42,7 +42,7 @@
                 {%- set list_sensors = expand('group.dynamic_group_sensor_linkquality') | selectattr('state', 'ne', None) | selectattr('state', 'ne', 'None') -%}
                 {%- set datanames = namespace(low_linkquality=[]) -%}
                 {%- for state in list_sensors -%}
-                {%- if (state.state | int) < 20 -%}
+                {%- if (state.state | int(20)) < 20 -%}
                 {%- set datanames.low_linkquality = datanames.low_linkquality + [state] -%}
                 {%- endif -%}
                 {%- endfor -%}
@@ -67,7 +67,7 @@
                 {%- set list_sensors = expand('group.dynamic_group_sensor_linkquality') | selectattr('state', 'ne', None) | selectattr('state', 'ne', 'None') -%}
                 {%- set datanames = namespace(device_name=[]) -%}
                 {%- for state in list_sensors -%}
-                {%- if (state.state | int) < 20 -%}
+                {%- if (state.state | int(20)) < 20 -%}
                 {% if device_attr(state.entity_id, 'name_by_user') != none %}
                   {%- set datanames.device_name = datanames.device_name + [device_attr(state.entity_id, 'name_by_user')] -%}
                 {% else %}
@@ -114,7 +114,7 @@
               calibration_local: >
                                  {{ 128 + ((states(objectsensortemperature) | float(0.0) 
                                     - states(objectvalve | replace('climate.', 'sensor.') + '_local_temperature') | float(0.0)) / 0.5) | round(0, 'common', 0) * 0.5 
-                                    + states(objectvalve | replace('climate.', 'sensor.') + '_local_temperature_calibration') | float(0.0)
+                                    + states(objectvalve | replace('climate.', 'number.') + '_local_temperature_calibration') | float(0.0)
                                  }}
               calibration_local_condition: >
                                  {{ 128 + ((states(objectsensortemperature) | float(0.0) 

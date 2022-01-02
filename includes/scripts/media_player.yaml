@@ -1,0 +1,76 @@
+
+#Установить цифровой канал на sony
+  set_sony_braviatv_channel_number:
+    alias: 'Установка канала ТВ по переданному номеру'
+    icon: mdi:television-guide
+    mode: queued
+    fields:
+      entity:
+        description: 'entity_id remote от sony ТВ'
+        example: 'remote.sony_bravia_tv'
+      channel:
+        description: 'номер канала'
+        example: '15'
+      ext_channel_name:
+        description: 'имя канала, на который необходимо переключиться, если сейчас включено приложение'
+        example: 'Мульт'
+      media_entity:
+        description: 'entity_id media от sony ТВ'
+        example: 'media_player.sony_bravia_tv'
+    sequence:
+      - variables:
+          text_command: >
+            {% set str_ch = channel | string %}
+            {% set str_ch_len = str_ch | length %}
+            {% set datanames = namespace(ch=[]) %}
+            {% for x in range(0, str_ch_len) %}
+              {% set datanames.ch = datanames.ch + ['Num' + str_ch[x]] %}
+              {%- if loop.last %} 
+                {% set datanames.ch = datanames.ch + ['Enter'] %}
+              {% endif %}
+            {% endfor %}
+            {{ datanames.ch | to_json }}
+      - choose:
+          - conditions: "{{ is_state(media_entity, 'off') }}"
+            sequence:
+              - service: media_player.turn_on
+                data:
+                  entity_id: '{{ media_entity }}'
+              - delay: 2
+      - choose:
+          - conditions: "{{ is_state_attr(media_entity, 'media_content_id', 'App') }}"
+            sequence:
+              - service: media_player.select_source
+                data:
+                  entity_id: '{{ media_entity }}'
+                  source: '{{ ext_channel_name }}'
+              - delay: 2
+      - choose:
+          - conditions: "{{ text_command | string | from_json | count > 0 }}"
+            sequence:
+              - service: remote.send_command
+                data:
+                  entity_id: '{{ entity }}'
+                  command: '{{ text_command | string | from_json | list }}'
+
+#Отправка в асинхроне команды media_player
+  media_player_play_media_content_type:
+    alias: 'Выполнение команды для media_player по переданным параметрам'
+    icon: mdi:play-network-outline
+    mode: queued
+    fields:
+      entity:
+        description: 'entity_id remote от sony ТВ'
+        example: 'media_player.samsung_tv_remote'
+      content_id:
+        description: 'параметр команды'
+        example: 'KEY_CHUP'
+      content_type:
+        description: 'имя команды'
+        example: 'send_key'
+    sequence:
+      - service: media_player.play_media
+        data:
+          entity_id: "{{ entity }}"
+          media_content_id: "{{ content_id }}"
+          media_content_type: "{{ content_type }}"

@@ -37,10 +37,12 @@
       initial_state: true
       mode: restart
       trigger:
-          - platform: event
-            event_type: entity_registry_updated
-          - platform: homeassistant
-            event: start
+        - platform: event
+          event_type: entity_registry_updated
+        - platform: homeassistant
+          event: start
+      condition:
+        - "{{ states.sensor | map(attribute='entity_id') | list | regex_findall(find='(_linkquality|_zigbee)', ignorecase=True) | length > 0 }}"
       action:
         - service: group.set
           data:
@@ -50,7 +52,7 @@
             entities: >-
                 {%- 
                     for state in states.sensor 
-                      if state.entity_id.endswith("_linkquality")
+                      if state.entity_id.endswith("_linkquality") or state.entity_id.endswith("_zigbee")
                 %}
                     {{ state.entity_id }}{%- if not loop.last -%}, {%- endif -%}
                 {%- endfor %}
@@ -60,10 +62,12 @@
       initial_state: true
       mode: restart
       trigger:
-          - platform: event
-            event_type: entity_registry_updated
-          - platform: homeassistant
-            event: start
+        - platform: event
+          event_type: entity_registry_updated
+        - platform: homeassistant
+          event: start
+      condition:
+        - "{{ states.sensor | map(attribute='entity_id') | list | regex_findall(find='(_last_seen|_zigbee)', ignorecase=True) | length > 0 }}"
       action:
         - service: group.set
           data:
@@ -73,7 +77,7 @@
             entities: >-
                 {%- 
                     for state in states.sensor 
-                      if state.entity_id.endswith("_last_seen")
+                      if state.entity_id.endswith("_last_seen") or state.entity_id.endswith("_zigbee")
                 %}
                     {{ state.entity_id }}{%- if not loop.last -%}, {%- endif -%}
                 {%- endfor %}

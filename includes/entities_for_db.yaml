@@ -9,13 +9,13 @@
       - sensor.maria_db_size
       - sensor.influxdb_db_size
       #Входная дверь
-      - binary_sensor.0x00158d000359304c_contact
-      - binary_sensor.0x00158d0003cfa725_contact
+      - binary_sensor.0x158d000359304c_contact
+      - binary_sensor.0x158d0003cfa725_contact
       #Движение коридор
-      - binary_sensor.0x00158d000566bde7_occupancy
-      - binary_sensor.0x00158d0003953ee9_occupancy
+      - binary_sensor.0x158d000566bde7_motion
+      - binary_sensor.0x158d0003953ee9_motion
       #Движение детская
-      - binary_sensor.0x00158d00054b8d72_occupancy
+      - binary_sensor.0x158d00054b8d72_motion
       #Трекер entware на роутере Keenetic
       - binary_sensor.entware_keenetic
       #Трекер WI-FI защиты от протечки
@@ -26,20 +26,20 @@
       - binary_sensor.availability_mibox_klg
       #Климат
       - sensor.158d00042fd6f5_pressure
-      - sensor.0x00158d0004561de9_humidity
-      - sensor.0x00158d00042fd6f5_humidity
+      - sensor.0x158d0004561de9_humidity
+      - sensor.0x158d00042fd6f5_humidity
       - sensor.esp_xiaomi_kitchen_humidity
-      - sensor.0x00158d0006b860cf_humidity
-      - sensor.0x00158d0006c5f21e_humidity
+      - sensor.0x158d0006b860cf_humidity
+      - sensor.0x158d0006c5f21e_humidity
       - sensor.esp_xiaomi_living_room_humidity
       - sensor.esp_xiaomi_childrens_room_humidity
       - sensor.esp_xiaomi_kitchen_temperature
       - sensor.esp_xiaomi_living_room_temperature
       - sensor.esp_xiaomi_childrens_room_temperature
-      - sensor.0x00158d0004561de9_temperature
-      - sensor.0x00158d00042fd6f5_temperature
-      - sensor.0x00158d0006b860cf_temperature
-      - sensor.0x00158d0006c5f21e_temperature
+      - sensor.0x158d0004561de9_temperature
+      - sensor.0x158d00042fd6f5_temperature
+      - sensor.0x158d0006b860cf_temperature
+      - sensor.0x158d0006c5f21e_temperature
       - sensor.zhimi_humidifier_cb1_humidity
       - sensor.zhimi_humidifier_cb1_temperature
       - sensor.zhimi_humidifier_ca4_humidity
@@ -66,7 +66,7 @@
       - sensor.total_server_socket_cable
       - sensor.r4s1_kettle_energy
       #Датчик освещенности улица
-      - sensor.0x04cf8cdf3c7d15b7_illuminance_lux
+      - sensor.0x4cf8cdf3c7d15b7_illuminance
       #Положение штока термоголовок
       - sensor.thermostat_childrens_room_valve_position
       - sensor.thermostat_bedroom_valve_position

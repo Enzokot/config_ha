@@ -8,11 +8,11 @@ light.gateway_light_04cf8cabd77b:
   friendly_name: Шлюз подсветка
   icon: mdi:star-circle-outline
 
-light.yeelight_650:
-  friendly_name: Светильник 650 детская
+light.yeelight_ceiling_cr:
+  friendly_name: Светильник детская
 
-light.yeelight_650_ambilight:
-  friendly_name: Ambilight 650 детская
+light.yeelight_ceiling_cr_ambilight:
+  friendly_name: Ambilight светильник детская
   
-light.yeelight_650_nightlight:
-  friendly_name: Ночник 650 детская
+light.yeelight_ceiling_cr_nightlight:
+  friendly_name: Ночник светильник детская

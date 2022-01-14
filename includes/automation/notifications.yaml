@@ -4,7 +4,7 @@
       initial_state: true
       trigger:
         platform: state
-        entity_id: binary_sensor.0x00158d000359304c_contact
+        entity_id: binary_sensor.0x158d000359304c_contact
         from: 'off'
         to: 'on'
         for:
@@ -59,7 +59,7 @@
       initial_state: true
       trigger:
         platform: state
-        entity_id: binary_sensor.0x00158d000359304c_contact
+        entity_id: binary_sensor.0x158d000359304c_contact
         from: 'off'
         to: 'on'
         for:
@@ -127,7 +127,7 @@
              at: "21:00:00"
            - platform: state
              id: "binary_sensor_trigger"
-             entity_id: binary_sensor.0x00158d000359304c_contact
+             entity_id: binary_sensor.0x158d000359304c_contact
              from: 'on'
              to: 'off'
       condition:
@@ -149,7 +149,7 @@
       initial_state: true
       trigger:
         - platform: state
-          entity_id: binary_sensor.0x00158d000359304c_contact
+          entity_id: binary_sensor.0x158d000359304c_contact
           from: 'off'
           to: 'on'
     #   condition:
@@ -186,7 +186,7 @@
       initial_state: true
       trigger:
         - platform: state
-          entity_id: binary_sensor.0x00158d000359304c_contact
+          entity_id: binary_sensor.0x158d000359304c_contact
           from: 'on'
           to: 'off'
     #   condition:
@@ -223,7 +223,7 @@
       initial_state: true
       trigger:
         - platform: state
-          entity_id: binary_sensor.0x00158d000359304c_contact
+          entity_id: binary_sensor.0x158d000359304c_contact
           to: 'on'
       condition:
         - condition: state
@@ -283,9 +283,9 @@
       trigger:
         - platform: state
           entity_id: 
-             - binary_sensor.0x00158d00054b8d72_occupancy
-             - binary_sensor.0x00158d000566bde7_occupancy
-             - binary_sensor.0x00158d0003953ee9_occupancy
+             - binary_sensor.0x158d00054b8d72_motion
+             - binary_sensor.0x158d000566bde7_motion
+             - binary_sensor.0x158d0003953ee9_motion
           to: 'on'
       condition:
         - condition: state
@@ -472,11 +472,11 @@
       trigger:
        - platform: state
          entity_id: 
-           - binary_sensor.0x00158d0003943639_smoke
-           - binary_sensor.0x00158d00039a8358_smoke
-           - binary_sensor.0x00158d00039d9398_smoke
-           - binary_sensor.0x00158d00045ca483_smoke
-           - binary_sensor.0x00158d00045cd551_smoke
+           - binary_sensor.0x158d0003943639_smoke
+           - binary_sensor.0x158d00039a8358_smoke
+           - binary_sensor.0x158d00039d9398_smoke
+           - binary_sensor.0x158d00045ca483_smoke
+           - binary_sensor.0x158d00045cd551_smoke
          to: 'on'
       action:
         - variables:
@@ -496,23 +496,23 @@
             message: >-
                         Сработали датчики:
                         {{ '\n' }}
-                        {%- if is_state('binary_sensor.0x00158d0003943639_smoke', 'on') -%}
+                        {%- if is_state('binary_sensor.0x158d0003943639_smoke', 'on') -%}
                            _Кухня_
                         {{- '\n' }}
                         {%- endif -%} 
-                        {%- if is_state('binary_sensor.0x00158d00039a8358_smoke', 'on') -%}
+                        {%- if is_state('binary_sensor.0x158d00039a8358_smoke', 'on') -%}
                            _Гостиная_
                         {{- '\n' }}
                         {%- endif -%}
-                        {% if is_state('binary_sensor.0x00158d00039d9398_smoke', 'on') -%}
+                        {% if is_state('binary_sensor.0x158d00039d9398_smoke', 'on') -%}
                            _Коридор_
                         {{- '\n' }}
                         {%- endif -%}
-                        {% if is_state('binary_sensor.0x00158d00045ca483_smoke', 'on') -%}
+                        {% if is_state('binary_sensor.0x158d00045ca483_smoke', 'on') -%}
                            _Детская_
                         {{- '\n' }}
                         {%- endif -%}
-                        {%- if is_state('binary_sensor.0x00158d00045cd551_smoke', 'on') -%}
+                        {%- if is_state('binary_sensor.0x158d00045cd551_smoke', 'on') -%}
                            _Спальня_
                         {{- '\n' }}
                         {%- endif -%}
@@ -529,23 +529,23 @@
             message: >-
                         Сработали датчики:
                         {{ '\n' }}
-                        {%- if is_state('binary_sensor.0x00158d0003943639_smoke', 'on') -%}
+                        {%- if is_state('binary_sensor.0x158d0003943639_smoke', 'on') -%}
                            Кухня
                         {{- '\n' }}
                         {%- endif -%} 
-                        {%- if is_state('binary_sensor.0x00158d00039a8358_smoke', 'on') -%}
+                        {%- if is_state('binary_sensor.0x158d00039a8358_smoke', 'on') -%}
                            Гостиная
                         {{- '\n' }}
                         {%- endif -%}
-                        {% if is_state('binary_sensor.0x00158d00039d9398_smoke', 'on') -%}
+                        {% if is_state('binary_sensor.0x158d00039d9398_smoke', 'on') -%}
                            Коридор
                         {{- '\n' }}
                         {%- endif -%}
-                        {% if is_state('binary_sensor.0x00158d00045ca483_smoke', 'on') -%}
+                        {% if is_state('binary_sensor.0x158d00045ca483_smoke', 'on') -%}
                            Детская
                         {{- '\n' }}
                         {%- endif -%}
-                        {%- if is_state('binary_sensor.0x00158d00045cd551_smoke', 'on') -%}
+                        {%- if is_state('binary_sensor.0x158d00045cd551_smoke', 'on') -%}
                            Спальня
                         {{- '\n' }}
                         {%- endif -%}
@@ -554,23 +554,23 @@
             message: >-
                         {{ '\U0001f6a8' }} Сработали датчики дыма:
                         {{ '\n' }}
-                        {%- if is_state('binary_sensor.0x00158d0003943639_smoke', 'on') -%}
+                        {%- if is_state('binary_sensor.0x158d0003943639_smoke', 'on') -%}
                            Кухня
                         {{- '\n' }}
                         {%- endif -%} 
-                        {%- if is_state('binary_sensor.0x00158d00039a8358_smoke', 'on') -%}
+                        {%- if is_state('binary_sensor.0x158d00039a8358_smoke', 'on') -%}
                            Гостиная
                         {{- '\n' }}
                         {%- endif -%}
-                        {% if is_state('binary_sensor.0x00158d00039d9398_smoke', 'on') -%}
+                        {% if is_state('binary_sensor.0x158d00039d9398_smoke', 'on') -%}
                            Коридор
                         {{- '\n' }}
                         {%- endif -%}
-                        {% if is_state('binary_sensor.0x00158d00045ca483_smoke', 'on') -%}
+                        {% if is_state('binary_sensor.0x158d00045ca483_smoke', 'on') -%}
                            Детская
                         {{- '\n' }}
                         {%- endif -%}
-                        {%- if is_state('binary_sensor.0x00158d00045cd551_smoke', 'on') -%}
+                        {%- if is_state('binary_sensor.0x158d00045cd551_smoke', 'on') -%}
                            Спальня
                         {{- '\n' }}
                         {%- endif -%}
@@ -767,7 +767,7 @@
                     {%- set entities = expand('group.dynamic_group_sensor_battery') -%}
                     {%- set datanames = namespace(entity_name=[]) -%}
                     {% for x in entities -%}
-                      {% if (not x.entity_id.endswith("_low_battery") and x.state | int(0) <= 20) or (x.entity_id.endswith("_low_battery") and x.state | string == 'on') -%}
+                      {% if (not x.entity_id.endswith("_low_battery") and x.state | int(21) <= 20) or (x.entity_id.endswith("_low_battery") and x.state | string == 'on') -%}
                         {% set datanames.entity_name = datanames.entity_name + ['_' + x.name + '_'] -%}
                       {% endif %}
                     {%- endfor %}
@@ -1570,15 +1570,15 @@
         - platform: numeric_state
           id: 'below'
           entity_id:
-            - sensor.0x00158d0006c5f21e_temperature
-            - sensor.0x00158d0006b860cf_temperature
+            - sensor.0x158d0006c5f21e_temperature
+            - sensor.0x158d0006b860cf_temperature
           below: 40
           for:
             minutes: 5
         - platform: numeric_state
           entity_id:
-            - sensor.0x00158d0006c5f21e_temperature
-            - sensor.0x00158d0006b860cf_temperature
+            - sensor.0x158d0006c5f21e_temperature
+            - sensor.0x158d0006b860cf_temperature
           above: 40
           for:
             minutes: 5
@@ -1591,7 +1591,7 @@
             message: >
               {% if trigger.id == 'below' %} Остывает {% else %} Нагревается {% endif -%} горячая труба *{{ area_name(trigger.entity_id) }}*.
         - choose:
-          - conditions: "{{ trigger.id == 'below' and trigger.entity_id == 'sensor.0x00158d0006c5f21e_temperature' }}"
+          - conditions: "{{ trigger.id == 'below' and trigger.entity_id == 'sensor.0x158d0006c5f21e_temperature' }}"
             sequence:
               - service: notify.huawei_lte
                 data:

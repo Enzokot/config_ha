@@ -13,3 +13,5 @@
       type: module
     - url: /local/community/hass-shutter-card/hass-shutter-card.js
       type: module
+    - url: /local/community/flex-table-card/flex-table-card.js
+      type: module

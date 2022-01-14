@@ -1,7 +1,7 @@
 
     - binary_sensor:
         - name: lobby_door_open_long_time
-          state: "{{ is_state('binary_sensor.0x00158d0003cfa725_contact', 'on') }}"
+          state: "{{ is_state('binary_sensor.0x158d0003cfa725_contact', 'on') }}"
           delay_on:
             minutes: 5
           delay_off:

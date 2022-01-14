@@ -1,73 +1,75 @@
 
     window_childrens_room_group:
         entities:
-          - binary_sensor.0x00158d00039677d9_contact
-          - binary_sensor.0x00158d000396f1f9_contact
+          - binary_sensor.0x158d00039677d9_contact
+          - binary_sensor.0x158d000396f1f9_contact
 
     window_bed_room_group:
         entities:
-          - binary_sensor.0x00158d0003981f6d_contact
-          - binary_sensor.0x00158d0003fa6b60_contact
+          - binary_sensor.0x158d0003981f6d_contact
+          - binary_sensor.0x158d0003fa6b60_contact
 
     window_living_room_group:
         entities:
-          - binary_sensor.0x00158d0003975d8b_contact
-          - binary_sensor.0x00158d0003d05782_contact
-          - binary_sensor.0x00158d000396f197_contact
+          - binary_sensor.0x158d0003975d8b_contact
+          - binary_sensor.0x158d0003d05782_contact
+          - binary_sensor.0x158d000396f197_contact
 
     window_kitchen_group:
         entities:
-          - binary_sensor.0x00158d0003975b4c_contact
-          - binary_sensor.0x00158d00039a2f33_contact
+          - binary_sensor.0x158d0003975b4c_contact
+          - binary_sensor.0x158d00039a2f33_contact
 
     important_devices_unavailable:
         entities:
-          - sensor.0x00158d000490fe9d_linkquality
+          - sensor.0x158d000490fe9d_battery
           - switch.avatto_s06_living_room_restart
-          - sensor.0x00158d0003981f6d_linkquality
-          - sensor.0x00158d00039677d9_linkquality
-          - sensor.0x00158d0004561de9_linkquality
+          - sensor.0x158d0003981f6d_battery
+          - sensor.0x158d00039677d9_battery
+          - sensor.0x158d0004561de9_battery
           - sensor.0x588e81fffeff5c4f_linkquality
           - sensor.0x60a423fffe968719_linkquality
           #- switch.ble_tracker_bed_room_restart
           - switch.ble_tracker_childrens_room_restart
-          - sensor.0x00158d00054b8d72_linkquality
-          - sensor.0x00158d000566bde7_linkquality
-          - sensor.0x00158d0003953ee9_linkquality
+          - sensor.0x158d00054b8d72_battery
+          - sensor.0x158d000566bde7_battery
+          - sensor.0x158d0003953ee9_battery
           - remote.broadlink_ir_rm4_mini
-          - sensor.0x00158d0003d05782_linkquality
+          - sensor.0x158d0003d05782_battery
           - sensor.0x5c0272fffec89454_linkquality
           - switch.ble_tracker_livingroom_restart
-          - sensor.0x00158d000359304c_linkquality
-          - sensor.0x00158d0003cfa725_linkquality
+          - sensor.0x158d000359304c_battery
+          - sensor.0x158d0003cfa725_battery
           - sensor.0x842e14fffe5047f5_linkquality
           - sensor.0x086bd7fffe5d13c9_linkquality
           - sensor.0x842e14fffe36661f_linkquality
           - sensor.0x5c0272fffe8de819_linkquality
-          - sensor.0x00158d0003975b4c_linkquality
-          - sensor.0x00158d000396f197_linkquality
+          - sensor.0x158d0003975b4c_battery
+          - sensor.0x158d000396f197_battery
           - sensor.0x5c0272fffec9db22_linkquality
-          - sensor.0x00158d0003a360b6_linkquality
-          - sensor.0x00158d00045a78af_linkquality
-          - sensor.0x04cf8cdf3c7d15b7_linkquality
-          - sensor.0x00158d00042fd6f5_linkquality
-          - sensor.0x00158d00039a2f33_linkquality
-          - sensor.0x00158d0003975d8b_linkquality
-          - sensor.0x00124b001940bb53_linkquality
+          - sensor.0x158d0003a360b6_battery
+          - sensor.0x158d00045a78af_battery
+          - sensor.0x4cf8cdf3c7d15b7_battery
+          - sensor.0x158d00042fd6f5_battery
+          - sensor.0x158d00039a2f33_battery
+          - sensor.0x158d0003975d8b_battery
+          - sensor.0x00124b00215bb163_linkquality
           - switch.server_ac_power_socket_restart
-          - sensor.0x00158d00045cd551_linkquality
-          - sensor.0x00158d00045ca483_linkquality
-          - sensor.0x00158d00039d9398_linkquality
-          - sensor.0x00158d0003943639_linkquality
-          - sensor.0x00158d00039a8358_linkquality
-          - sensor.0x00158d0003f37a0f_linkquality
+          - sensor.0x158d00045cd551_battery
+          - sensor.0x158d00045ca483_battery
+          - sensor.0x158d00039d9398_battery
+          - sensor.0x158d0003943639_battery
+          - sensor.0x158d00039a8358_battery
+          - sensor.0x158d0003f37a0f_battery
           - sensor.0x842e14fffe13a854_linkquality
           - sensor.0x086bd7fffe5b7c7f_linkquality
-          - sensor.0x00158d0003fa6b60_linkquality
-          - sensor.0x00158d000396f1f9_linkquality
+          - sensor.0x158d0003fa6b60_battery
+          - sensor.0x158d000396f1f9_battery
           - switch.0x588e81fffee49ba2_firmware_lock
+          - switch.0xb4e3f9fffee5a01d_firmware_lock
+          - switch.0xb4e3f9fffee5a6cb_firmware_lock
           - vacuum.xiaomi_vacuum_cleaner
-          - light.yeelight_650
+          - light.yeelight_ceiling_cr
           - light.signalka_shliuza_light
           #- humidifier.zhimi_humidifier_ca4
           - sensor.kholodilnik
@@ -87,16 +89,16 @@
           - media_player.yandex_station_lr0000000000000252130000de5d13d0
           - switch.perenio_petra01_kitchen_restart
           - switch.r4s1_kettle_boil
-          - sensor.0x00158d0006b860cf_linkquality
-          - sensor.0x00158d0006c5f21e_linkquality
+          - sensor.0x158d0006b860cf_battery
+          - sensor.0x158d0006c5f21e_battery
 
     temperature_summary_group_to_bot:
         entities:
-          - sensor.0x00158d00042fd6f5_temperature
+          - sensor.0x158d00042fd6f5_temperature
           - sensor.esp_xiaomi_childrens_room_temperature
           - sensor.esp_xiaomi_bed_room_temperature
           - sensor.esp_xiaomi_living_room_temperature
-          - sensor.0x00158d0004561de9_temperature
+          - sensor.0x158d0004561de9_temperature
           - sensor.esp_xiaomi_kitchen_temperature
-          - sensor.0x00158d0006c5f21e_temperature
-          - sensor.0x00158d0006b860cf_temperature
+          - sensor.0x158d0006c5f21e_temperature
+          - sensor.0x158d0006b860cf_temperature

@@ -1,8 +1,8 @@
 - sensor:
      - name: 158d00042fd6f5_pressure
-       state: "{{ (states('sensor.0x00158d00042fd6f5_pressure') | float(0.0) * 0.75) | round(1, 'common', 0) }}"
+       state: "{{ (states('sensor.0x158d00042fd6f5_pressure') | float(0.0) * 0.75) | round(1, 'common', 0) }}"
        unit_of_measurement: 'mm Hg'
-       availability: "{{ (states('sensor.0x00158d00042fd6f5_pressure') | int(-1)) > -1 }}"
+       availability: "{{ (states('sensor.0x158d00042fd6f5_pressure') | int(-1)) > -1 }}"
 
      - name: zhimi_humidifier_cb1_target_humidity
        state: "{{ state_attr('humidifier.zhimi_humidifier_cb1', 'humidity') }}"

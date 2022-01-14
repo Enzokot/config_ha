@@ -200,7 +200,7 @@ views:
             - type: entities
               show_header_toggle: false
               entities:          
-                - entity: binary_sensor.0x00158d0003f37a0f_contact
+                - entity: binary_sensor.0x158d0003f37a0f_contact
                   secondary_info: last-changed
                   state_color: true
                 - entity: switch.0x54ef441000096cbc
@@ -209,14 +209,14 @@ views:
             - type: horizontal-stack
               cards:
                 - type: light
-                  entity: light.yeelight_650
-                  name: Люстра 650
+                  entity: light.yeelight_ceiling_cr
+                  name: Люстра
                 - type: light
-                  entity: light.yeelight_650_nightlight
-                  name: Ночник 650
+                  entity: light.yeelight_ceiling_cr_nightlight
+                  name: Ночник
                 - type: light
-                  entity: light.yeelight_650_ambilight
-                  name: Ambilight 650
+                  entity: light.yeelight_ceiling_cr_ambilight
+                  name: Ambilight
 
         - type: custom:vertical-stack-in-card
           cards:
@@ -313,7 +313,7 @@ views:
               entities:          
                 - entity: light.gateway_light_04cf8cabd77b
                 - entity: sensor.signalka_shliuza_illuminance
-                - entity: sensor.0x04cf8cdf3c7d15b7_illuminance_lux
+                - entity: sensor.0x4cf8cdf3c7d15b7_illuminance
                 
 
         - type: markdown
@@ -323,20 +323,20 @@ views:
         - type: glance
           columns: 5
           entities:
-            - entity: binary_sensor.0x00158d00045ca483_smoke
+            - entity: binary_sensor.0x158d00045ca483_smoke
               show_last_changed: true
               name: Детская
-            - entity: binary_sensor.0x00158d00054b8d72_occupancy
+            - entity: binary_sensor.0x158d00054b8d72_motion
               show_last_changed: true
               name: Детская
-            - entity: binary_sensor.0x00158d0003f37a0f_contact
+            - entity: binary_sensor.0x158d0003f37a0f_contact
               show_last_changed: true
               icon: mdi:ceiling-light
               name: Свет
-            - entity: binary_sensor.0x00158d000396f1f9_contact
+            - entity: binary_sensor.0x158d000396f1f9_contact
               show_last_changed: true
               name: Окно
-            - entity: binary_sensor.0x00158d00039677d9_contact
+            - entity: binary_sensor.0x158d00039677d9_contact
               show_last_changed: true
               name: Балкон
 
@@ -347,13 +347,13 @@ views:
         - type: glance
           columns: 5
           entities:
-            - entity: binary_sensor.0x00158d00045cd551_smoke
+            - entity: binary_sensor.0x158d00045cd551_smoke
               show_last_changed: true
               name: Спальня
-            - entity: binary_sensor.0x00158d0003fa6b60_contact
+            - entity: binary_sensor.0x158d0003fa6b60_contact
               show_last_changed: true
               name: Окно
-            - entity: binary_sensor.0x00158d0003981f6d_contact
+            - entity: binary_sensor.0x158d0003981f6d_contact
               show_last_changed: true
               name: Балкон
 
@@ -364,16 +364,16 @@ views:
         - type: glance
           columns: 5
           entities:
-            - entity: binary_sensor.0x00158d00039a8358_smoke
+            - entity: binary_sensor.0x158d00039a8358_smoke
               show_last_changed: true
               name: Гостиная
-            - entity: binary_sensor.0x00158d000396f197_contact
+            - entity: binary_sensor.0x158d000396f197_contact
               show_last_changed: true
               name: Лев.
-            - entity: binary_sensor.0x00158d0003d05782_contact
+            - entity: binary_sensor.0x158d0003d05782_contact
               show_last_changed: true
               name: Центр.
-            - entity: binary_sensor.0x00158d0003975d8b_contact
+            - entity: binary_sensor.0x158d0003975d8b_contact
               show_last_changed: true
               name: Прав.
 
@@ -384,13 +384,13 @@ views:
         - type: glance
           columns: 5
           entities:
-            - entity: binary_sensor.0x00158d0003943639_smoke
+            - entity: binary_sensor.0x158d0003943639_smoke
               show_last_changed: true
               name: Кухня
-            - entity: binary_sensor.0x00158d0003975b4c_contact
+            - entity: binary_sensor.0x158d0003975b4c_contact
               show_last_changed: true
               name: Лев.
-            - entity: binary_sensor.0x00158d00039a2f33_contact
+            - entity: binary_sensor.0x158d00039a2f33_contact
               show_last_changed: true
               name: Прав.
 
@@ -401,19 +401,19 @@ views:
         - type: glance
           columns: 5
           entities:
-            - entity: binary_sensor.0x00158d00039d9398_smoke
+            - entity: binary_sensor.0x158d00039d9398_smoke
               show_last_changed: true
               name: 'Коридор'
-            - entity: binary_sensor.0x00158d0003cfa725_contact
+            - entity: binary_sensor.0x158d0003cfa725_contact
               show_last_changed: true
               name: 'Тамбурная'
-            - entity: binary_sensor.0x00158d000359304c_contact
+            - entity: binary_sensor.0x158d000359304c_contact
               show_last_changed: true
               name: 'Входная'
-            - entity: binary_sensor.0x00158d000566bde7_occupancy
+            - entity: binary_sensor.0x158d000566bde7_motion
               show_last_changed: true
               name: 'Коридор 1'
-            - entity: binary_sensor.0x00158d0003953ee9_occupancy
+            - entity: binary_sensor.0x158d0003953ee9_motion
               show_last_changed: true
               name: 'Коридор 2'
 
@@ -424,9 +424,9 @@ views:
         - type: glance
           columns: 5
           entities:
-            - entity: sensor.0x00158d0006c5f21e_temperature
+            - entity: sensor.0x158d0006c5f21e_temperature
               name: 'Ванная'
-            - entity: sensor.0x00158d0006b860cf_temperature
+            - entity: sensor.0x158d0006b860cf_temperature
               name: 'Санузел'
 
       - type: vertical-stack
@@ -448,54 +448,54 @@ views:
                 icon: 'mdi:door'
                 min: 30
                 entities:
-                  - sensor.0x00158d000359304c_battery
-                  - sensor.0x00158d0003cfa725_battery
-                  - sensor.0x00158d000490fe9d_battery          
-                  - sensor.0x00158d0003f37a0f_battery
-                  - sensor.0x00158d00039677d9_battery
-                  - sensor.0x00158d0003981f6d_battery
-                  - sensor.0x00158d0003fa6b60_battery
-                  - sensor.0x00158d000396f1f9_battery
-                  - sensor.0x00158d0003975b4c_battery
-                  - sensor.0x00158d000396f197_battery
-                  - sensor.0x00158d0003d05782_battery
-                  - sensor.0x00158d0003975d8b_battery
-                  - sensor.0x00158d00039a2f33_battery
+                  - sensor.0x158d000359304c_battery
+                  - sensor.0x158d0003cfa725_battery
+                  - sensor.0x158d000490fe9d_battery
+                  - sensor.0x158d0003f37a0f_battery
+                  - sensor.0x158d00039677d9_battery
+                  - sensor.0x158d0003981f6d_battery
+                  - sensor.0x158d0003fa6b60_battery
+                  - sensor.0x158d000396f1f9_battery
+                  - sensor.0x158d0003975b4c_battery
+                  - sensor.0x158d000396f197_battery
+                  - sensor.0x158d0003d05782_battery
+                  - sensor.0x158d0003975d8b_battery
+                  - sensor.0x158d00039a2f33_battery
               - name: 'Дыма (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
                 icon: 'mdi:smoke-detector'
                 min: 30
                 entities:
-                  - sensor.0x00158d00039a8358_battery
-                  - sensor.0x00158d00039d9398_battery
-                  - sensor.0x00158d00045ca483_battery
-                  - sensor.0x00158d00045cd551_battery
-                  - sensor.0x00158d0003943639_battery
+                  - sensor.0x158d00039a8358_battery
+                  - sensor.0x158d00039d9398_battery
+                  - sensor.0x158d00045ca483_battery
+                  - sensor.0x158d00045cd551_battery
+                  - sensor.0x158d0003943639_battery
               - name: 'Т&Rh (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
                 icon: 'mdi:thermometer'
                 min: 30
                 entities:
-                  - sensor.0x00158d0004561de9_battery
-                  - sensor.0x00158d00042fd6f5_battery
-                  - sensor.0x00158d0006c5f21e_battery
-                  - sensor.0x00158d0006b860cf_battery
+                  - sensor.0x158d0004561de9_battery
+                  - sensor.0x158d00042fd6f5_battery
+                  - sensor.0x158d0006c5f21e_battery
+                  - sensor.0x158d0006b860cf_battery
               - name: 'Движения (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
                 icon: 'mdi:motion-sensor'
                 min: 30
                 entities:
-                  - sensor.0x00158d000566bde7_battery
-                  - sensor.0x00158d0003953ee9_battery
-                  - sensor.0x00158d00054b8d72_battery
+                  - sensor.0x158d000566bde7_battery
+                  - sensor.0x158d0003953ee9_battery
+                  - sensor.0x158d00054b8d72_battery
               - name: 'Кнопки (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
                 icon: 'mdi:radiobox-marked'
                 min: 30
                 entities:
-                  - sensor.0x00158d0003a360b6_battery
-                  - sensor.0x00158d00045a78af_battery
-                  - sensor.0x04cf8cdf3c7d15b7_battery
+                  - sensor.0x158d0003a360b6_battery
+                  - sensor.0x158d00045a78af_battery
+                  - sensor.0x4cf8cdf3c7d15b7_battery
               - name: 'Часы (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
                 icon: 'mdi:alarm-check'
@@ -506,43 +506,43 @@ views:
                   - sensor.esp_xiaomi_living_room_battery_level
                   - sensor.esp_xiaomi_childrens_room_battery_level
           entities:          
-            - entity: sensor.0x00158d000359304c_battery
+            - entity: sensor.0x158d000359304c_battery
               tap_action: more-info
-            - entity: sensor.0x00158d0003cfa725_battery
+            - entity: sensor.0x158d0003cfa725_battery
               tap_action: more-info
-            - entity: sensor.0x00158d0003f37a0f_battery
+            - entity: sensor.0x158d0003f37a0f_battery
               tap_action: more-info
-            - entity: sensor.0x00158d00042fd6f5_battery
+            - entity: sensor.0x158d00042fd6f5_battery
               tap_action: more-info
-            - entity: sensor.0x00158d0006c5f21e_battery
+            - entity: sensor.0x158d0006c5f21e_battery
               tap_action: more-info
-            - entity: sensor.0x00158d0006b860cf_battery
+            - entity: sensor.0x158d0006b860cf_battery
               tap_action: more-info
-            - entity: sensor.0x00158d0004561de9_battery
+            - entity: sensor.0x158d0004561de9_battery
               tap_action: more-info
-            - entity: sensor.0x04cf8cdf3c7d15b7_battery
+            - entity: sensor.0x4cf8cdf3c7d15b7_battery
               tap_action: more-info
-            - entity: sensor.0x00158d00045cd551_battery
+            - entity: sensor.0x158d00045cd551_battery
               tap_action: more-info
-            - entity: sensor.0x00158d00045ca483_battery
+            - entity: sensor.0x158d00045ca483_battery
               tap_action: more-info
-            - entity: sensor.0x00158d0003943639_battery
+            - entity: sensor.0x158d0003943639_battery
               tap_action: more-info
-            - entity: sensor.0x00158d00039a8358_battery
+            - entity: sensor.0x158d00039a8358_battery
               tap_action: more-info
-            - entity: sensor.0x00158d00039d9398_battery
+            - entity: sensor.0x158d00039d9398_battery
               tap_action: more-info
-            - entity: sensor.0x00158d000490fe9d_battery
+            - entity: sensor.0x158d000490fe9d_battery
               tap_action: more-info
-            - entity: sensor.0x00158d000566bde7_battery
+            - entity: sensor.0x158d000566bde7_battery
               tap_action: more-info
-            - entity: sensor.0x00158d0003953ee9_battery
+            - entity: sensor.0x158d0003953ee9_battery
               tap_action: more-info
-            - entity: sensor.0x00158d00054b8d72_battery
+            - entity: sensor.0x158d00054b8d72_battery
               tap_action: more-info
-            - entity: sensor.0x00158d0003a360b6_battery
+            - entity: sensor.0x158d0003a360b6_battery
               tap_action: more-info
-            - entity: sensor.0x00158d00045a78af_battery
+            - entity: sensor.0x158d00045a78af_battery
               tap_action: more-info
             - entity: sensor.esp_xiaomi_bed_room_battery_level
               tap_action: more-info
@@ -556,77 +556,77 @@ views:
             - entity: sensor.esp_xiaomi_childrens_room_battery_level
               tap_action: more-info
               name: 'Часы детская'
-            - entity: sensor.0x00158d000396f1f9_battery
+            - entity: sensor.0x158d000396f1f9_battery
               tap_action: more-info
-            - entity: sensor.0x00158d0003fa6b60_battery
+            - entity: sensor.0x158d0003fa6b60_battery
               tap_action: more-info
-            - entity: sensor.0x00158d0003981f6d_battery
+            - entity: sensor.0x158d0003981f6d_battery
               tap_action: more-info
-            - entity: sensor.0x00158d00039677d9_battery
+            - entity: sensor.0x158d00039677d9_battery
               tap_action: more-info
-            - entity: sensor.0x00158d0003d05782_battery
+            - entity: sensor.0x158d0003d05782_battery
               tap_action: more-info
-            - entity: sensor.0x00158d0003975b4c_battery
+            - entity: sensor.0x158d0003975b4c_battery
               tap_action: more-info
-            - entity: sensor.0x00158d000396f197_battery
+            - entity: sensor.0x158d000396f197_battery
               tap_action: more-info
-            - entity: sensor.0x00158d0003975d8b_battery
+            - entity: sensor.0x158d0003975d8b_battery
               tap_action: more-info
-            - entity: sensor.0x00158d00039a2f33_battery
+            - entity: sensor.0x158d00039a2f33_battery
               tap_action: more-info
 
-        - type: markdown
-          content: >
-             **Самотестирование датчиков дыма** 
+        # - type: markdown
+        #   content: >
+        #      **Самотестирование датчиков дыма** 
 
-        - type: horizontal-stack
-          cards:
+        # - type: horizontal-stack
+        #   cards:
 
-            - type: button
-              name: Кухня
-              show_state: false
-              icon: mdi:shield-check
-              tap_action:
-                action: call-service
-                service: script.selftest_smoke_detector
-                service_data:
-                  namesmokedetector: 'Smoke detector kitchen'
-            - type: button
-              name: Гостиная
-              show_state: false
-              icon: mdi:shield-check
-              tap_action:
-                action: call-service
-                service: script.selftest_smoke_detector
-                service_data:
-                  namesmokedetector: 'Smoke detector living room'
-            - type: button
-              name: Коридор
-              show_state: false
-              icon: mdi:shield-check
-              tap_action:
-                action: call-service
-                service: script.selftest_smoke_detector
-                service_data:
-                  namesmokedetector: 'Smoke detector hallway'
-            - type: button
-              name: Детская
-              show_state: false
-              icon: mdi:shield-check
-              tap_action:
-                action: call-service
-                service: script.selftest_smoke_detector
-                service_data:
-                  namesmokedetector: 'Smoke detector childrens room'
-            - type: button
-              name: Спальня
-              show_state: false
-              icon: mdi:shield-check
-              tap_action:
-                action: call-service
-                service: script.selftest_smoke_detector
-                service_data:
-                  namesmokedetector: 'Smoke detector bedroom'
+        #     - type: button
+        #       name: Кухня
+        #       show_state: false
+        #       icon: mdi:shield-check
+        #       tap_action:
+        #         action: call-service
+        #         service: script.selftest_smoke_detector
+        #         service_data:
+        #           namesmokedetector: 'Smoke detector kitchen'
+        #     - type: button
+        #       name: Гостиная
+        #       show_state: false
+        #       icon: mdi:shield-check
+        #       tap_action:
+        #         action: call-service
+        #         service: script.selftest_smoke_detector
+        #         service_data:
+        #           namesmokedetector: 'Smoke detector living room'
+        #     - type: button
+        #       name: Коридор
+        #       show_state: false
+        #       icon: mdi:shield-check
+        #       tap_action:
+        #         action: call-service
+        #         service: script.selftest_smoke_detector
+        #         service_data:
+        #           namesmokedetector: 'Smoke detector hallway'
+        #     - type: button
+        #       name: Детская
+        #       show_state: false
+        #       icon: mdi:shield-check
+        #       tap_action:
+        #         action: call-service
+        #         service: script.selftest_smoke_detector
+        #         service_data:
+        #           namesmokedetector: 'Smoke detector childrens room'
+        #     - type: button
+        #       name: Спальня
+        #       show_state: false
+        #       icon: mdi:shield-check
+        #       tap_action:
+        #         action: call-service
+        #         service: script.selftest_smoke_detector
+        #         service_data:
+        #           namesmokedetector: 'Smoke detector bedroom'
 
         - type: markdown
           content: >
@@ -881,11 +881,11 @@ views:
                   - type: entities
                     show_header_toggle: false
                     entities:
-                        - entity: sensor.0x00158d00042fd6f5_temperature
+                        - entity: sensor.0x158d00042fd6f5_temperature
                   - type: entities
                     show_header_toggle: false
                     entities:
-                        - entity: sensor.0x00158d00042fd6f5_humidity
+                        - entity: sensor.0x158d00042fd6f5_humidity
             - type: entities
               show_header_toggle: false
               entities:
@@ -939,11 +939,11 @@ views:
                   - type: entities
                     show_header_toggle: false
                     entities:
-                        - entity: sensor.0x00158d0004561de9_temperature
+                        - entity: sensor.0x158d0004561de9_temperature
                   - type: entities
                     show_header_toggle: false
                     entities:
-                        - entity: sensor.0x00158d0004561de9_humidity
+                        - entity: sensor.0x158d0004561de9_humidity
             - type: horizontal-stack
               cards:
                   - type: entities
@@ -1129,7 +1129,7 @@ views:
             icon: mdi:floor-plan
             selection_type: ROOM
             max_selections: 8
-            repeats_type: NONE
+            repeats_type: REPEAT
             max_repeats: 3
             service_call_schema:
               service: vacuum.send_command
@@ -1240,7 +1240,9 @@ views:
           - label: 'Длительность'
             entity: sensor.xiaomi_vacuum_cleaner_last_clean_duration
             icon: mdi:timer-sand
-            unit: 'c'
+            multiplier: 0.01666666666
+            precision: 0
+            unit: 'м'
             conditions:
               - entity: vacuum.xiaomi_vacuum_cleaner
                 value_not: docked
@@ -1304,6 +1306,178 @@ views:
                 entity_id: vacuum.xiaomi_vacuum_cleaner
                 command: reset_consumable
                 params: ['main_brush_work_time']
+
+  - title: Сводная таблица GW3
+    path: gw3
+    icon: mdi:radio-tower
+    panel: true
+    cards:
+      - type: vertical-stack
+        cards:
+          # Gateways
+          - type: markdown
+            content: '<center> <ha-icon icon="mdi:router-wireless"></ha-icon> Gateways </center>'
+          - type: "custom:flex-table-card"
+            clickable: false
+            entities:
+              include:
+                - sensor.*_gateway
+            sort_by: friendly_name
+            columns:
+              - data: friendly_name
+                name: Friendly Name
+                modify: '(x+"").replace(/ Gateway$/,"")'
+              - data: network_pan_id
+                name: PAN ID
+                modify: 'x == "" ? "-" : x+""'
+              - data: radio_tx_power
+                name: TX Power
+                modify: 'isNaN(parseInt(x, 10)) ? "-" : parseInt(x, 10)'
+              - data: radio_channel
+                name: Channel
+                modify: 'isNaN(parseInt(x, 10)) ? "-" : parseInt(x, 10)'
+              - data: free_mem
+                name: Mem Free (KB)
+                modify: 'isNaN(parseInt(x, 10)) ? "" : parseInt(x, 10)'
+              - data: load_avg
+                name: Load Avg (1m, 5m, 15m)
+                modify: '(x+"").split("|").slice(0, 3).join(", ")'
+              - data: zigbee_tx
+                name: ZB Tx
+                modify: 'isNaN(parseInt(x, 10)) ? 0 : parseInt(x, 10)'
+              - data: zigbee_rx
+                name: ZB Rx
+                modify: 'isNaN(parseInt(x, 10)) ? 0 : parseInt(x, 10)'
+              - data: zigbee_oe
+                name: ZB Err
+                modify: 'isNaN(parseInt(x, 10)) ? 0 : parseInt(x, 10)'
+            #   - data: bluetooth_tx
+            #     name: BT Tx
+            #     modify: 'isNaN(parseInt(x, 10)) ? 0 : parseInt(x, 10)'
+            #   - data: bluetooth_rx
+            #     name: BT Rx
+            #     modify: 'isNaN(parseInt(x, 10)) ? 0 : parseInt(x, 10)'
+            #   - data: bluetooth_oe
+            #     name: BT Err
+            #     modify: 'isNaN(parseInt(x, 10)) ? 0 : parseInt(x, 10)'
+              - data: rssi
+                name: RSSI
+                modify: 'isNaN(parseInt(x, 10)) ? "" : (100 + parseInt(x, 10)) * -1'
+              - data: uptime
+                name: Gateway Uptime
+                modify: x+''
+              - data: state
+                name: Connected Since
+                modify: >
+                  var dt = new Date(x);
+                  var hrs = parseInt((Date.now()-Date.parse(x)) / 3600000);
+                  var min = parseInt(((Date.now()-Date.parse(x)) / 60000) % 60);
+                  var sec = parseInt(((Date.now()-Date.parse(x)) / 1000) % 60);
+                  hrs = (hrs < 10) ? "0" + hrs : hrs;
+                  min = (min < 10) ? "0" + min : min;
+                  sec = (sec < 10) ? "0" + sec : sec;
+                  isFinite(dt) ? dt.toLocaleString(['ru-RU', 'en-US']) +
+                  " (Up: " + hrs + ":" + min + ":" + sec + ")" : ""
+            css:
+              table+: "padding-top: 15px;"
+              "tbody tr:nth-child(even)": "background-color: #a2542f6;"
+              td.left: "padding: 10px 10px 10px 10px"
+              th.left: "padding: 0px 0px 10px 10px"
+          # ZigBee
+          - type: markdown
+            content: '<center> <ha-icon icon="mdi:zigbee"></ha-icon> ZigBee </center>'
+          - type: "custom:flex-table-card"
+            clickable: false
+            entities:
+              include:
+                - sensor.*_zigbee
+            sort_by: state- #ieee
+            columns:
+              - data: friendly_name
+                name: Friendly Name
+                modify: 'x.replace(/ Zigbee$/,"")'
+              - data: gate
+                name: Gate
+                modify: x+''
+              - data: ieee
+                name: IEEE
+                modify: (x+'').toLowerCase()
+              - data: nwk
+                name: NWK
+                modify: (x+'').replace(/^0x/,"")
+              - data: parent
+                name: Parent
+                modify: (x+'').replace(/^0x/,"").toLowerCase()
+              - data: type
+                name: Type
+                modify: (x+'').replace(/^-$/, "child device")
+              - data: msg_received
+                name: Received
+                modify: 'isNaN(parseInt(x, 10)) ? 0 : parseInt(x, 10)'
+              - data: msg_missed
+                name: Missed (Total)
+                modify: 'isNaN(parseInt(x, 10)) ? 0 : parseInt(x, 10)'
+              - data: last_missed
+                name: Missed (Last)
+                modify: 'isNaN(parseInt(x, 10)) ? 0 : parseInt(x, 10)'
+              - data: unresponsive
+                name: Unresponsive
+                modify: 'isNaN(parseInt(x, 10)) ? 0 : parseInt(x, 10)'
+              - data: reset_cnt
+                name: Reset Count
+                modify: 'isNaN(parseInt(x, 10)) ? 0 : parseInt(x, 10)'
+              - data: link_quality
+                name: LQI
+                modify: 'isNaN(parseInt(x, 10)) ? "" : parseInt(x, 10)'
+              - data: rssi
+                name: RSSI
+                modify: 'isNaN(parseInt(x, 10)) ? "" : parseInt(x, 10)'
+              - data: last_msg
+                name: Last Message
+                modify: x+''
+              - data: state
+                name: Last Seen
+                # modify: >
+                #   var dt = new Date(0,0,0,0,0,0,(Date.now()-Date.parse(x)));
+                #   isFinite(dt) ? dt.toTimeString().split(" ")[0] : ""
+                modify: >
+                  var min = Math.round((Date.now()-Date.parse(x))/60000);
+                  isFinite(min) ? min : 65536
+            css:
+              table+: "padding-top: 15px;"
+              "tbody tr:nth-child(even)": "background-color: #a2542f6;"
+              td.left: "padding: 10px 10px 10px 10px"
+              th.left: "padding: 0px 0px 10px 10px"
+
+          # Bluetooth
+          - type: markdown
+            content: '<center> <ha-icon icon="mdi:bluetooth"></ha-icon> Bluetooth </center>'
+          - type: "custom:flex-table-card"
+            clickable: false
+            entities:
+              include:
+                - sensor.*_ble
+            sort_by: mac
+            columns:
+              - data: friendly_name
+                name: Friendly Name
+                modify: 'x.replace(/ Ble$/,"")'
+              - data: mac
+                name: MAC
+                modify: (x+'').replace(/(.{2}(?!$))/g,"$1:")
+              - data: msg_received
+                name: Received
+                modify: 'isNaN(parseInt(x, 10)) ? "" : parseInt(x, 10)'
+              - data: state
+                name: Last Seen
+                modify: >
+                  var dt = new Date(0,0,0,0,0,0,(Date.now()-Date.parse(x)));
+                  isFinite(dt) ? dt.toTimeString().split(" ")[0] : ""
+            css:
+              table+: "padding-top: 15px;"
+              "tbody tr:nth-child(even)": "background-color: #a2542f6;"
+              td.left: "padding: 10px 10px 10px 10px"
+              th.left: "padding: 0px 0px 10px 10px"
 
   - title: Карта
     panel: true

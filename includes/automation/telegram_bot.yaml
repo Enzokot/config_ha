@@ -245,22 +245,22 @@
             - condition: and
               conditions:
                 - condition: state
-                  entity_id: binary_sensor.0x00158d0003f37a0f_contact
+                  entity_id: binary_sensor.0x158d0003f37a0f_contact
                   state: 'on'
                 - condition: state
-                  entity_id: light.yeelight_650
+                  entity_id: light.yeelight_ceiling_cr
                   state: 'off'
             - condition: and
               conditions:
                 - condition: state
-                  entity_id: binary_sensor.0x00158d0003f37a0f_contact
+                  entity_id: binary_sensor.0x158d0003f37a0f_contact
                   state: 'off'
                 - condition: state
-                  entity_id: light.yeelight_650
+                  entity_id: light.yeelight_ceiling_cr
                   state: 'on'
       action:
         - service: light.toggle
-          entity_id: light.yeelight_650
+          entity_id: light.yeelight_ceiling_cr
         - service: automation.turn_on
           entity_id: automation.sync_yeelight650_to_switch
         - service: telegram_bot.answer_callback_query

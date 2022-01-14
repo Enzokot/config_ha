@@ -7,7 +7,7 @@
       max_exceeded: silent
       trigger:
         - platform: state
-          entity_id: sensor.0x00158d00045a78af_action
+          entity_id: sensor.0x158d00045a78af_action
       condition:
           - condition: state
             entity_id: timer.doorbell_timer_restart_automation
@@ -61,7 +61,7 @@
       max_exceeded: silent
       trigger:
         - platform: state
-          entity_id: sensor.0x00158d00045a78af_action
+          entity_id: sensor.0x158d00045a78af_action
       condition:
           - condition: or
             conditions:
@@ -97,7 +97,7 @@
       max_exceeded: silent
       trigger:
         - platform: state
-          entity_id: sensor.0x00158d00045a78af_action
+          entity_id: sensor.0x158d00045a78af_action
       condition:
           - condition: state
             entity_id: timer.doorbell_timer_restart_automation

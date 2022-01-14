@@ -69,7 +69,14 @@
             {%- set list_sensors = expand('group.dynamic_group_sensor_last_seen') | selectattr('state', 'ne', None) | selectattr('state', 'ne', 'None') | selectattr('state', 'ne', 'unknown') -%}
             {%- set datanames = namespace(last_seen=[]) -%}
             {%- for state in list_sensors -%}
-            {%- if (state.state | int(time_limit * 1000)) < time_limit * 1000 -%}
+            {%- if state.entity_id.endswith('_last_seen') -%}
+            {%- set time_ms = 1000 -%} 
+            {%- set state_ms = state.state -%}
+            {%- else -%}
+            {%- set time_ms = 1 -%} 
+            {%- set state_ms = as_timestamp(state.state) -%}
+            {%- endif -%}
+            {%- if (state_ms | int(time_limit * time_ms)) < (time_limit * time_ms) -%}
             {%- set datanames.last_seen = datanames.last_seen + [state] -%}
             {%- endif -%}
             {%- endfor -%}
@@ -82,7 +89,14 @@
                     {%- set list_sensors = expand('group.dynamic_group_sensor_last_seen') | selectattr('state', 'ne', None) | selectattr('state', 'ne', 'None') | selectattr('state', 'ne', 'unknown') -%}
                     {%- set datanames = namespace(last_seen=[]) -%}
                     {%- for state in list_sensors -%}
-                    {%- if (state.state | int(time_limit * 1000)) < time_limit * 1000 -%}
+                    {%- if state.entity_id.endswith('_last_seen') -%}
+                    {%- set time_ms = 1000 -%} 
+                    {%- set state_ms = state.state -%}
+                    {%- else -%}
+                    {%- set time_ms = 1 -%} 
+                    {%- set state_ms = as_timestamp(state.state) -%}
+                    {%- endif -%}
+                    {%- if (state_ms | int(time_limit * time_ms)) < (time_limit * time_ms) -%}
                     {%- set datanames.last_seen = datanames.last_seen + [state] -%}
                     {%- endif -%}
                     {%- endfor -%}
@@ -96,7 +110,14 @@
                     {%- set list_sensors = expand('group.dynamic_group_sensor_last_seen') | selectattr('state', 'ne', None) | selectattr('state', 'ne', 'None') | selectattr('state', 'ne', 'unknown') -%}
                     {%- set datanames = namespace(device_name=[]) -%}
                     {%- for state in list_sensors -%}
-                    {%- if (state.state | int(time_limit * 1000)) < time_limit * 1000 -%}
+                    {%- if state.entity_id.endswith('_last_seen') -%}
+                    {%- set time_ms = 1000 -%} 
+                    {%- set state_ms = state.state -%}
+                    {%- else -%}
+                    {%- set time_ms = 1 -%} 
+                    {%- set state_ms = as_timestamp(state.state) -%}
+                    {%- endif -%}
+                    {%- if (state_ms | int(time_limit * time_ms)) < (time_limit * time_ms) -%}
                     {% if device_attr(state.entity_id, 'name_by_user') != none %}
                       {%- set datanames.device_name = datanames.device_name + [device_attr(state.entity_id, 'name_by_user')] -%}
                     {% else %}
@@ -124,7 +145,8 @@
                 {%- set list_sensors = expand('group.dynamic_group_sensor_linkquality') | selectattr('state', 'ne', None) | selectattr('state', 'ne', 'None') -%}
                 {%- set datanames = namespace(low_linkquality=[]) -%}
                 {%- for state in list_sensors -%}
-                {%- if (state.state | int(20)) < 20 -%}
+                {%- if (state.entity_id.endswith('_linkquality') and (state.state | int(15)) < 15) or 
+                    (state.entity_id.endswith('_zigbee') and (state_attr(state.entity_id ,'link_quality') | int(15)) < 15)-%}
                 {%- set datanames.low_linkquality = datanames.low_linkquality + [state] -%}
                 {%- endif -%}
                 {%- endfor -%}

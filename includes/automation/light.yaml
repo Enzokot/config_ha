@@ -1,88 +1,96 @@
 #yeelight650 детская
-    - alias: yeelight650 off
-      id: yeelight650 off
+    - alias: yeelight ceiling cr off
+      id: yeelight ceiling cr off
       initial_state: true
       mode: single
       max_exceeded: silent
       trigger:
         - platform: state
-          entity_id: binary_sensor.0x00158d0003f37a0f_contact
+          entity_id: binary_sensor.0x158d0003f37a0f_contact
           from: 'on'
           to: 'off'
       action:
         - service: light.turn_off
           data:
-              entity_id: light.yeelight_650
-        - service: light.turn_off
-          data:
-              entity_id: light.yeelight_650_ambilight
+              entity_id: 
+                - light.yeelight_ceiling_cr
+                - light.yeelight_ceiling_cr_ambilight
+                - light.yeelight_ceiling_cr_nightlight
 
-    - alias: yeelight650 on
-      id: yeelight650 on
+    - alias: yeelight ceiling cr on
+      id: yeelight ceiling cr on
       initial_state: true
       mode: single
       max_exceeded: silent
       trigger:
         - platform: state
-          entity_id: binary_sensor.0x00158d0003f37a0f_contact
+          entity_id: binary_sensor.0x158d0003f37a0f_contact
           from: 'off'
           to: 'on'
       action:
         - service: light.turn_on
           data:
-              entity_id: light.yeelight_650
+              entity_id: light.yeelight_ceiling_cr
               brightness: 255
-        - service: light.turn_on
-          data:
-              entity_id: light.yeelight_650_ambilight
-              brightness: 255
-              rgb_color: [255, 0, 135]
+        # - service: light.turn_on
+        #   data:
+        #       entity_id: light.yeelight_ceiling_cr_ambilight
+        #       brightness: 255
+        #       rgb_color: [0, 0, 255]
+        - wait_template: "{{ is_state('light.yeelight_ceiling_cr_ambilight', 'on') }}"
+          timeout: "00:00:10"
+        - choose:
+            - conditions: "{{ wait.completed }}"
+              sequence:
+                - service: light.turn_off
+                  data:
+                      entity_id: light.yeelight_ceiling_cr_ambilight
 
-    - alias: yeelight650 on ambilight night mode
-      id: yeelight650 on ambilight night mode
+    - alias: yeelight ceiling cr on ambilight night mode
+      id: yeelight ceiling cr on ambilight night mode
       initial_state: true
       mode: single
       max_exceeded: silent
       trigger:
         - platform: state
-          entity_id: sensor.0x00158d0003a360b6_action
+          entity_id: sensor.0x158d0003a360b6_action
           to: 'single'
       condition:
           - condition: state
-            entity_id: light.yeelight_650
+            entity_id: light.yeelight_ceiling_cr
             state: "off"
       action:
           - service: light.turn_on
             data:
-                entity_id: light.yeelight_650_ambilight
+                entity_id: light.yeelight_ceiling_cr_ambilight
                 brightness: 1
-                rgb_color: [255, 0, 135]
+                rgb_color: [0, 0, 255]
                 #rgb_color: [255, 167, 88]
 
-    - alias: yeelight650 off ambilight night mode
-      id: yeelight650 off ambilight night mode
+    - alias: yeelight ceiling cr off ambilight night mode
+      id: yeelight ceiling cr off ambilight night mode
       initial_state: true
       mode: single
       max_exceeded: silent
       trigger:
         - platform: state
-          entity_id: sensor.0x00158d0003a360b6_action
+          entity_id: sensor.0x158d0003a360b6_action
           to: 'single'
       condition:
           - condition: state
-            entity_id: light.yeelight_650_ambilight
+            entity_id: light.yeelight_ceiling_cr_ambilight
             state: "on"
           - condition: state
-            entity_id: light.yeelight_650
+            entity_id: light.yeelight_ceiling_cr
             state: "off"
       action:
           - service: light.turn_off
             data:
-                entity_id: light.yeelight_650_ambilight
+                entity_id: light.yeelight_ceiling_cr_ambilight
 
-#Синхронизация светильника и выключателя каждые 3 минуты          
-    - alias: sync yeelight650 to switch
-      id: sync yeelight650 to switch
+#Синхронизация светильника и выключателя каждые 3 минуты
+    - alias: sync yeelight ceiling cr to switch
+      id: sync yeelight ceiling cr to switch
       initial_state: true
       trigger:
         platform: time_pattern
@@ -95,24 +103,24 @@
               - condition: and
                 conditions:
                   - condition: state
-                    entity_id: binary_sensor.0x00158d0003f37a0f_contact
+                    entity_id: binary_sensor.0x158d0003f37a0f_contact
                     state: 'on'
                   - condition: state
-                    entity_id: light.yeelight_650
+                    entity_id: light.yeelight_ceiling_cr
                     state: 'off'
                   - condition: state
-                    entity_id: light.yeelight_650_ambilight
+                    entity_id: light.yeelight_ceiling_cr_ambilight
                     state: 'off'
                   - condition: state
-                    entity_id: light.yeelight_650_nightlight
+                    entity_id: light.yeelight_ceiling_cr_nightlight
                     state: 'off'
               - condition: and
                 conditions:
                   - condition: state
-                    entity_id: binary_sensor.0x00158d0003f37a0f_contact
+                    entity_id: binary_sensor.0x158d0003f37a0f_contact
                     state: 'off'
                   - condition: state
-                    entity_id: light.yeelight_650
+                    entity_id: light.yeelight_ceiling_cr
                     state: 'on'
       action:
         - service: telegram_bot.send_message
@@ -123,7 +131,7 @@
             inline_keyboard:
               - 'Да:/changelight, Нет:/nochangelight, Игнорировать:/ignoringchangelight'
         - service: automation.turn_off
-          entity_id: automation.sync_yeelight650_to_switch
+          entity_id: automation.sync_yeelight_ceiling_cr_to_switch
 
 #Подсветка шлюза при открытии входной двери
     - alias: light gateway toggle
@@ -133,7 +141,7 @@
       max_exceeded: silent
       trigger:
         platform: state
-        entity_id: binary_sensor.0x00158d000359304c_contact
+        entity_id: binary_sensor.0x158d000359304c_contact
         from: 'off'
         to: 'on'
       condition:
@@ -183,7 +191,7 @@
           weekday:
             - mon
             - tue
-            - wed        
+            - wed
             - thu
             - fri
       action:
@@ -211,7 +219,7 @@
           weekday:
             - mon
             - tue
-            - wed        
+            - wed
             - thu
             - fri
       action:
@@ -228,20 +236,24 @@
       max_exceeded: silent
       trigger:
         - platform: state
-          entity_id: light.yeelight_650
+          entity_id: light.yeelight_ceiling_cr
           to: 'unavailable'
         - platform: homeassistant
           event: start
       condition:
         - condition: state
-          entity_id: light.yeelight_650
+          entity_id: light.yeelight_ceiling_cr
           state: 'unavailable'
+        - condition: template
+          value_template: >
+            {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
+            {{ states('switch.0x54ef441000096cbc') not in ignore }}
       action:
         - wait_for_trigger:
             - platform: state
-              entity_id: light.yeelight_650
+              entity_id: light.yeelight_ceiling_cr
               from: 'unavailable'
-          timeout: "00:02:00"      
+          timeout: "00:02:00"
         - choose:
             - conditions: "{{ wait.trigger == None }}"
               sequence:

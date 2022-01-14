@@ -8,21 +8,17 @@ sensor.illumination_04cf8cabd77b:
   friendly_name: Шлюз освещенность
   device_class: illuminance
 
-sensor.0x00158d00042fd6f5_temperature:
+sensor.0x158d00042fd6f5_temperature:
   friendly_name: Т улица
-  device_class: temperature
 
-sensor.0x00158d0004561de9_temperature:
+sensor.0x158d0004561de9_temperature:
   friendly_name: Т ванная
-  device_class: temperature
   
-sensor.0x00158d00042fd6f5_humidity:
+sensor.0x158d00042fd6f5_humidity:
   friendly_name: Rh улица
-  device_class: humidity
 
-sensor.0x00158d0004561de9_humidity:
+sensor.0x158d0004561de9_humidity:
   friendly_name: Rh ванная
-  device_class: humidity
 
 sensor.processor_temperature:
   friendly_name: Температура CPU
@@ -58,78 +54,67 @@ sensor.esp_xiaomi_living_room_humidity:
   friendly_name: Rh гостиная
   device_class: humidity
 
-sensor.0x00158d00054b8d72_battery:
+sensor.0x158d00054b8d72_battery:
   friendly_name: Датчик движения детская
 
-sensor.0x00158d00054b8d72_illuminance:
+sensor.0x158d00054b8d72_illuminance:
   friendly_name: Датчик движения детская
 
-sensor.0x00158d00054b8d72_linkquality:
+sensor.0x158d00054b8d72_zigbee:
   friendly_name: Датчик движения детская
 
-sensor.0x00158d000566bde7_battery:
+sensor.0x158d000566bde7_battery:
   friendly_name: Датчик движения коридор 1
 
-sensor.0x00158d000566bde7_illuminance:
+sensor.0x158d000566bde7_illuminance:
   friendly_name: Датчик движения коридор 1
 
-sensor.0x00158d000566bde7_linkquality:
+sensor.0x158d000566bde7_zigbee:
   friendly_name: Датчик движения коридор 1
 
-sensor.0x00158d0003953ee9_battery:
+sensor.0x158d0003953ee9_battery:
   friendly_name: Датчик движения коридор 2
 
-sensor.0x00158d0003953ee9_linkquality:
+sensor.0x158d0003953ee9_zigbee:
   friendly_name: Датчик движения коридор 2
 
-sensor.0x00158d0004561de9_battery:
+sensor.0x158d0004561de9_battery:
   friendly_name: Т&Rh ванная
-  device_class: battery
 
-sensor.0x00158d00042fd6f5_battery:
+sensor.0x158d00042fd6f5_battery:
   friendly_name: Т&Rh улица
-  device_class: battery
 
-sensor.0x00158d0003f37a0f_battery:
-  device_class: battery
+sensor.0x158d0003f37a0f_battery:
   friendly_name: Выкл. детская
 
-sensor.0x00158d000359304c_battery:
-  device_class: battery
+sensor.0x158d000359304c_battery:
   friendly_name: Входная дверь  
 
-sensor.0x00158d0003cfa725_battery:
-  device_class: battery
+sensor.0x158d0003cfa725_battery:
   friendly_name: Тамбурная дверь  
 
-sensor.0x00158d000490fe9d_battery:
-  device_class: battery
+sensor.0x158d000490fe9d_battery:
   friendly_name: Питание кондиционер
 
-sensor.0x00158d00045cd551_battery:
-  device_class: battery
+sensor.0x158d00045cd551_battery:
   friendly_name: Датчик дыма спальня
 
-sensor.0x00158d00045ca483_battery:
-  device_class: battery
+sensor.0x158d00045ca483_battery:
   friendly_name: Датчик дыма детская
 
-sensor.0x00158d00039a8358_battery:
-  device_class: battery
+sensor.0x158d00039a8358_battery:
   friendly_name: Датчик дыма гостиная
 
-sensor.0x00158d00039d9398_battery:
-  device_class: battery
+sensor.0x158d00039d9398_battery:
   friendly_name: Датчик дыма коридор
 
-sensor.0x00158d0003943639_battery:
-  device_class: battery
+sensor.0x158d0003943639_battery:
   friendly_name: Датчик дыма кухня
 
-sensor.0x00158d0003a360b6_battery:
+sensor.0x158d0003a360b6_battery:
   friendly_name: Беспроводная кн. детская
 
-sensor.0x00158d00045a78af_battery:
+sensor.0x158d00045a78af_battery:
   friendly_name: Беспроводная кн. звонок
 
 sensor.total_heater_socket_cable_daily_electicity:
@@ -186,49 +171,38 @@ sensor.0x60a423fffef8d41a_power:
 sensor.server_ac_power_socket_w:
   friendly_name: Тек. мощность
 
-sensor.0x04cf8cdf3c7d15b7_illuminance:
+sensor.0x4cf8cdf3c7d15b7_illuminance:
   friendly_name: Улица освещенность
 
-sensor.0x04cf8cdf3c7d15b7_illuminance_lux:
+sensor.0x4cf8cdf3c7d15b7_battery:
   friendly_name: Улица освещенность
 
-sensor.0x04cf8cdf3c7d15b7_battery:
-  friendly_name: Улица освещенность
-
-sensor.0x00158d000396f1f9_battery:
+sensor.0x158d000396f1f9_battery:
   device_class: battery
   friendly_name: Окно детская
 
-sensor.0x00158d0003fa6b60_battery:
-  device_class: battery
+sensor.0x158d0003fa6b60_battery:
   friendly_name: Окно спальня
 
-sensor.0x00158d0003981f6d_battery:
-  device_class: battery
+sensor.0x158d0003981f6d_battery:
   friendly_name: Балконная дверь спальня
 
-sensor.0x00158d00039677d9_battery:
-  device_class: battery
+sensor.0x158d00039677d9_battery:
   friendly_name: Балконная дверь детская
 
-sensor.0x00158d000396f197_battery:
-  device_class: battery
+sensor.0x158d000396f197_battery:
   friendly_name: Лев. окно гостиная
 
-sensor.0x00158d0003d05782_battery:
-  device_class: battery
+sensor.0x158d0003d05782_battery:
   friendly_name: Центр. окно гостиная
 
-sensor.0x00158d0003975d8b_battery:
-  device_class: battery
+sensor.0x158d0003975d8b_battery:
   friendly_name: Прав. окно гостиная
 
-sensor.0x00158d0003975b4c_battery:
-  device_class: battery
+sensor.0x158d0003975b4c_battery:
   friendly_name: Лев. окно кухня
 
-sensor.0x00158d00039a2f33_battery:
-  device_class: battery
+sensor.0x158d00039a2f33_battery:
   friendly_name: Прав. окно кухня
 
 sensor.esp_xiaomi_bed_room_battery_level:
@@ -342,26 +316,20 @@ sensor.0x5c0272fffec9db22_local_temperature:
 sensor.0x5c0272fffe8de819_local_temperature:
   friendly_name: Значение Т для TRV на кухне
 
-sensor.0x00158d0006c5f21e_temperature:
+sensor.0x158d0006c5f21e_temperature:
   friendly_name: Т горячая труба ванная
-  device_class: temperature
 
-sensor.0x00158d0006c5f21e_battery:
+sensor.0x158d0006c5f21e_battery:
   friendly_name: Т&Rh горячая труба ванная
-  device_class: battery
 
-sensor.0x00158d0006c5f21e_humidity:
+sensor.0x158d0006c5f21e_humidity:
   friendly_name: Rh горячая труба ванная
-  device_class: humidity
 
-sensor.0x00158d0006b860cf_temperature:
+sensor.0x158d0006b860cf_temperature:
   friendly_name: Т горячая труба санузел
-  device_class: temperature
 
-sensor.0x00158d0006b860cf_battery:
+sensor.0x158d0006b860cf_battery:
   friendly_name: Т&Rh горячая труба санузел
-  device_class: battery
 
-sensor.0x00158d0006b860cf_humidity:
+sensor.0x158d0006b860cf_humidity:
   friendly_name: Rh горячая труба санузел
-  device_class: humidity

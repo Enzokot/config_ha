@@ -85,11 +85,11 @@
       trigger:
        - platform: state
          entity_id: 
-           - binary_sensor.0x00158d0003943639_smoke
-           - binary_sensor.0x00158d00039a8358_smoke
-           - binary_sensor.0x00158d00039d9398_smoke
-           - binary_sensor.0x00158d00045ca483_smoke
-           - binary_sensor.0x00158d00045cd551_smoke
+           - binary_sensor.0x158d0003943639_smoke
+           - binary_sensor.0x158d00039a8358_smoke
+           - binary_sensor.0x158d00039d9398_smoke
+           - binary_sensor.0x158d00045ca483_smoke
+           - binary_sensor.0x158d00045cd551_smoke
          to: 'on'
       condition:
        - condition: state
@@ -106,28 +106,28 @@
       trigger:
        - platform: state
          entity_id: 
-           - binary_sensor.0x00158d0003943639_smoke
-           - binary_sensor.0x00158d00039a8358_smoke
-           - binary_sensor.0x00158d00039d9398_smoke
-           - binary_sensor.0x00158d00045ca483_smoke
-           - binary_sensor.0x00158d00045cd551_smoke
+           - binary_sensor.0x158d0003943639_smoke
+           - binary_sensor.0x158d00039a8358_smoke
+           - binary_sensor.0x158d00039d9398_smoke
+           - binary_sensor.0x158d00045ca483_smoke
+           - binary_sensor.0x158d00045cd551_smoke
          from: 'on'
          to: 'off'
       condition:
        - condition: state
-         entity_id: binary_sensor.0x00158d0003943639_smoke
+         entity_id: binary_sensor.0x158d0003943639_smoke
          state: 'off'
        - condition: state
-         entity_id: binary_sensor.0x00158d00039a8358_smoke
+         entity_id: binary_sensor.0x158d00039a8358_smoke
          state: 'off'
        - condition: state
-         entity_id: binary_sensor.0x00158d00039d9398_smoke
+         entity_id: binary_sensor.0x158d00039d9398_smoke
          state: 'off'
        - condition: state
-         entity_id: binary_sensor.0x00158d00045ca483_smoke
+         entity_id: binary_sensor.0x158d00045ca483_smoke
          state: 'off'      
        - condition: state
-         entity_id: binary_sensor.0x00158d00045cd551_smoke
+         entity_id: binary_sensor.0x158d00045cd551_smoke
          state: 'off'
        - condition: state
          entity_id: input_boolean.alarm_gateway_button
@@ -146,10 +146,10 @@
       trigger:
        - platform: state
          entity_id: 
-            - binary_sensor.0x00158d00054b8d72_occupancy
-            - binary_sensor.0x00158d000566bde7_occupancy
-            - binary_sensor.0x00158d0003953ee9_occupancy
-            - binary_sensor.0x00158d000359304c_contact
+            - binary_sensor.0x158d00054b8d72_motion
+            - binary_sensor.0x158d000566bde7_motion
+            - binary_sensor.0x158d0003953ee9_motion
+            - binary_sensor.0x158d000359304c_contact
             - group.window_childrens_room_group
             - group.window_bed_room_group
             - group.window_kitchen_group
@@ -157,8 +157,8 @@
          to: 'on'
        - platform: state
          entity_id: 
-            - sensor.0x00158d00054b8d72_illuminance
-            - sensor.0x00158d000566bde7_illuminance
+            - sensor.0x158d00054b8d72_illuminance
+            - sensor.0x158d000566bde7_illuminance
       condition:
        - condition: state
          entity_id: alarm_control_panel.signalka_shliuza_alarm
@@ -179,7 +179,7 @@
       - entity_id: alarm_control_panel.signalka_shliuza_alarm
         platform: state
         to: 'disarmed'
-      - entity_id: sensor.0x00158d0003a360b6_action
+      - entity_id: sensor.0x158d0003a360b6_action
         platform: state
         to: 'hold'
       condition:
@@ -197,7 +197,7 @@
       initial_state: true
       trigger:
        - platform: state
-         entity_id: sensor.0x00158d0003a360b6_action
+         entity_id: sensor.0x158d0003a360b6_action
          to: 'many'
       condition:
        - condition: state

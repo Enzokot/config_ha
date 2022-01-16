@@ -1179,7 +1179,7 @@
             disable_web_page_preview: true
             title: "{{ '\U000026d4' }} <b>Ошибка выполнения скрипта</b>"
             message: >
-              {{ trigger.event.data.message -}} <a href="{{- states('sensor.instance_external_url_config') -}}/config/logs"> Check logs.</a>
+              {{ trigger.event.data.message | e -}} <a href="{{- states('sensor.instance_external_url_config') -}}/config/logs"> Check logs.</a>
 
 #Уведомление об объектах, которые перешли в статус недоступно
     - alias: notifications objects in unavailable status
@@ -1332,7 +1332,7 @@
             disable_notification: true
             parse_mode: 'html'
             title: "{{ '\U000026A0' }} <b>Выполнение автоматизаций</b>"
-            message: "Повторный запуск автоматизации: {{trigger.event.data.message[0]}}"
+            message: "Повторный запуск автоматизации: {{ trigger.event.data.message[0] | e }}"
 
 #Уведомление о критических ошибках в системном журнале
     - alias: system log critical error notify
@@ -1356,7 +1356,7 @@
             disable_web_page_preview: true
             title: "{{ '\U000026d4' }} <b>Ошибки системного журнала</b>"
             message: >
-              {{ trigger.event.data.message -}} <a href="{{- states('sensor.instance_external_url_config') -}}/config/logs"> Check logs.</a>
+              {{ trigger.event.data.message | e -}} <a href="{{- states('sensor.instance_external_url_config') -}}/config/logs"> Check logs.</a>
 
 #Уведомление о непрочитанных/заполнении памяти sms на модеме
     - alias: notifications sms unread or full storage

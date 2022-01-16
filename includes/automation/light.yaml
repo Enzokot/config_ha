@@ -32,19 +32,23 @@
           data:
               entity_id: light.yeelight_ceiling_cr
               brightness: 255
+              color_temp: 250
+            #   hs_color: [26.812, 34.87]
+            #   rgb_color: [255, 205, 166]
+            #   xy_color: [0.421, 0.364]
         # - service: light.turn_on
         #   data:
         #       entity_id: light.yeelight_ceiling_cr_ambilight
         #       brightness: 255
         #       rgb_color: [0, 0, 255]
-        - wait_template: "{{ is_state('light.yeelight_ceiling_cr_ambilight', 'on') }}"
-          timeout: "00:00:10"
-        - choose:
-            - conditions: "{{ wait.completed }}"
-              sequence:
-                - service: light.turn_off
-                  data:
-                      entity_id: light.yeelight_ceiling_cr_ambilight
+        # - wait_template: "{{ is_state('light.yeelight_ceiling_cr_ambilight', 'on') }}"
+        #   timeout: "00:00:10"
+        # - choose:
+        #     - conditions: "{{ wait.completed }}"
+        #       sequence:
+        #         - service: light.turn_off
+        #           data:
+        #               entity_id: light.yeelight_ceiling_cr_ambilight
 
     - alias: yeelight ceiling cr on ambilight night mode
       id: yeelight ceiling cr on ambilight night mode

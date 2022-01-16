@@ -1449,7 +1449,7 @@
             parse_mode: 'html'
             title: "{{ '\U0001F4F0' }} <b>RSS новости</b>"
             message: >
-                <a href="{{- trigger.event.data.link -}}">{{- trigger.event.data.title -}}</a>
+                <a href="{{- trigger.event.data.link -}}">{{- trigger.event.data.title | e -}}</a>
 
 #Уведомление о наличии warning и error в syslog HA
     - alias: notifications warnings or errors in syslog
@@ -1563,7 +1563,7 @@
             title: >
                 {% if trigger.id == 'non_local' %} {{ '\U000026A0' }} {% else %} {{ '\U00002705' }} {% endif -%} <b>Трекинг устройств</b>
             message: >
-                Станция <b>{{- trigger.to_state.name -}}</b> {% if trigger.id == 'non_local' -%} отключила локальный режим управления {%- else -%} перешла в локальный режим управления {%- endif %}
+                Станция <b>{{- trigger.to_state.name | e -}}</b> {% if trigger.id == 'non_local' -%} отключила локальный режим управления {%- else -%} перешла в локальный режим управления {%- endif %}
 
 #Низкая температура входной горячей трубы
     - alias: hot pipe low or up temperature notification

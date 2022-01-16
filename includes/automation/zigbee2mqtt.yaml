@@ -46,13 +46,13 @@
             message: >-
                       Добавлено новое устройство:
                       {{- '\n' -}}
-                      Имя: {{trigger.payload_json.data.friendly_name}},
+                      Имя: {{trigger.payload_json.data.friendly_name | e}},
                       {{- '\n' -}}
-                      Поставщик: {{trigger.payload_json.data.definition.vendor}},
+                      Поставщик: {{trigger.payload_json.data.definition.vendor | e}},
                       {{- '\n' -}}
-                      Модель: {{trigger.payload_json.data.definition.model}}
+                      Модель: {{trigger.payload_json.data.definition.model | e}}
                       {{- '\n' -}}
-                      Описание: {{trigger.payload_json.data.definition.description}}
+                      Описание: {{trigger.payload_json.data.definition.description | e}}
             disable_notification: true
             parse_mode: 'html'
             target: !secret telegram_enzokot_chat_id

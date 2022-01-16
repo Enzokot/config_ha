@@ -1156,6 +1156,10 @@
           event_data:
             level: ERROR
       condition:
+        - condition: state
+          entity_id: binary_sensor.local_network_availability
+          state: 'on'
+        - "{{ not trigger.event.data.message | regex_search(this.entity_id) }}"
         - condition: template
           value_template: >-
             {{ 

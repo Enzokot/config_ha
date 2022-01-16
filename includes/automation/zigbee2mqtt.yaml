@@ -31,6 +31,7 @@
 
     - alias: zigbee_device_joined_notification
       id: zigbee_device_joined_notification
+      mode: queued
       trigger:
         platform: mqtt
         topic: 'zigbee2mqtt/bridge/event'

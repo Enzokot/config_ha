@@ -255,7 +255,7 @@
               from: 'unavailable'
           timeout: "00:02:00"
         - choose:
-            - conditions: "{{ wait.trigger == None }}"
+            - conditions: "{{ wait.trigger == None and is_state('binary_sensor.local_network_availability', 'on') }}"
               sequence:
                   - service: switch.turn_off
                     data:

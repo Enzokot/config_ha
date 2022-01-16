@@ -34,6 +34,9 @@
     - platform: time_pattern
       minutes: "/45"
   condition:
+    - condition: state
+      entity_id: binary_sensor.local_network_availability
+      state: 'on'
     - condition: template
       value_template: >
             {% set ignore = ['unknown', 'unavailable', 'none'] %}
@@ -69,6 +72,9 @@
     - condition: state
       entity_id: input_boolean.instances_stoping
       state: 'off'
+    - condition: state
+      entity_id: binary_sensor.local_network_availability
+      state: 'on'
     - condition: template
       value_template: >-
         {{ trigger.event.data.new_state.state != trigger.event.data.old_state.state 
@@ -281,7 +287,7 @@
           from: 'unavailable'
       timeout: "00:05:00"
     - choose:
-        - conditions: "{{ wait.trigger == None }}"
+        - conditions: "{{ wait.trigger == None and is_state('binary_sensor.local_network_availability', 'on') }}"
           sequence:
               - service: huawei_lte.reboot
                 data:
@@ -322,7 +328,7 @@
           from: 'unavailable'
       timeout: "00:01:00"
     - choose:
-        - conditions: "{{ wait.trigger == None }}"
+        - conditions: "{{ wait.trigger == None and is_state('binary_sensor.local_network_availability', 'on') }}"
           sequence:
             - service: homeassistant.reload_config_entry
               data:

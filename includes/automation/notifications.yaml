@@ -1159,7 +1159,7 @@
         - condition: state
           entity_id: binary_sensor.local_network_availability
           state: 'on'
-        - "{{ not trigger.event.data.message | regex_search(this.entity_id) }}"
+        - "{{ trigger.event.data.name is not search(this.entity_id, ignorecase=True) }}"
         - condition: template
           value_template: >-
             {{ 

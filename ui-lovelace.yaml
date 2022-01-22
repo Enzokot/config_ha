@@ -224,8 +224,8 @@ views:
               show_header_toggle: false
               entities:
                   - entity: sensor.0x54ef441000096cbc_power
-                  - entity: sensor.total_yeelight650_relay_cable_daily_electicity
-                  - entity: sensor.total_yeelight650_relay_cable_monthly_electicity
+                  - entity: sensor.total_yeelight_ceiling_relay_cable_daily_electicity
+                  - entity: sensor.total_yeelight_ceiling_relay_cable_monthly_electicity
 
       - type: vertical-stack
         cards:
@@ -274,6 +274,9 @@ views:
 
         - type: 'custom:shutter-card'
           entities:
+            - entity: cover.cover_group_kitchen
+              name: Группа
+              buttons_position: right
             - entity: cover.0x847127fffed62861
               name: Левая
               buttons_position: right

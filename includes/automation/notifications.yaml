@@ -1526,6 +1526,7 @@
             - sensor.telegram_status
           from: 'online'
           to: 'offline'
+          for: '00:01:00'
       action:
         - service: notify.huawei_lte
           data:

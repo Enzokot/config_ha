@@ -54,8 +54,8 @@
     min: 0
     max: 1000000
 
-  total_yeelight650_relay_saved:
-    name: "Потребление реле в yeelight650 детская"
+  total_yeelight_ceiling_relay_saved:
+    name: "Потребление реле для yeelight ceiling детская"
     icon: mdi:horizontal-rotate-counterclockwise
     min: 0
     max: 1000000

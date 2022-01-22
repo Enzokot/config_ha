@@ -95,7 +95,6 @@
     temperature_summary_group_to_bot:
         entities:
           - sensor.0x158d00042fd6f5_temperature
-          - sensor.esp_xiaomi_childrens_room_temperature
           - sensor.esp_xiaomi_bed_room_temperature
           - sensor.esp_xiaomi_living_room_temperature
           - sensor.0x158d0004561de9_temperature

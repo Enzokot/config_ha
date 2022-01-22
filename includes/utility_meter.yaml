@@ -70,14 +70,14 @@
     tariffs:
       - electicity
 
-  total_yeelight650_relay_cable_daily:
-    source: sensor.total_yeelight650_relay_cable
+  total_yeelight_ceiling_relay_cable_daily:
+    source: sensor.total_yeelight_ceiling_relay_cable
     cycle: daily
     tariffs:
       - electicity
 
-  total_yeelight650_relay_cable_monthly:
-    source: sensor.total_yeelight650_relay_cable
+  total_yeelight_ceiling_relay_cable_monthly:
+    source: sensor.total_yeelight_ceiling_relay_cable
     cycle: monthly
     tariffs:
       - electicity

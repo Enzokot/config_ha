@@ -171,8 +171,8 @@
             callback_query_id: '{{ trigger.event.data.id }}'
             message: 'Постучали шлюзом'
 
-    - alias: del keyboard sync yeelight650 to switch
-      id: del keyboard sync yeelight650 to switch
+    - alias: del keyboard sync yeelight ceiling to switch
+      id: del keyboard sync yeelight ceiling to switch
       initial_state: true
       mode: single
       max_exceeded: silent  
@@ -195,8 +195,8 @@
             chat_id: '{{ trigger.event.data.user_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
 
-    - alias: no key sync yeelight650 to switch
-      id: no key sync yeelight650 to switch
+    - alias: no key sync yeelight ceiling to switch
+      id: no key sync yeelight ceiling to switch
       initial_state: true
       mode: single
       max_exceeded: silent  
@@ -207,14 +207,14 @@
             data: '/nochangelight'
       action:
         - service: automation.turn_on
-          entity_id: automation.sync_yeelight650_to_switch
+          entity_id: automation.sync_yeelight_ceiling_to_switch
         - service: telegram_bot.answer_callback_query
           data:
             callback_query_id: '{{ trigger.event.data.id }}'
             message: 'Проверим состояние позже'
 
-    - alias: ignor key sync yeelight650 to switch
-      id: ignor key sync yeelight650 to switch
+    - alias: ignor key sync yeelight ceiling to switch
+      id: ignor key sync yeelight ceiling to switch
       mode: single
       max_exceeded: silent  
       initial_state: true
@@ -229,8 +229,8 @@
             callback_query_id: '{{ trigger.event.data.id }}'
             message: 'Отключили проверку'
 
-    - alias: change keyboard sync yeelight650 to switch
-      id: change keyboard sync yeelight650 to switch
+    - alias: change keyboard sync yeelight ceiling to switch
+      id: change keyboard sync yeelight ceiling to switch
       mode: single
       max_exceeded: silent  
       initial_state: true
@@ -262,7 +262,7 @@
         - service: light.toggle
           entity_id: light.yeelight_ceiling_cr
         - service: automation.turn_on
-          entity_id: automation.sync_yeelight650_to_switch
+          entity_id: automation.sync_yeelight_ceiling_to_switch
         - service: telegram_bot.answer_callback_query
           data:
             callback_query_id: '{{ trigger.event.data.id }}'

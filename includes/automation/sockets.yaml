@@ -355,8 +355,8 @@
               entity_id: switch.0x842e14fffe5047f5
 
 #Сохранение значения энергии при перезапуске z2m или HA
-    - alias: restart z2m or instance for childrens room relay yeelight650
-      id: restart z2m or instance for childrens room relay yeelight650
+    - alias: restart z2m or instance for childrens room relay yeelight ceiling
+      id: restart z2m or instance for childrens room relay yeelight ceiling
       initial_state: true
       mode: single
       max_exceeded: silent
@@ -374,8 +374,16 @@
       action:
           - service: input_number.set_value
             data:
-              entity_id: input_number.total_yeelight650_relay_saved
+              entity_id: input_number.total_yeelight_ceiling_relay_saved
               value: "{{ trigger.to_state.state }}"
+        #   - service: telegram_bot.send_message
+        #     data:
+        #       target: !secret telegram_enzokot_chat_id
+        #       parse_mode: 'html'
+        #       title: >-
+        #               {{ '\U0001F41B' }} <b>Отладка</b>
+        #       message: >-
+        #               Реле yeelight 550 {{ trigger.to_state.state }}
 
 #Сохранение значения энергии при перезапуске HA
     - alias: restart instance for shelly EM

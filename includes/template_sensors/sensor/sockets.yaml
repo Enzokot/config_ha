@@ -25,10 +25,10 @@
           icon: mdi:horizontal-rotate-counterclockwise
           state: "{{ states('input_number.total_kitchen_socket1_saved')}}"
 
-        - name: total_yeelight650_relay_cable
+        - name: total_yeelight_ceiling_relay_cable
           unit_of_measurement: kWh
           icon: mdi:horizontal-rotate-counterclockwise
-          state: "{{ states('input_number.total_yeelight650_relay_saved')}}"
+          state: "{{ states('input_number.total_yeelight_ceiling_relay_saved')}}"
 
         - name: total_shelly_em_cable
           unit_of_measurement: kWh

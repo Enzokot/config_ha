@@ -59,8 +59,8 @@
       - sensor.total_bedroom_socket_2_cable_monthly_electicity
       - sensor.total_server_socket_cable_daily_electicity
       - sensor.total_server_socket_cable_monthly_electicity
-      - sensor.total_yeelight650_relay_cable_daily_electicity
-      - sensor.total_yeelight650_relay_cable_monthly_electicity
+      - sensor.total_yeelight_ceiling_relay_cable_daily_electicity
+      - sensor.total_yeelight_ceiling_relay_cable_monthly_electicity
       - sensor.total_shelly_em_cable_daily_electicity
       - sensor.total_shelly_em_cable_monthly_electicity
       - sensor.total_server_socket_cable

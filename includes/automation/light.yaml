@@ -1,4 +1,4 @@
-#yeelight650 детская
+#yeelight ceiling детская
     - alias: yeelight ceiling cr off
       id: yeelight ceiling cr off
       initial_state: true
@@ -100,8 +100,8 @@
         platform: time_pattern
         minutes: "/3"
       condition:
-          - "{{ (state_attr('automation.yeelight650_on', 'current') | int(0)) == 0 }}"
-          - "{{ (state_attr('automation.yeelight650_off', 'current') | int(0)) == 0 }}"
+          - "{{ (state_attr('automation.yeelight_ceiling_on', 'current') | int(0)) == 0 }}"
+          - "{{ (state_attr('automation.yeelight_ceiling_off', 'current') | int(0)) == 0 }}"
           - condition: or
             conditions:
               - condition: and
@@ -232,9 +232,9 @@
         - service: scene.turn_on
           entity_id: scene.before_on_go_to_work
 
-#Перезапуск интеграции и реле для yeelight650 детская
-    - alias: restart integration relay yeelight 650 unavailable
-      id: restart integration relay yeelight 650 unavailable
+#Перезапуск интеграции и реле для yeelight ceiling детская
+    - alias: restart integration relay yeelight ceiling unavailable
+      id: restart integration relay yeelight ceiling unavailable
       initial_state: true
       mode: single
       max_exceeded: silent

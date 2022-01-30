@@ -221,10 +221,10 @@ sensor.zigbee2mqtt_coordinator_ver:
   friendly_name: Версия стика
 
 sensor.last_boot_custom:
-  friendly_name: Последняя перезагрузка
+  friendly_name: Host время работы
 
 sensor.online_custom:
-  friendly_name: Последняя перезагрузка HA
+  friendly_name: Core время работы
 
 sensor.cert_expiry_keenetic_domain:
   friendly_name: Сертификат SSL Keenetic
@@ -272,8 +272,19 @@ sensor.thermostat_living_room_valve_position:
 sensor.thermostat_kitchen_valve_position:
   friendly_name: Положение штока
 
+sensor.maria_db_size:
+  friendly_name: Объем базы данных Maria
+  icon: mdi:database
+
 sensor.influxdb_db_size:
   friendly_name: Объем базы данных InfluxDB
+  icon: mdi:database
+
+sensor.maria_db_folder_size:
+  friendly_name: Объем каталога БД Maria
+
+sensor.influxdb_db_folder_size:
+  friendly_name: Объем каталога БД InfluxDB
 
 sensor.total_yeelight_ceiling_relay_cable_daily_electicity:
   friendly_name: Светильник потреб. день

@@ -7,7 +7,7 @@
       - platform: homeassistant
         event: start
       - platform: event
-        event_type: event_template_reloaded        
+        event_type: event_template_reloaded
     sensor:
       - name: non smoking
         state: '{{ ( ( as_timestamp(now()) - as_timestamp(strptime("22.09.2021", "%d.%m.%Y")) ) / 86400 ) | round(0, "common", 0) }}'

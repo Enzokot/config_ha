@@ -282,3 +282,28 @@
                       data:
                         callback_query_id: '{{ trigger.event.data.id }}'
                         message: 'Выключили сигнализацию'
+
+#Вкл/выкл сигнализации при ее активации на gw2
+    - alias: main gateway arm dissarm to others gw
+      id: main gateway arm dissarm to others gw
+      initial_state: true
+      trigger:
+       - platform: state
+         id: "armed"
+         entity_id: alarm_control_panel.signalka_shliuza_alarm
+         to: "armed_away"
+       - platform: state
+         entity_id: alarm_control_panel.signalka_shliuza_alarm
+         to: "disarmed"
+      action:
+          - service: >-
+                {% if trigger.id == 'armed' %}
+                  alarm_control_panel.alarm_arm_away
+                {% else %}
+                  alarm_control_panel.alarm_disarm
+                {% endif -%}
+            data: 
+              entity_id:
+                - alarm_control_panel.0x588e81fffee49ba2_alarm
+                - alarm_control_panel.0xb4e3f9fffee5a01d_alarm
+                - alarm_control_panel.0xb4e3f9fffee5a6cb_alarm

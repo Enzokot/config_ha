@@ -19,14 +19,23 @@
 #  - platform: filesize
 #    file_paths:
 #     - /config/home-assistant_v2.db
-     
+
+#Размер базы MariaDB
   - platform: sql
     db_url: !secret connection_string
     queries:
       - name: Maria DB size
-        query: 'SELECT table_schema "database", round(Sum(data_length + index_length) / 1048576, 2) "value" FROM information_schema.tables WHERE table_schema="homeassistant" GROUP BY table_schema;'
+        query: 'SELECT table_schema "database", round(Sum(data_length + index_length) / 1048576, 1) "value" FROM information_schema.tables WHERE table_schema="homeassistant" GROUP BY table_schema;'
         column: 'value'
-        unit_of_measurement: MB 
+        unit_of_measurement: MB
+
+  - platform: mqtt
+    name: Maria DB folder size
+    state_topic: "folders_sizes/mariadb_homeassistant"
+    icon: mdi:folder-eye
+    unit_of_measurement: MB
+    value_template: "{{ (value | float(0.0) / 1024) | round(1, 'common', 0) }}"
+
 
   - platform: uptime
     name: online
@@ -71,12 +80,20 @@
     queries:
       - name: InfluxDB_DB_Size
         unit_of_measurement: MB
-        value_template: '{{ (value | float(0.0) / 1024 /1024) | round(1, "common", 0) }}'
-        group_function: mean
+        value_template: '{{ (value | float(0.0) / 1024 / 1024) | round(1, "common", 0) }}'
+        group_function: last
         measurement: '"monitor"."shard"'
         database: _internal
-        where: 'time > now() - 1m AND "database"=''homeassistant'''
+        where: 'time > now() - 10s AND "database"=''homeassistant'''
         field: diskBytes 
+
+  - platform: mqtt
+    name: InfluxDB DB folder size
+    state_topic: "folders_sizes/influxdb_homeassistant"
+    icon: mdi:folder-eye
+    unit_of_measurement: MB
+    value_template: "{{ (value | float(0.0) / 1024) | round(1, 'common', 0) }}"
+
 
 #Сенсор длительности старта НА
 #   - platform: command_line

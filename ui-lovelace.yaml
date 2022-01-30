@@ -133,8 +133,8 @@ views:
           show_header_toggle: false
           entities:
             - entity: sensor.maria_db_size
-              name: Объем базы данных Maria
-              icon: mdi:database
+              secondary_info: entity-id
+            - entity: sensor.maria_db_folder_size
               secondary_info: entity-id
             - type: call-service
               icon: mdi:database-minus
@@ -145,7 +145,8 @@ views:
                 entity_id: automation.db_purge_everyday
             - type: divider
             - entity: sensor.influxdb_db_size
-              icon: mdi:database
+              secondary_info: entity-id
+            - entity: sensor.influxdb_db_folder_size
               secondary_info: entity-id
 
         - type: markdown

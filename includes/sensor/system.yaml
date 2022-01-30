@@ -29,6 +29,7 @@
         column: 'value'
         unit_of_measurement: MB
 
+#На хосте "du -s /usr/share/hassio/addons/data/core_mariadb/databases/homeassistant/"
   - platform: mqtt
     name: Maria DB folder size
     state_topic: "folders_sizes/mariadb_homeassistant"
@@ -87,6 +88,7 @@
         where: 'time > now() - 10s AND "database"=''homeassistant'''
         field: diskBytes 
 
+#На хосте "du -s /usr/share/hassio/addons/data/a0d7b954_influxdb/influxdb/data/homeassistant/"
   - platform: mqtt
     name: InfluxDB DB folder size
     state_topic: "folders_sizes/influxdb_homeassistant"

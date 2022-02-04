@@ -150,10 +150,10 @@
             - binary_sensor.0x158d000566bde7_motion
             - binary_sensor.0x158d0003953ee9_motion
             - binary_sensor.0x158d000359304c_contact
-            - group.window_childrens_room_group
-            - group.window_bed_room_group
-            - group.window_kitchen_group
-            - group.window_living_room_group
+            - binary_sensor.window_childrens_room_group
+            - binary_sensor.window_bed_room_group
+            - binary_sensor.window_kitchen_group
+            - binary_sensor.window_living_room_group
          to: 'on'
        - platform: state
          entity_id: 

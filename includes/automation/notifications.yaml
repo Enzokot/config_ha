@@ -345,10 +345,10 @@
       trigger:
         - platform: state
           entity_id: 
-             - group.window_bed_room_group
-             - group.window_childrens_room_group
-             - group.window_living_room_group
-             - group.window_kitchen_group
+             - binary_sensor.window_bed_room_group
+             - binary_sensor.window_childrens_room_group
+             - binary_sensor.window_living_room_group
+             - binary_sensor.window_kitchen_group
           to: 'on'
       condition:
         - condition: state

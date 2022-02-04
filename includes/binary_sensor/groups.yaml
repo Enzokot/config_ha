@@ -1,0 +1,30 @@
+
+#Группы окна/двери балконов
+    - platform: group
+      name: window_childrens_room_group
+      device_class: opening
+      entities:
+        - binary_sensor.0x158d00039677d9_contact
+        - binary_sensor.0x158d000396f1f9_contact
+
+    - platform: group
+      name: window_bed_room_group
+      device_class: opening
+      entities:
+        - binary_sensor.0x158d0003981f6d_contact
+        - binary_sensor.0x158d0003fa6b60_contact
+
+    - platform: group
+      name: window_living_room_group
+      device_class: window
+      entities:
+        - binary_sensor.0x158d0003975d8b_contact
+        - binary_sensor.0x158d0003d05782_contact
+        - binary_sensor.0x158d000396f197_contact
+
+    - platform: group
+      name: window_kitchen_group
+      device_class: window
+      entities:
+        - binary_sensor.0x158d0003975b4c_contact
+        - binary_sensor.0x158d00039a2f33_contact

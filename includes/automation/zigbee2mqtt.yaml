@@ -103,7 +103,7 @@
                     {%- endfor -%}
                     
                     {%- set missing_count = datanames.last_seen | length -%}
-                    {%- if missing_count > 0 %} {{ '\U000026a0' }} {%- else %} {{ '\U00002705' }} {%- endif %} *Контроль устройств Zigbee*
+                    {%- if missing_count > 0 %} ⚠️ {%- else %} {{ '\U00002705' }} {%- endif %} *Контроль устройств Zigbee*
             disable_notification: true
             target: !secret telegram_enzokot_chat_id
             message: >

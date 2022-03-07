@@ -64,6 +64,9 @@
             min: 1
             max: 204
     media_player.lg_smart_tv:
+      turn_on:
+        service: media_player.turn_on
+        entity_id: media_player.lg_smart_tv
       modes:
         input_source:
           one: ['YouTube']

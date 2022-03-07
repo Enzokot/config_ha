@@ -3,9 +3,6 @@
   - trigger:
       - platform: state
         entity_id: switch.r4s1_kettle_beep
-        from:
-          - "on"
-          - "off"
         to:
           - "on"
           - "off"
@@ -15,4 +12,4 @@
         event_type: event_template_reloaded
     binary_sensor:
       - name: r4s1_kettle_beep_inverted
-        state: "{{ not states('switch.r4s1_kettle_beep') }}"
+        state: "{{ is_state('switch.r4s1_kettle_beep', 'off') }}"

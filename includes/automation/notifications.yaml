@@ -13,7 +13,7 @@
         - service: notify.telegram_enzokot_to_bot
           data:
             title: >-
-                   {{ '\U000026a0' }} *Датчик открытия/закрытия*
+                   ⚠️ *Датчик открытия/закрытия*
             message: >-
                      Входная дверь: открыта более 2 минут
             # data:
@@ -26,7 +26,7 @@
                   entity_id: media_player.lg_smart_tv
                   state: 'on'
               sequence:
-                - service: notify.lg_smart_tv
+                - service: notify.kotletochka_tv
                   data:
                     message: 'Входная дверь: открыта более 2 минут'
 
@@ -177,7 +177,7 @@
                   entity_id: media_player.lg_smart_tv
                   state: 'on'
               sequence:
-                - service: notify.lg_smart_tv
+                - service: notify.kotletochka_tv
                   data:
                     message: 'Входная дверь: открыта'
 
@@ -214,7 +214,7 @@
                   entity_id: media_player.lg_smart_tv
                   state: 'on'
               sequence:
-                - service: notify.lg_smart_tv
+                - service: notify.kotletochka_tv
                   data:
                     message: 'Входная дверь: закрыта'
 
@@ -419,7 +419,7 @@
             target: !secret telegram_all_chat_id
             url: "{{- 'http://homeassistant.local.hass.io:8123' + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
             caption: >-
-                   {{ '\U000026a0' }} *Степа* {{- '\n' -}} Похоже я застрял или какая то другая ошибка
+                   ⚠️ *Степа* {{- '\n' -}} Похоже я застрял или какая то другая ошибка
             inline_keyboard:
               - 'Найти меня (громко):/findvacuum'
         - choose:
@@ -428,7 +428,7 @@
                   entity_id: media_player.lg_smart_tv
                   state: 'on'
               sequence:
-                - service: notify.lg_smart_tv
+                - service: notify.kotletochka_tv
                   data:
                     message: 'Степа: мне нужна помощь'
 
@@ -461,7 +461,7 @@
                   entity_id: media_player.lg_smart_tv
                   state: 'on'
               sequence:
-                - service: notify.lg_smart_tv
+                - service: notify.kotletochka_tv
                   data:
                     message: 'Степа: вернулся на базу'
 
@@ -606,7 +606,7 @@
           data:
             target: !secret telegram_enzokot_chat_id
             title: >-
-                     {{ '\U000026a0' }} *Сертификат SSL*
+                     ⚠️ *Сертификат SSL*
             message: >-
                         {%- set entity_name = trigger.entity_id | replace('binary_', '') | replace('_expired_', '_expiry_') -%}
                         Срок действия сертификата для _{{ trigger.to_state.name -}}_: *{{- states(entity_name) -}}* {{ state_attr(entity_name, 'unit_of_measurement') }}
@@ -832,7 +832,7 @@
           data:
             target: !secret telegram_enzokot_chat_id
             title: >-
-                     {{ '\U000026a0' }} *Управляемые розетки*
+                     ⚠️ *Управляемые розетки*
             message: >-
                         Сработала защита по превышению потребления для розетки:
                         {{ '\n' }}
@@ -873,7 +873,7 @@
                   entity_id: media_player.lg_smart_tv
                   state: 'on'
               sequence:
-                - service: notify.lg_smart_tv
+                - service: notify.kotletochka_tv
                   data:
                     message: 'Интернет: возможно переключились на LTE'
 
@@ -904,7 +904,7 @@
                   entity_id: media_player.lg_smart_tv
                   state: 'on'
               sequence:
-                - service: notify.lg_smart_tv
+                - service: notify.kotletochka_tv
                   data:
                     message: >-
                         Нет воды: _{{- device_attr(trigger.entity_id, 'name') -}}_
@@ -963,7 +963,7 @@
           data:
             target: !secret telegram_enzokot_chat_id
             title: >-
-                     {% if trigger.above != None and trigger.below != None  %} {{ '\U00002705' }} {% else %} {{ '\U000026a0' }} {% endif -%} *Контроль напряжения*
+                     {% if trigger.above != None and trigger.below != None  %} {{ '\U00002705' }} {% else %} ⚠️ {% endif -%} *Контроль напряжения*
             message: >-
                      {% if trigger.above != None and trigger.below == None and trigger.to_state.state | float(0.0) >= trigger.above | float(0.0) %}
                         Обнаружено *повышенное* напряжение сети {{ trigger.to_state.state }}В
@@ -1212,7 +1212,7 @@
                     target: !secret telegram_enzokot_chat_id
                     disable_notification: true
                     parse_mode: 'html'
-                    title: "{{ '\U000026A0' }} <b>Трекинг устройств</b>"
+                    title: "⚠️ <b>Трекинг устройств</b>"
                     message: >
                       <i>{{ state_attr(trigger.event.data.entity_id, 'friendly_name') }}</i> сменил статус на <b>{{ trigger.event.data.new_state.state }}</b>
 
@@ -1331,7 +1331,7 @@
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
             parse_mode: 'html'
-            title: "{{ '\U000026A0' }} <b>Выполнение автоматизаций</b>"
+            title: "⚠️ <b>Выполнение автоматизаций</b>"
             message: "Повторный запуск автоматизации: {{ trigger.event.data.message[0] | e }}"
 
 #Уведомление о критических ошибках в системном журнале
@@ -1399,11 +1399,9 @@
       trigger:
         - platform: state
           entity_id: binary_sensor.check_keenetic_link_down
-          from: 'on'
           to: 'off'
         - platform: state
           entity_id: binary_sensor.check_keenetic_link_down
-          from: 'off'
           to: 'on'
         - platform: homeassistant
           event: start
@@ -1562,7 +1560,7 @@
             disable_notification: true
             parse_mode: 'html'
             title: >
-                {% if trigger.id == 'non_local' %} {{ '\U000026A0' }} {% else %} {{ '\U00002705' }} {% endif -%} <b>Трекинг устройств</b>
+                {% if trigger.id == 'non_local' %} ⚠️ {% else %} {{ '\U00002705' }} {% endif -%} <b>Трекинг устройств</b>
             message: >
                 Станция <b>{{- trigger.to_state.name | e -}}</b> {% if trigger.id == 'non_local' -%} отключила локальный режим управления {%- else -%} перешла в локальный режим управления {%- endif %}
 

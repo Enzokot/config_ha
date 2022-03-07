@@ -1242,7 +1242,7 @@ views:
               - entity: vacuum.xiaomi_vacuum_cleaner
                 value: docked
           - label: 'Длительность'
-            entity: sensor.xiaomi_vacuum_cleaner_last_clean_duration
+            entity: sensor.xiaomi_vacuum_cleaner_current_clean_duration
             icon: mdi:timer-sand
             multiplier: 0.01666666666
             precision: 0
@@ -1251,7 +1251,7 @@ views:
               - entity: vacuum.xiaomi_vacuum_cleaner
                 value_not: docked
           - label: 'Площадь'
-            entity: sensor.xiaomi_vacuum_cleaner_last_clean_area
+            entity: sensor.xiaomi_vacuum_cleaner_current_clean_area
             icon: mdi:texture-box
             unit: 'м²'
             precision: 0

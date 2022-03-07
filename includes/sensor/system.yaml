@@ -41,24 +41,6 @@
   - platform: uptime
     name: online
 
-  - platform: version
-    source: supervisor
-    name: Latest version HA
-
-# HA current version    
-  - platform: version
-    name: Current version HA
-
-#Public IP
-  - platform: dnsip
-    name: myip
-
-  - platform: dnsip
-    #resolver: 8.8.8.8
-    scan_interval: 60
-    hostname: !secret keenetic_base_url
-    name: myip_keenetic
-
 #Supervisor versions
   - platform: command_line
     name: Supervisor versions

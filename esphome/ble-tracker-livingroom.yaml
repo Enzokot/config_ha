@@ -68,8 +68,6 @@ globals:
      initial_value: '0.0'
 
 switch:
-  - platform: restart
-    name: "$devicename Restart"
   - platform: gpio
     id: onboard_led
     name: "$devicename On Board Led"
@@ -157,3 +155,7 @@ sensor:
     update_interval: never
     lambda: |-
       {return id(weight_global_float);}
+
+button:
+  - platform: restart
+    name: ${devicename}_Restart

@@ -1,0 +1,15 @@
+
+#Включение ТВ в спальне через ИК
+    - alias: turn on lg webos tv bedroom
+      id: turn on lg webos tv bedroom
+      initial_state: true
+      trigger:
+        - platform: webostv.turn_on
+          entity_id: media_player.lg_smart_tv
+      condition:
+        - "{{ states('media_player.lg_smart_tv') in ['off', 'unknown', 'unavailable'] }}"
+      action:
+        - service: remote.send_command
+          data:
+            entity_id: remote.broadlink_ir_rm4_mini
+            command: 'b64:JgBYAAABI5URFBEUEjgRFBEUERQRFREUETgSOBEUETkROBE5ETgSOBEUERQRFBI4ERQRFBEUEhQROBI4ETgRFRA5ETkROBI4EQAFJwABJkwRAAxeAAElSxIADQU='

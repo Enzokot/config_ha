@@ -31,7 +31,7 @@
         - service: light.turn_on
           data:
               entity_id: light.yeelight_ceiling_cr
-              color_temp: 250
+              color_temp: 280
               brightness: 255
         # - delay:
         #     milliseconds: 500
@@ -139,7 +139,7 @@
           data:
             target: !secret telegram_enzokot_chat_id
             message: >-
-                       {{ '\U000026a0' }} Обнаружено отклонение светильника и выключателя, исправить?
+                       ⚠️ Обнаружено отклонение светильника и выключателя, исправить?
             inline_keyboard:
               - 'Да:/changelight, Нет:/nochangelight, Игнорировать:/ignoringchangelight'
         - service: automation.turn_off

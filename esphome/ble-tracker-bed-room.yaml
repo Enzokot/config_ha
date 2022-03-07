@@ -85,9 +85,6 @@ sensor:
     update_interval: 60s
 
 switch:
-  - platform: restart
-    name: "$devicename Restart"      
-
   - platform: gpio
     id: onboard_led
     name: "$devicename On Board Led"
@@ -121,3 +118,7 @@ binary_sensor:
                     - binary_sensor.is_off: "status_connection"
                 then:
                   - switch.turn_off: "onboard_led"
+
+button:
+  - platform: restart
+    name: ${devicename}_Restart

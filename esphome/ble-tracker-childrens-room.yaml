@@ -57,10 +57,6 @@ api:
 ota:
   password: !secret ota_password
 
-switch:
-  - platform: restart
-    name: "$devicename Restart"
-
 text_sensor:
   - platform: wifi_info
     ssid:
@@ -86,3 +82,7 @@ sensor:
   - platform: wifi_signal
     name: "$devicename WiFi RSSI"
     update_interval: 60s
+
+button:
+  - platform: restart
+    name: ${devicename}_Restart

@@ -1,11 +1,12 @@
   urls:
     - https://alerts.home-assistant.io/feed.xml
     - https://raspberrypi.org/blog/feed/
-    #- https://raspberrypi.com/news/feed/
+    - https://raspberrypi.com/news/feed/
     - https://wonderland.v8.1c.ru/rss/
     - https://moscow.mchs.gov.ru/deyatelnost/press-centr/operativnaya-informaciya/shtormovye-i-ekstrennye-preduprezhdeniya/rss
     - https://50.mchs.gov.ru/deyatelnost/press-centr/operativnaya-informaciya/shtormovye-i-ekstrennye-preduprezhdeniya/rss
     - https://shelly.cloud/feed/
+    - https://entware.net/feed.xml
   scan_interval:
     minutes: 15
   max_entries: 3

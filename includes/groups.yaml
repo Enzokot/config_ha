@@ -2,21 +2,21 @@
     important_devices_unavailable:
         entities:
           - sensor.0x158d000490fe9d_battery
-          - switch.avatto_s06_living_room_restart
+          - sensor.avatto_s06_living_room_wifi_rssi
           - sensor.0x158d0003981f6d_battery
           - sensor.0x158d00039677d9_battery
           - sensor.0x158d0004561de9_battery
           - sensor.0x588e81fffeff5c4f_linkquality
           - sensor.0x60a423fffe968719_linkquality
-          #- switch.ble_tracker_bed_room_restart
-          - switch.ble_tracker_childrens_room_restart
+          #- sensor.ble_tracker_bed_room_wifi_rssi
+          - sensor.ble_tracker_childrens_room_wifi_rssi
           - sensor.0x158d00054b8d72_battery
           - sensor.0x158d000566bde7_battery
           - sensor.0x158d0003953ee9_battery
           - remote.broadlink_ir_rm4_mini
           - sensor.0x158d0003d05782_battery
           - sensor.0x5c0272fffec89454_linkquality
-          - switch.ble_tracker_livingroom_restart
+          - sensor.ble_tracker_livingroom_wifi_rssi
           - sensor.0x158d000359304c_battery
           - sensor.0x158d0003cfa725_battery
           - sensor.0x842e14fffe5047f5_linkquality
@@ -33,7 +33,7 @@
           - sensor.0x158d00039a2f33_battery
           - sensor.0x158d0003975d8b_battery
           - sensor.0x00124b00215bb163_linkquality
-          - switch.server_ac_power_socket_restart
+          - sensor.server_ac_power_socket_wifi_rssi
           - sensor.0x158d00045cd551_battery
           - sensor.0x158d00045ca483_battery
           - sensor.0x158d00039d9398_battery
@@ -66,13 +66,14 @@
           - switch.shelly_em
           - media_player.yandex_station_ff98f029b620413b35e5e278
           - media_player.yandex_station_lr0000000000000252130000de5d13d0
-          - switch.perenio_petra01_kitchen_restart
+          - sensor.perenio_petra01_kitchen_wifi_rssi
           - switch.r4s1_kettle_boil
           - sensor.0x158d0006b860cf_battery
           - sensor.0x158d0006c5f21e_battery
 
     temperature_summary_group_to_bot:
         entities:
+          - sensor.esp_xiaomi_childrens_room_temperature
           - sensor.0x158d00042fd6f5_temperature
           - sensor.esp_xiaomi_bed_room_temperature
           - sensor.esp_xiaomi_living_room_temperature

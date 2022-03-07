@@ -44,7 +44,7 @@
              data:
                 target: "{{ states('input_text.var_chat_id_vacuum_later_start') }}"
                 title: >-
-                         {{ '\U000026a0' }} *Степа*
+                         ⚠️ *Степа*
                 message: 'Не смог начать полную уборку, потому что нахожусь не на базе'
            - service: input_text.set_value
              data:

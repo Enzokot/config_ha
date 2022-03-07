@@ -344,3 +344,33 @@ sensor.0x158d0006b860cf_battery:
 
 sensor.0x158d0006b860cf_humidity:
   friendly_name: Rh горячая труба санузел
+
+sensor.0x5c0272fffec89454_local_temperature_calibration:
+  friendly_name: Калибровка Т для TRV в детской
+
+sensor.0x60a423fffe968719_local_temperature_calibration:
+  friendly_name: Калибровка Т для TRV в спальне
+
+sensor.0x5c0272fffec9db22_local_temperature_calibration:
+  friendly_name: Калибровка Т для TRV в гостиной
+
+sensor.0x5c0272fffe8de819_local_temperature_calibration:
+  friendly_name: Калибровка Т для TRV на кухне
+
+sensor.server_ac_power_socket_wifi_rssi:
+  friendly_name: Розетка сервера
+
+sensor.avatto_s06_living_room_wifi_rssi:
+  friendly_name: IR в гостиной
+
+sensor.ble_tracker_bed_room_wifi_rssi:
+  friendly_name: BLE tracker в спальне
+
+sensor.ble_tracker_childrens_room_wifi_rssi:
+  friendly_name: BLE tracker в детской
+
+sensor.ble_tracker_livingroom_wifi_rssi:
+  friendly_name: BLE tracker в гостиной
+
+sensor.perenio_petra01_kitchen_wifi_rssi:
+  friendly_name: IR на кухне

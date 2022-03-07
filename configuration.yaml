@@ -43,19 +43,6 @@ http:
     - 172.30.33.0/24
     - 192.168.217.1
 
-mqtt:
-  broker: core-mosquitto
-  username: mqtt
-  password: !secret mqtt_broker_password
-  birth_message:
-    topic: 'homeassistant/status'
-    payload: 'online'
-    retain: true
-  will_message:
-    topic: 'homeassistant/status'
-    payload: 'offline'
-    retain: true
-
 websocket_api:
 
 history:
@@ -108,7 +95,6 @@ yandex_station: !include includes/yandex_station.yaml
 xiaomi_gateway3: !include includes/xiaomi_gateway3.yaml
 
 conversation: !include includes/conversation.yaml
-webostv: !include includes/webostv.yaml
 media_player: !include includes/media_player.yaml
 smartir: 
 climate: !include includes/smartir/climate.yaml

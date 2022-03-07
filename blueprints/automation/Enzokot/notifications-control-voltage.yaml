@@ -59,7 +59,7 @@ action:
     target: !input 'telegram_chat_id'
     parse_mode: markdown
     title: '{% if trigger.above != None and trigger.below != None  %} {{ ''\U00002705''
-      }} {% else %} {{ ''\U000026a0'' }} {% endif -%} *Контроль напряжения*'
+      }} {% else %} ⚠️ {% endif -%} *Контроль напряжения*'
     message: "{% if trigger.above != None and trigger.below == None and trigger.to_state.state\
       \ | float >= trigger.above | float %}\n   Обнаружено *повышенное* напряжение\
       \ сети {{ trigger.to_state.state }}В данные от {{ trigger.to_state.name }}\n\

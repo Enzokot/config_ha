@@ -131,13 +131,13 @@ sensor:
     name: "$devicename WiFi RSSI"
     update_interval: 60s
 
-switch:
-  - platform: restart
-    name: "$devicename Restart"
-
 text_sensor:
   - platform: wifi_info
     ssid:
       name: "${devicename} Connected SSID"
     bssid:
       name: "${devicename} Connected BSSID" 
+
+button:
+  - platform: restart
+    name: ${devicename}_Restart

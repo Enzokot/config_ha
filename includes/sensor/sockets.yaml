@@ -1,5 +1,5 @@
 
-  - platform: integration
-    source: sensor.server_ac_power_socket_w
-    name: total_server_socket_cable
-    unit_prefix: k
+#   - platform: integration
+#     source: sensor.server_ac_power_socket_w
+#     name: total_server_socket_cable
+#     unit_prefix: k

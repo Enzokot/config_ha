@@ -8,6 +8,9 @@ esphome:
   comment: BLE bed room
   #arduino_version: 1.0.4
 
+#external_components:
+#  - source: github://myhomeiot/esphome-components
+
 wifi:
   fast_connect: true
   output_power: 20.5dB
@@ -69,6 +72,15 @@ esp32_ble_tracker:
     window: 30ms
     #interval: 512ms
     #window: 48ms
+
+#ble_gateway:
+#  on_ble_advertise:
+#    then:
+#      - homeassistant.event:
+#          event: esphome.on_ble_advertise
+#          data:
+#            packet: !lambda return packet;
+#            gateway_id: ${devicename}
 
 sensor:
   - platform: xiaomi_lywsd02

@@ -27,9 +27,9 @@
       - binary_sensor.availability_host_klg
       - binary_sensor.availability_mibox_klg
       #Климат
-      - sensor.158d00042fd6f5_pressure
+      - sensor.158d000542ceaf_pressure
       - sensor.0x158d0004561de9_humidity
-      - sensor.0x158d00042fd6f5_humidity
+      - sensor.0x158d000542ceaf_humidity
       - sensor.esp_xiaomi_kitchen_humidity
       - sensor.0x158d0006b860cf_humidity
       - sensor.0x158d0006c5f21e_humidity
@@ -39,7 +39,7 @@
       - sensor.esp_xiaomi_living_room_temperature
       - sensor.esp_xiaomi_childrens_room_temperature
       - sensor.0x158d0004561de9_temperature
-      - sensor.0x158d00042fd6f5_temperature
+      - sensor.0x158d000542ceaf_temperature
       - sensor.0x158d0006b860cf_temperature
       - sensor.0x158d0006c5f21e_temperature
       - sensor.zhimi_humidifier_cb1_humidity
@@ -59,13 +59,13 @@
       - sensor.total_bedroom_socket_1_cable_monthly_electicity
       - sensor.total_bedroom_socket_2_cable_daily_electicity
       - sensor.total_bedroom_socket_2_cable_monthly_electicity
-      - sensor.total_server_socket_cable_daily_electicity
-      - sensor.total_server_socket_cable_monthly_electicity
+      #- sensor.total_server_socket_cable_daily_electicity
+      #- sensor.total_server_socket_cable_monthly_electicity
       - sensor.total_yeelight_ceiling_relay_cable_daily_electicity
       - sensor.total_yeelight_ceiling_relay_cable_monthly_electicity
       - sensor.total_shelly_em_cable_daily_electicity
       - sensor.total_shelly_em_cable_monthly_electicity
-      - sensor.total_server_socket_cable
+      #- sensor.total_server_socket_cable
       - sensor.r4s1_kettle_energy
       #Датчик освещенности улица
       - sensor.0x4cf8cdf3c7d15b7_illuminance
@@ -100,4 +100,4 @@
       - sensor.0x842e14fffe36661f_energy
       - sensor.0x842e14fffe13a854_energy
       - sensor.0x54ef441000096cbc_energy
-      - sensor.server_ac_power_socket_e
+      #- sensor.server_ac_power_socket_e

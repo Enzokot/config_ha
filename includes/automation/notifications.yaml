@@ -82,11 +82,13 @@
       action:
           - service: timer.start
             entity_id: timer.front_door_ringtone
-          - service: script.alice_custom_tts_volume
+          - service: script.turn_on
             data:
-              entity: 'media_player.yandex_station_ff98f029b620413b35e5e278'
-              text: 'Внимание! Входная дверь открыта!!!'
-              vol_level: '0.65'
+              entity_id: script.alice_custom_tts_volume
+              variables:
+                entity: 'media_player.yandex_station_ff98f029b620413b35e5e278'
+                text: 'Внимание! Входная дверь открыта!!!'
+                vol_level: '0.65'
           - delay: 4
           - service: xiaomi_aqara.play_ringtone
             data:
@@ -703,6 +705,7 @@
       trigger:
         - platform: state
           entity_id: sensor.supervisor_versions
+          attribute: addons
       condition:
         - condition: template
           value_template: >
@@ -733,6 +736,7 @@
       trigger:
         - platform: state
           entity_id: sensor.hacs
+          attribute: repositories
       condition:
         - condition: template
           value_template: >
@@ -824,7 +828,7 @@
                 - sensor.0x842e14fffe13a854_power
                 - sensor.0x588e81fffeff5c4f_power
                 - sensor.0x842e14fffe36661f_power
-                - sensor.server_ac_power_socket_w
+                #- sensor.server_ac_power_socket_w
                 - sensor.0x60a423fffef8d41a_power
             above: 3000
       action:

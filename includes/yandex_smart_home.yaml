@@ -16,7 +16,7 @@
       - cover.0x847127fffed4907d
       - climate.avatto_living_room_ac
       - media_player.sony_bravia_tv
-      - sensor.0x158d00042fd6f5_temperature
+      - sensor.0x158d000542ceaf_temperature
       - sensor.esp_xiaomi_childrens_room_temperature
       - sensor.0x158d0004561de9_temperature
       - sensor.esp_xiaomi_kitchen_temperature
@@ -119,12 +119,12 @@
           range:
             min: 1
             max: 204
-    sensor.0x158d00042fd6f5_temperature:
+    sensor.0x158d000542ceaf_temperature:
         properties:
           - type: humidity
-            entity: sensor.0x158d00042fd6f5_humidity
+            entity: sensor.0x158d000542ceaf_humidity
           - type: pressure
-            entity: sensor.0x158d00042fd6f5_pressure
+            entity: sensor.0x158d000542ceaf_pressure
     sensor.esp_xiaomi_living_room_temperature:
         properties:
           - type: humidity

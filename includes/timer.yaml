@@ -1,29 +1,36 @@
+    
     front_door_ringtone:
         name: Повторить рингтон для открытой вх. двери
         duration: 120
+        restore: true
     
     vacumm_ten_minutes:
         name: Запустить пылесос на уборку с паузой в 10 мин
         duration: 600
+        restore: true
 
 #Добавление устройств zigbee
     zigbee_permit_join:
         name: Осталось
         duration: 600
+        restore: true
         
 #Таймер звуковой сигнализации
     alarm_gateway_sound:
         name: Осталось до выключения звука сигнализации
         duration: 600
+        restore: true
 
 #Таймер вкл/выкл ночной режим обогревателя
     turn_on_heater_night_mode:
         name: Осталось до включения обогревателя
         duration: 2700
+        restore: true
 
     turn_off_heater_night_mode:
         name: Осталось до включения обогревателя
         duration: 600
+        restore: true
 
 #Таймер звонка входной двери
     doorbell_timer_restart_automation:
@@ -34,3 +41,4 @@
     turn_off_garland_childrens_room:
         name: Осталось до выключения гирлянды
         duration: 180
+        restore: true

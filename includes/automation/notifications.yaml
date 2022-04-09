@@ -104,6 +104,10 @@
              event_type: timer.finished
              event_data:
                entity_id: timer.front_door_ringtone
+      condition:
+          - condition: state
+            entity_id: binary_sensor.0x158d000359304c_contact
+            state: 'on'
       action:
           - service: timer.start
             entity_id: timer.front_door_ringtone
@@ -712,7 +716,6 @@
             {% set ignore = ['unknown', 'unavailable', 'none'] %}
             {{ trigger.from_state.state not in ignore and
                trigger.to_state.state not in ignore and
-               trigger.to_state.state != trigger.from_state.state and
                is_state('binary_sensor.new_version_ha_addons', 'on')
             }}
       action:
@@ -743,7 +746,6 @@
             {% set ignore = ['unknown', 'unavailable', 'none'] %}
             {{ trigger.from_state.state not in ignore and
                trigger.to_state.state not in ignore and
-               trigger.to_state.state != trigger.from_state.state and
                is_state('binary_sensor.new_version_hacs_addons', 'on')
             }}
       action:
@@ -1163,7 +1165,7 @@
         - condition: state
           entity_id: binary_sensor.local_network_availability
           state: 'on'
-        - "{{ trigger.event.data.name is not search(this.entity_id, ignorecase=True) }}"
+        - "{{ trigger.event.data.name | string is not search(this.entity_id | string, ignorecase=True) }}"
         - condition: template
           value_template: >-
             {{ 
@@ -1579,6 +1581,7 @@
           entity_id:
             - sensor.0x158d0006c5f21e_temperature
             - sensor.0x158d0006b860cf_temperature
+            - sensor.0x158d00042fd6f5_temperature
           below: 40
           for:
             minutes: 5
@@ -1586,6 +1589,7 @@
           entity_id:
             - sensor.0x158d0006c5f21e_temperature
             - sensor.0x158d0006b860cf_temperature
+            - sensor.0x158d00042fd6f5_temperature
           above: 40
           for:
             minutes: 5

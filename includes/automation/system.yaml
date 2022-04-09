@@ -11,22 +11,6 @@
           keep_days: 30
           repack: true
 
-#Отслеживание питания RPi
-- alias: tracker power rpi
-  id: tracker power rpi
-  initial_state: true
-  trigger:
-    platform: state
-    entity_id: binary_sensor.rpi_power_inverted
-    from: 'on'
-    to: 'off'
-  action:
-    service: notify.telegram_enzokot_to_bot
-    data:
-        title: >-
-                 ⚠️ *Мониторинг устройств*
-        message: "Необходимо проверить питание RPi"
-
 #Перезапуск интеграции speedtest.net по недоступности сенсоров
 - alias: speedtest_integration_restart
   id: speedtest_integration_restart

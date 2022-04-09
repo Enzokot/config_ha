@@ -68,7 +68,9 @@
           - media_player.yandex_station_lr0000000000000252130000de5d13d0
           - sensor.perenio_petra01_kitchen_wifi_rssi
           - switch.r4s1_kettle_boil
+          - sensor.r4s_gate_rssi
           - sensor.0x158d0006b860cf_battery
+          - sensor.0x158d00042fd6f5_battery
           - sensor.0x158d0006c5f21e_battery
 
     temperature_summary_group_to_bot:
@@ -81,3 +83,4 @@
           - sensor.esp_xiaomi_kitchen_temperature
           - sensor.0x158d0006c5f21e_temperature
           - sensor.0x158d0006b860cf_temperature
+          - sensor.0x158d00042fd6f5_temperature

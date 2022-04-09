@@ -25,7 +25,6 @@ views:
             - entity: sensor.last_boot_custom
             - entity: sensor.online_custom
             - entity: sensor.cert_expiry_keenetic_domain
-            - entity: binary_sensor.rpi_power_inverted
 
         - type: markdown
           content: >
@@ -432,6 +431,8 @@ views:
               name: 'Ванная'
             - entity: sensor.0x158d0006b860cf_temperature
               name: 'Санузел'
+            - entity: sensor.0x158d00042fd6f5_temperature
+              name: 'Отопление'
 
       - type: vertical-stack
         cards:
@@ -484,6 +485,7 @@ views:
                   - sensor.0x158d000542ceaf_battery
                   - sensor.0x158d0006c5f21e_battery
                   - sensor.0x158d0006b860cf_battery
+                  - sensor.0x158d00042fd6f5_battery
               - name: 'Движения (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
                 icon: 'mdi:motion-sensor'
@@ -521,6 +523,8 @@ views:
             - entity: sensor.0x158d0006c5f21e_battery
               tap_action: more-info
             - entity: sensor.0x158d0006b860cf_battery
+              tap_action: more-info
+            - entity: sensor.0x158d00042fd6f5_battery
               tap_action: more-info
             - entity: sensor.0x158d0004561de9_battery
               tap_action: more-info

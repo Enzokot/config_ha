@@ -11,7 +11,7 @@ homeassistant:
   allowlist_external_dirs:
     - /config
   external_url: !secret external_url
-  internal_url: "http://kotletochkarpi4.local:8123/"
+  internal_url: "http://kotletochka-srv.local:8123/"
   auth_mfa_modules:
     - type: totp
     - type: notify

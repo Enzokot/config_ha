@@ -39,20 +39,11 @@ binary_sensor.neptun_wc:
 binary_sensor.entware_keenetic:
   friendly_name: Доступность entware на роутере Keenetic
 
-# binary_sensor.neptun_bathroom_ping:
-#   friendly_name: Ping Neptun ванная
-
-# binary_sensor.neptun_wc_ping:
-#   friendly_name: Ping Neptun туалет
-
 binary_sensor.availability_host_klg:
   friendly_name: Роутер в Калуге
 
 binary_sensor.availability_mibox_klg:
   friendly_name: Mibox в Калуге
-
-# binary_sensor.inet_at_klg:
-#   friendly_name: Интернет в Калуге
 
 binary_sensor.0x158d000490fe9d_contact:
   friendly_name: Питание кондиционер
@@ -70,9 +61,6 @@ binary_sensor.0x158d000566bde7_motion:
 binary_sensor.0x158d0003953ee9_motion:
   friendly_name: Датчик движения коридор 2
   occupancy_timeout: 62
-
-binary_sensor.rpi_power_status:
-  friendly_name: Состояние питания RPi
 
 binary_sensor.0x158d00039677d9_contact:
   friendly_name: Балконная дверь детская
@@ -107,9 +95,6 @@ binary_sensor.0x158d0003975b4c_contact:
 binary_sensor.0x158d00039a2f33_contact:
   friendly_name: Прав. окно кухня
   device_class: window
-
-binary_sensor.rpi_power_inverted:
-  friendly_name: Состояние питания RPi
 
 #Для debounce бинарника батареейки TRV
 binary_sensor.debounce_trv_bedroom_low_battery:

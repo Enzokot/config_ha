@@ -356,8 +356,6 @@
           data:
             chat_id: '{{ trigger.event.data.user_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
-        - service: timer.cancel
-          entity_id: timer.vacumm_ten_minutes
         - service: timer.start
           data:
             entity_id: timer.vacumm_ten_minutes

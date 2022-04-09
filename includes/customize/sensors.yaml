@@ -345,6 +345,15 @@ sensor.0x158d0006b860cf_battery:
 sensor.0x158d0006b860cf_humidity:
   friendly_name: Rh горячая труба санузел
 
+sensor.0x158d00042fd6f5_temperature:
+  friendly_name: Т отопление вход
+
+sensor.0x158d00042fd6f5_battery:
+  friendly_name: Т&Rh отопление вход
+
+sensor.0x158d00042fd6f5_humidity:
+  friendly_name: Rh отопление вход
+
 sensor.0x5c0272fffec89454_local_temperature_calibration:
   friendly_name: Калибровка Т для TRV в детской
 

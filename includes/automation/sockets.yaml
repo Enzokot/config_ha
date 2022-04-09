@@ -66,10 +66,17 @@
       id: night mode timer heater off
       initial_state: true
       trigger:
-      - platform: event
-        event_type: timer.finished
-        event_data:
-          entity_id: timer.turn_off_heater_night_mode
+          - platform: event
+            event_type: timer.finished
+            event_data:
+              entity_id: timer.turn_off_heater_night_mode
+      condition:
+          - condition: state
+            entity_id: input_boolean.heater_night_mode
+            state: 'on'
+          - condition: time
+            after: '22:00:00'
+            before: '07:00:00'
       action:
           - service: switch.turn_off
             data:
@@ -82,10 +89,17 @@
       id: night mode timer heater on
       initial_state: true
       trigger:
-      - platform: event
-        event_type: timer.finished
-        event_data:
-          entity_id: timer.turn_on_heater_night_mode
+          - platform: event
+            event_type: timer.finished
+            event_data:
+              entity_id: timer.turn_on_heater_night_mode
+      condition:
+          - condition: state
+            entity_id: input_boolean.heater_night_mode
+            state: 'on'
+          - condition: time
+            after: '22:00:00'
+            before: '07:00:00'
       action:
           - service: switch.turn_on
             data:
@@ -340,6 +354,10 @@
             event_type: timer.finished
             event_data:
               entity_id: timer.turn_off_garland_childrens_room
+      condition:
+        - condition: state
+          entity_id: switch.0x842e14fffe5047f5
+          state: 'on'
       action:
           - service: switch.turn_off
             data:

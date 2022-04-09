@@ -6,3 +6,14 @@
 #     unit_of_measurement: "°C"
 #     headers:
 #       authorization: !secret event_observer_token
+
+  - platform: rest
+    resource: 'https://edge.qiwi.com/sinap/crossRates'
+    name: rest_qiwi_x_rates_usd
+    unit_of_measurement: 'RUB'
+    value_template: "{{ value_json.result | selectattr('to', 'eq', '840') | selectattr('from', 'eq', '643') | map(attribute='rate') | join('') }}"
+    headers:
+      Accept: 'application/json'
+      Content-Type: 'application/json'
+    #   Authorization: >
+    #     Bearer 5c4b25xx93aa435d9cb8cd17480356f9

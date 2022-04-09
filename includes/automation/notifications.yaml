@@ -1611,3 +1611,30 @@
                   target: !secret sms_phone_enzokot
                   data:
                     url: 'http://192.168.8.1/'
+
+#Уведомление при изменении курса валют
+    - alias: notifications current cross rates currency changed
+      id: notifications current cross rates currency changed
+      initial_state: true
+      mode: single
+      max_exceeded: silent
+      trigger:
+        - platform: state
+          entity_id: sensor.rest_qiwi_x_rates_usd
+      condition:
+        - condition: template
+          value_template: >
+            {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
+            {{ 
+               trigger.from_state.state not in ignore and
+               trigger.to_state.state not in ignore and
+               trigger.to_state.state != trigger.from_state.state
+            }}
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: >
+                {{ '\U0001F4B1' }} *Курсы валют*
+            message: >
+                Новое значение _{{- trigger.to_state.name -}}_: *{{- trigger.to_state.state }}*

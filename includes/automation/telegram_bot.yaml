@@ -16,11 +16,11 @@
             message: pong
         - service: telegram_bot.delete_message
           data:
-            chat_id: '{{ trigger.event.data.user_id }}'
+            chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.id }}'
         - service: telegram_bot.send_message
           data:
-            target: '{{ trigger.event.data.user_id }}'
+            target: '{{ trigger.event.data.chat_id }}'
             message: >-
                       {{ '\U00002139' }} pong
         - service: notify.huawei_lte
@@ -52,11 +52,11 @@
       action:
         - service: telegram_bot.delete_message
           data:
-            chat_id: '{{ trigger.event.data.user_id }}'
+            chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.id }}'
         - service: telegram_bot.send_message
           data:
-            target: '{{ trigger.event.data.user_id }}'
+            target: '{{ trigger.event.data.chat_id }}'
             message: >-
                        {{ '\U0001f4e2' }} С уровнем громкости:
             inline_keyboard:
@@ -75,11 +75,11 @@
       action:
         - service: telegram_bot.delete_message
           data:
-            chat_id: '{{ trigger.event.data.user_id }}'
+            chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.id }}'
         - service: telegram_bot.send_message
           data:
-            target: '{{ trigger.event.data.user_id }}'
+            target: '{{ trigger.event.data.chat_id }}'
             message: >-
                        {% if is_state('alarm_control_panel.signalka_shliuza_alarm', 'armed_away') -%}
                            {{ '\U0001f509' }} Сигнализация *включена*
@@ -112,7 +112,7 @@
       action:
         - service: telegram_bot.delete_message
           data:
-            chat_id: '{{ trigger.event.data.user_id }}'
+            chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
         - service: >-
                      {% if trigger.event.data.command == '/alarm_home_disarm' -%}
@@ -153,7 +153,7 @@
       action:
         - service: telegram_bot.delete_message
           data:
-            chat_id: '{{ trigger.event.data.user_id }}'
+            chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
         - service: xiaomi_aqara.play_ringtone
           data:
@@ -192,7 +192,7 @@
       action:
         - service: telegram_bot.delete_message
           data:
-            chat_id: '{{ trigger.event.data.user_id }}'
+            chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
 
     - alias: no key sync yeelight ceiling to switch
@@ -284,7 +284,7 @@
           entity_id: vacuum.xiaomi_vacuum_cleaner
         - service: telegram_bot.delete_message
           data:
-            chat_id: '{{ trigger.event.data.user_id }}'
+            chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
         - service: telegram_bot.answer_callback_query
           data:
@@ -304,11 +304,11 @@
       action:
         - service: telegram_bot.delete_message
           data:
-            chat_id: '{{ trigger.event.data.user_id }}'
+            chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.id }}'
         - service: telegram_bot.send_message
           data:
-            target: '{{ trigger.event.data.user_id }}'
+            target: '{{ trigger.event.data.chat_id }}'
             message: >-
                        {{ '\U0000231b' }} Отправить убирать:
             inline_keyboard:
@@ -330,7 +330,7 @@
           entity_id: vacuum.xiaomi_vacuum_cleaner
         - service: telegram_bot.delete_message
           data:
-            chat_id: '{{ trigger.event.data.user_id }}'
+            chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
         - service: telegram_bot.answer_callback_query
           data:
@@ -354,7 +354,7 @@
       action:
         - service: telegram_bot.delete_message
           data:
-            chat_id: '{{ trigger.event.data.user_id }}'
+            chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
         - service: timer.start
           data:
@@ -376,7 +376,7 @@
         - service: input_text.set_value
           data:
               entity_id: input_text.var_chat_id_vacuum_later_start
-              value: '{{ trigger.event.data.user_id }}'
+              value: '{{ trigger.event.data.chat_id }}'
 
     - alias: vacuum cancel cleaning
       id: vacuum cancel cleaning
@@ -391,7 +391,7 @@
       action:
         - service: telegram_bot.delete_message
           data:
-            chat_id: '{{ trigger.event.data.user_id }}'
+            chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
         - service: timer.cancel
           entity_id: timer.vacumm_ten_minutes
@@ -423,11 +423,11 @@
       action:
         - service: telegram_bot.delete_message
           data:
-            chat_id: '{{ trigger.event.data.user_id }}'
+            chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
         - service: telegram_bot.send_photo
           data:
-            target: '{{ trigger.event.data.user_id }}'
+            target: '{{ trigger.event.data.chat_id }}'
             url: "{{- 'http://homeassistant.local.hass.io:8123' + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
             caption: >-
                    {{ '\U0001F5FA' }} *Степа* {{- '\n' -}} Текущая карта уборки
@@ -446,11 +446,11 @@
       action:
         - service: telegram_bot.delete_message
           data:
-            chat_id: '{{ trigger.event.data.user_id }}'
+            chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.id }}'
         - service: telegram_bot.send_message
           data:
-            target: '{{ trigger.event.data.user_id }}'
+            target: '{{ trigger.event.data.chat_id }}'
             title: "{{ '\U0001F321' }} *Климатические сенсоры*"
             message: >-
                 {% set temp_array = expand('group.temperature_summary_group_to_bot') | selectattr('state', 'defined') | selectattr('state', 'ne', None) %}

@@ -276,7 +276,7 @@
                 sequence:            
                     - service: telegram_bot.delete_message
                       data:
-                        chat_id: '{{ trigger.event.data.user_id }}'
+                        chat_id: '{{ trigger.event.data.chat_id }}'
                         message_id: '{{ trigger.event.data.message.message_id }}'
                     - service: telegram_bot.answer_callback_query
                       data:

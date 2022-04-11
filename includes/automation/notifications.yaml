@@ -1651,8 +1651,18 @@
                 {{ '\U0001F4B1' }} *Курсы валют*
             message: >
                 {{- change -}} _{{- trigger.to_state.name -}}_: с *{{- trigger.from_state.state -}}* на *{{- trigger.to_state.state }}*
-        - service: rest_command.send_telegram_bot_broadcast
+        # - service: rest_command.send_telegram_bot_broadcast
+        #   data: 
+        #     chat_id: !secret telegram_ps4_group_chat_id
+        #     parse_mode: 'HTML'
+        #     text: "\U0001F4B1 <b>Курсы валют</b>\n{{- change -}} <i>{{- trigger.to_state.name -}}</i>: с <b>{{- trigger.from_state.state -}}</b> на <b>{{- trigger.to_state.state }}</b>"
+        - service: python_script.exec
           data: 
+            tgurl: "https://api.telegram.org/bot{{- states('input_text.var_telegram_bot_broadcast_api_token') -}}"
             chat_id: !secret telegram_ps4_group_chat_id
-            parse_mode: 'HTML'
             text: "\U0001F4B1 <b>Курсы валют</b>\n{{- change -}} <i>{{- trigger.to_state.name -}}</i>: с <b>{{- trigger.from_state.state -}}</b> на <b>{{- trigger.to_state.state }}</b>"
+            source: |
+              import requests
+              r = requests.post(data['tgurl']+'/sendMessage', dict(chat_id=data['chat_id'],parse_mode="HTML",text=data['text']))
+              resp = r.json()    
+              requests.post(data['tgurl']+'/pinChatMessage', dict(chat_id=data['chat_id'],message_id=resp['result']['message_id'],disable_notification='true'))

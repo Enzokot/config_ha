@@ -1633,15 +1633,26 @@
                trigger.to_state.state != trigger.from_state.state
             }}
       action:
+        - variables:
+            change: >- 
+                {%- set new = trigger.to_state.state | float(0.0) %}
+                {%- set old = trigger.from_state.state | float(0.0) %}
+                {%- if new > old %}
+                  Увеличился
+                {%- elif new < old %}
+                  Уменьшился
+                {%- else %}
+                  Изменился
+                {%- endif %}
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             title: >
                 {{ '\U0001F4B1' }} *Курсы валют*
             message: >
-                Изменение значения _{{- trigger.to_state.name -}}_: с *{{- trigger.from_state.state -}}* на *{{- trigger.to_state.state }}*
+                {{- change -}} _{{- trigger.to_state.name -}}_: с *{{- trigger.from_state.state -}}* на *{{- trigger.to_state.state }}*
         - service: rest_command.send_telegram_bot_broadcast
           data: 
             chat_id: !secret telegram_ps4_group_chat_id
             parse_mode: 'HTML'
-            text: "\U0001F4B1 <b>Курсы валют</b>\nИзменение значения <i>{{- trigger.to_state.name -}}</i>: с <b>{{- trigger.from_state.state -}}</b> на <b>{{- trigger.to_state.state }}</b>"
+            text: "\U0001F4B1 <b>Курсы валют</b>\n{{- change -}} <i>{{- trigger.to_state.name -}}</i>: с <b>{{- trigger.from_state.state -}}</b> на <b>{{- trigger.to_state.state }}</b>"

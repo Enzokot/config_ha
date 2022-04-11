@@ -13,7 +13,8 @@
         example: 'Внимание! Важное сообщение...'
       vol_level:
         description: 'Уровень громкости'
-        example: '0.8'  
+        example: '0.8'
+        default: '0.4'
     sequence:
     #   - service: tts.yandex_station_say
     #     data:

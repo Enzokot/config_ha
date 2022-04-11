@@ -1637,4 +1637,4 @@
             title: >
                 {{ '\U0001F4B1' }} *Курсы валют*
             message: >
-                Новое значение _{{- trigger.to_state.name -}}_: *{{- trigger.to_state.state }}*
+                Изменение значения _{{- trigger.to_state.name -}}_: с *{{- trigger.from_state.state -}}* на *{{- trigger.to_state.state }}*

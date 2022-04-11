@@ -6,3 +6,15 @@
 #     timeout: 60
 #     headers:
 #       authorization: !secret event_observer_token
+
+#Отправка уведомления через бот broadcast
+# chat_id: "111111111"
+# parse_mode: "HTML"
+# text: "\U00002705 <b>Трекинг устройств</b>\n Home Assistant доступен"
+
+  send_telegram_bot_broadcast:
+    url: "https://api.telegram.org/bot{{- states('input_text.var_telegram_bot_broadcast_api_token') -}}/sendMessage"
+    method: POST
+    payload: '{"chat_id": "{{ chat_id }}","parse_mode": "{{ parse_mode }}","text": "{{ text }}"}'
+    content_type:  'application/json'
+    verify_ssl: true

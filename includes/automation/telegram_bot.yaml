@@ -457,3 +457,29 @@
                 {%- for state in temp_array -%}
                   {%- if loop.first -%}_Данные температуры_: {{-'\n'-}}{%- endif -%} {{- state.name -}}: *{{ state.state -}}*°C {%- if not loop.last -%}{{-'\n'-}} {%- endif -%} 
                 {%- endfor %}
+
+#Установка обновления core по кнопке из уведомления по обновлению НА
+    - alias: install update core telegram bot
+      id: install update core telegram bot
+      initial_state: true
+      mode: single
+      max_exceeded: silent
+      trigger:
+        platform: event
+        event_type: telegram_command
+        event_data:
+          command: '/installupdatecore'
+      action:
+        - service: telegram_bot.delete_message
+          data:
+            chat_id: '{{ trigger.event.data.chat_id }}'
+            message_id: '{{ trigger.event.data.id }}'
+        - service: update.install
+          data:
+            entity_id: home_assistant_core_update
+            backup: true
+        - service: telegram_bot.answer_callback_query
+          data:
+            callback_query_id: '{{ trigger.event.data.id }}'
+            message: >-
+                Обновление на версию *{{ states('sensor.latest_version_ha') }}* Core запущено.

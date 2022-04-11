@@ -640,6 +640,8 @@
             title: "{{ '\U0001f389' }} *Системное обновление*"
             message: "Доступна [{{ states('sensor.latest_version_ha') }}](https://github.com/home-assistant/core/releases/tag/{{- states('sensor.latest_version_ha') }}) версия Core для установки, текущая *{{ states('sensor.current_version_ha') }}*."
             disable_web_page_preview: true
+            inline_keyboard:
+              - 'Установить:/installupdatecore'
         - service: notify.html5_notifier_n550jk
           data:
             title: "{{ '\U0001f389' }} *Системное обновление*"
@@ -1638,3 +1640,8 @@
                 {{ '\U0001F4B1' }} *Курсы валют*
             message: >
                 Изменение значения _{{- trigger.to_state.name -}}_: с *{{- trigger.from_state.state -}}* на *{{- trigger.to_state.state }}*
+        - service: rest_command.send_telegram_bot_broadcast
+          data: 
+            chat_id: !secret telegram_ps4_group_chat_id
+            parse_mode: 'HTML'
+            text: "\U0001F4B1 <b>Курсы валют</b>\nИзменение значения <i>{{- trigger.to_state.name -}}</i>: с <b>{{- trigger.from_state.state -}}</b> на <b>{{- trigger.to_state.state }}</b>"

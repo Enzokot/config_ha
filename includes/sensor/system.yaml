@@ -37,10 +37,6 @@
     unit_of_measurement: MB
     value_template: "{{ (value | float(0.0) / 1024) | round(1, 'common', 0) }}"
 
-
-  - platform: uptime
-    name: online
-
 #Supervisor versions
   - platform: command_line
     name: Supervisor versions

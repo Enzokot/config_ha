@@ -6,3 +6,7 @@
   var_telegram_bot_api_token:
     initial: !secret telegram_api
     mode: password
+
+  var_telegram_bot_broadcast_api_token:
+    initial: !secret telegram_api_broadcast
+    mode: password

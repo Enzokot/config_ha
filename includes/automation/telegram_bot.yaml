@@ -470,16 +470,24 @@
         event_data:
           command: '/installupdatecore'
       action:
-        - service: telegram_bot.delete_message
-          data:
-            chat_id: '{{ trigger.event.data.chat_id }}'
-            message_id: '{{ trigger.event.data.id }}'
-        - service: update.install
-          data:
-            entity_id: home_assistant_core_update
-            backup: true
-        - service: telegram_bot.answer_callback_query
-          data:
-            callback_query_id: '{{ trigger.event.data.id }}'
-            message: >-
-                Обновление на версию *{{ states('sensor.latest_version_ha') }}* Core запущено.
+        - choose:
+            - conditions:
+                - condition: state
+                  entity_id: update.home_assistant_core_update
+                  state: 'on'
+              sequence:
+                - service: update.install
+                  data:
+                    entity_id: update.home_assistant_core_update
+                    backup: true
+                - service: telegram_bot.answer_callback_query
+                  data:
+                    callback_query_id: '{{ trigger.event.data.id }}'
+                    message: >-
+                        Обновление на версию *{{ states('sensor.latest_version_ha') }}* Core запущено.
+          default:
+            - service: telegram_bot.answer_callback_query
+              data:
+                callback_query_id: '{{ trigger.event.data.id }}'
+                message: >-
+                    Обновление Core уже установлено.

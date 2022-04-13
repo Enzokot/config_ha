@@ -623,31 +623,32 @@
       initial_state: true
       trigger:
         - platform: state
-          entity_id: sensor.latest_version_ha
+          entity_id: update.home_assistant_core_update
+          attribute: latest_version
       condition:
         - condition: template
           value_template: >
-            {% set ignore = ['unknown', 'unavailable', 'none'] %}
-            {{ trigger.from_state.state not in ignore and
-               trigger.to_state.state not in ignore and
-               trigger.to_state.state != trigger.from_state.state and
-               is_state('binary_sensor.new_version_ha', 'on')
+            {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
+            {{ 
+               is_state(trigger.entity_id, 'on') and
+               trigger.to_state.attributes.latest_version != trigger.from_state.attributes.latest_version and
+               trigger.to_state.attributes.latest_version not in ignore
             }}
       action:
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Доступна [{{ states('sensor.latest_version_ha') }}](https://github.com/home-assistant/core/releases/tag/{{- states('sensor.latest_version_ha') }}) версия Core для установки, текущая *{{ states('sensor.current_version_ha') }}*."
+            message: "Доступна [{{ trigger.to_state.attributes.latest_version }}](https://github.com/home-assistant/core/releases/tag/{{- trigger.to_state.attributes.latest_version }}) версия Core для установки, текущая *{{ state_attr(trigger.entity_id, 'installed_version') }}*."
             disable_web_page_preview: true
             inline_keyboard:
               - 'Установить:/installupdatecore'
         - service: notify.html5_notifier_n550jk
           data:
             title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Доступна {{ states('sensor.latest_version_ha') }} версия Core для установки, текущая {{ states('sensor.current_version_ha') }}"
+            message: "Доступна {{ trigger.to_state.attributes.latest_version }} версия Core для установки, текущая {{ state_attr(trigger.entity_id, 'installed_version') }}"
             data:
-              url: "https://github.com/home-assistant/core/releases/tag/{{- states('sensor.latest_version_ha') }}"
+              url: "https://github.com/home-assistant/core/releases/tag/{{- trigger.to_state.attributes.latest_version }}"
               tag: notify_update_ha
 
 #Новая версия Supervisor
@@ -1128,7 +1129,7 @@
                 {% endif %} *Трекинг устройств*
             message: >
                 {% if trigger.id == 'homeassistant_start' -%}
-                    Home Assistant запущен за {{ states('sensor.start_time') }}сек. (версия Core: [{{ states('sensor.current_version_ha') }}](https://github.com/home-assistant/core/releases/tag/{{- states('sensor.current_version_ha') }})) {{- '\n' -}}
+                    Home Assistant запущен за {{ states('sensor.start_time') }}сек. (версия Core: [{{ state_attr('update.home_assistant_core_update', 'installed_version') }}](https://github.com/home-assistant/core/releases/tag/{{- state_attr('update.home_assistant_core_update', 'installed_version') }})) {{- '\n' -}}
                     Ошибок: *{{ states('sensor.errors_in_system_log_command_line') }}*, предупреждений: *{{ states('sensor.warnings_in_system_log_command_line') }}*
                 {% else -%}
                     Home Assistant *остановлен*
@@ -1622,7 +1623,7 @@
       max_exceeded: silent
       trigger:
         - platform: state
-          entity_id: sensor.rest_qiwi_x_rates_usd
+          entity_id: sensor.filtered_qiwi_x_rates_usd
       condition:
         - condition: template
           value_template: >

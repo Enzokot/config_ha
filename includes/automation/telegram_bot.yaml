@@ -466,7 +466,7 @@
       max_exceeded: silent
       trigger:
         platform: event
-        event_type: telegram_command
+        event_type: telegram_callback
         event_data:
           command: '/installupdatecore'
       action:
@@ -484,7 +484,7 @@
                   data:
                     callback_query_id: '{{ trigger.event.data.id }}'
                     message: >-
-                        Обновление на версию *{{ states('sensor.latest_version_ha') }}* Core запущено.
+                        Обновление на версию *{{ state_attr('update.home_assistant_core_update', 'latest_version') }}* Core запущено.
           default:
             - service: telegram_bot.answer_callback_query
               data:

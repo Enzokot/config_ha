@@ -1,10 +1,5 @@
 
     - binary_sensor:
-        - name: new_version_supervisor
-          state: "{{ state_attr('sensor.latest_version_ha', 'supervisor') != 'unknown' and state_attr('sensor.supervisor_versions', 'current_version') != 'unknown' 
-                         and state_attr('sensor.latest_version_ha', 'supervisor') != state_attr('sensor.supervisor_versions', 'current_version') 
-                         and state_attr('sensor.supervisor_versions', 'current_version') is not none}}"
-
         - name: new_version_hacs_addons
           state: "{{ states('sensor.hacs') | int(0) > 0 }}"
 

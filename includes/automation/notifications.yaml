@@ -657,30 +657,30 @@
       initial_state: true
       trigger:
         - platform: state
-          entity_id: sensor.latest_version_ha
-          attribute: supervisor
+          entity_id: update.home_assistant_supervisor_update
+          attribute: latest_version
       condition:
         - condition: template
           value_template: >
-            {% set ignore = ['unknown', 'unavailable', 'none'] %}
-            {{ trigger.from_state.state not in ignore and
-               trigger.to_state.state not in ignore and
-               trigger.to_state.attributes.supervisor != trigger.from_state.attributes.supervisor and
-               is_state('binary_sensor.new_version_supervisor', 'on')
+            {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
+            {{ 
+               is_state(trigger.entity_id, 'on') and
+               trigger.to_state.attributes.latest_version != trigger.from_state.attributes.latest_version and
+               trigger.to_state.attributes.latest_version not in ignore
             }}
       action:
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Доступна [{{ state_attr('sensor.latest_version_ha', 'supervisor') }}](https://github.com/home-assistant/supervisor/releases/tag/{{- state_attr('sensor.latest_version_ha', 'supervisor') }}) версия Supervisor для установки, текущая *{{ state_attr('sensor.supervisor_versions', 'current_version') }}*."
+            message: "Доступна [{{ state_attr('update.home_assistant_supervisor_update', 'latest_version') }}](https://github.com/home-assistant/supervisor/releases/tag/{{- state_attr('update.home_assistant_supervisor_update', 'latest_version') }}) версия Supervisor для установки, текущая *{{ state_attr('update.home_assistant_supervisor_update', 'installed_version') }}*."
             disable_web_page_preview: true
         - service: notify.html5_notifier_n550jk
           data:
             title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Доступна {{ state_attr('sensor.latest_version_ha', 'supervisor') }} версия Supervisor для установки, текущая {{ state_attr('sensor.supervisor_versions', 'current_version') }}."
+            message: "Доступна {{ state_attr('update.home_assistant_supervisor_update', 'latest_version') }} версия Supervisor для установки, текущая {{ state_attr('update.home_assistant_supervisor_update', 'installed_version') }}."
             data:
-              url: "https://github.com/home-assistant/supervisor/releases/tag/{{- state_attr('sensor.latest_version_ha', 'supervisor') }}"
+              url: "https://github.com/home-assistant/supervisor/releases/tag/{{- state_attr('update.home_assistant_supervisor_update', 'latest_version') }}"
               tag: notify_update_supervisor
 
     - alias: Supervisor updated notification

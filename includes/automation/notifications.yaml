@@ -675,6 +675,8 @@
             title: "{{ '\U0001f389' }} *Системное обновление*"
             message: "Доступна [{{ state_attr('update.home_assistant_supervisor_update', 'latest_version') }}](https://github.com/home-assistant/supervisor/releases/tag/{{- state_attr('update.home_assistant_supervisor_update', 'latest_version') }}) версия Supervisor для установки, текущая *{{ state_attr('update.home_assistant_supervisor_update', 'installed_version') }}*."
             disable_web_page_preview: true
+            inline_keyboard:
+              - 'Установить:/installupdatesupervisor'
         - service: notify.html5_notifier_n550jk
           data:
             title: "{{ '\U0001f389' }} *Системное обновление*"

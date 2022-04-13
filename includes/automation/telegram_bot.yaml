@@ -459,22 +459,25 @@
                 {%- endfor %}
 
 #Установка обновления core по кнопке из уведомления по обновлению НА
-    - alias: install update core telegram bot
-      id: install update core telegram bot
+    - alias: install update core and supervisor telegram bot
+      id: install update core and supervisor telegram bot
       initial_state: true
       mode: single
       max_exceeded: silent
       trigger:
-        platform: event
-        event_type: telegram_callback
-        event_data:
-          command: '/installupdatecore'
+        - platform: event
+          id: 'core'
+          event_type: telegram_callback
+          event_data:
+            command: '/installupdatecore'
+        - platform: event
+          id: 'supervisor'
+          event_type: telegram_callback
+          event_data:
+            command: '/installupdatesupervisor'
       action:
         - choose:
-            - conditions:
-                - condition: state
-                  entity_id: update.home_assistant_core_update
-                  state: 'on'
+            - conditions: "{{ (trigger.id == 'core' and is_state('update.home_assistant_core_update', 'on')) or (trigger.id == 'supervisor' and is_state('update.home_assistant_supervisor_update', 'on')) }}"
               sequence:
                 - service: update.install
                   data:
@@ -484,10 +487,10 @@
                   data:
                     callback_query_id: '{{ trigger.event.data.id }}'
                     message: >-
-                        Обновление на версию *{{ state_attr('update.home_assistant_core_update', 'latest_version') }}* Core запущено.
+                        Обновление на версию *{{ state_attr('update.home_assistant_core_update' | replace('core', trigger.id), 'latest_version') }}* {% if trigger.id == 'core' -%} Core {%- else -%} Supervisor {%- endif %} запущено.
           default:
             - service: telegram_bot.answer_callback_query
               data:
                 callback_query_id: '{{ trigger.event.data.id }}'
                 message: >-
-                    Обновление Core уже установлено.
+                    Обновление {% if trigger.id == 'core' -%} Core {%- else -%} Supervisor {%- endif %} уже установлено.

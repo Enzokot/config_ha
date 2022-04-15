@@ -635,11 +635,19 @@
                trigger.to_state.attributes.latest_version not in ignore
             }}
       action:
+        - variables:
+            release_url: >- 
+                {% if state_attr('update.home_assistant_core_update', 'latest_version').split('.')[2] | int(0) == 0 -%}
+                    {{- state_attr('update.home_assistant_core_update', 'release_url') -}}
+                {%- else -%}
+                    https://github.com/home-assistant/core/releases/tag/{{- trigger.to_state.attributes.latest_version -}}
+                {%- endif %}
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Доступна [{{ trigger.to_state.attributes.latest_version }}](https://github.com/home-assistant/core/releases/tag/{{- trigger.to_state.attributes.latest_version }}) версия Core для установки, текущая *{{ state_attr(trigger.entity_id, 'installed_version') }}*."
+            message: >
+                Доступна [{{ trigger.to_state.attributes.latest_version }}]({{- release_url }}) версия Core для установки, текущая *{{ state_attr(trigger.entity_id, 'installed_version') }}*.
             disable_web_page_preview: true
             inline_keyboard:
               - 'Установить:/installupdatecore'
@@ -648,7 +656,7 @@
             title: "{{ '\U0001f389' }} *Системное обновление*"
             message: "Доступна {{ trigger.to_state.attributes.latest_version }} версия Core для установки, текущая {{ state_attr(trigger.entity_id, 'installed_version') }}"
             data:
-              url: "https://github.com/home-assistant/core/releases/tag/{{- trigger.to_state.attributes.latest_version }}"
+              url: "{{- release_url }}"
               tag: notify_update_ha
 
 #Новая версия Supervisor
@@ -669,11 +677,14 @@
                trigger.to_state.attributes.latest_version not in ignore
             }}
       action:
+        - variables:
+            release_url: >- 
+                {{- state_attr('update.home_assistant_supervisor_update', 'release_url') -}}
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Доступна [{{ state_attr('update.home_assistant_supervisor_update', 'latest_version') }}](https://github.com/home-assistant/supervisor/releases/tag/{{- state_attr('update.home_assistant_supervisor_update', 'latest_version') }}) версия Supervisor для установки, текущая *{{ state_attr('update.home_assistant_supervisor_update', 'installed_version') }}*."
+            message: "Доступна [{{ state_attr('update.home_assistant_supervisor_update', 'latest_version') }}]({{- release_url }}) версия Supervisor для установки, текущая *{{ state_attr('update.home_assistant_supervisor_update', 'installed_version') }}*."
             disable_web_page_preview: true
             inline_keyboard:
               - 'Установить:/installupdatesupervisor'
@@ -682,7 +693,7 @@
             title: "{{ '\U0001f389' }} *Системное обновление*"
             message: "Доступна {{ state_attr('update.home_assistant_supervisor_update', 'latest_version') }} версия Supervisor для установки, текущая {{ state_attr('update.home_assistant_supervisor_update', 'installed_version') }}."
             data:
-              url: "https://github.com/home-assistant/supervisor/releases/tag/{{- state_attr('update.home_assistant_supervisor_update', 'latest_version') }}"
+              url: "{{- release_url }}"
               tag: notify_update_supervisor
 
     - alias: Supervisor updated notification

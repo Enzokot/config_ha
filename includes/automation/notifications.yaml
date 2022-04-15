@@ -1469,7 +1469,7 @@
             parse_mode: 'html'
             title: "{{ '\U0001F4F0' }} <b>RSS новости</b>"
             message: >
-                <a href="{{- trigger.event.data.link -}}">{{- trigger.event.data.title | e -}}</a>
+                <a href="{{- trigger.event.data.link -}}">{{- trigger.event.data.title | e }} ({{ trigger.event.data.link | regex_findall(find='^(?:\w+://)?([^/?#]+)', ignorecase=True) | join }})</a>
 
 #Уведомление о наличии warning и error в syslog HA
     - alias: notifications warnings or errors in syslog

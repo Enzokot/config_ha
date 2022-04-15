@@ -36,7 +36,16 @@ views:
             - entity: sensor.snapshots_in_hassio_train
             - entity: sensor.snapshots_in_google_drive_train
             - entity: sensor.last_google_backup_train
-            
+
+        - type: markdown
+          content: >
+             **Использование э/э**
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: energy-date-selection
+            - type: energy-usage-graph
+
       - type: vertical-stack
         cards:
         - type: markdown

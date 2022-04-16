@@ -491,7 +491,7 @@
                   data:
                     callback_query_id: '{{ trigger.event.data.id }}'
                     message: >-
-                        Обновление на версию *{{ state_attr('update.home_assistant_core_update' | replace('core', trigger.id), 'latest_version') }}* {% if trigger.id == 'core' -%} Core {%- else -%} Supervisor {%- endif %} запущено.
+                        Обновление на версию {{ state_attr('update.home_assistant_core_update' | replace('core', trigger.id), 'latest_version') }} {% if trigger.id == 'core' -%} Core {%- else -%} Supervisor {%- endif %} запущено.
           default:
             - service: telegram_bot.answer_callback_query
               data:

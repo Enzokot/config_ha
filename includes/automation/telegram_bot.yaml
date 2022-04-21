@@ -458,43 +458,38 @@
                   {%- if loop.first -%}_Данные температуры_: {{-'\n'-}}{%- endif -%} {{- state.name -}}: *{{ state.state -}}*°C {%- if not loop.last -%}{{-'\n'-}} {%- endif -%} 
                 {%- endfor %}
 
-#Установка обновления core по кнопке из уведомления по обновлению НА
-    - alias: install update core and supervisor telegram bot
-      id: install update core and supervisor telegram bot
+#Установка обновления по кнопке из уведомления по обновлению
+    - alias: install update telegram bot
+      id: install update telegram bot
       initial_state: true
       mode: single
       max_exceeded: silent
       trigger:
         - platform: event
-          id: 'core'
           event_type: telegram_callback
           event_data:
-            command: '/installupdatecore'
-        - platform: event
-          id: 'supervisor'
-          event_type: telegram_callback
-          event_data:
-            command: '/installupdatesupervisor'
+            command: '/installupdate'
+      condition:
+        - "{{ trigger.event.data['args'] | count > 0 }}"
       action:
+        - variables:
+            entity: "{{- trigger.event.data['args'][0] -}}"
+            friendlyname: "{{- state_attr(trigger.event.data['args'][0], 'friendly_name') | replace(': Update', '') -}}"
         - choose:
-            - conditions: >
-                    {{
-                      (trigger.id == 'core' and is_state('update.home_assistant_core_update', 'on') and is_state_attr('update.home_assistant_core_update', 'in_progress', false)) or 
-                      (trigger.id == 'supervisor' and is_state('update.home_assistant_supervisor_update', 'on') and is_state_attr('update.home_assistant_supervisor_update', 'in_progress', false)) 
-                    }}
+            - conditions: "{{ is_state(entity, 'on') and is_state_attr(entity, 'in_progress', false) }}"
               sequence:
                 - service: update.install
                   data:
-                    entity_id: update.home_assistant_core_update
-                    backup: true
+                    entity_id: "{{- entity -}}"
+                    backup: "{{ state_attr(entity, 'supported_features') | int(0) >= 8 }}"
                 - service: telegram_bot.answer_callback_query
                   data:
                     callback_query_id: '{{ trigger.event.data.id }}'
                     message: >-
-                        Обновление на версию {{ state_attr('update.home_assistant_core_update' | replace('core', trigger.id), 'latest_version') }} {% if trigger.id == 'core' -%} Core {%- else -%} Supervisor {%- endif %} запущено.
+                        Обновление на версию {{ state_attr(entity, 'latest_version') }} {{ friendlyname }} запущено.
           default:
             - service: telegram_bot.answer_callback_query
               data:
                 callback_query_id: '{{ trigger.event.data.id }}'
                 message: >-
-                    Обновление {% if trigger.id == 'core' -%} Core {%- else -%} Supervisor {%- endif %} уже установлено.
+                    Обновление {{ friendlyname }} уже установлено.

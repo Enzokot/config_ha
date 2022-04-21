@@ -148,14 +148,14 @@
             - sensor.0x842e14fffe13a854_power
             - sensor.0x842e14fffe36661f_power
             - sensor.0x588e81fffeff5c4f_power
-            #- sensor.server_ac_power_socket_w
+            - sensor.shelly_plug_s_1_power
             - sensor.0x60a423fffef8d41a_power
         above: 3000
       action:
           - service: switch.turn_off
             data:
               entity_id: >-
-                    {{ trigger.entity_id | replace('sensor', 'switch') | replace('ac_power_socket_w', 'acpower_socket_relay') | replace('_power', '') | replace('acpower_socket_relay', 'ac_power_socket_relay') }}
+                    {{ trigger.entity_id | replace('sensor', 'switch') | replace('_power', '') }}
 
 #После рестарта НА проверить ночной режим обогревателя
     - alias: restart night mode heater after reboot
@@ -415,4 +415,27 @@
           - service: input_number.set_value
             data:
               entity_id: input_number.total_shelly_em_saved
+              value: "{{ trigger.to_state.state }}"
+
+#Сохранение значения энергии при перезапуске HA
+    - alias: restart instance for shelly plug s 1
+      id: restart instance for shelly plug s 1
+      initial_state: true
+      mode: single
+      max_exceeded: silent
+      trigger:
+        - platform: state
+          entity_id: sensor.shelly_plug_s_1_energy
+      condition:
+        - condition: template
+          value_template: >- 
+                {% set ignore = ['unknown', 'unavailable', 'none'] %}
+                {{ trigger.to_state.state not in ignore and
+                   trigger.from_state.state not in ignore and
+                   trigger.to_state.state != trigger.from_state.state
+                }}
+      action:
+          - service: input_number.set_value
+            data:
+              entity_id: input_number.total_server_ac_saved
               value: "{{ trigger.to_state.state }}"

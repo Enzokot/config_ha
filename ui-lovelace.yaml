@@ -157,41 +157,32 @@ views:
             - entity: sensor.influxdb_db_folder_size
               secondary_info: entity-id
 
-        # - type: markdown
-        #   content: >
-        #      **Розетка сервера** 
+        - type: markdown
+          content: >
+             **Розетка сервера** 
 
-        # - type: horizontal-stack
-        #   cards:
-        #     - entity: switch.server_ac_power_socket_relay
-        #       state_color: true
-        #       type: button
-        #       tap_action:
-        #         action: call-service
-        #         service: switch.toggle
-        #         service_data:
-        #           entity_id: switch.server_ac_power_socket_relay
-        #         confirmation:
-        #           text: Вкл/выкл розетку?
-        #     - entity: switch.server_ac_power_socket_reboot_powerload
-        #       state_color: true
-        #       type: button
-        #       tap_action:
-        #         action: call-service
-        #         service: switch.toggle
-        #         service_data:
-        #           entity_id: switch.server_ac_power_socket_reboot_powerload
-        #         confirmation:
-        #           text: Перезапустить нагрузку?
+        - type: horizontal-stack
+          cards:
+            - entity: switch.shelly_plug_s_1
+              state_color: true
+              icon_height: 50px
+              type: button
+              tap_action:
+                action: call-service
+                service: switch.toggle
+                service_data:
+                  entity_id: switch.shelly_plug_s_1
+                confirmation:
+                  text: Вкл/выкл розетку?
 
-        # - type: custom:vertical-stack-in-card
-        #   cards:
-        #     - type: entities
-        #       show_header_toggle: false
-        #       entities:
-        #           - entity: sensor.server_ac_power_socket_w
-        #           - entity: sensor.total_server_socket_cable_daily_electicity
-        #           - entity: sensor.total_server_socket_cable_monthly_electicity
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: sensor.shelly_plug_s_1_power
+                  - entity: sensor.total_server_socket_cable_daily_electicity
+                  - entity: sensor.total_server_socket_cable_monthly_electicity
 
   - title: Освещение
     icon: mdi:lightbulb-group

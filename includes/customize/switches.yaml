@@ -1,24 +1,27 @@
 
 switch.0x842e14fffe5047f5:
   friendly_name: Вкл/выкл обогреватель
+  icon: mdi:power-socket-eu
 
 switch.0x842e14fffe13a854:
   friendly_name: Вкл/выкл водонагреватель
+  icon: mdi:power-socket-eu
 
 switch.0x842e14fffe36661f:
   friendly_name: Вкл/выкл розетка 1 кухня
+  icon: mdi:power-socket-eu
 
 switch.0x588e81fffeff5c4f:
   friendly_name: Вкл/выкл розетка 1 спальня
+  icon: mdi:power-socket-eu
 
 switch.0x60a423fffef8d41a:
   friendly_name: Вкл/выкл розетка 2 спальня
+  icon: mdi:power-socket-eu
 
-# switch.server_ac_power_socket_relay:
-#   friendly_name: Вкл/выкл розетка сервера
-
-# switch.server_ac_power_socket_reboot_powerload:
-#   friendly_name: Перезапуск нагрузки
+switch.shelly_plug_s_1:
+  friendly_name: Вкл/выкл розетка сервера
+  icon: mdi:power-socket-eu
 
 switch.0x086bd7fffe5d13c9:
   friendly_name: Подсветка столешницы

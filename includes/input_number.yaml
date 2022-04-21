@@ -65,3 +65,9 @@
     icon: mdi:horizontal-rotate-counterclockwise
     min: 0
     max: 1000000
+
+  total_server_ac_saved:
+    name: "Потребление электроэнергии сервером"
+    icon: mdi:horizontal-rotate-counterclockwise
+    min: 0
+    max: 1000000

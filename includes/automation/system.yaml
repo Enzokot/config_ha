@@ -164,6 +164,9 @@
     - platform: homeassistant
       event: start
       id: 'homeassistant_start'
+    # - platform: event
+    #   event_type: homeassistant_started
+    #   id: 'homeassistant_start'
     - platform: event
       event_type: homeassistant_stop
   action:

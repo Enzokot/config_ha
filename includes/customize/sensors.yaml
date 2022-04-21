@@ -135,11 +135,11 @@ sensor.total_bedroom_socket_2_cable_daily_electicity:
 sensor.total_bedroom_socket_2_cable_monthly_electicity:
   friendly_name: Спальня роз. 2 потреб. мес.
 
-# sensor.total_server_socket_cable_daily_electicity:
-#   friendly_name: Сервер потреб. день
+sensor.total_server_socket_cable_daily_electicity:
+  friendly_name: Сервер потреб. день
   
-# sensor.total_server_socket_cable_monthly_electicity:
-#   friendly_name: Сервер потреб. мес.
+sensor.total_server_socket_cable_monthly_electicity:
+  friendly_name: Сервер потреб. мес.
 
 sensor.total_kithen_socket_1_cable_daily_electicity:
   friendly_name: Кухня роз. 1 потреб. день
@@ -148,7 +148,7 @@ sensor.total_kitchen_socket_1_cable_monthly_electicity:
   friendly_name: Кухня роз. 1 потреб. мес.
 
 sensor.0x842e14fffe5047f5_power:
-  friendly_name: Тек. мощность обогрева
+  friendly_name: Тек. мощность
 
 sensor.total_water_heater_socket_cable_daily_electicity:
   friendly_name: Водогрей потреб. день
@@ -157,7 +157,7 @@ sensor.total_water_heater_socket_cable_monthly_electicity:
   friendly_name: Водогрей потреб. мес.
   
 sensor.0x842e14fffe13a854_power:
-  friendly_name: Тек. мощность нагрева
+  friendly_name: Тек. мощность
 
 sensor.0x842e14fffe36661f_power:
   friendly_name: Тек. мощность
@@ -168,8 +168,8 @@ sensor.0x588e81fffeff5c4f_power:
 sensor.0x60a423fffef8d41a_power:
   friendly_name: Тек. мощность
   
-# sensor.server_ac_power_socket_w:
-#   friendly_name: Тек. мощность
+sensor.shelly_plug_s_1_power:
+  friendly_name: Тек. мощность
 
 sensor.0x4cf8cdf3c7d15b7_illuminance:
   friendly_name: Улица освещенность
@@ -365,9 +365,6 @@ sensor.0x5c0272fffec9db22_local_temperature_calibration:
 
 sensor.0x5c0272fffe8de819_local_temperature_calibration:
   friendly_name: Калибровка Т для TRV на кухне
-
-# sensor.server_ac_power_socket_wifi_rssi:
-#   friendly_name: Розетка сервера
 
 sensor.avatto_s06_living_room_wifi_rssi:
   friendly_name: IR в гостиной

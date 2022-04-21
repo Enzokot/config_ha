@@ -33,7 +33,7 @@
           - sensor.0x158d00039a2f33_battery
           - sensor.0x158d0003975d8b_battery
           - sensor.0x00124b00215bb163_linkquality
-          #- sensor.server_ac_power_socket_wifi_rssi
+          - switch.shelly_plug_s_1
           - sensor.0x158d00045cd551_battery
           - sensor.0x158d00045ca483_battery
           - sensor.0x158d00039d9398_battery

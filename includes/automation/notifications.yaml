@@ -617,84 +617,58 @@
                         {%- set entity_name = trigger.entity_id | replace('binary_', '') | replace('_expired_', '_expiry_') -%}
                         Срок действия сертификата для _{{ trigger.to_state.name -}}_: *{{- states(entity_name) -}}* {{ state_attr(entity_name, 'unit_of_measurement') }}
 
-#Новая версия НА
-    - alias: update HA available notification
-      id: update HA available notification
+#Уведомление о новых версиях в домене update
+    - alias: update available notification
       initial_state: true
+      mode: queued
       trigger:
-        - platform: state
-          entity_id: update.home_assistant_core_update
-          attribute: latest_version
+        - platform: event
+          event_type: state_changed
       condition:
+        - "{{ trigger.event.data.entity_id.startswith('update.') }}"
         - condition: template
           value_template: >
             {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
             {{ 
-               is_state(trigger.entity_id, 'on') and
-               trigger.to_state.attributes.latest_version != trigger.from_state.attributes.latest_version and
-               trigger.to_state.attributes.latest_version not in ignore
+              trigger.event.data.new_state.state == 'on' and
+              trigger.event.data.new_state.attributes.latest_version != trigger.event.data.old_state.attributes.latest_version and
+              trigger.event.data.new_state.attributes.latest_version not in ignore and
+              trigger.event.data.new_state.attributes.latest_version is not none
             }}
       action:
         - variables:
             release_url: >- 
-                {% if state_attr('update.home_assistant_core_update', 'latest_version').split('.')[2] | int(0) == 0 -%}
-                    {{- state_attr('update.home_assistant_core_update', 'release_url') -}}
+                {% if trigger.event.data.entity_id == 'update.home_assistant_core_update' -%}
+                  {%- if state_attr(trigger.event.data.entity_id, 'latest_version').split('.')[2] | int(0) == 0 -%}
+                    {{- state_attr(trigger.event.data.entity_id, 'release_url') -}}
+                  {%- else -%}
+                    https://github.com/home-assistant/core/releases/tag/{{- trigger.event.data.new_state.attributes.latest_version -}}
+                  {%- endif -%}
+                {%- elif state_attr(trigger.event.data.entity_id, 'release_url') is not none -%}
+                  {{- state_attr(trigger.event.data.entity_id, 'release_url') -}}
                 {%- else -%}
-                    https://github.com/home-assistant/core/releases/tag/{{- trigger.to_state.attributes.latest_version -}}
+                  {{- states('sensor.instance_external_url_config') -}}/config/dashboard
                 {%- endif %}
+            latest_version: "{{ trigger.event.data.new_state.attributes.latest_version }}"
+            installed_version: "{{ state_attr(trigger.event.data.entity_id, 'installed_version') }}"
+            friendlyname: "{{- trigger.event.data.new_state.name | replace(': Update', '') -}}"
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0001f389' }} *Системное обновление*"
             message: >
-                Доступна [{{ trigger.to_state.attributes.latest_version }}]({{- release_url }}) версия Core для установки, текущая *{{ state_attr(trigger.entity_id, 'installed_version') }}*.
+                Доступна [{{ latest_version }}]({{- release_url }}) версия {{ friendlyname }} для установки, текущая *{{ installed_version }}*.
             disable_web_page_preview: true
             inline_keyboard:
-              - 'Установить:/installupdatecore'
+              - 'Установить:/installupdate {{ trigger.event.data.entity_id }}'
         - service: notify.html5_notifier_n550jk
           data:
             title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Доступна {{ trigger.to_state.attributes.latest_version }} версия Core для установки, текущая {{ state_attr(trigger.entity_id, 'installed_version') }}"
+            message: "Доступна {{ latest_version }} версия {{ friendlyname }} для установки, текущая {{ installed_version }}"
             data:
               url: "{{- release_url }}"
-              tag: notify_update_ha
-
-#Новая версия Supervisor
-    - alias: update Supervisor available notification
-      id: update Supervisor available notification
-      initial_state: true
-      trigger:
-        - platform: state
-          entity_id: update.home_assistant_supervisor_update
-          attribute: latest_version
-      condition:
-        - condition: template
-          value_template: >
-            {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
-            {{ 
-               is_state(trigger.entity_id, 'on') and
-               trigger.to_state.attributes.latest_version != trigger.from_state.attributes.latest_version and
-               trigger.to_state.attributes.latest_version not in ignore
-            }}
-      action:
-        - variables:
-            release_url: >- 
-                {{- state_attr('update.home_assistant_supervisor_update', 'release_url') -}}
-        - service: telegram_bot.send_message
-          data:
-            target: !secret telegram_enzokot_chat_id
-            title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Доступна [{{ state_attr('update.home_assistant_supervisor_update', 'latest_version') }}]({{- release_url }}) версия Supervisor для установки, текущая *{{ state_attr('update.home_assistant_supervisor_update', 'installed_version') }}*."
-            disable_web_page_preview: true
-            inline_keyboard:
-              - 'Установить:/installupdatesupervisor'
-        - service: notify.html5_notifier_n550jk
-          data:
-            title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Доступна {{ state_attr('update.home_assistant_supervisor_update', 'latest_version') }} версия Supervisor для установки, текущая {{ state_attr('update.home_assistant_supervisor_update', 'installed_version') }}."
-            data:
-              url: "{{- release_url }}"
-              tag: notify_update_supervisor
+              tag: >
+                update_available_notify_ {{- trigger.event.data.entity_id | replace('update.', '') }}
 
     - alias: Supervisor updated notification
       id: Supervisor updated notification
@@ -717,36 +691,6 @@
             title: "{{ '\U00002705' }} *Системное обновление*"
             message: "Supervisor обновлен с версии [{{ trigger.from_state.state }}](https://github.com/home-assistant/supervisor/releases/tag/{{- trigger.from_state.state -}}) на [{{ trigger.to_state.state }}](https://github.com/home-assistant/supervisor/releases/tag/{{- trigger.to_state.state -}})"
             disable_web_page_preview: true
-
-#Доступны для обновления аддоны Supervisor
-    - alias: update Supervisor addons available notification
-      id: update Supervisor addons available notification
-      initial_state: true
-      trigger:
-        - platform: state
-          entity_id: sensor.supervisor_versions
-          attribute: addons
-      condition:
-        - condition: template
-          value_template: >
-            {% set ignore = ['unknown', 'unavailable', 'none'] %}
-            {{ trigger.from_state.state not in ignore and
-               trigger.to_state.state not in ignore and
-               is_state('binary_sensor.new_version_ha_addons', 'on')
-            }}
-      action:
-        - service: telegram_bot.send_message
-          data:
-            target: !secret telegram_enzokot_chat_id
-            title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Addon's Supervisor - доступно для обновления *{{ states('sensor.supervisor_versions') | int(0) }}*. Список: {% for repo in state_attr('sensor.supervisor_versions', 'addons') %}*{{ repo.name }}* (_{{ repo.version }}_ -> _{{ repo.version_latest }}_){%if not loop.last %}, {%endif%}{% endfor %}"
-        - service: notify.html5_notifier_n550jk
-          data:
-            title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Addon's Supervisor - доступно для обновления {{ states('sensor.supervisor_versions') | int(0) }}. Список: {% for repo in state_attr('sensor.supervisor_versions', 'addons') %}{{ repo.name }} ({{ repo.version }} -> {{ repo.version_latest }}){%if not loop.last %}, {%endif%}{% endfor %}"
-            data:
-              url: "{{- states('sensor.instance_internal_url_config') -}}/hassio/dashboard"
-              tag: notify_update_ha_addons
 
 #Доступны для обновления аддоны HACS
     - alias: update HACS addons available notification
@@ -846,7 +790,7 @@
                 - sensor.0x842e14fffe13a854_power
                 - sensor.0x588e81fffeff5c4f_power
                 - sensor.0x842e14fffe36661f_power
-                #- sensor.server_ac_power_socket_w
+                - sensor.shelly_plug_s_1_power
                 - sensor.0x60a423fffef8d41a_power
             above: 3000
       action:
@@ -858,7 +802,7 @@
             message: >-
                         Сработала защита по превышению потребления для розетки:
                         {{ '\n' }}
-                        _{{ trigger.to_state.name }}_
+                        _{{ device_attr(trigger.entity_id, 'name') }}_
 
 #Уведомление о смене Public IP
     - alias: notification public ip changed
@@ -1224,7 +1168,7 @@
             {{ trigger.event.data.new_state.state != trigger.event.data.old_state.state }}
         - condition: template
           value_template: >-
-            {{ trigger.event.data.new_state.state in ['unknown', 'unavailable'] }}            
+            {{ trigger.event.data.new_state.state in ['unknown', 'unavailable'] }}
       action:
         - choose:
             - conditions: "{{ is_state('input_boolean.instances_stoping', 'off') }}"
@@ -1451,6 +1395,10 @@
       trigger:
         - platform: event
           event_type: feedreader
+      condition:
+        - condition: state
+          entity_id: input_boolean.instances_stoping
+          state: 'off'
       action:
         - variables:
             all_chat_id: !secret telegram_all_chat_id
@@ -1511,6 +1459,7 @@
         - platform: state
           entity_id: 
             - binary_sensor.shelly_em_firmware_update
+            - binary_sensor.shelly_plug_s_1_firmware_update
           from: 'off'
           to: 'on'
       action:
@@ -1658,23 +1607,32 @@
                 {%- else %}
                   Изменился
                 {%- endif %}
+            delta_str: >- 
+                {%- set new = trigger.to_state.state | float(0.0) %}
+                {%- set old = trigger.from_state.state | float(0.0) %}
+                {% set delta = (new - old) | round(2, 'common', 0) %}
+                {%- if delta > 0 -%}
+                  {{- '+' + delta | string -}}
+                {%- else -%}
+                  {{- delta | string -}}
+                {%- endif %}
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             title: >
                 {{ '\U0001F4B1' }} *Курсы валют*
             message: >
-                {{- change }} _{{- trigger.to_state.name -}}_: с *{{- trigger.from_state.state -}}* на *{{- trigger.to_state.state }}*
+                {{- change }} _{{- trigger.to_state.name -}}_: с *{{- trigger.from_state.state -}}* на *{{- trigger.to_state.state -}}* разница *{{- delta_str }}*
         # - service: rest_command.send_telegram_bot_broadcast
         #   data: 
         #     chat_id: !secret telegram_ps4_group_chat_id
         #     parse_mode: 'HTML'
-        #     text: "\U0001F4B1 <b>Курсы валют</b>\n{{- change -}} <i>{{- trigger.to_state.name -}}</i>: с <b>{{- trigger.from_state.state -}}</b> на <b>{{- trigger.to_state.state }}</b>"
+        #     text: "\U0001F4B1 <b>Курсы валют</b>\n{{- change -}} <i>{{- trigger.to_state.name -}}</i>: с <b>{{- trigger.from_state.state -}}</b> на <b>{{- trigger.to_state.state }}</b> разница <b>{{- delta_str }}</b>"
         - service: python_script.exec
           data: 
             tgurl: "https://api.telegram.org/bot{{- states('input_text.var_telegram_bot_broadcast_api_token') -}}"
             chat_id: !secret telegram_ps4_group_chat_id
-            text: "\U0001F4B1 <b>Курсы валют</b>\n{{ change }} <i>{{- trigger.to_state.name -}}</i>: с <b>{{- trigger.from_state.state -}}</b> на <b>{{- trigger.to_state.state }}</b>"
+            text: "\U0001F4B1 <b>Курсы валют</b>\n{{ change }} <i>{{- trigger.to_state.name -}}</i>: с <b>{{- trigger.from_state.state -}}</b> на <b>{{- trigger.to_state.state -}}</b> разница <b>{{- delta_str }}</b>"
             source: |
               import requests
               r = requests.post(data['tgurl']+'/sendMessage', dict(chat_id=data['chat_id'],parse_mode="HTML",text=data['text']))

@@ -48,7 +48,7 @@
     - newest_version
     - current_version
     - healthy
-    - addons
+    #- addons
 
 #Размер базы influxdb
   - platform: influxdb

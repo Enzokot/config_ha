@@ -39,3 +39,19 @@
                      {{ '\U0001f4f6' }} *Трекинг устройств*
             message: >-
                     Внешний IP-адрес keendns `{{ trigger.to_state.state }}` не равен физическому `{{ states('sensor.myip') }}`
+
+    # - alias: homeassistant start debug
+    #   mode: parallel
+    #   trigger:
+    #     - platform: homeassistant
+    #       event: start
+    #       id: 'start'
+    #     - platform: event
+    #       event_type: homeassistant_started
+    #       id: 'started'
+    #   action:
+    #     - service: system_log.write
+    #       data:
+    #         message: "Event: {{ trigger.id }}"
+    #         logger: mycomponent.testevents
+    #         level: warning

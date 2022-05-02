@@ -52,6 +52,7 @@
           - light.signalka_shliuza_light
           #- humidifier.zhimi_humidifier_ca4
           - sensor.kholodilnik
+          - switch.kholodilnik_eco_friendly
           #- humidifier.zhimi_humidifier_cb1
           - media_player.lg_smart_tv
           - media_player.samsung_tv_remote

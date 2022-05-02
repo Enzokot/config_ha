@@ -25,11 +25,11 @@ switch.shelly_plug_s_1:
 
 switch.0x086bd7fffe5d13c9:
   friendly_name: Подсветка столешницы
-  icon: mdi:light-switch
+  icon: mdi:lightbulb-variant
 
 switch.0x086bd7fffe5b7c7f_right:
   friendly_name: Подсветка зеркала
-  icon: mdi:light-switch
+  icon: mdi:lightbulb-variant
 
 switch.0x086bd7fffe5b7c7f_left:
   friendly_name: Вытяжка
@@ -37,7 +37,7 @@ switch.0x086bd7fffe5b7c7f_left:
 
 switch.0x086bd7fffe5aecf8_left:
   friendly_name: Подсветка зеркала
-  icon: mdi:light-switch
+  icon: mdi:lightbulb-variant
 
 switch.0x086bd7fffe5aecf8_right:
   friendly_name: Вытяжка

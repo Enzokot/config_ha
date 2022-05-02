@@ -59,6 +59,7 @@ views:
               name: Загрузка CPU
               unit: '%'
               entity: sensor.processor_use
+              needle: true
               severity:
                 green: 0
                 yellow: 60
@@ -68,6 +69,7 @@ views:
               name: Использование ОЗУ
               unit: '%'
               entity: sensor.memory_use_percent
+              needle: true
               severity:
                 green: 0
                 yellow: 60
@@ -83,13 +85,13 @@ views:
               severity:
                 green: 0
                 yellow: 60
-                red: 85    
+                red: 85
                 
             - type: gauge
               name: Свободное место
               unit: 'Гб'
               min: 0
-              max: 109
+              max: 233
               entity: sensor.disk_free
               severity:
                 red: 0

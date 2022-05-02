@@ -11,10 +11,12 @@
     - type: processor_temperature
     - type: disk_use_percent
       arg: /
-    - type: memory_use_percent
-    - type: last_boot
+    - type: disk_use
+      arg: /
     - type: disk_free
       arg: /
+    - type: memory_use_percent
+    - type: last_boot
 
 #  - platform: filesize
 #    file_paths:
@@ -60,8 +62,8 @@
       - name: InfluxDB_DB_Size
         unit_of_measurement: MB
         value_template: '{{ (value | float(0.0) / 1024 / 1024) | round(1, "common", 0) }}'
-        group_function: last
-        measurement: '"monitor"."shard"'
+        group_function: mean
+        measurement: '"monitor"."tsm1_filestore"'
         database: _internal
         where: 'time > now() - 10s AND "database"=''homeassistant'''
         field: diskBytes 
@@ -127,3 +129,6 @@
   - platform: command_line
     name: telegram status
     command: "curl --silent --fail -m 5 -o /dev/null -G https://api.telegram.org/bot{{ states('input_text.var_telegram_bot_api_token') }}/getMe && echo online || echo offline"
+
+#Количество подключенных клиентов к API HA
+  - platform: websocket_api

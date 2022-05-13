@@ -12,18 +12,19 @@
           entity_id: vacuum.xiaomi_vacuum_cleaner
           state: 'docked'
       action:
-           - service: vacuum.start
-             entity_id: vacuum.xiaomi_vacuum_cleaner
-           - service: telegram_bot.send_message
-             data:
-                target: "{{ states('input_text.var_chat_id_vacuum_later_start') }}"
-                title: >-
-                         {{ '\U0001f680' }} *Степа*
-                message: 'Начал полную уборку'
-           - service: input_text.set_value
-             data:
-                entity_id: input_text.var_chat_id_vacuum_later_start
-                value: !secret telegram_chita_chat_id
+           - parallel:
+               - service: vacuum.start
+                 entity_id: vacuum.xiaomi_vacuum_cleaner
+               - service: telegram_bot.send_message
+                 data:
+                    target: "{{ states('input_text.var_chat_id_vacuum_later_start') }}"
+                    title: >-
+                             {{ '\U0001f680' }} *Степа*
+                    message: 'Начал полную уборку'
+               - service: input_text.set_value
+                 data:
+                    entity_id: input_text.var_chat_id_vacuum_later_start
+                    value: !secret telegram_chita_chat_id
 
     - alias: vacuum later start cleaning not docked
       id: vacuum later start cleaning not docked
@@ -40,16 +41,17 @@
               entity_id: vacuum.xiaomi_vacuum_cleaner
               state: 'docked'
       action:
-           - service: telegram_bot.send_message
-             data:
-                target: "{{ states('input_text.var_chat_id_vacuum_later_start') }}"
-                title: >-
-                         ⚠️ *Степа*
-                message: 'Не смог начать полную уборку, потому что нахожусь не на базе'
-           - service: input_text.set_value
-             data:
-                entity_id: input_text.var_chat_id_vacuum_later_start
-                value: !secret telegram_chita_chat_id
+           - parallel:
+               - service: telegram_bot.send_message
+                 data:
+                    target: "{{ states('input_text.var_chat_id_vacuum_later_start') }}"
+                    title: >-
+                             ⚠️ *Степа*
+                    message: 'Не смог начать полную уборку, потому что нахожусь не на базе'
+               - service: input_text.set_value
+                 data:
+                    entity_id: input_text.var_chat_id_vacuum_later_start
+                    value: !secret telegram_chita_chat_id
 
     - alias: vacuum start stop camera map when docked cleaning
       id: vacuum start stop camera map when docked cleaning

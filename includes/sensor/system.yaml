@@ -18,19 +18,6 @@
     - type: memory_use_percent
     - type: last_boot
 
-#  - platform: filesize
-#    file_paths:
-#     - /config/home-assistant_v2.db
-
-#Размер базы MariaDB
-  - platform: sql
-    db_url: !secret connection_string
-    queries:
-      - name: Maria DB size
-        query: 'SELECT table_schema "database", round(Sum(data_length + index_length) / 1048576, 1) "value" FROM information_schema.tables WHERE table_schema="homeassistant" GROUP BY table_schema;'
-        column: 'value'
-        unit_of_measurement: MB
-
 #На хосте "du -s /usr/share/hassio/addons/data/core_mariadb/databases/homeassistant/"
   - platform: mqtt
     name: Maria DB folder size

@@ -12,15 +12,16 @@
           scene_id: before_alarm_on
           snapshot_entities:
             - light.gateway_light_04cf8cabd77b
-      - service: script.turn_on
-        data:
-          entity_id: script.alarm_gateway_light
-      - service: script.turn_on
-        data:
-          entity_id: script.alarm_gateway_sound
-      - service: script.turn_on
-        data:
-          entity_id: script.alarm_tts_yandex_stations
+      - parallel:
+          - service: script.turn_on
+            data:
+              entity_id: script.alarm_gateway_light
+          - service: script.turn_on
+            data:
+              entity_id: script.alarm_gateway_sound
+          - service: script.turn_on
+            data:
+              entity_id: script.alarm_tts_yandex_stations
       - service: timer.start
         data:
           entity_id: timer.alarm_gateway_sound
@@ -34,23 +35,24 @@
         platform: state
         to: 'off'
       action:
-      - service: script.turn_off
-        data:
-          entity_id: script.alarm_gateway_light
-      - service: script.turn_off
-        data:
-          entity_id: script.alarm_gateway_sound
-      - service: script.turn_off
-        data:
-          entity_id: script.alarm_tts_yandex_stations
-      - service: light.turn_off
-        entity_id: light.gateway_light_04cf8cabd77b
-      - service: xiaomi_aqara.stop_ringtone
-        data:
-          gw_mac: !secret gateway1_mac
-      - service: timer.cancel
-        data:
-          entity_id: timer.alarm_gateway_sound
+      - parallel:
+          - service: script.turn_off
+            data:
+              entity_id: script.alarm_gateway_light
+          - service: script.turn_off
+            data:
+              entity_id: script.alarm_gateway_sound
+          - service: script.turn_off
+            data:
+              entity_id: script.alarm_tts_yandex_stations
+          - service: light.turn_off
+            entity_id: light.gateway_light_04cf8cabd77b
+          - service: xiaomi_aqara.stop_ringtone
+            data:
+              gw_mac: !secret gateway1_mac
+          - service: timer.cancel
+            data:
+              entity_id: timer.alarm_gateway_sound
       - service: scene.turn_on
         entity_id: scene.before_alarm_on
 
@@ -68,15 +70,16 @@
          entity_id: input_boolean.alarm_gateway_button
          state: 'on'
       action:
-      - service: script.turn_off
-        data:
-          entity_id: script.alarm_gateway_sound
-      - service: script.turn_off
-        data:
-          entity_id: script.alarm_tts_yandex_stations
-      - service: xiaomi_aqara.stop_ringtone
-        data:
-          gw_mac: !secret gateway1_mac
+      - parallel:
+          - service: script.turn_off
+            data:
+              entity_id: script.alarm_gateway_sound
+          - service: script.turn_off
+            data:
+              entity_id: script.alarm_tts_yandex_stations
+          - service: xiaomi_aqara.stop_ringtone
+            data:
+              gw_mac: !secret gateway1_mac
 
 #Вкл/выкл сигнализации по датчикам дыма
     - alias: smoke detector alarm to gateway
@@ -213,32 +216,33 @@
             data:
               message: 'command_ringer_mode'
               title: 'normal'
-          - service: input_boolean.turn_on
-            data:
-              entity_id: input_boolean.alarm_gateway_button
-          - service: telegram_bot.send_message
-            data:
-              title: >-
-                       {{ '\U0001f6a8' }} *Сигнализация*
-              message: 'Нажатие тревожной кнопки в *детской*'
-              target: !secret telegram_all_chat_id
-          - service: notify.notify
-            data:
-              title: "{{ '\U0001f6a8' }} Сигнализация"
-              message: 'Нажатие тревожной кнопки в детской'
-              data:
-                  ttl: 0
-                  priority: high
-                  channel: alarm_stream
-                  actions:
-                    - action: "stop_alarm"
-                      title: "Выключить сирену"
-          - service: notify.huawei_lte
-            data:
-              message: "{{ '\U0001f6a8' }} Нажатие тревожной кнопки в детской"
-              target: !secret sms_phone_all
-              data:
-                url: 'http://192.168.8.1/'
+          - parallel:
+              - service: input_boolean.turn_on
+                data:
+                  entity_id: input_boolean.alarm_gateway_button
+              - service: telegram_bot.send_message
+                data:
+                  title: >-
+                           {{ '\U0001f6a8' }} *Сигнализация*
+                  message: 'Нажатие тревожной кнопки в *детской*'
+                  target: !secret telegram_all_chat_id
+              - service: notify.notify
+                data:
+                  title: "{{ '\U0001f6a8' }} Сигнализация"
+                  message: 'Нажатие тревожной кнопки в детской'
+                  data:
+                      ttl: 0
+                      priority: high
+                      channel: alarm_stream
+                      actions:
+                        - action: "stop_alarm"
+                          title: "Выключить сирену"
+              - service: notify.huawei_lte
+                data:
+                  message: "{{ '\U0001f6a8' }} Нажатие тревожной кнопки в детской"
+                  target: !secret sms_phone_all
+                  data:
+                    url: 'http://192.168.8.1/'
           - service: notify.mobile_app_sm_g973f
             data:
               message: 'command_ringer_mode'

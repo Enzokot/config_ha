@@ -162,31 +162,32 @@
         - platform: time_pattern
           minutes: "/3"
       action:
-        - service: script.auto_local_temperature_calibration_thermostats
-          data:
-            namevalve: 'Bedroom valve with thermostat'
-            objectvalve: 'climate.0x60a423fffe968719'
-            objectvalvewindow: 'switch.0x60a423fffe968719_window_detection'
-            objectsensortemperature: 'sensor.esp_xiaomi_bed_room_temperature'
-        - service: script.auto_local_temperature_calibration_thermostats
-          data:
-            namevalve: 'Living room valve with thermostat'
-            objectvalve: 'climate.0x5c0272fffec9db22'
-            objectvalvewindow: 'switch.0x5c0272fffec9db22_window_detection'
-            objectsensortemperature: 'sensor.esp_xiaomi_living_room_temperature'
-        - service: script.auto_local_temperature_calibration_thermostats
-          data:
-            namevalve: 'Childrens room valve with thermostat'
-            objectvalve: 'climate.0x5c0272fffec89454'
-            objectvalvewindow: 'switch.0x5c0272fffec89454_window_detection'
-            objectsensortemperature: 'sensor.esp_xiaomi_childrens_room_temperature'
-
-        - service: script.auto_local_temperature_calibration_thermostats
-          data:
-            namevalve: 'Kitchen valve with thermostat'
-            objectvalve: 'climate.0x5c0272fffe8de819'
-            objectvalvewindow: 'switch.0x5c0272fffe8de819_window_detection'
-            objectsensortemperature: 'sensor.esp_xiaomi_kitchen_temperature'
+        - parallel:
+            - service: script.auto_local_temperature_calibration_thermostats
+              data:
+                namevalve: 'Bedroom valve with thermostat'
+                objectvalve: 'climate.0x60a423fffe968719'
+                objectvalvewindow: 'switch.0x60a423fffe968719_window_detection'
+                objectsensortemperature: 'sensor.esp_xiaomi_bed_room_temperature'
+            - service: script.auto_local_temperature_calibration_thermostats
+              data:
+                namevalve: 'Living room valve with thermostat'
+                objectvalve: 'climate.0x5c0272fffec9db22'
+                objectvalvewindow: 'switch.0x5c0272fffec9db22_window_detection'
+                objectsensortemperature: 'sensor.esp_xiaomi_living_room_temperature'
+            - service: script.auto_local_temperature_calibration_thermostats
+              data:
+                namevalve: 'Childrens room valve with thermostat'
+                objectvalve: 'climate.0x5c0272fffec89454'
+                objectvalvewindow: 'switch.0x5c0272fffec89454_window_detection'
+                objectsensortemperature: 'sensor.esp_xiaomi_childrens_room_temperature'
+    
+            - service: script.auto_local_temperature_calibration_thermostats
+              data:
+                namevalve: 'Kitchen valve with thermostat'
+                objectvalve: 'climate.0x5c0272fffe8de819'
+                objectvalvewindow: 'switch.0x5c0272fffe8de819_window_detection'
+                objectsensortemperature: 'sensor.esp_xiaomi_kitchen_temperature'
 
 #Автоматическая установка boost режима во время сна
     - alias: auto_boost_mode_thermostats_at_sleeping_time
@@ -198,38 +199,39 @@
             - "05:30:00"
             - "23:30:00"
       action:
-        - choose:
-            - conditions:
-                - condition: state
-                  entity_id: input_boolean.thermostat_bedroom_night_mode
-                  state: 'on'
-                - condition: numeric_state
-                  entity_id: sensor.thermostat_bedroom_valve_position
-                  above: 79
-                # - condition: numeric_state
-                #   entity_id: sensor.esp_xiaomi_bed_room_temperature
-                #   below: 25.7
-              sequence:      
-                - service: climate.set_preset_mode
-                  data:
-                    entity_id: climate.0x60a423fffe968719
-                    preset_mode: 'boost'
-        - choose:
-            - conditions:
-                - condition: state
-                  entity_id: input_boolean.thermostat_childrensroom_night_mode
-                  state: 'on'
-                - condition: numeric_state
-                  entity_id: sensor.thermostat_childrens_room_valve_position
-                  above: 79
-                # - condition: numeric_state
-                #   entity_id: sensor.esp_xiaomi_childrens_room_temperature
-                #   below: 25.7
-              sequence:      
-                - service: climate.set_preset_mode
-                  data:
-                    entity_id: climate.0x5c0272fffec89454
-                    preset_mode: 'boost'
+        - parallel:
+            - choose:
+                - conditions:
+                    - condition: state
+                      entity_id: input_boolean.thermostat_bedroom_night_mode
+                      state: 'on'
+                    - condition: numeric_state
+                      entity_id: sensor.thermostat_bedroom_valve_position
+                      above: 79
+                    # - condition: numeric_state
+                    #   entity_id: sensor.esp_xiaomi_bed_room_temperature
+                    #   below: 25.7
+                  sequence:      
+                    - service: climate.set_preset_mode
+                      data:
+                        entity_id: climate.0x60a423fffe968719
+                        preset_mode: 'boost'
+            - choose:
+                - conditions:
+                    - condition: state
+                      entity_id: input_boolean.thermostat_childrensroom_night_mode
+                      state: 'on'
+                    - condition: numeric_state
+                      entity_id: sensor.thermostat_childrens_room_valve_position
+                      above: 79
+                    # - condition: numeric_state
+                    #   entity_id: sensor.esp_xiaomi_childrens_room_temperature
+                    #   below: 25.7
+                  sequence:      
+                    - service: climate.set_preset_mode
+                      data:
+                        entity_id: climate.0x5c0272fffec89454
+                        preset_mode: 'boost'
 
     - alias: switching_thermostat_night_mode
       id: switching_thermostat_night_mode

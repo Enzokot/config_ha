@@ -70,7 +70,6 @@ telegram_bot: !include includes/telegram_bot.yaml
 alert: !include includes/alert.yaml
 
 camera: !include includes/camera.yaml
-sun:
 
 switch: !include_dir_merge_list includes/switches
 sensor: !include_dir_merge_list includes/sensor

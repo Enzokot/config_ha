@@ -10,34 +10,35 @@
         event_data:
           command: '/ping'
       action:
-        - service: notify.notify
-          data:
-            title: "{{ '\U00002139' }} Check notification's"
-            message: pong
-        - service: telegram_bot.delete_message
-          data:
-            chat_id: '{{ trigger.event.data.chat_id }}'
-            message_id: '{{ trigger.event.data.id }}'
-        - service: telegram_bot.send_message
-          data:
-            target: '{{ trigger.event.data.chat_id }}'
-            message: >-
-                      {{ '\U00002139' }} pong
-        - service: notify.huawei_lte
-          data:
-            message: >-
-                     {{ '\U00002139' }} pong
-            target: !secret sms_phone_enzokot
-            data:
-              url: 'http://192.168.8.1/'
-        - service: notify.html5_notifier
-          data:
-            title: "{{ '\U00002139' }} Check notification's"
-            message: pong
-        - service: notify.email_enzokot_ha
-          data:
-            title: "{{ '\U00002139' }} Check notification's"
-            message: pong
+        - parallel:
+            - service: notify.notify
+              data:
+                title: "{{ '\U00002139' }} Check notification's"
+                message: pong
+            - service: telegram_bot.delete_message
+              data:
+                chat_id: '{{ trigger.event.data.chat_id }}'
+                message_id: '{{ trigger.event.data.id }}'
+            - service: telegram_bot.send_message
+              data:
+                target: '{{ trigger.event.data.chat_id }}'
+                message: >-
+                          {{ '\U00002139' }} pong
+            - service: notify.huawei_lte
+              data:
+                message: >-
+                         {{ '\U00002139' }} pong
+                target: !secret sms_phone_enzokot
+                data:
+                  url: 'http://192.168.8.1/'
+            - service: notify.html5_notifier
+              data:
+                title: "{{ '\U00002139' }} Check notification's"
+                message: pong
+            - service: notify.email_enzokot_ha
+              data:
+                title: "{{ '\U00002139' }} Check notification's"
+                message: pong
 
     - alias: keyboard tuc tuc gateway
       id: keyboard tuc tuc gateway
@@ -259,10 +260,11 @@
                   entity_id: light.yeelight_ceiling_cr
                   state: 'on'
       action:
-        - service: light.toggle
-          entity_id: light.yeelight_ceiling_cr
-        - service: automation.turn_on
-          entity_id: automation.sync_yeelight_ceiling_to_switch
+        - parallel:
+            - service: light.toggle
+              entity_id: light.yeelight_ceiling_cr
+            - service: automation.turn_on
+              entity_id: automation.sync_yeelight_ceiling_to_switch
         - service: telegram_bot.answer_callback_query
           data:
             callback_query_id: '{{ trigger.event.data.id }}'
@@ -370,9 +372,9 @@
             callback_query_id: '{{ trigger.event.data.id }}'
             message: '{%- if trigger.event.data.data == "/vacuum10"  -%}
                         "Будет отправлен на уборку через 10 мин."
-                    {%- else -%}
+                      {%- else -%}
                         "Будет отправлен на уборку через 20 мин."
-                    {%- endif -%}'              
+                      {%- endif -%}'
         - service: input_text.set_value
           data:
               entity_id: input_text.var_chat_id_vacuum_later_start
@@ -478,15 +480,15 @@
         - choose:
             - conditions: "{{ is_state(entity, 'on') and is_state_attr(entity, 'in_progress', false) }}"
               sequence:
-                - service: update.install
-                  data:
-                    entity_id: "{{- entity -}}"
-                    backup: "{{ state_attr(entity, 'supported_features') | int(0) >= 8 }}"
                 - service: telegram_bot.answer_callback_query
                   data:
                     callback_query_id: '{{ trigger.event.data.id }}'
                     message: >-
                         Обновление на версию {{ state_attr(entity, 'latest_version') }} {{ friendlyname }} запущено.
+                - service: update.install
+                  data:
+                    entity_id: "{{- entity -}}"
+                    backup: "{{ state_attr(entity, 'supported_features') | int(0) >= 8 }}"
           default:
             - service: telegram_bot.answer_callback_query
               data:

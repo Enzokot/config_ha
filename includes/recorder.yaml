@@ -1,4 +1,5 @@
     commit_interval: 60
     db_url: !secret connection_string
     auto_purge: false
+    auto_repack: false
     include: !include entities_for_db.yaml

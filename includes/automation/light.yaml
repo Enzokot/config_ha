@@ -258,7 +258,7 @@
           state: 'unavailable'
         - condition: template
           value_template: >
-            {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
+            {% set ignore = ['off', 'unknown', 'unavailable', 'none', None, null, ''] %}
             {{ states('switch.0x54ef441000096cbc') not in ignore }}
       action:
         - wait_for_trigger:

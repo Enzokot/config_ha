@@ -495,6 +495,9 @@
     - condition: state
       entity_id: humidifier.zhimi_humidifier_cb1
       state: 'unavailable'
+    - condition: state
+      entity_id: switch.0x60a423fffef8d41a
+      state: 'on'
   action:
     - wait_for_trigger:
         - platform: state

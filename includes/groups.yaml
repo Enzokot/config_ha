@@ -85,3 +85,25 @@
           - sensor.0x158d0006c5f21e_temperature
           - sensor.0x158d0006b860cf_temperature
           - sensor.0x158d00042fd6f5_temperature
+
+    entity_ids_for_turn_off_by_smoke_detector:
+        entities:
+          - switch.0x086bd7fffe5aecf8_left
+          - switch.0x086bd7fffe5aecf8_right
+          - switch.0x086bd7fffe5b7c7f_left
+          - switch.0x086bd7fffe5b7c7f_right
+          - switch.0x086bd7fffe5d13c9
+          - switch.0x54ef441000096cbc
+          - switch.0x588e81fffeff5c4f
+          - switch.0x60a423fffef8d41a
+          - switch.0x842e14fffe13a854
+          - switch.0x842e14fffe36661f
+          - switch.0x842e14fffe5047f5
+          - switch.r4s1_kettle_boil
+          - switch.r4s1_kettle_heat
+          - light.yeelight_ceiling_cr
+          - light.yeelight_ceiling_cr_ambilight
+          - light.yeelight_ceiling_cr_nightlight
+          - light.gateway_light_04cf8cabd77b
+          - humidifier.zhimi_humidifier_ca4
+          - humidifier.zhimi_humidifier_cb1

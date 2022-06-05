@@ -310,7 +310,7 @@ sensor.shelly_em_power:
 sensor.shelly_em_voltage:
   friendly_name: Напряжение сети
 
-sensor.r4s1_kettle_energy:
+sensor.r4s01_kettle_energy:
   icon: mdi:lightning-bolt
   friendly_name: Kettle-G200S energy
   #state_class: total_increasing

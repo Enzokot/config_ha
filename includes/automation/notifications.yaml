@@ -1281,20 +1281,40 @@
     - alias: notifications entry discovery
       id: notifications entry discovery
       mode: queued
-      max: 100
+      max: 99
       max_exceeded: silent
       initial_state: true
       trigger:
         - platform: event
           event_type: entity_registry_updated
+        - platform: event
+          id: 'device_registry'
+          event_type: device_registry_updated
       action:
+        - variables:
+            name_for_send: >-
+              {% if trigger.id == 'device_registry' -%}
+                {% if device_attr(trigger.event.data.device_id, 'name_by_user') != none -%}
+                  {{- device_attr(trigger.event.data.device_id, 'name_by_user') -}}
+                {%- else -%}
+                  {% set temp_name = device_attr(trigger.event.data.device_id, 'name') %}
+                  {{- iif(temp_name != none, temp_name,  trigger.event.data.device_id, trigger.event.data.device_id) -}}
+                {%- endif -%}
+              {%- else -%}
+                ''
+              {%- endif %}
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
             parse_mode: 'html'
             title: "{{ '\U0001F4DF' }} <b>Устройства</b>"
-            message: "<b>{{ trigger.event.data.action | capitalize }}</b>: {{ trigger.event.data.old_entity_id + '->' if trigger.event.data.old_entity_id is defined }}{{ trigger.event.data.entity_id if trigger.event.data.entity_id is defined else 'NA' }}"
+            message: >-
+              {% if trigger.id == 'device_registry' %}
+                <b>{{ trigger.event.data.action | capitalize }}</b>: {{ name_for_send }}
+              {% else %}
+                <b>{{ trigger.event.data.action | capitalize }}</b>: {{ trigger.event.data.old_entity_id + '->' if trigger.event.data.old_entity_id is defined }}{{ trigger.event.data.entity_id if trigger.event.data.entity_id is defined else 'NA' }}
+              {% endif %}
 
 #Уведомление о повторном запуске автоматизации
     - alias: notifications automation already running

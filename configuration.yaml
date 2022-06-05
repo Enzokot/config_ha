@@ -71,6 +71,9 @@ alert: !include includes/alert.yaml
 
 camera: !include includes/camera.yaml
 
+mqtt:
+  binary_sensor: !include_dir_merge_list includes/mqtt_integration/binary_sensor
+  sensor: !include_dir_merge_list includes/mqtt_integration/sensor
 switch: !include_dir_merge_list includes/switches
 sensor: !include_dir_merge_list includes/sensor
 binary_sensor: !include_dir_merge_list includes/binary_sensor

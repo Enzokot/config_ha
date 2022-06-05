@@ -1,35 +1,31 @@
+
 #Защита от протечки и инет в КЛГ
 
-  - platform: mqtt
-    name: availability_host_klg
+  - name: availability_host_klg
     state_topic: "network_diagnostics/availability_host_klg"
     payload_on: "1"
     payload_off: "0"
     device_class: connectivity
 
-  - platform: mqtt
-    name: availability_mibox_klg
+  - name: availability_mibox_klg
     state_topic: "network_diagnostics/availability_mibox_klg"
     payload_on: "1"
     payload_off: "0"
     device_class: connectivity
 
-  - platform: mqtt
-    name: neptun_bathroom
+  - name: neptun_bathroom
     state_topic: "network_diagnostics/availability_neptun_bathroom"
     payload_on: "1"
     payload_off: "0"
     device_class: connectivity
 
-  - platform: mqtt
-    name: neptun_wc
+  - name: neptun_wc
     state_topic: "network_diagnostics/availability_neptun_wc"
     payload_on: "1"
     payload_off: "0"
     device_class: connectivity
 
-  - platform: mqtt
-    name: entware_keenetic
+  - name: entware_keenetic
     state_topic: "network_diagnostics/availability_entware_keenetic"
     payload_on: "1"
     payload_off: "0"

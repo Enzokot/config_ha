@@ -29,7 +29,7 @@
       - media_player.yandex_intents
       - cover.cover_group_kitchen
       - media_player.samsung_tv_remote
-      - switch.r4s1_kettle_boil
+      - switch.r4s01_kettle_boil
   entity_config:
     media_player.sony_bravia_tv:
       modes:
@@ -145,52 +145,52 @@
         properties:
           - type: humidity
             entity: sensor.esp_xiaomi_childrens_room_humidity
-    switch.r4s1_kettle_boil:
+    switch.r4s01_kettle_boil:
         type: devices.types.cooking.kettle
         properties:
           - type: temperature
-            entity: climate.r4s1_kettle_temp
+            entity: climate.r4s01_kettle_temp
             attribute: current_temperature
         custom_toggles:
           mute:
-            state_entity_id: binary_sensor.r4s1_kettle_beep_inverted
+            state_entity_id: binary_sensor.r4s01_kettle_beep_inverted
             turn_on:
               service: switch.turn_off
-              entity_id: switch.r4s1_kettle_beep
+              entity_id: switch.r4s01_kettle_beep
             turn_off:
               service: switch.turn_on
-              entity_id: switch.r4s1_kettle_beep
+              entity_id: switch.r4s01_kettle_beep
           oscillation:
-            state_entity_id: switch.r4s1_kettle_backlight
+            state_entity_id: switch.r4s01_kettle_backlight
             turn_on:
               service: switch.turn_on
-              entity_id: switch.r4s1_kettle_backlight
+              entity_id: switch.r4s01_kettle_backlight
             turn_off:
               service: switch.turn_off
-              entity_id: switch.r4s1_kettle_backlight
+              entity_id: switch.r4s01_kettle_backlight
           backlight:
-            state_entity_id: light.r4s1_kettle_light
+            state_entity_id: light.r4s01_kettle_light
             turn_on:
               service: light.turn_on
-              entity_id: light.r4s1_kettle_light
+              entity_id: light.r4s01_kettle_light
             turn_off:
               service: light.turn_off
-              entity_id: light.r4s1_kettle_light
+              entity_id: light.r4s01_kettle_light
           keep_warm:
-            state_entity_id: switch.r4s1_kettle_heat
+            state_entity_id: switch.r4s01_kettle_heat
             turn_on:
               service: switch.turn_on
-              entity_id: switch.r4s1_kettle_heat
+              entity_id: switch.r4s01_kettle_heat
             turn_off:
               service: switch.turn_off
-              entity_id: switch.r4s1_kettle_heat
+              entity_id: switch.r4s01_kettle_heat
         custom_ranges:
           temperature:
-            state_entity_id: sensor.r4s1_kettle_temp_current_temp
+            state_entity_id: sensor.r4s01_kettle_temp_current_temp
             set_value:
               service: climate.set_temperature
               data:
-                entity_id: climate.r4s1_kettle_temp
+                entity_id: climate.r4s01_kettle_temp
                 temperature: '{{ value }}'
             range:
               min: 40

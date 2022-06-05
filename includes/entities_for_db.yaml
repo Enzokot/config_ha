@@ -66,7 +66,7 @@
       - sensor.total_yeelight_ceiling_relay_cable_monthly_electicity
       - sensor.total_shelly_em_cable_daily_electicity
       - sensor.total_shelly_em_cable_monthly_electicity
-      - sensor.r4s1_kettle_energy
+      - sensor.r4s01_kettle_energy
       #Датчик освещенности улица
       - sensor.0x4cf8cdf3c7d15b7_illuminance
       #Положение штока термоголовок

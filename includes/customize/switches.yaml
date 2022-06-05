@@ -47,5 +47,5 @@ switch.0x54ef441000096cbc:
   friendly_name: Реле светильника
   icon: mdi:electric-switch
 
-switch.r4s1_kettle_boil:
+switch.r4s01_kettle_boil:
   friendly_name: Чайник

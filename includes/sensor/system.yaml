@@ -18,14 +18,6 @@
     - type: memory_use_percent
     - type: last_boot
 
-#На хосте "du -s /usr/share/hassio/addons/data/core_mariadb/databases/homeassistant/"
-  - platform: mqtt
-    name: Maria DB folder size
-    state_topic: "folders_sizes/mariadb_homeassistant"
-    icon: mdi:folder-eye
-    unit_of_measurement: MB
-    value_template: "{{ (value | float(0.0) / 1024) | round(1, 'common', 0) }}"
-
 #Supervisor versions
   - platform: command_line
     name: Supervisor versions
@@ -55,27 +47,12 @@
         where: 'time > now() - 10s AND "database"=''homeassistant'''
         field: diskBytes 
 
-#На хосте "du -s /usr/share/hassio/addons/data/a0d7b954_influxdb/influxdb/data/homeassistant/"
-  - platform: mqtt
-    name: InfluxDB DB folder size
-    state_topic: "folders_sizes/influxdb_homeassistant"
-    icon: mdi:folder-eye
-    unit_of_measurement: MB
-    value_template: "{{ (value | float(0.0) / 1024) | round(1, 'common', 0) }}"
-
-
 #Сенсор длительности старта НА
 #   - platform: command_line
 #     name: "HA start time"
 #     command: 'grep -m 1 -o "Home[[:space:]]Assistant[[:space:]]initialized[[:space:]]in[[:space:]][0-9]\+.[0-9]\+" /config/home-assistant.log | grep -o "[0-9]\+.[0-9]\+$" || echo -1'
 #     scan_interval: 180
 #     unit_of_measurement: "sec"
-
-#Сенсор с датой любого link down на Keenetic
-  - platform: mqtt
-    name: check keenetic link down
-    state_topic: "network_diagnostics/check_keenetic_link_down"
-    icon: mdi:calendar-clock
 
 #Сенсоры ошибок и предупрежений в логах НА
   - platform: command_line

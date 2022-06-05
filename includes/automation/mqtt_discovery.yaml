@@ -1,0 +1,35 @@
+
+    # - alias: mqtt_sensors_discovery  
+    #   id: mqtt_sensors_discovery
+    #   initial_state: true 
+    #   trigger: 
+    #     - platform: state 
+    #       entity_id: binary_sensor.mqtt_broker_hp
+    #       to: 'on' 
+    #     - event: start 
+    #       platform: homeassistant
+    #     - platform: event
+    #       event_type: automation_reloaded
+    #   condition: 
+    #     - condition: state 
+    #       entity_id: binary_sensor.mqtt_broker_hp
+    #       state: 'on' 
+    #   action:
+    #     - parallel:
+    #         - service: mqtt.publish 
+    #           data: 
+    #             topic: homeassistant/sensor/mqtt_broker_uptime/config 
+    #             retain: true 
+    #             payload: >- 
+    #                 { 
+    #                   "name":"MQTT Broker Uptime", 
+    #                   "state_topic":"$SYS/broker/uptime", 
+    #                   "icon":"mdi:timer-outline", 
+    #                   "unit_of_measurement":"s", 
+    #                   "entity_category": "diagnostic", 
+    #                   "unique_id":"mqtt_broker_uptime",
+    #                   "value_template":"{{ '{{' }} value | regex_replace('[^\\d]','') | trim {{ '}}' }}", 
+    #                   "json_attributes_topic":"$SYS/broker/version", 
+    #                   "json_attributes_template":"{\"version\":\"{{ '{{' }} (value | regex_replace('[\\s\\S]+?\\s(\\d)','\\\\1')) | trim {{ '}}' }}\"}", 
+    #                   "device":{"identifiers":["mosquito_broker"],"manufacturer":"Eclipse","model":"Mosquitto","name":"Eclipse Mosquitto","sw_version":"{{ state_attr('sensor.mqtt_broker_uptime','version') }}","configuration_url":"https://mosquitto.org/"} 
+    #                 }

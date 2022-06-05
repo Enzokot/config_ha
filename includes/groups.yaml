@@ -68,8 +68,8 @@
           - media_player.yandex_station_ff98f029b620413b35e5e278
           - media_player.yandex_station_lr0000000000000252130000de5d13d0
           - sensor.perenio_petra01_kitchen_wifi_rssi
-          - switch.r4s1_kettle_boil
-          - sensor.r4s_gate_rssi
+          - switch.r4s01_kettle_boil
+          - sensor.r4s0_gate_rssi
           - sensor.0x158d0006b860cf_battery
           - sensor.0x158d00042fd6f5_battery
           - sensor.0x158d0006c5f21e_battery
@@ -99,8 +99,8 @@
           - switch.0x842e14fffe13a854
           - switch.0x842e14fffe36661f
           - switch.0x842e14fffe5047f5
-          - switch.r4s1_kettle_boil
-          - switch.r4s1_kettle_heat
+          - switch.r4s01_kettle_boil
+          - switch.r4s01_kettle_heat
           - light.yeelight_ceiling_cr
           - light.yeelight_ceiling_cr_ambilight
           - light.yeelight_ceiling_cr_nightlight

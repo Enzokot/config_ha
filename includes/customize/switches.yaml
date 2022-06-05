@@ -49,3 +49,6 @@ switch.0x54ef441000096cbc:
 
 switch.r4s01_kettle_boil:
   friendly_name: Чайник
+
+switch.permit_join_switch_z2m:
+  friendly_name: Добавление устройств z2m

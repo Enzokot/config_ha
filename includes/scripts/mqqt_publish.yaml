@@ -134,21 +134,6 @@
             topic: "zigbee2mqtt/{{- namevalve -}}/set/local_temperature_calibration"
             payload: '{{ calibration_local }}'
 
-#Запуск/остановка permit join в z2m
-    toggle_permit_join_z2m:
-        alias: Вкл/выкл добавления устройств в z2m
-        icon: mdi:zigbee
-        mode: parallel
-        fields:
-          topicpayload:
-            description: 'true/false для включения или отключения добавления устройств'
-            example: 'true'
-        sequence:
-          - service: mqtt.publish
-            data:
-              topic: zigbee2mqtt/bridge/request/permit_join
-              payload: '{{ topicpayload }}'
-
 #Установка скорости для мотора штор
     set_speed_shades_drive_motor:
         alias: Установка скорости мотора штор

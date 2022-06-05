@@ -9,16 +9,22 @@
         event_data:
           entity_id: timer.zigbee_permit_join
       action:
-          - service: script.toggle_permit_join_z2m
+          - service: switch.turn_off
             data:
-              topicpayload: false
+              entity_id: switch.permit_join_switch_z2m
 
     - alias: start_stop_zigbee_join_timer
       id: start_stop_zigbee_join_timer
       initial_state: true
       trigger:
       - platform: state
-        entity_id: binary_sensor.state_permit_join_z2m_frontend
+        entity_id: switch.permit_join_switch_z2m
+        from:
+          - 'on'
+          - 'off'
+        to:
+          - 'on'
+          - 'off'
       action:
           - service: >
                 {% if trigger.to_state.state == 'on' %}

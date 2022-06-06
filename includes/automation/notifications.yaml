@@ -1142,7 +1142,7 @@
         - condition: state
           entity_id: binary_sensor.local_network_availability
           state: 'on'
-        - "{{ trigger.event.data.name | string is not search(this.entity_id | string, ignorecase=True) }}"
+        - "{{ (trigger.event.data.name | string) is not search(this.entity_id | string, ignorecase=True) }}"
         - condition: template
           value_template: >-
             {{ 
@@ -1162,7 +1162,7 @@
             disable_web_page_preview: true
             title: "{{ '\U000026d4' }} <b>Ошибка выполнения скрипта</b>"
             message: >
-              {{ trigger.event.data.message | join | e -}} <a href="{{- states('sensor.instance_external_url_config') -}}/config/logs"> Check logs.</a>
+              {{ trigger.event.data.message | string | e -}} <a href="{{- states('sensor.instance_external_url_config') -}}/config/logs"> Check logs.</a>
 
 #Уведомление об объектах, которые перешли в статус недоступно
     - alias: notifications objects in unavailable status
@@ -1328,7 +1328,7 @@
             level: WARNING
       condition:
         - condition: template
-          value_template: '{{ "Already running" in trigger.event.data.message | join }}'
+          value_template: '{{ "Already running" in (trigger.event.data.message | string) }}'
       action:
         - service: telegram_bot.send_message
           data:
@@ -1336,7 +1336,7 @@
             disable_notification: true
             parse_mode: 'html'
             title: "⚠️ <b>Выполнение автоматизаций</b>"
-            message: "Повторный запуск автоматизации: {{ trigger.event.data.message | join | e }}"
+            message: "Повторный запуск автоматизации: {{ trigger.event.data.message | string | e }}"
 
 #Уведомление о критических ошибках в системном журнале
     - alias: system log critical error notify
@@ -1360,7 +1360,7 @@
             disable_web_page_preview: true
             title: "{{ '\U000026d4' }} <b>Ошибки системного журнала</b>"
             message: >
-              {{ trigger.event.data.message | join | e -}} <a href="{{- states('sensor.instance_external_url_config') -}}/config/logs"> Check logs.</a>
+              {{ trigger.event.data.message | string | e -}} <a href="{{- states('sensor.instance_external_url_config') -}}/config/logs"> Check logs.</a>
 
 #Уведомление о непрочитанных/заполнении памяти sms на модеме
     - alias: notifications sms unread or full storage

@@ -226,7 +226,7 @@
         level: WARNING
   condition:
     - condition: template
-      value_template: "{{ not this.name in trigger.event.data.message | join }}"
+      value_template: "{{ not (this.name | string) in (trigger.event.data.message | string) }}"
   action:
     - service: counter.increment
       data:

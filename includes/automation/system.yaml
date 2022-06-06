@@ -215,6 +215,8 @@
   mode: queued
   max: 100
   max_exceeded: silent
+  trigger_variables:
+    this_name: '{{ this.attributes.friendly_name | string }}'
   trigger:
     - platform: event
       event_type: system_log_event
@@ -226,7 +228,7 @@
         level: WARNING
   condition:
     - condition: template
-      value_template: "{{ not (this.name | string) in (trigger.event.data.message | string) }}"
+      value_template: "{{ not this_name in (trigger.event.data.message | string) }}"
   action:
     - service: counter.increment
       data:

@@ -1663,7 +1663,7 @@
                 title: >
                     {{ '\U0001F4B1' }} *Курсы валют*
                 message: >
-                    {{- change }} _{{- trigger.to_state.name -}}_: с *{{- trigger.from_state.state -}}* на *{{- trigger.to_state.state -}}* разница *{{- delta_str }}*
+                    {{- change }} _{{- trigger.to_state.name -}}_: стал *{{- trigger.to_state.state -}}* был *{{- trigger.from_state.state -}}* разница *{{- delta_str }}*
             # - service: rest_command.send_telegram_bot_broadcast
             #   data: 
             #     chat_id: !secret telegram_ps4_group_chat_id

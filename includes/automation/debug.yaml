@@ -55,3 +55,20 @@
     #         message: "Event: {{ trigger.id }}"
     #         logger: mycomponent.testevents
     #         level: warning
+
+    # - alias: debug user id in event
+    #   trigger:
+    #     - platform: event
+    #       event_type: state_changed
+    #       context:
+    #         user_id:
+    #           - "2486a9ed5----------------aad4be88"
+    #   action:
+    #     - service: telegram_bot.send_message
+    #       data:
+    #         target: !secret telegram_enzokot_chat_id
+    #         parse_mode: 'html'
+    #         title: >-
+    #                  {{ '\U0001F41B' }} <b>Отладка</b>
+    #         message: >-
+    #                 {{ trigger.event.context.user_id }}

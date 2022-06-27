@@ -361,20 +361,11 @@
         - service: timer.start
           data:
             entity_id: timer.vacumm_ten_minutes
-            duration: >-
-                        {%- if trigger.event.data.data == "/vacuum10"  -%}
-                            600
-                        {%- else -%}
-                            1200
-                        {%- endif -%}
+            duration: "{{ iif(trigger.event.data.data == '/vacuum10', 600, 1200, 1200) }}"
         - service: telegram_bot.answer_callback_query
           data:
             callback_query_id: '{{ trigger.event.data.id }}'
-            message: '{%- if trigger.event.data.data == "/vacuum10"  -%}
-                        "Будет отправлен на уборку через 10 мин."
-                      {%- else -%}
-                        "Будет отправлен на уборку через 20 мин."
-                      {%- endif -%}'
+            message: "{{ 'Будет отправлен на уборку через ' + iif(trigger.event.data.data == '/vacuum10', '10 мин.', '20 мин.', '20 мин.') }}"
         - service: input_text.set_value
           data:
               entity_id: input_text.var_chat_id_vacuum_later_start

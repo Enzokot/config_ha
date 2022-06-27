@@ -585,59 +585,6 @@ views:
             - entity: sensor.0x158d00039a2f33_battery
               tap_action: more-info
 
-        # - type: markdown
-        #   content: >
-        #      **Самотестирование датчиков дыма** 
-
-        # - type: horizontal-stack
-        #   cards:
-
-        #     - type: button
-        #       name: Кухня
-        #       show_state: false
-        #       icon: mdi:shield-check
-        #       tap_action:
-        #         action: call-service
-        #         service: script.selftest_smoke_detector
-        #         service_data:
-        #           namesmokedetector: 'Smoke detector kitchen'
-        #     - type: button
-        #       name: Гостиная
-        #       show_state: false
-        #       icon: mdi:shield-check
-        #       tap_action:
-        #         action: call-service
-        #         service: script.selftest_smoke_detector
-        #         service_data:
-        #           namesmokedetector: 'Smoke detector living room'
-        #     - type: button
-        #       name: Коридор
-        #       show_state: false
-        #       icon: mdi:shield-check
-        #       tap_action:
-        #         action: call-service
-        #         service: script.selftest_smoke_detector
-        #         service_data:
-        #           namesmokedetector: 'Smoke detector hallway'
-        #     - type: button
-        #       name: Детская
-        #       show_state: false
-        #       icon: mdi:shield-check
-        #       tap_action:
-        #         action: call-service
-        #         service: script.selftest_smoke_detector
-        #         service_data:
-        #           namesmokedetector: 'Smoke detector childrens room'
-        #     - type: button
-        #       name: Спальня
-        #       show_state: false
-        #       icon: mdi:shield-check
-        #       tap_action:
-        #         action: call-service
-        #         service: script.selftest_smoke_detector
-        #         service_data:
-        #           namesmokedetector: 'Smoke detector bedroom'
-
         - type: markdown
           content: >
              **Стик zigbee** 
@@ -662,7 +609,7 @@ views:
 
             - type: entities
               show_header_toggle: false
-              entities:          
+              entities:
                 - entity: sensor.zigbee2mqtt_coordinator_ver
                 - entity: sensor.sostoianie_mosta
                 - entity: script.zigbee2mqtt_linkuality_check
@@ -1087,7 +1034,7 @@ views:
                       entity: switch.0x5c0272fffec9db22_child_lock_switch
                       tap_action:
                         action: toggle
-                      
+                    
                     - type: entity
                       name: Низкий заряд
                       entity: binary_sensor.debounce_trv_living_room_low_battery

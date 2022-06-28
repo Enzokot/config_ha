@@ -79,6 +79,7 @@ timer: !include includes/timer.yaml
 energy:
 utility_meter: !include includes/utility_meter.yaml
 rest_command: !include includes/rest_command.yaml
+shell_command: !include includes/shell_command.yaml
 cover: !include includes/cover.yaml
 
 input_select: !include includes/input_select.yaml

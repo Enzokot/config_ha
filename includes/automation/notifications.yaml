@@ -1684,3 +1684,36 @@
                     resp = r.json()
                     if resp['ok']:
                       requests.post(data['tgurl']+'/deleteMessage', dict(chat_id=data['chat_id'],message_id=messageid + 1))
+
+#Уведомление из Uptime Kuma
+    - alias: system down uptime kuma notifications
+      id: system down uptime kuma notifications
+      mode: queued
+      trigger:
+        - platform: webhook
+          webhook_id: !secret webhook_id_system_down_uptime_kuma
+      condition:
+        - "{{ trigger.json.monitor is not none }}"
+      action:
+        - variables:
+            status_from: >- 
+              {{ iif(trigger.json.heartbeat is not none and trigger.json.heartbeat.status | int(0) == 1, 'online', 'offline', 'offline') }}
+        - parallel:
+            - service: telegram_bot.send_message
+              data:
+                target: !secret telegram_enzokot_chat_id
+                parse_mode: 'html'
+                title: >-
+                  {{ iif(status_from == 'online', '\U00002705', '\U000026d4', '\U000026d4') }} <b>Трекинг устройств</b>
+                message: >-
+                  {{ trigger.json.monitor.name }} <b>{{ iif(status_from == 'online', 'в', 'не в', 'не в') }}</b> сети
+            - choose:
+                - conditions: "{{ 'tsymbal' in trigger.json.monitor.name | lower and is_state('binary_sensor.internet_availability_ping', 'on') }}"
+                  sequence:
+                    - service: notify.huawei_lte
+                      data:
+                        message: >-
+                                 {{ iif(status_from == 'online', '\U00002705', '\U000026d4', '\U000026d4') }} Link from Enzokot is {{ iif(status_from == 'online', 'up', 'down', 'down') }}
+                        target: !secret sms_phone_to4ko
+                        data:
+                          url: 'http://192.168.8.1/'

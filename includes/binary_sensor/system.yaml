@@ -4,3 +4,19 @@
     name: local network availability
     host: 192.168.217.1
     scan_interval: 30
+
+#Доступность Internet
+  - platform: ping
+    name: internet availability google ping
+    host: 'google.com'
+    scan_interval: 120
+
+  - platform: ping
+    name: internet availability yandex ping
+    host: 'ya.ru'
+    scan_interval: 120
+
+  - platform: ping
+    name: internet availability cloudflare ping
+    host: 'cloudflare.com'
+    scan_interval: 120

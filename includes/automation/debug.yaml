@@ -72,3 +72,17 @@
     #                  {{ '\U0001F41B' }} <b>Отладка</b>
     #         message: >-
     #                 {{ trigger.event.context.user_id }}
+
+    # - alias: debug webhook notifications
+    #   trigger:
+    #     - platform: webhook
+    #       webhook_id: !secret webhook_id_system_down_uptime_kuma
+    #   action:
+    #     - service: telegram_bot.send_message
+    #       data:
+    #         target: !secret telegram_enzokot_chat_id
+    #         parse_mode: 'html'
+    #         title: >-
+    #                  {{ '\U0001F41B' }} <b>Отладка</b>
+    #         message: >-
+    #                 {{ iif(trigger.json.monitor is none, "Пустое имя", trigger.json.monitor.name, "Пустое имя") | e }} -> {{ iif(trigger.json.heartbeat is none, "Пустой статус", trigger.json.heartbeat.status, "Пустой статус") | e }}

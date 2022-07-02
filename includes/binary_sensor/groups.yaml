@@ -28,3 +28,11 @@
       entities:
         - binary_sensor.0x158d0003975b4c_contact
         - binary_sensor.0x158d00039a2f33_contact
+
+    - platform: group
+      name: internet_availability_ping
+      device_class: connectivity
+      entities:
+        - binary_sensor.internet_availability_google_ping
+        - binary_sensor.internet_availability_yandex_ping
+        - binary_sensor.internet_availability_cloudflare_ping

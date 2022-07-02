@@ -30,21 +30,6 @@ binary_sensor.0x158d0003f37a0f_contact:
   friendly_name: Выкл. детская
   device_class: light
   
-binary_sensor.neptun_bathroom:
-  friendly_name: Neptun WI-FI ванная
-
-binary_sensor.neptun_wc:
-  friendly_name: Neptun WI-FI туалет
-
-binary_sensor.entware_keenetic:
-  friendly_name: Доступность entware на роутере Keenetic
-
-binary_sensor.availability_host_klg:
-  friendly_name: Роутер в Калуге
-
-binary_sensor.availability_mibox_klg:
-  friendly_name: Mibox в Калуге
-
 binary_sensor.0x158d000490fe9d_contact:
   friendly_name: Питание кондиционер
   device_class: power

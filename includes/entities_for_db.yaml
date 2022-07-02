@@ -17,14 +17,6 @@
       - binary_sensor.0x158d0003953ee9_motion
       #Движение детская
       - binary_sensor.0x158d00054b8d72_motion
-      #Трекер entware на роутере Keenetic
-      - binary_sensor.entware_keenetic
-      #Трекер WI-FI защиты от протечки
-      - binary_sensor.neptun_bathroom
-      - binary_sensor.neptun_wc
-      #Трекер инета в Калуге
-      - binary_sensor.availability_host_klg
-      - binary_sensor.availability_mibox_klg
       #Климат
       - sensor.158d000542ceaf_pressure
       - sensor.0x158d0004561de9_humidity

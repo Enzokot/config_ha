@@ -7,16 +7,11 @@
 
 #Доступность Internet
   - platform: ping
-    name: internet availability google ping
-    host: 'google.com'
+    name: internet availability domolan ping
+    host: 'domolan.ru'
     scan_interval: 120
 
   - platform: ping
     name: internet availability yandex ping
     host: 'ya.ru'
-    scan_interval: 120
-
-  - platform: ping
-    name: internet availability cloudflare ping
-    host: 'cloudflare.com'
     scan_interval: 120

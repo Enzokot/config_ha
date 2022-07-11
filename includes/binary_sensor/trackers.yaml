@@ -7,8 +7,8 @@
 
 #Доступность Internet
   - platform: ping
-    name: internet availability domolan ping
-    host: 'domolan.ru'
+    name: internet availability nic ping
+    host: 'nic.ru'
     scan_interval: 120
 
   - platform: ping

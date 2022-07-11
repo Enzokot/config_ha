@@ -387,3 +387,9 @@ sensor.rest_qiwi_x_rates_usd:
 
 sensor.filtered_qiwi_x_rates_usd:
   friendly_name: QIWI курс USD
+
+sensor.myip_keenetic:
+  friendly_name: keenetic hostname
+  
+sensor.myip:
+  friendly_name: opendns resolve

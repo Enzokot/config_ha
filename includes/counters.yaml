@@ -6,6 +6,8 @@
 #Счетчики событий warning и error в syslog HA
     system_log_error_counter:
       name: 'Счетчик событий error в syslog HA'
+      restore: false
       
     system_log_warning_counter:
       name: 'Счетчик событий warning в syslog HA'
+      restore: false

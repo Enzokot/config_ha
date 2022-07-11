@@ -13,7 +13,7 @@
         - parallel:
             - service: notify.notify
               data:
-                title: "{{ '\U00002139' }} Check notification's"
+                title: "ℹ️ Check notification's"
                 message: pong
             - service: telegram_bot.delete_message
               data:
@@ -23,21 +23,21 @@
               data:
                 target: '{{ trigger.event.data.chat_id }}'
                 message: >-
-                          {{ '\U00002139' }} pong
+                          ℹ️ pong
             - service: notify.huawei_lte
               data:
                 message: >-
-                         {{ '\U00002139' }} pong
+                         ℹ️ pong
                 target: !secret sms_phone_enzokot
                 data:
                   url: 'http://192.168.8.1/'
             - service: notify.html5_notifier
               data:
-                title: "{{ '\U00002139' }} Check notification's"
+                title: "ℹ️ Check notification's"
                 message: pong
             - service: notify.email_enzokot_ha
               data:
-                title: "{{ '\U00002139' }} Check notification's"
+                title: "ℹ️ Check notification's"
                 message: pong
 
     - alias: keyboard tuc tuc gateway

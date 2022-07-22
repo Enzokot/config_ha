@@ -3,8 +3,6 @@
     - oauth_token: !secret yandex_oauth_token
       skill_id: !secret yandex_skill_id
       user_id: !secret yandex_user_id
-  settings:
-    pressure_unit: mmHg
   filter:
     include_entities:
       - switch.0x086bd7fffe5d13c9

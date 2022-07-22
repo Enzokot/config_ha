@@ -649,7 +649,7 @@
               value_template: >
                 {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
                 {{ 
-                  trigger.event.data.new_state.state == 'on' and
+                  trigger.event.data.old_state.state == 'on' and trigger.event.data.new_state.state == 'off' and
                   trigger.event.data.new_state.attributes.installed_version != trigger.event.data.old_state.attributes.installed_version and
                   trigger.event.data.new_state.attributes.installed_version not in ignore and
                   trigger.event.data.new_state.attributes.installed_version is not none
@@ -1563,13 +1563,24 @@
           to: 'offline'
           for: '00:01:20'
       action:
-        - service: notify.huawei_lte
-          data:
-            message: >-
-                     {{ '\U0000203C' }} Telegram API недоступно
-            target: !secret sms_phone_enzokot
-            data:
-              url: 'http://192.168.8.1/'
+        - choose:
+            - conditions:
+              - condition: time
+                after: '8:00:00'
+                before: '23:00:00'
+              sequence:
+                - service: notify.huawei_lte
+                  data:
+                    message: >-
+                             {{ '\U0000203C' }} Telegram API недоступно
+                    target: !secret sms_phone_enzokot
+                    data:
+                      url: 'http://192.168.8.1/'
+          default:
+            - service: notify.email_enzokot_ha
+              data:
+                title: "⚠️ Трекинг устройств"
+                message: "Telegram API недоступно"
 
 #Яндекс станция перешла из/в локальный режим
     - alias: yandex station to or from local mode notification
@@ -1629,10 +1640,10 @@
             - service: telegram_bot.send_message
               data:
                 target: !secret telegram_all_chat_id
-                title: >
-                  {% if trigger.id == 'below' %} {{ '\U0001F6B1' }} {% else %} {{ '\U0001F6B0' }} {% endif -%} *Горячее водоснабжение*
-                message: >
-                  {% if trigger.id == 'below' %} Остывает {% else %} Нагревается {% endif -%} горячая труба *{{ area_name(trigger.entity_id) }}*.
+                title: >-
+                  {{ iif(trigger.id == 'below', '\U0001F6B1' , '\U0001F6B0') }} *Горячее водоснабжение*
+                message: >-
+                  {{ iif(trigger.id == 'below', 'Остывает' , 'Нагревается') }} горячая труба *{{ area_name(trigger.entity_id) }}*.
             - choose:
               - conditions: "{{ trigger.id == 'below' and trigger.entity_id == 'sensor.0x158d0006c5f21e_temperature' }}"
                 sequence:

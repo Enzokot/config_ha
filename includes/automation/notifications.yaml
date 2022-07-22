@@ -1252,9 +1252,10 @@
           data:
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
-            title: "{%- if trigger.to_state.state | int(0) >= 30 -%} ℹ️ {%- else -%} {{ '\U00002705' }} {%- endif %} *Водонагреватель*"
+            title: >-
+                {{ iif(trigger.to_state.state | int(0) >= 30, 'ℹ️', '\U00002705') }} *Водонагреватель*
             message: >-
-                {%- if trigger.to_state.state | int(0) >= 30 %} *Включен* {%- else -%} *Отключен* {%- endif %} нагрев воды
+                {{ iif(trigger.to_state.state | int(0) >= 30, '*Включен*', '*Отключен*') }} нагрев воды
 
 #Уведомление о неудачном бекапе Google Drive Backup
     - alias: notifications stale google drive backup

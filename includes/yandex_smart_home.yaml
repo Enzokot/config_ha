@@ -149,6 +149,8 @@
           - type: temperature
             entity: climate.r4s01_kettle_temp
             attribute: current_temperature
+          - type: water_level
+            entity: sensor.r4s01_kettle_volumelast
         custom_toggles:
           mute:
             state_entity_id: binary_sensor.r4s01_kettle_beep_inverted

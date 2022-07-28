@@ -51,17 +51,18 @@
         event_data:
           command: '/tuctuc'
       action:
-        - service: telegram_bot.delete_message
-          data:
-            chat_id: '{{ trigger.event.data.chat_id }}'
-            message_id: '{{ trigger.event.data.id }}'
-        - service: telegram_bot.send_message
-          data:
-            target: '{{ trigger.event.data.chat_id }}'
-            message: >-
+        - parallel:
+            - service: telegram_bot.delete_message
+              data:
+                chat_id: '{{ trigger.event.data.chat_id }}'
+                message_id: '{{ trigger.event.data.id }}'
+            - service: telegram_bot.send_message
+              data:
+                target: '{{ trigger.event.data.chat_id }}'
+                message: >-
                        {{ '\U0001f4e2' }} С уровнем громкости:
-            inline_keyboard:
-              - 'Тихо:/minlevelsound, Средне:/avrlevelsound, Громко:/maxlevelsound'
+                inline_keyboard:
+                  - 'Тихо:/minlevelsound, Средне:/avrlevelsound, Громко:/maxlevelsound'
 
     - alias: keyboard alarm home
       id: keyboard alarm home
@@ -152,21 +153,23 @@
           event_data:
             data: '/maxlevelsound'
       action:
-        - service: telegram_bot.delete_message
-          data:
-            chat_id: '{{ trigger.event.data.chat_id }}'
-            message_id: '{{ trigger.event.data.message.message_id }}'
-        - service: xiaomi_aqara.play_ringtone
-          data:
-            gw_mac: !secret gateway1_mac
-            ringtone_id: 11
-            ringtone_vol: '{%- if trigger.event.data.data == "/maxlevelsound"  -%}
-                                50
-                            {%- elif trigger.event.data.data == "/avrlevelsound" -%}
-                                25
-                            {%- else -%}
-                                3
-                            {%- endif -%}'
+        - parallel:
+            - service: telegram_bot.delete_message
+              data:
+                chat_id: '{{ trigger.event.data.chat_id }}'
+                message_id: '{{ trigger.event.data.message.message_id }}'
+            - service: xiaomi_aqara.play_ringtone
+              data:
+                gw_mac: !secret gateway1_mac
+                ringtone_id: 11
+                ringtone_vol: >-
+                    {%- if trigger.event.data.data == "/maxlevelsound"  -%}
+                      50
+                    {%- elif trigger.event.data.data == "/avrlevelsound" -%}
+                      25
+                    {%- else -%}
+                      3
+                    {%- endif -%}
         - service: telegram_bot.answer_callback_query
           data:
             callback_query_id: '{{ trigger.event.data.id }}'

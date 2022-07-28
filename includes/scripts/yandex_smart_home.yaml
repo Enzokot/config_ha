@@ -2,7 +2,7 @@
 #Для управления яркостью увлажнителей
 #   yandex_custom_brightness_humidifier:
 #     alias: 'Установить яркость улажнителя'
-#     icon: mdi:text-to-speech
+#     icon: mdi:microphone-message
 #     mode: parallel
 #     fields:
 #       entity:

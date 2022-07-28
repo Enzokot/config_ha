@@ -2,7 +2,7 @@
 #Алисой с заданной громкостью в локальном режиме
   alice_custom_tts_volume:
     alias: 'Воспроизведение текста Алисой с заданной громкостью'
-    icon: mdi:text-to-speech
+    icon: mdi:microphone-message
     mode: parallel
     fields:
       entity:

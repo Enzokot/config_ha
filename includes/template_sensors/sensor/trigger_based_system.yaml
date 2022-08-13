@@ -61,19 +61,3 @@
                {%- endif -%}
              {% endif %}
         icon: mdi:clock
-
-#Сенсор версии Supervisor
-  - trigger:
-      - platform: template
-        value_template: >
-            {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
-            {{ state_attr('update.home_assistant_supervisor_update', 'installed_version') not in ignore and
-               states('sensor.supervisor_current_version') != state_attr('update.home_assistant_supervisor_update', 'installed_version')
-            }}
-      - platform: homeassistant
-        event: start
-      - platform: event
-        event_type: event_template_reloaded
-    sensor:
-      - name: supervisor_current_version
-        state: "{{ state_attr('update.home_assistant_supervisor_update', 'installed_version') }}"

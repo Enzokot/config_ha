@@ -31,7 +31,7 @@
   action:
     - service: homeassistant.reload_config_entry
       data:
-        entry_id: 8a7c8a568a453f39d2a77dda05119c4b
+        entry_id: 9d3e3e3a42a160105b1bbc8754d3f78b
     # - service: rest_command.reload_integration_speedtest
     #   data: {}
 

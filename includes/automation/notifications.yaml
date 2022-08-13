@@ -256,6 +256,8 @@
                 message: >-
                          Обнаружено вскрытие {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
                 target: !secret telegram_all_chat_id
+                inline_keyboard:
+                  - 'Выключить сирену:/stop_alarm'
             - service: notify.notify
               data:
                 title: "{{ '\U0001f6a8' }} Сигнализация"
@@ -319,6 +321,8 @@
                 message: >-
                          Обнаружено движение _{{ trigger.to_state.attributes.friendly_name }}_ при включенной сигнализации
                 target: !secret telegram_all_chat_id
+                inline_keyboard:
+                  - 'Выключить сирену:/stop_alarm'
             - service: notify.notify
               data:
                 title: "{{ '\U0001f6a8' }} Сигнализация"
@@ -382,6 +386,8 @@
                        {{ '\U0001f6a8' }} *Сигнализация*
                 message: >-
                          Обнаружено вскрытие окна _{{ trigger.to_state.attributes.friendly_name }}_ при включенной сигнализации
+                inline_keyboard:
+                  - 'Выключить сирену:/stop_alarm'
                 target: !secret telegram_all_chat_id
             - service: notify.notify
               data:
@@ -531,6 +537,8 @@
                                _Спальня_
                             {{- '\n' }}
                             {%- endif -%}
+                inline_keyboard:
+                  - 'Выключить сирену:/stop_alarm'
             - service: notify.notify
               data:
                 data:
@@ -670,7 +678,8 @@
                 {%- endif %}
             latest_version: "{{ trigger.event.data.new_state.attributes.latest_version }}"
             installed_version: "{{ state_attr(trigger.event.data.entity_id, 'installed_version') }}"
-            friendlyname: "{{- trigger.event.data.new_state.name | replace(': Update', '') -}}"
+            old_installed_version: "{{ trigger.event.data.old_state.attributes.installed_version }}"
+            friendlyname: "{{- trigger.event.data.new_state.name | replace(' Update', '') -}}"
         - choose:
             - conditions: >
                 {{ trigger.event.data.new_state.attributes.installed_version != trigger.event.data.old_state.attributes.installed_version }}
@@ -680,7 +689,7 @@
                     target: !secret telegram_enzokot_chat_id
                     title: "{{ '\U0001F38A' }} *Системное обновление*"
                     message: >
-                        Установлена [{{ latest_version }}]({{- release_url }}) версия {{ friendlyname }}.
+                        Обновлен {{ friendlyname }} с {{ old_installed_version }} на [{{ latest_version }}]({{- release_url }}) версию.
                     disable_web_page_preview: true
           default:
             - parallel:
@@ -701,28 +710,6 @@
                       url: "{{- release_url }}"
                       tag: >
                         update_available_notify_ {{- trigger.event.data.entity_id | replace('update.', '') }}
-
-    - alias: Supervisor updated notification
-      id: Supervisor updated notification
-      initial_state: true
-      trigger:
-        - platform: state
-          entity_id: sensor.supervisor_current_version
-      condition:
-        - condition: template
-          value_template: >
-            {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
-            {{ trigger.from_state.state not in ignore and
-               trigger.to_state.state not in ignore and
-               trigger.to_state.state != trigger.from_state.state
-            }}
-      action:
-        - service: telegram_bot.send_message
-          data:
-            target: !secret telegram_enzokot_chat_id
-            title: "{{ '\U00002705' }} *Системное обновление*"
-            message: "Supervisor обновлен с версии [{{ trigger.from_state.state }}](https://github.com/home-assistant/supervisor/releases/tag/{{- trigger.from_state.state -}}) на [{{ trigger.to_state.state }}](https://github.com/home-assistant/supervisor/releases/tag/{{- trigger.to_state.state -}})"
-            disable_web_page_preview: true
 
 #Доступны для обновления аддоны HACS
     - alias: update HACS addons available notification

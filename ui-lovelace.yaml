@@ -1278,7 +1278,7 @@ views:
             clickable: false
             entities:
               include:
-                - sensor.*_gateway
+                - binary_sensor.*_gateway
             sort_by: friendly_name
             columns:
               - data: friendly_name
@@ -1323,7 +1323,7 @@ views:
               - data: uptime
                 name: Gateway Uptime
                 modify: x+''
-              - data: state
+              - data: last_changed
                 name: Connected Since
                 modify: >
                   var dt = new Date(x);

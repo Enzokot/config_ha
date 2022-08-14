@@ -153,7 +153,7 @@
                 {%- set datanames = namespace(low_linkquality=[]) -%}
                 {%- for state in list_sensors -%}
                 {%- if (state.entity_id.endswith('_linkquality') and (state.state | int(15)) < 15) or 
-                    (state.entity_id.endswith('_zigbee') and (state_attr(state.entity_id ,'link_quality') | int(15)) < 15)-%}
+                    (state.entity_id.endswith('_zigbee') and (state_attr(state.entity_id ,'linkquality') | int(15)) < 15)-%}
                 {%- set datanames.low_linkquality = datanames.low_linkquality + [state] -%}
                 {%- endif -%}
                 {%- endfor -%}

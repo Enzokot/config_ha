@@ -1,11 +1,11 @@
 
   attributes_template: |
-    {% if attr in ('ble', 'zigbee') %}{{{
-      "gate": gateway["device_name"],
-      "fw_version": device["fw_ver"]
+    {% if attr in ('zigbee', 'ble', 'mesh') %}{{{
+      "gate": gateway.info.name,
+      "fw_version": device.fw_ver
     }}}
     {% elif attr == 'battery' %}{{{
-      "gate": gateway["device_name"]
+      "gate": gateway.info.name
     }}}
     {% endif %}
   logger:

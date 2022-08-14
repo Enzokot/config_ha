@@ -1763,3 +1763,25 @@
           data:
             target: !secret telegram_enzokot_chat_id
             message: "{{ iif(is_state('alarm_control_panel.signalka_shliuza_alarm', 'disarmed'), '\U0001f507 Сигнализация *выключена*', '\U0001f509 Сигнализация *включена*') }}"
+
+#Уведомление по gw3 при отключении от интеграции
+    - alias: gw3 turn off notification
+      id: gw3 turn off notification
+      mode: queued
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: 
+            - binary_sensor.54ef44315770_gateway
+            - binary_sensor.54ef44cb80fd_gateway
+            - binary_sensor.54ef443127b2_gateway
+          to: 'off'
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            disable_notification: true
+            parse_mode: 'html'
+            title: "⚠️ <b>Трекинг устройств</b>"
+            message: >
+              <i>{{ state_attr(trigger.entity_id, 'friendly_name') }}</i> сменил статус на <b>выкл.</b>

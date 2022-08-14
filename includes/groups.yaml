@@ -44,9 +44,9 @@
           - sensor.0x086bd7fffe5b7c7f_linkquality
           - sensor.0x158d0003fa6b60_battery
           - sensor.0x158d000396f1f9_battery
-          - switch.0x588e81fffee49ba2_firmware_lock
-          - switch.0xb4e3f9fffee5a01d_firmware_lock
-          - switch.0xb4e3f9fffee5a6cb_firmware_lock
+          - alarm_control_panel.54ef44cb80fd_alarm
+          - alarm_control_panel.54ef44315770_alarm
+          - alarm_control_panel.54ef443127b2_alarm
           - vacuum.xiaomi_vacuum_cleaner
           - light.yeelight_ceiling_cr
           - light.signalka_shliuza_light

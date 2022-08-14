@@ -308,9 +308,9 @@
                 {% endif -%}
             data: 
               entity_id:
-                - alarm_control_panel.0x588e81fffee49ba2_alarm
-                - alarm_control_panel.0xb4e3f9fffee5a01d_alarm
-                - alarm_control_panel.0xb4e3f9fffee5a6cb_alarm
+                - alarm_control_panel.54ef44315770_alarm
+                - alarm_control_panel.54ef44cb80fd_alarm
+                - alarm_control_panel.54ef443127b2_alarm
 
 #Выключение розеток, выключателей, света по датчикам дыма
     - alias: smoke detector alarm to turn off all

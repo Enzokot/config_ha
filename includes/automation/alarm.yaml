@@ -329,3 +329,44 @@
           - service: homeassistant.turn_off
             data:
               entity_id: "{{ expand('group.entity_ids_for_turn_off_by_smoke_detector') | map(attribute = 'entity_id') | join(', ') }}"
+
+#Вкл/выкл сигнализации по nfc метки в коридоре
+    - alias: main gateway arm dissarm from nfc tag hallway
+      id: main gateway arm dissarm from nfc tag hallway
+      initial_state: true
+      trigger:
+        - platform: tag
+          tag_id:
+            - "73aef2e2-722b-418d-b20a-24e84eda330e"
+          device_id:
+            - c588ea04f4ef51a5
+      condition:
+          - "{{ state_attr(this.entity_id, 'current') | int(0) == 0 }}"
+      action:
+          - variables:
+              is_state_disarmed: "{{ is_state('alarm_control_panel.signalka_shliuza_alarm', 'disarmed') }}"
+          - choose:
+              - conditions: 
+                - "{{ is_state_disarmed }}"
+                sequence:
+                  - wait_for_trigger:
+                    - platform: tag
+                      tag_id:
+                        - "73aef2e2-722b-418d-b20a-24e84eda330e"
+                    timeout: 15
+                  - if:
+                     - "{{ wait.trigger != None }}"
+                    then:
+                      - service: telegram_bot.send_message
+                        data:
+                          target: !secret telegram_enzokot_chat_id
+                          message: "{{ '\U0001f507 Отменено включение сигнализации' }}"
+                    else:
+                      - service: >-
+                            {{ iif(is_state_disarmed, 'alarm_control_panel.alarm_arm_away', 'alarm_control_panel.alarm_disarm') }}
+                        data: 
+                          entity_id: alarm_control_panel.signalka_shliuza_alarm
+            default:
+              - service: alarm_control_panel.alarm_disarm
+                data: 
+                  entity_id: alarm_control_panel.signalka_shliuza_alarm

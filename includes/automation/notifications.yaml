@@ -1743,3 +1743,23 @@
                         target: !secret sms_phone_to4ko
                         data:
                           url: 'http://192.168.8.1/'
+
+#Уведомление вкл/выкл сигнализации на gw2
+    - alias: gw2 alarm turn on off notification
+      id: gw2 alarm turn on off notification
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: alarm_control_panel.signalka_shliuza_alarm
+          not_from:
+            - "unknown"
+            - "unavailable"
+            - ""
+          to: 
+            - "armed_away"
+            - "disarmed"
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            message: "{{ iif(is_state('alarm_control_panel.signalka_shliuza_alarm', 'disarmed'), '\U0001f507 Сигнализация *выключена*', '\U0001f509 Сигнализация *включена*') }}"

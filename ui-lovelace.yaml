@@ -1323,18 +1323,22 @@ views:
               - data: uptime
                 name: Gateway Uptime
                 modify: x+''
-              - data: last_changed
-                name: Connected Since
+              - name: Connected Since
+                data: last_changed, state
+                multi_delimiter: ","
                 modify: >
-                  var dt = new Date(x);
-                  var hrs = parseInt((Date.now()-Date.parse(x)) / 3600000);
-                  var min = parseInt(((Date.now()-Date.parse(x)) / 60000) % 60);
-                  var sec = parseInt(((Date.now()-Date.parse(x)) / 1000) % 60);
+                  if (x.split(",")[1] == 'on') {
+                  var dr = x.split(",")[0];
+                  var dt = new Date(dr);
+                  var hrs = parseInt((Date.now()-Date.parse(dr)) / 3600000);
+                  var min = parseInt(((Date.now()-Date.parse(dr)) / 60000) % 60);
+                  var sec = parseInt(((Date.now()-Date.parse(dr)) / 1000) % 60);
                   hrs = (hrs < 10) ? "0" + hrs : hrs;
                   min = (min < 10) ? "0" + min : min;
                   sec = (sec < 10) ? "0" + sec : sec;
                   isFinite(dt) ? dt.toLocaleString(['ru-RU', 'en-US']) +
-                  " (Up: " + hrs + ":" + min + ":" + sec + ")" : ""
+                  " (Up: " + hrs + ":" + min + ":" + sec + ")" : ""}
+                  else "off"
             css:
               table+: "padding-top: 15px;"
               "tbody tr:nth-child(even)": "background-color: #a2542f6;"

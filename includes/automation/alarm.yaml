@@ -343,11 +343,9 @@
       condition:
           - "{{ state_attr(this.entity_id, 'current') | int(0) == 0 }}"
       action:
-          - variables:
-              is_state_disarmed: "{{ is_state('alarm_control_panel.signalka_shliuza_alarm', 'disarmed') }}"
           - choose:
               - conditions: 
-                - "{{ is_state_disarmed }}"
+                - "{{ is_state('alarm_control_panel.signalka_shliuza_alarm', 'disarmed') }}"
                 sequence:
                   - wait_for_trigger:
                     - platform: tag
@@ -362,8 +360,7 @@
                           target: !secret telegram_enzokot_chat_id
                           message: "{{ '\U0001f507 Отменено включение сигнализации' }}"
                     else:
-                      - service: >-
-                            {{ iif(is_state_disarmed, 'alarm_control_panel.alarm_arm_away', 'alarm_control_panel.alarm_disarm') }}
+                      - service: alarm_control_panel.alarm_arm_away
                         data: 
                           entity_id: alarm_control_panel.signalka_shliuza_alarm
             default:

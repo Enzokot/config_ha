@@ -53,6 +53,36 @@
           - service: timer.cancel
             data:
               entity_id: timer.alarm_gateway_sound
+          - choose:
+              - conditions: 
+                - "{{ states.group.dynamic_group_gateway_alarm_last_state_disarmed is not none }}"
+                sequence:
+                  - variables:
+                      entities: "{{ expand('group.dynamic_group_gateway_alarm_last_state_disarmed') | map(attribute = 'entity_id') | list | join(', ') }}"
+                  - service: alarm_control_panel.alarm_arm_away
+                    data:
+                      entity_id: "{{ entities }}"
+                  - service: alarm_control_panel.alarm_disarm
+                    data:
+                      entity_id: "{{ entities }}"
+                  - service: group.remove
+                    data:
+                      object_id: dynamic_group_gateway_alarm_last_state_disarmed
+          - choose:
+              - conditions: 
+                - "{{ states.group.dynamic_group_gateway_alarm_last_state_armed_away is not none }}"
+                sequence:
+                  - variables:
+                      entities: "{{ expand('group.dynamic_group_gateway_alarm_last_state_armed_away') | map(attribute = 'entity_id') | list | join(', ') }}"
+                  - service: alarm_control_panel.alarm_disarm
+                    data:
+                      entity_id: "{{ entities }}"
+                  - service: alarm_control_panel.alarm_arm_away
+                    data:
+                      entity_id: "{{ entities }}"
+                  - service: group.remove
+                    data:
+                      object_id: dynamic_group_gateway_alarm_last_state_armed_away
       - service: scene.turn_on
         entity_id: scene.before_alarm_on
 
@@ -301,11 +331,7 @@
          to: "disarmed"
       action:
           - service: >-
-                {% if trigger.id == 'armed' %}
-                  alarm_control_panel.alarm_arm_away
-                {% else %}
-                  alarm_control_panel.alarm_disarm
-                {% endif -%}
+                {{ iif(trigger.id == 'armed', 'alarm_control_panel.alarm_arm_away', 'alarm_control_panel.alarm_disarm') }}
             data: 
               entity_id:
                 - alarm_control_panel.54ef44315770_alarm
@@ -319,11 +345,11 @@
       trigger:
        - platform: state
          entity_id: 
-           - binary_sensor.0x158d0003943639_smoke
-           - binary_sensor.0x158d00039a8358_smoke
-           - binary_sensor.0x158d00039d9398_smoke
-           - binary_sensor.0x158d00045ca483_smoke
-           - binary_sensor.0x158d00045cd551_smoke
+            - binary_sensor.0x158d0003943639_smoke
+            - binary_sensor.0x158d00039a8358_smoke
+            - binary_sensor.0x158d00039d9398_smoke
+            - binary_sensor.0x158d00045ca483_smoke
+            - binary_sensor.0x158d00045cd551_smoke
          to: 'on'
       action:
           - service: homeassistant.turn_off
@@ -367,3 +393,40 @@
               - service: alarm_control_panel.alarm_disarm
                 data: 
                   entity_id: alarm_control_panel.signalka_shliuza_alarm
+
+#Включение сигнализации на всех шлюзах, которые в режиме охраны
+    - alias: gateway alarm to turn on to all gateways
+      id: gateway alarm to turn on to all gateways
+      mode: queued
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: 
+             - alarm_control_panel.54ef44315770_alarm
+             - alarm_control_panel.54ef44cb80fd_alarm
+             - alarm_control_panel.54ef443127b2_alarm
+          to: 'triggered'
+        - platform: state
+          entity_id: input_boolean.alarm_gateway_button
+          to: 'on'
+      action:
+        - parallel:
+          - choose:
+              - conditions: 
+                - "{{ states.alarm_control_panel | selectattr('state', 'in', ['armed_away', 'disarmed']) | rejectattr('entity_id', 'eq', 'alarm_control_panel.signalka_shliuza_alarm') | list | count > 0 }}"
+                sequence:
+                  - variables:
+                      entities: >-
+                        {{ states.alarm_control_panel | selectattr('state', 'in', ['armed_away', 'disarmed']) | rejectattr('entity_id', 'eq', 'alarm_control_panel.signalka_shliuza_alarm') | map(attribute = 'entity_id') | list }}
+                  - service: alarm_control_panel.alarm_trigger
+                    data: 
+                      entity_id: "{{ entities }}"
+          - choose:
+              - conditions: 
+                - condition: state
+                  entity_id: input_boolean.alarm_gateway_button
+                  state: "off"
+                sequence:
+                  - service: input_boolean.turn_on
+                    data:
+                      entity_id: input_boolean.alarm_gateway_button

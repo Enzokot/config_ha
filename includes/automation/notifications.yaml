@@ -419,6 +419,74 @@
               title: >-
                         {{ sm_g973f_rezhim_ne_bespokoit }}
 
+    - alias: notification gateway alarm triggered normal mode
+      id: notification gateway alarm triggered normal mode
+      mode: queued
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: 
+             - alarm_control_panel.54ef44315770_alarm
+             - alarm_control_panel.54ef44cb80fd_alarm
+             - alarm_control_panel.54ef443127b2_alarm
+          to: 'triggered'
+      condition:
+        - condition: state
+          entity_id: input_boolean.alarm_gateway_button
+          state: 'off'
+        - condition: state
+          entity_id: alarm_control_panel.signalka_shliuza_alarm
+          state: 'disarmed'
+      action:
+        - variables:
+              sm_g973f_rezhim_zvonka: >-
+                                     {{ states('sensor.sm_g973f_ringer_mode') }}
+              sm_g973f_rezhim_ne_bespokoit: >-
+                                     {{ states('sensor.sm_g973f_do_not_disturb_sensor') }}
+        - service: notify.notify
+          data:
+              message: 'command_ringer_mode'
+              title: 'normal'
+        - parallel:
+            - service: telegram_bot.send_message
+              data:
+                title: >-
+                       {{ '\U0001f6a8' }} *Сигнализация*
+                message: >-
+                         Обнаружено срабатывание _{{ trigger.to_state.attributes.friendly_name }}_ в обычном режиме
+                inline_keyboard:
+                  - 'Выключить сирену:/stop_alarm'
+                target: !secret telegram_all_chat_id
+            - service: notify.notify
+              data:
+                title: "{{ '\U0001f6a8' }} Сигнализация"
+                message: >-
+                         Обнаружено срабатывание {{ trigger.to_state.attributes.friendly_name }} в обычном режиме
+                data:
+                  ttl: 0
+                  priority: high
+                  channel: alarm_stream
+                  actions:
+                    - action: "stop_alarm"
+                      title: "Выключить сирену"
+            - service: notify.huawei_lte
+              data:
+                message: >-
+                         {{ '\U0001f6a8' }} Обнаружено срабатывание {{ trigger.to_state.attributes.friendly_name }} в обычном режиме
+                target: !secret sms_phone_all
+                data:
+                  url: 'http://192.168.8.1/'
+        - service: notify.mobile_app_sm_g973f
+          data:
+              message: 'command_ringer_mode'
+              title: >-
+                        {{ sm_g973f_rezhim_zvonka }}
+        - service: notify.mobile_app_sm_g973f
+          data:
+              message: 'command_dnd'
+              title: >-
+                        {{ sm_g973f_rezhim_ne_bespokoit }}
+
 #Пылесос
     - alias: vacuum cleaner error to all
       id: vacuum cleaner error to all
@@ -1019,7 +1087,9 @@
                         {{- '\U0001F6AB' -}}
                     {% endif %} *Вход в систему*
                 message: >
-                    {% set ipadress = trigger.to_state.attributes.message.split('from ')[1] | regex_replace('\s+.*') %}
+                    #{% set ipadress = trigger.to_state.attributes.message.split('from ')[1] | regex_replace('\s+.*') %}
+                    {% set ipadress = trigger.to_state.attributes.message | regex_replace('.*\((?=\d+\.\d+\.\d+\.\d+)') | regex_replace('\).*') %}
+                    
                     {% if 'with invalid authentication' in trigger.to_state.attributes.message | lower -%}
                         Неудачная попытка входа в систему с адреса [{{ ipadress }}](https://whatismyipaddress.com/ip/{{- ipadress }})
                     {%- else -%}

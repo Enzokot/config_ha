@@ -81,3 +81,83 @@
                 %}
                     {{ state.entity_id }}{%- if not loop.last -%}, {%- endif -%}
                 {%- endfor %}
+
+    - alias: dynamic group gateway alarm last state
+      id: dynamic group gateway alarm last state
+      initial_state: true
+      mode: queued
+      trigger:
+        - platform: state
+          entity_id: 
+             - alarm_control_panel.54ef44315770_alarm
+             - alarm_control_panel.54ef44cb80fd_alarm
+             - alarm_control_panel.54ef443127b2_alarm
+          to: 'triggered'
+        - platform: state
+          entity_id: input_boolean.alarm_gateway_button
+          to: 'on'
+      condition:
+        - condition: or
+          conditions:
+            - "{{ states.alarm_control_panel | selectattr('state', 'in', ['armed_away', 'disarmed']) | rejectattr('entity_id', 'eq', 'alarm_control_panel.signalka_shliuza_alarm') | list | count > 0 }}"
+            - "{{ trigger.from_state.state in ['armed_away', 'disarmed'] }}"
+      action:
+        - parallel:
+            - choose:
+              - conditions: 
+                - >-
+                     {{ trigger.from_state.state == 'armed_away'
+                       or states.alarm_control_panel 
+                     | selectattr('state', 'eq', 'armed_away') 
+                     | rejectattr('entity_id', 'eq', 'alarm_control_panel.signalka_shliuza_alarm') 
+                     | list | count > 0 }}
+                sequence:
+                    - service: group.set
+                      data:
+                        name: dynamic group gateway alarm last state armed away
+                        object_id: dynamic_group_gateway_alarm_last_state_armed_away
+                        icon: mdi:shield-lock
+                        entities: >-
+                          {% set data = namespace(entities=[]) %}
+                          {% set data.entities = data.entities + 
+                            states.alarm_control_panel 
+                            | selectattr('state', 'eq', 'armed_away') 
+                            | rejectattr('entity_id', 'eq', 'alarm_control_panel.signalka_shliuza_alarm') 
+                            | map(attribute = 'entity_id') | list
+                          %}
+                          {% if trigger.from_state.state == 'armed_away' %}
+                            {% set data.entities = data.entities + [trigger.entity_id] %}
+                          {% endif %}
+                          {% if states.group.dynamic_group_gateway_alarm_last_state_armed_away is not none %}
+                            {% set data.entities = data.entities + expand('group.dynamic_group_gateway_alarm_last_state_armed_away') | map(attribute = 'entity_id') | list %}
+                          {% endif %}
+                          {{ data.entities | unique | join(', ') }}
+            - choose:
+              - conditions: 
+                - >-
+                      {{ trigger.from_state.state == 'disarmed'
+                        or states.alarm_control_panel 
+                      | selectattr('state', 'eq', 'disarmed') 
+                      | rejectattr('entity_id', 'eq', 'alarm_control_panel.signalka_shliuza_alarm') 
+                      | list | count > 0 }}
+                sequence:
+                    - service: group.set
+                      data:
+                        name: dynamic group gateway alarm last state disarmed
+                        object_id: dynamic_group_gateway_alarm_last_state_disarmed
+                        icon: mdi:shield-lock
+                        entities: >-
+                          {% set data = namespace(entities=[]) %}
+                          {% set data.entities = data.entities + 
+                            states.alarm_control_panel 
+                            | selectattr('state', 'eq', 'disarmed') 
+                            | rejectattr('entity_id', 'eq', 'alarm_control_panel.signalka_shliuza_alarm') 
+                            | map(attribute = 'entity_id') | list
+                          %}
+                          {% if trigger.from_state.state == 'disarmed' %}
+                            {% set data.entities = data.entities + [trigger.entity_id] %}
+                          {% endif %}
+                          {% if states.group.dynamic_group_gateway_alarm_last_state_disarmed is not none %}
+                            {% set data.entities = data.entities + expand('group.dynamic_group_gateway_alarm_last_state_disarmed') | map(attribute = 'entity_id') | list %}
+                          {% endif %}
+                          {{ data.entities | unique | join(', ') }}

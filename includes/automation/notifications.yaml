@@ -453,7 +453,7 @@
                 title: >-
                        {{ '\U0001f6a8' }} *Сигнализация*
                 message: >-
-                         Обнаружено срабатывание _{{ trigger.to_state.attributes.friendly_name }}_ в обычном режиме
+                         Обнаружено срабатывание шлюза _{{ trigger.to_state.attributes.friendly_name }}_
                 inline_keyboard:
                   - 'Выключить сирену:/stop_alarm'
                 target: !secret telegram_all_chat_id
@@ -461,7 +461,7 @@
               data:
                 title: "{{ '\U0001f6a8' }} Сигнализация"
                 message: >-
-                         Обнаружено срабатывание {{ trigger.to_state.attributes.friendly_name }} в обычном режиме
+                         Обнаружено срабатывание шлюза {{ trigger.to_state.attributes.friendly_name }}
                 data:
                   ttl: 0
                   priority: high
@@ -472,7 +472,7 @@
             - service: notify.huawei_lte
               data:
                 message: >-
-                         {{ '\U0001f6a8' }} Обнаружено срабатывание {{ trigger.to_state.attributes.friendly_name }} в обычном режиме
+                         {{ '\U0001f6a8' }} Обнаружено срабатывание шлюза {{ trigger.to_state.attributes.friendly_name }}
                 target: !secret sms_phone_all
                 data:
                   url: 'http://192.168.8.1/'

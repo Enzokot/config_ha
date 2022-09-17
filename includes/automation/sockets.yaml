@@ -150,6 +150,7 @@
             - sensor.0x588e81fffeff5c4f_power
             - sensor.shelly_plug_s_1_power
             - sensor.0x60a423fffef8d41a_power
+            - sensor.shelly_plug_s_2_power
         above: 3000
       action:
           - service: switch.turn_off
@@ -438,4 +439,27 @@
           - service: input_number.set_value
             data:
               entity_id: input_number.total_server_ac_saved
+              value: "{{ trigger.to_state.state }}"
+
+#Сохранение значения энергии при перезапуске HA
+    - alias: restart instance for shelly plug s 2
+      id: restart instance for shelly plug s 2
+      initial_state: true
+      mode: single
+      max_exceeded: silent
+      trigger:
+        - platform: state
+          entity_id: sensor.shelly_plug_s_2_energy
+      condition:
+        - condition: template
+          value_template: >- 
+                {% set ignore = ['unknown', 'unavailable', 'none'] %}
+                {{ trigger.to_state.state not in ignore and
+                   trigger.from_state.state not in ignore and
+                   trigger.to_state.state != trigger.from_state.state
+                }}
+      action:
+          - service: input_number.set_value
+            data:
+              entity_id: input_number.total_shelly_plug_s_2_saved
               value: "{{ trigger.to_state.state }}"

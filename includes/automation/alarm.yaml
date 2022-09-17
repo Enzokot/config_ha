@@ -276,12 +276,14 @@
           - service: notify.mobile_app_sm_g973f
             data:
               message: 'command_ringer_mode'
-              title: >-
+              data:
+                command: >-
                         {{ sm_g973f_rezhim_zvonka }}
           - service: notify.mobile_app_sm_g973f
             data:
               message: 'command_dnd'
-              title: >-
+              data:
+                command: >-
                         {{ sm_g973f_rezhim_ne_bespokoit }}
 
 #Отключение сигнализации по кнопке мобильного приложения/телеграм

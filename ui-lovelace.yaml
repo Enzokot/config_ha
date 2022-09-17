@@ -669,6 +669,22 @@ views:
 
         - type: markdown
           content: >
+             **Розетка Data Storage** 
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: switch.shelly_plug_s_2
+                    state_color: true
+                    secondary_info: last-changed
+                  - entity: sensor.shelly_plug_s_2_power
+                  - entity: sensor.total_shelly_plug_s_2_cable_daily_electicity
+                  - entity: sensor.total_shelly_plug_s_2_cable_monthly_electicity
+
+        - type: markdown
+          content: >
              **Розетка в кухне 1** 
 
         - type: custom:vertical-stack-in-card

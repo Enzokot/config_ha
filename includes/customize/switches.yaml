@@ -52,3 +52,7 @@ switch.r4s01_kettle_boil:
 
 switch.permit_join_switch_z2m:
   friendly_name: Добавление устройств z2m
+
+switch.shelly_plug_s_2:
+  friendly_name: Вкл/выкл розетка DS
+  icon: mdi:power-socket-eu

@@ -59,6 +59,8 @@
       - sensor.total_shelly_em_cable_daily_electicity
       - sensor.total_shelly_em_cable_monthly_electicity
       - sensor.r4s01_kettle_energy
+      - sensor.total_shelly_plug_s_2_cable_daily_electicity
+      - sensor.total_shelly_plug_s_2_cable_monthly_electicity
       #Датчик освещенности улица
       - sensor.0x4cf8cdf3c7d15b7_illuminance
       #Положение штока термоголовок
@@ -93,3 +95,4 @@
       - sensor.0x842e14fffe36661f_energy
       - sensor.0x842e14fffe13a854_energy
       - sensor.0x54ef441000096cbc_energy
+      - sensor.shelly_plug_s_2_energy

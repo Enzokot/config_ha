@@ -84,11 +84,17 @@
             value_template: >
                               {{ trigger.to_state.state not in ['release', 'unavailable', 'unknown', '', 'None'] }}
       action:
-          - service: script.alice_custom_tts_volume
-            data:
-              entity: 'media_player.yandex_station_ff98f029b620413b35e5e278'
-              text: 'Кто то звонит в дверь'
-              vol_level: '0.65'
+        - parallel:
+            - service: script.alice_custom_tts_volume
+              data:
+                entity: 'media_player.yandex_station_ff98f029b620413b35e5e278'
+                text: 'Кто то звонит в дверь'
+                vol_level: '0.65'
+            - service: script.alice_custom_tts_volume
+              data:
+                entity: 'media_player.yandex_station_m00ka4300h99tr'
+                text: 'Кто то звонит в дверь'
+                vol_level: '0.45'
 
     - alias: turn_on_light_doorbell
       id: turn_on_light_doorbell

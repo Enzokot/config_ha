@@ -393,3 +393,12 @@ sensor.myip_keenetic:
   
 sensor.myip:
   friendly_name: opendns resolve
+
+sensor.shelly_plug_s_2_power:
+  friendly_name: Тек. мощность
+
+sensor.total_shelly_plug_s_2_cable_daily_electicity:
+  friendly_name: DS потреб. день
+  
+sensor.total_shelly_plug_s_2_cable_monthly_electicity:
+  friendly_name: DS потреб. мес.

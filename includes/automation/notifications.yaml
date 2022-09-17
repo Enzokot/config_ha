@@ -280,12 +280,14 @@
         - service: notify.mobile_app_sm_g973f
           data:
               message: 'command_ringer_mode'
-              title: >-
+              data:
+                command: >-
                         {{ sm_g973f_rezhim_zvonka }}
         - service: notify.mobile_app_sm_g973f
           data:
               message: 'command_dnd'
-              title: >-
+              data:
+                command: >-
                         {{ sm_g973f_rezhim_ne_bespokoit }}
 
     - alias: notification motion detected armed
@@ -345,12 +347,14 @@
         - service: notify.mobile_app_sm_g973f
           data:
               message: 'command_ringer_mode'
-              title: >-
+              data:
+                command: >-
                         {{ sm_g973f_rezhim_zvonka }}
         - service: notify.mobile_app_sm_g973f
           data:
               message: 'command_dnd'
-              title: >-
+              data:
+                command: >-
                         {{ sm_g973f_rezhim_ne_bespokoit }}
 
     - alias: notification open window armed
@@ -411,12 +415,14 @@
         - service: notify.mobile_app_sm_g973f
           data:
               message: 'command_ringer_mode'
-              title: >-
+              data:
+                command: >-
                         {{ sm_g973f_rezhim_zvonka }}
         - service: notify.mobile_app_sm_g973f
           data:
               message: 'command_dnd'
-              title: >-
+              data:
+                command: >-
                         {{ sm_g973f_rezhim_ne_bespokoit }}
 
     - alias: notification gateway alarm triggered normal mode
@@ -479,12 +485,14 @@
         - service: notify.mobile_app_sm_g973f
           data:
               message: 'command_ringer_mode'
-              title: >-
+              data:
+                command: >-
                         {{ sm_g973f_rezhim_zvonka }}
         - service: notify.mobile_app_sm_g973f
           data:
               message: 'command_dnd'
-              title: >-
+              data:
+                command: >-
                         {{ sm_g973f_rezhim_ne_bespokoit }}
 
 #Пылесос
@@ -671,12 +679,14 @@
         - service: notify.mobile_app_sm_g973f
           data:
               message: 'command_ringer_mode'
-              title: >-
+              data:
+                command: >-
                         {{ sm_g973f_rezhim_zvonka }}
         - service: notify.mobile_app_sm_g973f
           data:
               message: 'command_dnd'
-              title: >-
+              data:
+                command: >-
                         {{ sm_g973f_rezhim_ne_bespokoit }}
 
 #Срок сертификата SSL менее 5 дней
@@ -881,6 +891,7 @@
                 - sensor.0x842e14fffe36661f_power
                 - sensor.shelly_plug_s_1_power
                 - sensor.0x60a423fffef8d41a_power
+                - sensor.shelly_plug_s_2_power
             above: 3000
       action:
         - service: telegram_bot.send_message
@@ -1087,7 +1098,7 @@
                         {{- '\U0001F6AB' -}}
                     {% endif %} *Вход в систему*
                 message: >
-                    #{% set ipadress = trigger.to_state.attributes.message.split('from ')[1] | regex_replace('\s+.*') %}
+                    {% set ipadress = trigger.to_state.attributes.message.split('from ')[1] | regex_replace('\s+.*') %}
                     {% set ipadress = trigger.to_state.attributes.message | regex_replace('.*\((?=\d+\.\d+\.\d+\.\d+)') | regex_replace('\).*') %}
                     
                     {% if 'with invalid authentication' in trigger.to_state.attributes.message | lower -%}
@@ -1584,6 +1595,7 @@
           entity_id: 
             - binary_sensor.shelly_em_firmware_update
             - binary_sensor.shelly_plug_s_1_firmware_update
+            - binary_sensor.shelly_plug_s_2_firmware_update
           from: 'off'
           to: 'on'
       action:
@@ -1651,12 +1663,14 @@
           entity_id: 
             - binary_sensor.yandex_station_ff98f029b620413b35e5e278_assumed_state
             - binary_sensor.yandex_station_lr0000000000000252130000de5d13d0_assumed_state
+            - binary_sensor.yandex_station_m00ka4300h99tr_assumed_state
           from: 'off'
           to: 'on'
         - platform: state
           entity_id: 
             - binary_sensor.yandex_station_ff98f029b620413b35e5e278_assumed_state
             - binary_sensor.yandex_station_lr0000000000000252130000de5d13d0_assumed_state
+            - binary_sensor.yandex_station_m00ka4300h99tr_assumed_state
           from: 'on'
           to: 'off'
       action:

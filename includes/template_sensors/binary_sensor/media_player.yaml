@@ -17,3 +17,12 @@
             seconds: 5
           delay_off:
             seconds: 5
+
+        - name: yandex_station_m00ka4300h99tr_assumed_state
+          icon: mdi:cloud-alert
+          availability: "{{ not is_state('media_player.yandex_station_m00ka4300h99tr', 'unavailable') }}"
+          state: "{{ is_state_attr('media_player.yandex_station_m00ka4300h99tr', 'assumed_state', true) }}"
+          delay_on:
+            seconds: 5
+          delay_off:
+            seconds: 5

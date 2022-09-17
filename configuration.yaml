@@ -32,6 +32,7 @@ mobile_app:
 zeroconf:
 network:
 discovery:
+hardware:
 
 http:
   login_attempts_threshold: 5

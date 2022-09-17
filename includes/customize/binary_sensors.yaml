@@ -114,3 +114,6 @@ binary_sensor.yandex_station_ff98f029b620413b35e5e278_assumed_state:
 
 binary_sensor.yandex_station_lr0000000000000252130000de5d13d0_assumed_state:
   friendly_name: Яндекс станция лайт детская
+
+binary_sensor.yandex_station_m00ka4300h99tr_assumed_state:
+  friendly_name: Яндекс станция мини спальня

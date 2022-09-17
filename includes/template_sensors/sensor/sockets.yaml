@@ -39,3 +39,8 @@
           unit_of_measurement: kWh
           icon: mdi:horizontal-rotate-counterclockwise
           state: "{{ states('input_number.total_server_ac_saved')}}"
+
+        - name: total_shelly_plug_s_2_cable
+          unit_of_measurement: kWh
+          icon: mdi:horizontal-rotate-counterclockwise
+          state: "{{ states('input_number.total_shelly_plug_s_2_saved')}}"

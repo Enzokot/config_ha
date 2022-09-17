@@ -34,6 +34,7 @@
           - sensor.0x158d0003975d8b_battery
           - sensor.0x00124b00215bb163_linkquality
           - switch.shelly_plug_s_1
+          - switch.shelly_plug_s_2
           - sensor.0x158d00045cd551_battery
           - sensor.0x158d00045ca483_battery
           - sensor.0x158d00039d9398_battery
@@ -67,6 +68,7 @@
           - switch.shelly_em
           - media_player.yandex_station_ff98f029b620413b35e5e278
           - media_player.yandex_station_lr0000000000000252130000de5d13d0
+          - media_player.yandex_station_m00ka4300h99tr
           - sensor.perenio_petra01_kitchen_wifi_rssi
           - switch.r4s01_kettle_boil
           - sensor.r4s0_gate_rssi

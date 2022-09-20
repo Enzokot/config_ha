@@ -171,10 +171,10 @@ sensor.0x60a423fffef8d41a_power:
 sensor.shelly_plug_s_1_power:
   friendly_name: Тек. мощность
 
-sensor.0x4cf8cdf3c7d15b7_illuminance:
+sensor.0x54ef4410000ec80c_illuminance:
   friendly_name: Улица освещенность
 
-sensor.0x4cf8cdf3c7d15b7_battery:
+sensor.0x54ef4410000ec80c_battery:
   friendly_name: Улица освещенность
 
 sensor.0x158d000396f1f9_battery:

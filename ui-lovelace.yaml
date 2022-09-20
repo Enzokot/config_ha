@@ -318,7 +318,7 @@ views:
               entities:          
                 - entity: light.gateway_light_04cf8cabd77b
                 - entity: sensor.signalka_shliuza_illuminance
-                - entity: sensor.0x4cf8cdf3c7d15b7_illuminance
+                - entity: sensor.0x54ef4410000ec80c_illuminance
                 
 
         - type: markdown
@@ -503,7 +503,7 @@ views:
                 entities:
                   - sensor.0x158d0003a360b6_battery
                   - sensor.0x158d00045a78af_battery
-                  - sensor.0x4cf8cdf3c7d15b7_battery
+                  - sensor.0x54ef4410000ec80c_battery
               - name: 'Часы (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
                 icon: 'mdi:alarm-check'
@@ -530,7 +530,7 @@ views:
               tap_action: more-info
             - entity: sensor.0x158d0004561de9_battery
               tap_action: more-info
-            - entity: sensor.0x4cf8cdf3c7d15b7_battery
+            - entity: sensor.0x54ef4410000ec80c_battery
               tap_action: more-info
             - entity: sensor.0x158d00045cd551_battery
               tap_action: more-info

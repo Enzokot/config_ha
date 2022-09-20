@@ -5,7 +5,7 @@
       mode: restart
       trigger:
       - platform: numeric_state
-        entity_id: sensor.0x4cf8cdf3c7d15b7_illuminance
+        entity_id: sensor.0x54ef4410000ec80c_illuminance
         above: 250
         for:
           minutes: 10
@@ -40,7 +40,7 @@
       mode: restart
       trigger:
       - platform: numeric_state
-        entity_id: sensor.0x4cf8cdf3c7d15b7_illuminance
+        entity_id: sensor.0x54ef4410000ec80c_illuminance
         below: 250
         for:
           minutes: 10
@@ -73,7 +73,7 @@
         attribute: elevation
         below: 2
       condition:
-        - "{{ states('sensor.0x4cf8cdf3c7d15b7_illuminance') | int(0) <= 250 }}"
+        - "{{ states('sensor.0x54ef4410000ec80c_illuminance') | int(0) <= 250 }}"
         - "{{ states.cover | selectattr('entity_id', 'in', state_attr('cover.cover_group_kitchen', 'entity_id')) | selectattr('state', 'eq', 'closed') | map(attribute='entity_id') | list | length == 0 }}"
       action:
         - service: script.auto_cover_open_close

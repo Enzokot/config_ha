@@ -62,7 +62,7 @@
       - sensor.total_shelly_plug_s_2_cable_daily_electicity
       - sensor.total_shelly_plug_s_2_cable_monthly_electicity
       #Датчик освещенности улица
-      - sensor.0x4cf8cdf3c7d15b7_illuminance
+      - sensor.0x54ef4410000ec80c_illuminance
       #Положение штока термоголовок
       - sensor.thermostat_childrens_room_valve_position
       - sensor.thermostat_bedroom_valve_position

@@ -727,7 +727,7 @@
                 {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
                 {{ 
                   trigger.event.data.new_state.state == 'on' and
-                  trigger.event.data.new_state.attributes.latest_version != trigger.event.data.old_state.attributes.latest_version and
+                  version(trigger.event.data.new_state.attributes.latest_version) > version(trigger.event.data.old_state.attributes.latest_version) and
                   trigger.event.data.new_state.attributes.latest_version not in ignore and
                   trigger.event.data.new_state.attributes.latest_version is not none
                 }}
@@ -736,7 +736,7 @@
                 {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
                 {{ 
                   trigger.event.data.old_state.state == 'on' and trigger.event.data.new_state.state == 'off' and
-                  trigger.event.data.new_state.attributes.installed_version != trigger.event.data.old_state.attributes.installed_version and
+                  version(trigger.event.data.new_state.attributes.installed_version) > version(trigger.event.data.old_state.attributes.installed_version) and
                   trigger.event.data.new_state.attributes.installed_version not in ignore and
                   trigger.event.data.new_state.attributes.installed_version is not none
                 }}
@@ -804,7 +804,7 @@
             {% set ignore = ['unknown', 'unavailable', 'none'] %}
             {{ trigger.from_state.state not in ignore and
                trigger.to_state.state not in ignore and
-               is_state('binary_sensor.new_version_hacs_addons', 'on')
+               states('sensor.hacs') | int(0) > 0
             }}
       action:
         - parallel:
@@ -1583,27 +1583,6 @@
                     Предупреждений в логе: *{{ states('counter.system_log_warning_counter') }}*
                 {% endif -%}
                 [Просмотр логов]({{- states('sensor.instance_external_url_config') -}}/config/logs)
-
-#Доступны для обновления прошивки Shelly
-    - alias: update Shelly firmware available notification
-      id: update Shelly firmware available notification
-      initial_state: true
-      mode: queued
-      max_exceeded: silent
-      trigger:
-        - platform: state
-          entity_id: 
-            - binary_sensor.shelly_em_firmware_update
-            - binary_sensor.shelly_plug_s_1_firmware_update
-            - binary_sensor.shelly_plug_s_2_firmware_update
-          from: 'off'
-          to: 'on'
-      action:
-        - service: telegram_bot.send_message
-          data:
-            target: !secret telegram_enzokot_chat_id
-            title: "{{ '\U0001f389' }} *Системное обновление*"
-            message: "Обновление прошивки для *{{ device_attr(trigger.entity_id, 'name') }}*."
 
 #Увемодомление о переходе Supervisor в unhealthy
     - alias: Supervisor is unhealthy notification

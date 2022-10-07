@@ -1,8 +1,5 @@
 
     - binary_sensor:
-        - name: new_version_hacs_addons
-          state: "{{ states('sensor.hacs') | int(0) > 0 }}"
-
         - name: supervisor_is_healthy
           state: "{{ state_attr('sensor.supervisor_versions', 'healthy') }}"
           availability: "{{ state_attr('sensor.supervisor_versions', 'healthy') != 'unknown' }}"

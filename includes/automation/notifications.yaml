@@ -778,8 +778,8 @@
                     message: >
                         Доступна [{{ latest_version }}]({{- release_url }}) версия {{ friendlyname }} для установки, текущая *{{ installed_version }}*.
                     disable_web_page_preview: true
-                    inline_keyboard:
-                      - 'Установить:/installupdate {{ trigger.event.data.entity_id }}'
+                    inline_keyboard: >-
+                      {{ iff(state_attr(trigger.event.data.entity_id, 'supported_features') | int(0) > 1, ['Установить:/installupdate {{ trigger.event.data.entity_id }}'], []) }}
                 - service: notify.html5_notifier_n550jk
                   data:
                     title: "{{ '\U0001f389' }} *Системное обновление*"

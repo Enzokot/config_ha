@@ -62,9 +62,11 @@
             min: 1
             max: 204
     media_player.lg_smart_tv:
-      turn_on:
-        service: media_player.turn_on
-        entity_id: media_player.lg_smart_tv
+      turn_off:
+        service: remote.send_command
+        data:
+          entity_id: remote.broadlink_ir_rm4_mini
+          command: 'b64:JgBYAAABI5URFBEUEjgRFBEUERQRFREUETgSOBEUETkROBE5ETgSOBEUERQRFBI4ERQRFBEUEhQROBI4ETgRFRA5ETkROBI4EQAFJwABJkwRAAxeAAElSxIADQU='
       modes:
         input_source:
           one: ['YouTube']
@@ -91,6 +93,10 @@
             min: 1
             max: 156
     media_player.samsung_tv_remote:
+      turn_off:
+        service: esphome.perenio_petra01_kitchen_send_samsung_command
+        data:
+          data: '0xE0E040BF'
       custom_ranges:
         channel:
           set_value:

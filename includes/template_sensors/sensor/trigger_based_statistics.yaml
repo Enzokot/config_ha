@@ -13,19 +13,3 @@
         state: '{{ ( ( as_timestamp(now()) - as_timestamp(strptime("22.09.2021", "%d.%m.%Y")) ) / 86400 ) | round(0, "common", 0) }}'
         unit_of_measurement: "Days"
         icon: mdi:smoking-off
-
-#Игнорирование колебания курсов валют в коротком промежутке времени
-  - trigger:
-      - platform: state
-        entity_id: sensor.rest_qiwi_x_rates_usd
-        for:
-          minutes: 3
-      - platform: homeassistant
-        event: start
-      - platform: event
-        event_type: event_template_reloaded
-    sensor:
-      - name: filtered_qiwi_x_rates_usd
-        state: "{{ states('sensor.rest_qiwi_x_rates_usd') | float(0.0) }}"
-        unit_of_measurement: "RUB"
-        icon: mdi:currency-usd

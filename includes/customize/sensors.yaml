@@ -381,13 +381,6 @@ sensor.ble_tracker_livingroom_wifi_rssi:
 sensor.perenio_petra01_kitchen_wifi_rssi:
   friendly_name: IR на кухне
 
-sensor.rest_qiwi_x_rates_usd:
-  friendly_name: QIWI курс USD
-  icon: mdi:currency-usd
-
-sensor.filtered_qiwi_x_rates_usd:
-  friendly_name: QIWI курс USD
-
 sensor.myip_keenetic:
   friendly_name: keenetic hostname
   

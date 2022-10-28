@@ -96,6 +96,6 @@ xiaomi_gateway3: !include includes/xiaomi_gateway3.yaml
 
 conversation: !include includes/conversation.yaml
 media_player: !include includes/media_player.yaml
-smartir: 
-climate: !include includes/smartir/climate.yaml
+# smartir: 
+# climate: !include includes/smartir/climate.yaml
 feedreader: !include includes/feedreader.yaml

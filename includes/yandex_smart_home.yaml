@@ -29,6 +29,12 @@
       - media_player.samsung_tv_remote
       - switch.r4s01_kettle_boil
   entity_config:
+    switch.0x086bd7fffe5d13c9:
+      type: devices.types.light
+    switch.0x086bd7fffe5b7c7f_right:
+      type: devices.types.light
+    switch.0x086bd7fffe5aecf8_left:
+      type: devices.types.light
     media_player.sony_bravia_tv:
       modes:
         input_source:

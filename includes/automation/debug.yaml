@@ -87,17 +87,17 @@
     #         message: >-
     #                 {{ iif(trigger.json.monitor is none, "Пустое имя", trigger.json.monitor.name, "Пустое имя") | e }} -> {{ iif(trigger.json.heartbeat is none, "Пустой статус", trigger.json.heartbeat.status, "Пустой статус") | e }}
 
-    - alias: debug event repairs issue registry updated
-      id: debug event repairs issue registry updated
-      trigger:
-        - platform: event
-          event_type: repairs_issue_registry_updated
-      action:
-        - service: telegram_bot.send_message
-          data:
-            target: !secret telegram_enzokot_chat_id
-            parse_mode: 'html'
-            title: >-
-                     {{ '\U0001F41B' }} <b>Отладка</b>
-            message: >-
-                    repairs_issue_registry_updated: {{ trigger.event.data | e }}
+    # - alias: debug event repairs issue registry updated
+    #   id: debug event repairs issue registry updated
+    #   trigger:
+    #     - platform: event
+    #       event_type: repairs_issue_registry_updated
+    #   action:
+    #     - service: telegram_bot.send_message
+    #       data:
+    #         target: !secret telegram_enzokot_chat_id
+    #         parse_mode: 'html'
+    #         title: >-
+    #                  {{ '\U0001F41B' }} <b>Отладка</b>
+    #         message: >-
+    #                 repairs_issue_registry_updated: {{ trigger.event.data | e }}

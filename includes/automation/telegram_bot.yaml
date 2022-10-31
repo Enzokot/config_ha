@@ -62,7 +62,8 @@
                 message: >-
                        {{ '\U0001f4e2' }} С уровнем громкости:
                 inline_keyboard:
-                  - 'Тихо:/minlevelsound, Средне:/avrlevelsound, Громко:/maxlevelsound'
+                  - 'Тихо:/minlevelsound' 
+                  - 'Средне:/avrlevelsound, Громко:/maxlevelsound'
 
     - alias: keyboard alarm home
       id: keyboard alarm home

@@ -15,3 +15,5 @@
       type: module
     - url: /local/community/flex-table-card/flex-table-card.js
       type: module
+    - url: /local/community/ha-yandex-icons/yandex-icons.js
+      type: module

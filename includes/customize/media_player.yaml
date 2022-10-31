@@ -1,9 +1,12 @@
 
 media_player.yandex_station_ff98f029b620413b35e5e278:
   friendly_name: Яндекс станция мини кухня
+  icon: yandex:station-mini
 
 media_player.yandex_station_lr0000000000000252130000de5d13d0:
   friendly_name: Яндекс станция лайт детская
+  icon: yandex:station-lite
 
 media_player.yandex_station_m00ka4300h99tr:
   friendly_name: Яндекс станция мини спальня
+  icon: yandex:station-mini-2

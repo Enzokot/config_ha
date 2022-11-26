@@ -38,7 +38,7 @@
       trigger:
       - platform: numeric_state
         entity_id: sensor.0x54ef4410000ec80c_illuminance
-        below: 250
+        below: 150
         for:
           minutes: 10
       condition:

@@ -1,8 +1,8 @@
   urls:
     #- https://www.home-assistant.io/atom.xml
     - https://alerts.home-assistant.io/feed.xml
-    - https://raspberrypi.org/blog/feed/
-    - https://raspberrypi.com/news/feed/
+    #- https://raspberrypi.org/blog/feed/
+    #- https://raspberrypi.com/news/feed/
     - https://wonderland.v8.1c.ru/rss/
     - https://moscow.mchs.gov.ru/deyatelnost/press-centr/operativnaya-informaciya/shtormovye-i-ekstrennye-preduprezhdeniya/rss
     - https://50.mchs.gov.ru/deyatelnost/press-centr/operativnaya-informaciya/shtormovye-i-ekstrennye-preduprezhdeniya/rss

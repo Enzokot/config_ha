@@ -281,4 +281,4 @@
                       seconds: 30
                   - service: homeassistant.reload_config_entry
                     data:
-                      entry_id: 67a31e5041aa5f70af3066c6aba1b083
+                      entry_id: "{{ config_entry_id('light.yeelight_ceiling_cr') }}"

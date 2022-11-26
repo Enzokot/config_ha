@@ -31,7 +31,7 @@
   action:
     - service: homeassistant.reload_config_entry
       data:
-        entry_id: 9d3e3e3a42a160105b1bbc8754d3f78b
+        entry_id: "{{ config_entry_id('sensor.speedtest_ping') }}"
     # - service: rest_command.reload_integration_speedtest
     #   data: {}
 
@@ -75,7 +75,7 @@
                 seconds: 30
             - service: homeassistant.reload_config_entry
               data:
-                entry_id: 9d3e3e3a42a160105b1bbc8754d3f78b
+                entry_id: "{{ config_entry_id('sensor.speedtest_ping') }}"
 
 #Перезагрузка автоматизаций
 - alias: system_automation_reload
@@ -321,4 +321,30 @@
           sequence:
             - service: homeassistant.reload_config_entry
               data:
-                entry_id: 859d99dc60fc9116bb39f260696b465a
+                entry_id: "{{ config_entry_id('sensor.cert_expiry_timestamp_asuscomm') }}"
+
+#Перезапуск интеграции LG Devices по недоступности сенсоров
+- alias: lg_devices_sensors_unavailable
+  id: lg_devices_sensors_unavailable
+  trigger:
+    - platform: state
+      entity_id: switch.kholodilnik_eco_friendly
+      to: 'unavailable'
+    - platform: homeassistant
+      event: start
+  condition:
+    - condition: state
+      entity_id: switch.kholodilnik_eco_friendly
+      state: 'unavailable'
+  action:
+    - wait_for_trigger:
+        - platform: state
+          entity_id: switch.kholodilnik_eco_friendly
+          from: 'unavailable'
+      timeout: "00:05:00"
+    - choose:
+        - conditions: "{{ wait.trigger == None and is_state('binary_sensor.local_network_availability', 'on') }}"
+          sequence:
+            - service: homeassistant.reload_config_entry
+              data:
+                entry_id: "{{ config_entry_id('switch.kholodilnik_eco_friendly') }}"

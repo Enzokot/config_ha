@@ -1,4 +1,5 @@
-#Датчик открытия входной двери    
+
+#Датчик открытия входной двери
     - alias: notification front door open long time
       id: notification front door open long time
       initial_state: true
@@ -539,13 +540,40 @@
           condition: template
           value_template: "{{ (states('sensor.xiaomi_vacuum_cleaner_total_clean_area') | int(0) ) > (states('input_number.total_cleaned_area_saved') | int(0) ) + 30 }}"
       action:
+        - variables:
+            current_clean_area: >-
+                {{ states('sensor.xiaomi_vacuum_cleaner_current_clean_area') | round(0, 'ceil', 0) | string + state_attr('sensor.xiaomi_vacuum_cleaner_current_clean_area', 'unit_of_measurement') }}
+            current_clean_duration: >-
+               {% set uptime = states('sensor.xiaomi_vacuum_cleaner_current_clean_duration') | int(0) %}
+               {% set minutes = (( uptime % 3600) / 60) | int(0) %}
+               {% set hours = ((uptime % 86400) / 3600) | int(0) %}
+               {% set days = (uptime / 86400) | int(0) %}
+                 {% if uptime < 1 %}
+                   Меньше минуты
+                 {%- else %}
+                   {% if days > 0 %}
+                     {{ days -}} д.
+                   {%- endif %}
+                   {%- if hours > 0 %}
+                     {%- if days > 0 %}
+                       {{- ' ' -}}
+                     {% endif -%}
+                     {{ hours -}} ч.
+                   {%- endif %}
+                   {%- if minutes > 0 %}
+                     {%- if days > 0 or hours > 0 %}
+                       {{- ' ' -}}
+                     {% endif -%}
+                       {{ minutes -}} м.
+                   {%- endif -%}
+                 {% endif %}
         - parallel:
             - service: telegram_bot.send_photo
               data:
                 target: !secret telegram_chita_chat_id
                 url: "{{- 'http://homeassistant.local.hass.io:8123' + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
                 caption: >-
-                       {{ '\U0001f4af' }} *Степа* {{- '\n' -}} Вернулся на базу, нужно снять бак с водой и заглянуть в контейнер пылесборника
+                       {{ '\U0001f4af' }} *Степа* {{- '\n' -}} Вернулся на базу (длительность: {{- current_clean_duration -}}, площадь: {{- current_clean_area -}}), нужно снять бак с водой и заглянуть в контейнер пылесборника
             - service: input_number.set_value
               data:
                 entity_id: input_number.total_cleaned_area_saved
@@ -783,7 +811,7 @@
                         Доступна [{{ latest_version }}]({{- release_url }}) версия {{ friendlyname }} для установки, текущая *{{ installed_version }}*.
                     disable_web_page_preview: true
                     inline_keyboard: >-
-                      {{ iif(state_attr(trigger.event.data.entity_id, 'supported_features') | int(0) > 1, ['Установить:/installupdate ' + trigger.event.data.entity_id], []) }}
+                      {{ iif(state_attr(trigger.event.data.entity_id, 'supported_features') | int(0) > 0, ['Установить:/installupdate ' + trigger.event.data.entity_id], []) }}
                 - service: notify.html5_notifier_n550jk
                   data:
                     title: "{{ '\U0001f389' }} *Системное обновление*"
@@ -1077,7 +1105,7 @@
             title: >-
                   {{ '\U0001F4BD' }} *Резервное копирование*
             message: >-
-                     Создана резервная копия с именем `{{ state_attr('sensor.backup_state', 'backups')[index_backup].name }}`, системный диск заполнен на *{{ states('sensor.disk_use_percent') -}}*%
+                     Создана резервная копия с именем `{{ state_attr('sensor.backup_state', 'backups')[index_backup].name }}`, системный диск заполнен на *{{ states('sensor.disk_use_percent') -}}*%, свободно на Google диске *{{ state_attr('sensor.backup_state', 'free_space_in_google_drive') | replace(' ', '') }}*
 
 #Уведоление о неуспешном входе или о блокировки IP по неуспешным логинам
     - alias: notifications failed login or block IP
@@ -1588,22 +1616,6 @@
                 {% endif -%}
                 [Просмотр логов]({{- states('sensor.instance_external_url_config') -}}/config/logs)
 
-#Увемодомление о переходе Supervisor в unhealthy
-    - alias: Supervisor is unhealthy notification
-      id: Supervisor is unhealthy notification
-      initial_state: true
-      trigger:
-        - platform: state
-          entity_id: 
-            - binary_sensor.supervisor_is_healthy
-          to: 'off'
-      action:
-        - service: telegram_bot.send_message
-          data:
-            target: !secret telegram_enzokot_chat_id
-            title: "{{ '\U0000203C' }} *Контроль системы*"
-            message: "Supervisor перешел в состояние *unhealthy*."
-
 #Недоступность telegram
     - alias: telegram is offline for instance notification
       id: telegram is offline for instance notification
@@ -1766,6 +1778,7 @@
 #Уведомление о сиcтемной проблеме
     - alias: repairs issue registry
       id: repairs issue registry
+      mode: parallel
       trigger:
         - platform: event
           event_type: repairs_issue_registry_updated

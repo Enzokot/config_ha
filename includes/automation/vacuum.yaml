@@ -72,10 +72,13 @@
                     or trigger.to_state.state != trigger.from_state.state
                 }}
       action:
-        - service: |
-            {% if states('vacuum.xiaomi_vacuum_cleaner') in ['docked', 'unknown', 'unavailable', 'none', None, null, ''] %}
-              camera.turn_off
-            {% else %}
-              camera.turn_on
-            {% endif %}
-          entity_id: camera.roborock_vacuum_map
+        - if:
+            - "{{ states('vacuum.xiaomi_vacuum_cleaner') in ['docked', 'unknown', 'unavailable', 'none', None, null, ''] }}"
+          then:
+            - delay:
+                seconds: 45
+            - service: camera.turn_off
+              entity_id: camera.roborock_vacuum_map
+          else:
+            - service: camera.turn_on
+              entity_id: camera.roborock_vacuum_map

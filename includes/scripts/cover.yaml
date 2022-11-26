@@ -2,7 +2,7 @@
     auto_cover_open_close:
         alias: Открытие/закрытие штор
         icon: mdi:blinds
-        mode: queued
+        mode: restart
         fields:
           servicename:
             description: 'Имя сервиса'

@@ -18,19 +18,6 @@
     - type: memory_use_percent
     - type: last_boot
 
-#Supervisor versions
-  - platform: command_line
-    name: Supervisor versions
-    command: 'curl -sSL -H "Authorization: Bearer $SUPERVISOR_TOKEN" http://supervisor/supervisor/info | jq ''{"newest_version":.data.version_latest,"current_version":.data.version,"update_available":.data.update_available,"healthy":.data.healthy,"addons":[.data.addons[] | select(.update_available)]}'''
-    value_template: "{{ value_json.addons | length }}"
-    unit_of_measurement: pending update(s)
-    json_attributes:
-    - update_available
-    - newest_version
-    - current_version
-    - healthy
-    #- addons
-
 #Размер базы influxdb
   - platform: influxdb
     host: a0d7b954-influxdb

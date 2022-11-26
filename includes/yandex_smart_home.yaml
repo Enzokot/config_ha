@@ -308,3 +308,20 @@
             turn_off:
               service: switch.turn_off
               entity_id: switch.zhimi_humidifier_cb1_dry_mode
+    cover.cover_group_kitchen:
+      turn_on:
+        service: script.turn_on
+        data:
+          entity_id: script.auto_cover_open_close
+          variables:
+            servicename: 'cover.open_cover'
+            groupname: 'cover.cover_group_kitchen'
+            statename: 'closed'
+      turn_off:
+        service: script.turn_on
+        data:
+          entity_id: script.auto_cover_open_close
+          variables:
+            servicename: 'cover.close_cover'
+            groupname: 'cover.cover_group_kitchen'
+            statename: 'open'

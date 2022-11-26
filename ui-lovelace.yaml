@@ -315,7 +315,7 @@ views:
 
             - type: entities
               show_header_toggle: false
-              entities:          
+              entities:
                 - entity: light.gateway_light_04cf8cabd77b
                 - entity: sensor.signalka_shliuza_illuminance
                 - entity: sensor.0x54ef4410000ec80c_illuminance

@@ -241,14 +241,30 @@
           state: 'armed_away'
       action:
         - variables:
-              sm_g973f_rezhim_zvonka: >-
-                                     {{ states('sensor.sm_g973f_ringer_mode') }}
-              sm_g973f_rezhim_ne_bespokoit: >-
-                                            {{ states('sensor.sm_g973f_do_not_disturb_sensor') }}
-        - service: notify.notify
-          data:
-              message: 'command_ringer_mode'
-              title: 'normal'
+            sm_g973f_rezhim_ne_bespokoit: "{{ states('sensor.sm_g973f_do_not_disturb_sensor') }}"
+        - choose:
+            - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
+              sequence:
+                - service: notify.mobile_app_sm_g973f
+                  data:
+                    message: 'command_dnd'
+                    data:
+                      command: 'off'
+                - wait_for_trigger:
+                    - platform: state
+                      entity_id: sensor.sm_g973f_do_not_disturb_sensor
+                  timeout:
+                    seconds: 5
+        - variables:
+            sm_g973f_rezhim_zvonka: "{{ states('sensor.sm_g973f_ringer_mode') }}"
+        - choose:
+            - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+              sequence:
+                - service: notify.notify
+                  data:
+                    message: 'command_ringer_mode'
+                    data:
+                      command: 'normal'
         - parallel:
             - service: telegram_bot.send_message
               data:
@@ -274,22 +290,26 @@
             - service: notify.huawei_lte
               data:
                 message: >-
-                         {{ '\U0001f6a8' }} Обнаружено вскрытие {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
+                         🚨 Обнаружено вскрытие {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
                 target: !secret sms_phone_all
                 data:
                   url: 'http://192.168.8.1/'
-        - service: notify.mobile_app_sm_g973f
-          data:
-              message: 'command_ringer_mode'
-              data:
-                command: >-
-                        {{ sm_g973f_rezhim_zvonka }}
-        - service: notify.mobile_app_sm_g973f
-          data:
-              message: 'command_dnd'
-              data:
-                command: >-
-                        {{ sm_g973f_rezhim_ne_bespokoit }}
+        - choose:
+            - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+              sequence:
+                - service: notify.mobile_app_sm_g973f
+                  data:
+                    message: 'command_ringer_mode'
+                    data:
+                      command: "{{ sm_g973f_rezhim_zvonka }}"
+        - choose:
+            - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
+              sequence:
+                - service: notify.mobile_app_sm_g973f
+                  data:
+                    message: 'command_dnd'
+                    data:
+                      command: "{{ sm_g973f_rezhim_ne_bespokoit }}"
 
     - alias: notification motion detected armed
       id: notification motion detected armed
@@ -308,14 +328,30 @@
           state: 'armed_away'
       action:
         - variables:
-              sm_g973f_rezhim_zvonka: >-
-                                     {{ states('sensor.sm_g973f_ringer_mode') }}
-              sm_g973f_rezhim_ne_bespokoit: >-
-                                     {{ states('sensor.sm_g973f_do_not_disturb_sensor') }}
-        - service: notify.notify
-          data:
-              message: 'command_ringer_mode'
-              title: 'normal'
+            sm_g973f_rezhim_ne_bespokoit: "{{ states('sensor.sm_g973f_do_not_disturb_sensor') }}"
+        - choose:
+            - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
+              sequence:
+                - service: notify.mobile_app_sm_g973f
+                  data:
+                    message: 'command_dnd'
+                    data:
+                      command: 'off'
+                - wait_for_trigger:
+                    - platform: state
+                      entity_id: sensor.sm_g973f_do_not_disturb_sensor
+                  timeout:
+                    seconds: 5
+        - variables:
+            sm_g973f_rezhim_zvonka: "{{ states('sensor.sm_g973f_ringer_mode') }}"
+        - choose:
+            - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+              sequence:
+                - service: notify.notify
+                  data:
+                    message: 'command_ringer_mode'
+                    data:
+                      command: 'normal'
         - parallel:
             - service: telegram_bot.send_message
               data:
@@ -341,22 +377,26 @@
             - service: notify.huawei_lte
               data:
                 message: >-
-                         {{ '\U0001f6a8' }} Обнаружено движение {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
+                         🚨 Обнаружено движение {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
                 target: !secret sms_phone_all
                 data:
                   url: 'http://192.168.8.1/'
-        - service: notify.mobile_app_sm_g973f
-          data:
-              message: 'command_ringer_mode'
-              data:
-                command: >-
-                        {{ sm_g973f_rezhim_zvonka }}
-        - service: notify.mobile_app_sm_g973f
-          data:
-              message: 'command_dnd'
-              data:
-                command: >-
-                        {{ sm_g973f_rezhim_ne_bespokoit }}
+        - choose:
+            - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+              sequence:
+                - service: notify.mobile_app_sm_g973f
+                  data:
+                    message: 'command_ringer_mode'
+                    data:
+                      command: "{{ sm_g973f_rezhim_zvonka }}"
+        - choose:
+            - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
+              sequence:
+                - service: notify.mobile_app_sm_g973f
+                  data:
+                    message: 'command_dnd'
+                    data:
+                      command: "{{ sm_g973f_rezhim_ne_bespokoit }}"
 
     - alias: notification open window armed
       id: notification open window armed
@@ -376,14 +416,30 @@
           state: 'armed_away'
       action:
         - variables:
-              sm_g973f_rezhim_zvonka: >-
-                                     {{ states('sensor.sm_g973f_ringer_mode') }}
-              sm_g973f_rezhim_ne_bespokoit: >-
-                                     {{ states('sensor.sm_g973f_do_not_disturb_sensor') }}
-        - service: notify.notify
-          data:
-              message: 'command_ringer_mode'
-              title: 'normal'
+            sm_g973f_rezhim_ne_bespokoit: "{{ states('sensor.sm_g973f_do_not_disturb_sensor') }}"
+        - choose:
+            - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
+              sequence:
+                - service: notify.mobile_app_sm_g973f
+                  data:
+                    message: 'command_dnd'
+                    data:
+                      command: 'off'
+                - wait_for_trigger:
+                    - platform: state
+                      entity_id: sensor.sm_g973f_do_not_disturb_sensor
+                  timeout:
+                    seconds: 5
+        - variables:
+            sm_g973f_rezhim_zvonka: "{{ states('sensor.sm_g973f_ringer_mode') }}"
+        - choose:
+            - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+              sequence:
+                - service: notify.notify
+                  data:
+                    message: 'command_ringer_mode'
+                    data:
+                      command: 'normal'
         - parallel:
             - service: telegram_bot.send_message
               data:
@@ -409,22 +465,26 @@
             - service: notify.huawei_lte
               data:
                 message: >-
-                         {{ '\U0001f6a8' }} Обнаружено вскрытие окна {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
+                         🚨 Обнаружено вскрытие окна {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
                 target: !secret sms_phone_all
                 data:
                   url: 'http://192.168.8.1/'
-        - service: notify.mobile_app_sm_g973f
-          data:
-              message: 'command_ringer_mode'
-              data:
-                command: >-
-                        {{ sm_g973f_rezhim_zvonka }}
-        - service: notify.mobile_app_sm_g973f
-          data:
-              message: 'command_dnd'
-              data:
-                command: >-
-                        {{ sm_g973f_rezhim_ne_bespokoit }}
+        - choose:
+            - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+              sequence:
+                - service: notify.mobile_app_sm_g973f
+                  data:
+                    message: 'command_ringer_mode'
+                    data:
+                      command: "{{ sm_g973f_rezhim_zvonka }}"
+        - choose:
+            - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
+              sequence:
+                - service: notify.mobile_app_sm_g973f
+                  data:
+                    message: 'command_dnd'
+                    data:
+                      command: "{{ sm_g973f_rezhim_ne_bespokoit }}"
 
     - alias: notification gateway alarm triggered normal mode
       id: notification gateway alarm triggered normal mode
@@ -446,14 +506,30 @@
           state: 'disarmed'
       action:
         - variables:
-              sm_g973f_rezhim_zvonka: >-
-                                     {{ states('sensor.sm_g973f_ringer_mode') }}
-              sm_g973f_rezhim_ne_bespokoit: >-
-                                     {{ states('sensor.sm_g973f_do_not_disturb_sensor') }}
-        - service: notify.notify
-          data:
-              message: 'command_ringer_mode'
-              title: 'normal'
+            sm_g973f_rezhim_ne_bespokoit: "{{ states('sensor.sm_g973f_do_not_disturb_sensor') }}"
+        - choose:
+            - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
+              sequence:
+                - service: notify.mobile_app_sm_g973f
+                  data:
+                    message: 'command_dnd'
+                    data:
+                      command: 'off'
+                - wait_for_trigger:
+                    - platform: state
+                      entity_id: sensor.sm_g973f_do_not_disturb_sensor
+                  timeout:
+                    seconds: 5
+        - variables:
+            sm_g973f_rezhim_zvonka: "{{ states('sensor.sm_g973f_ringer_mode') }}"
+        - choose:
+            - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+              sequence:
+                - service: notify.notify
+                  data:
+                    message: 'command_ringer_mode'
+                    data:
+                      command: 'normal'
         - parallel:
             - service: telegram_bot.send_message
               data:
@@ -479,22 +555,26 @@
             - service: notify.huawei_lte
               data:
                 message: >-
-                         {{ '\U0001f6a8' }} Обнаружено срабатывание шлюза {{ trigger.to_state.attributes.friendly_name }}
+                         🚨 Обнаружено срабатывание шлюза {{ trigger.to_state.attributes.friendly_name }}
                 target: !secret sms_phone_all
                 data:
                   url: 'http://192.168.8.1/'
-        - service: notify.mobile_app_sm_g973f
-          data:
-              message: 'command_ringer_mode'
-              data:
-                command: >-
-                        {{ sm_g973f_rezhim_zvonka }}
-        - service: notify.mobile_app_sm_g973f
-          data:
-              message: 'command_dnd'
-              data:
-                command: >-
-                        {{ sm_g973f_rezhim_ne_bespokoit }}
+        - choose:
+            - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+              sequence:
+                - service: notify.mobile_app_sm_g973f
+                  data:
+                    message: 'command_ringer_mode'
+                    data:
+                      command: "{{ sm_g973f_rezhim_zvonka }}"
+        - choose:
+            - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
+              sequence:
+                - service: notify.mobile_app_sm_g973f
+                  data:
+                    message: 'command_dnd'
+                    data:
+                      command: "{{ sm_g973f_rezhim_ne_bespokoit }}"
 
 #Пылесос
     - alias: vacuum cleaner error to all
@@ -604,14 +684,30 @@
          to: 'on'
       action:
         - variables:
-              sm_g973f_rezhim_zvonka: >-
-                                     {{ states('sensor.sm_g973f_ringer_mode') }}
-              sm_g973f_rezhim_ne_bespokoit: >-
-                                            {{ states('sensor.sm_g973f_do_not_disturb_sensor') }}
-        - service: notify.notify
-          data:
-              message: 'command_ringer_mode'
-              title: 'normal'
+            sm_g973f_rezhim_ne_bespokoit: "{{ states('sensor.sm_g973f_do_not_disturb_sensor') }}"
+        - choose:
+            - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
+              sequence:
+                - service: notify.mobile_app_sm_g973f
+                  data:
+                    message: 'command_dnd'
+                    data:
+                      command: 'off'
+                - wait_for_trigger:
+                    - platform: state
+                      entity_id: sensor.sm_g973f_do_not_disturb_sensor
+                  timeout:
+                    seconds: 5
+        - variables:
+            sm_g973f_rezhim_zvonka: "{{ states('sensor.sm_g973f_ringer_mode') }}"
+        - choose:
+            - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+              sequence:
+                - service: notify.notify
+                  data:
+                    message: 'command_ringer_mode'
+                    data:
+                      command: 'normal'
         - parallel:
             - service: telegram_bot.send_message
               data:
@@ -679,7 +775,7 @@
             - service: notify.huawei_lte
               data:
                 message: >-
-                            {{ '\U0001f6a8' }} Сработали датчики дыма:
+                            🚨 Сработали датчики дыма:
                             {{ '\n' }}
                             {%- if is_state('binary_sensor.0x158d0003943639_smoke', 'on') -%}
                                Кухня
@@ -704,18 +800,22 @@
                 target: !secret sms_phone_all
                 data:
                   url: 'http://192.168.8.1/'
-        - service: notify.mobile_app_sm_g973f
-          data:
-              message: 'command_ringer_mode'
-              data:
-                command: >-
-                        {{ sm_g973f_rezhim_zvonka }}
-        - service: notify.mobile_app_sm_g973f
-          data:
-              message: 'command_dnd'
-              data:
-                command: >-
-                        {{ sm_g973f_rezhim_ne_bespokoit }}
+        - choose:
+            - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+              sequence:
+                - service: notify.mobile_app_sm_g973f
+                  data:
+                    message: 'command_ringer_mode'
+                    data:
+                      command: "{{ sm_g973f_rezhim_zvonka }}"
+        - choose:
+            - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
+              sequence:
+                - service: notify.mobile_app_sm_g973f
+                  data:
+                    message: 'command_dnd'
+                    data:
+                      command: "{{ sm_g973f_rezhim_ne_bespokoit }}"
 
 #Срок сертификата SSL менее 5 дней
     - alias: notification cert expired
@@ -886,7 +986,7 @@
                           {% endif -%}
                           {% if (x.entity_id.endswith("_low_battery") and x.state | string == 'on') -%}
                             {% set datanames.entity_name = datanames.entity_name + ['_' + x.name + '_'] -%}
-                          {% endif %}                          
+                          {% endif %}
                         {%- endfor %}
                         {{- datanames.entity_name | list | join(', \n') }}
 
@@ -1200,35 +1300,48 @@
         - platform: homeassistant
           event: shutdown
       action:
-        - parallel:
-            - choose:
-                  conditions:
-                    - condition: trigger
-                      id: homeassistant_start
-                  sequence:
-                    - service: homeassistant.update_entity
-                      target:
-                        entity_id: 
-                          - sensor.errors_in_system_log_command_line
-                          - sensor.warnings_in_system_log_command_line
-            - service: telegram_bot.send_message
-              data:
-                target: !secret telegram_enzokot_chat_id
-                disable_notification: true
-                disable_web_page_preview: true
-                title: >
-                    {%- if trigger.id == 'homeassistant_start' %}
-                        {{- '\U00002705' -}}
-                    {% else %}
-                        {{- '\U000026d4' -}}
-                    {% endif %} *Трекинг устройств*
-                message: >
-                    {% if trigger.id == 'homeassistant_start' -%}
-                        Home Assistant запущен за {{ states('sensor.start_time') }}сек. (версия Core: [{{ state_attr('update.home_assistant_core_update', 'installed_version') }}](https://github.com/home-assistant/core/releases/tag/{{- state_attr('update.home_assistant_core_update', 'installed_version') }})) {{- '\n' -}}
-                        Ошибок: *{{ states('sensor.errors_in_system_log_command_line') }}*, предупреждений: *{{ states('sensor.warnings_in_system_log_command_line') }}*
-                    {% else -%}
-                        Home Assistant *остановлен*, время работы: {{ states('sensor.online_custom') }}
-                    {% endif -%}
+        - choose:
+              conditions:
+                - condition: trigger
+                  id: homeassistant_start
+              sequence:
+                - service: homeassistant.update_entity
+                  target:
+                    entity_id: 
+                      - sensor.errors_in_system_log_command_line
+                      - sensor.warnings_in_system_log_command_line
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            disable_notification: true
+            disable_web_page_preview: true
+            title: >
+                {%- if trigger.id == 'homeassistant_start' %}
+                    {{- '\U00002705' -}}
+                {% else %}
+                    {{- '\U000026d4' -}}
+                {% endif %} *Трекинг устройств*
+            message: >
+                {% if trigger.id == 'homeassistant_start' -%}
+                    Home Assistant запущен за {{ states('sensor.start_time') }}сек. (версия Core: [{{ state_attr('update.home_assistant_core_update', 'installed_version') }}](https://github.com/home-assistant/core/releases/tag/{{- state_attr('update.home_assistant_core_update', 'installed_version') }})) {{- '\n' -}}
+                    Ошибок: *{{ states('sensor.errors_in_system_log_command_line') }}*, предупреждений: *{{ states('sensor.warnings_in_system_log_command_line') }}*
+                {% else -%}
+                    Home Assistant *остановлен*, время работы: {{ states('sensor.online_custom') }}
+                {% endif -%}
+        - condition: "{{ trigger.id == 'homeassistant_start' and states('sensor.repairs_state') | int(0) > 0 }}"
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            parse_mode: 'html'
+            title: >-
+                     {{ '\U0001F41B' }} <b>Устранение проблем</b>
+            message: >-
+                    {%- set issues = state_attr('sensor.repairs_state', 'issues') -%}
+                    {%- set datanames = namespace(issue=[]) -%}
+                    {% for issue in issues %}
+                        {% set datanames.issue = datanames.issue + ['Домен: <b>' + issue.domain + ', </b> описание: <b>' + issue.issue_id + '</b>'] -%}
+                    {% endfor %}
+                    Обнаружены проблемы ({{- states('sensor.repairs_state') -}}шт):{{'\n'-}} {{ datanames.issue | join(', \n') }}
 
 #Уведомление об утечке пароля
     - alias: notifications loss passwords
@@ -1775,7 +1888,7 @@
             target: !secret telegram_enzokot_chat_id
             message: "{{ iif(is_state('alarm_control_panel.signalka_shliuza_alarm', 'disarmed'), '\U0001f507 Сигнализация *выключена*', '\U0001f509 Сигнализация *включена*') }}"
 
-#Уведомление о сиcтемной проблеме
+#Уведомления о сиcтемных проблемах
     - alias: repairs issue registry
       id: repairs issue registry
       mode: parallel

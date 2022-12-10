@@ -238,14 +238,30 @@
          state: 'off'
       action:
           - variables:
-              sm_g973f_rezhim_zvonka: >-
-                                     {{ states('sensor.sm_g973f_ringer_mode') }}
-              sm_g973f_rezhim_ne_bespokoit: >-
-                                            {{ states('sensor.sm_g973f_do_not_disturb_sensor') }}
-          - service: notify.notify
-            data:
-              message: 'command_ringer_mode'
-              title: 'normal'
+              sm_g973f_rezhim_ne_bespokoit: "{{ states('sensor.sm_g973f_do_not_disturb_sensor') }}"
+          - choose:
+              - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
+                sequence:
+                  - service: notify.mobile_app_sm_g973f
+                    data:
+                      message: 'command_dnd'
+                      data:
+                        command: 'off'
+                  - wait_for_trigger:
+                      - platform: state
+                        entity_id: sensor.sm_g973f_do_not_disturb_sensor
+                    timeout:
+                      seconds: 5
+          - variables:
+              sm_g973f_rezhim_zvonka: "{{ states('sensor.sm_g973f_ringer_mode') }}"
+          - choose:
+              - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+                sequence:
+                  - service: notify.notify
+                    data:
+                      message: 'command_ringer_mode'
+                      data:
+                        command: 'normal'
           - parallel:
               - service: input_boolean.turn_on
                 data:
@@ -269,22 +285,26 @@
                           title: "Выключить сирену"
               - service: notify.huawei_lte
                 data:
-                  message: "{{ '\U0001f6a8' }} Нажатие тревожной кнопки в детской"
+                  message: "🚨 Нажатие тревожной кнопки в детской"
                   target: !secret sms_phone_all
                   data:
                     url: 'http://192.168.8.1/'
-          - service: notify.mobile_app_sm_g973f
-            data:
-              message: 'command_ringer_mode'
-              data:
-                command: >-
-                        {{ sm_g973f_rezhim_zvonka }}
-          - service: notify.mobile_app_sm_g973f
-            data:
-              message: 'command_dnd'
-              data:
-                command: >-
-                        {{ sm_g973f_rezhim_ne_bespokoit }}
+          - choose:
+              - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+                sequence:
+                  - service: notify.mobile_app_sm_g973f
+                    data:
+                      message: 'command_ringer_mode'
+                      data:
+                        command: "{{ sm_g973f_rezhim_zvonka }}"
+          - choose:
+              - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
+                sequence:
+                  - service: notify.mobile_app_sm_g973f
+                    data:
+                      message: 'command_dnd'
+                      data:
+                        command: "{{ sm_g973f_rezhim_ne_bespokoit }}"
 
 #Отключение сигнализации по кнопке мобильного приложения/телеграм
     - alias: mobile app telegram notification action turn off alarm
@@ -367,7 +387,7 @@
           tag_id:
             - "73aef2e2-722b-418d-b20a-24e84eda330e"
           device_id:
-            - c588ea04f4ef51a5
+            - f4de6186902849d0845c4e2552d3531d
       condition:
           - "{{ state_attr(this.entity_id, 'current') | int(0) == 0 }}"
       action:

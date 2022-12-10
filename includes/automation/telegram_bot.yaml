@@ -471,7 +471,7 @@
       action:
         - variables:
             entity: "{{- trigger.event.data['args'][0] -}}"
-            friendlyname: "{{- state_attr(trigger.event.data['args'][0], 'friendly_name') | replace(': Update', '') -}}"
+            friendlyname: "{{- state_attr(trigger.event.data['args'][0], 'friendly_name') | replace(' Update', '') -}}"
         - choose:
             - conditions: "{{ is_state(entity, 'on') and is_state_attr(entity, 'in_progress', false) }}"
               sequence:

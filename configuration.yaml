@@ -5,6 +5,8 @@ homeassistant:
   longitude: !secret longitude_coord
   elevation: 161
   unit_system: metric
+  country: "RU"
+  language: "ru"
   time_zone: Europe/Moscow
   currency: RUB
   customize: !include_dir_merge_named includes/customize
@@ -15,6 +17,8 @@ homeassistant:
   auth_mfa_modules:
     - type: totp
     - type: notify
+      include:
+        - telegram_enzokot_to_bot
       message: "\U0001F511 *Двухфакторная аутентификация*\n`{}` код для завершения авторизации Home Assistant"
 
 config:

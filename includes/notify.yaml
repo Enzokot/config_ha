@@ -24,7 +24,6 @@
     password: !secret email_password
     recipient:
       - !secret email_adress1
-      #- bob@gmail.com
     sender_name: Home Assistant notification's
 
 #   - platform: nfandroidtv

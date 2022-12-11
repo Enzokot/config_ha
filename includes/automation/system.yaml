@@ -348,3 +348,17 @@
             - service: homeassistant.reload_config_entry
               data:
                 entry_id: "{{ config_entry_id('switch.kholodilnik_eco_friendly') }}"
+
+#Обновление сенсора repairs_state по событию системной проблемы
+- alias: repairs issue registry sensor update
+  id: repairs issue registry sensor update
+  mode: restart
+  trigger:
+    - platform: event
+      event_type: repairs_issue_registry_updated
+      event_data:
+        action: create
+  action:
+    - service: homeassistant.update_entity
+      data: 
+        entity_id: sensor.repairs_state

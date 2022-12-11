@@ -1328,24 +1328,6 @@
                 {% else -%}
                     Home Assistant *остановлен*, время работы: {{ states('sensor.online_custom') }}
                 {% endif -%}
-        - condition: "{{ trigger.id == 'homeassistant_start' }}"
-        - service: homeassistant.update_entity
-          data: 
-            entity_id: sensor.repairs_state
-        - condition: "{{ states('sensor.repairs_state') | int(0) > 0 }}"
-        - service: telegram_bot.send_message
-          data:
-            target: !secret telegram_enzokot_chat_id
-            parse_mode: 'html'
-            title: >-
-                     {{ '\U0001F41B' }} <b>Устранение проблем</b>
-            message: >-
-                    {%- set issues = state_attr('sensor.repairs_state', 'issues') -%}
-                    {%- set datanames = namespace(issue=[]) -%}
-                    {% for issue in issues %}
-                        {% set datanames.issue = datanames.issue + ['Домен: <b>' + issue.domain + ', </b> описание: <b>' + issue.issue_id + '</b>'] -%}
-                    {% endfor %}
-                    Обнаружены проблемы ({{- states('sensor.repairs_state') -}}шт):{{'\n'-}} {{ datanames.issue | join(', \n') }}
 
 #Уведомление об утечке пароля
     - alias: notifications loss passwords
@@ -1895,13 +1877,23 @@
 #Уведомления о сиcтемных проблемах
     - alias: repairs issue registry
       id: repairs issue registry
-      mode: parallel
+      mode: queued
       trigger:
-        - platform: event
-          event_type: repairs_issue_registry_updated
-          event_data:
-            action: create
+        - platform: state
+          entity_id: sensor.repairs_state
+          not_from:
+            - "unknown"
+            - "unavailable"
+        - platform: homeassistant
+          id: 'homeassistant_start'
+          event: start
+      condition:
+        - "{{ trigger.id == 'homeassistant_start' and states('sensor.repairs_state') | int(0) > 0 or trigger.id != 'homeassistant_start' and trigger.from_state.state | int(0) < trigger.to_state.state | int(0) }}"
       action:
+        - if:
+            - "{{ trigger.id == 'homeassistant_start' }}"
+          then:
+            - delay: 2
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -1909,4 +1901,9 @@
             title: >-
                      {{ '\U0001F41B' }} <b>Устранение проблем</b>
             message: >-
-                    Проблема в домене: <b>{{ trigger.event.data.domain | e }}</b>, описание: <b>{{ trigger.event.data.issue_id | e }}</b>
+                    {%- set issues = state_attr('sensor.repairs_state', 'issues') -%}
+                    {%- set datanames = namespace(issue=[]) -%}
+                    {% for issue in issues %}
+                        {% set datanames.issue = datanames.issue + ['Домен: <b>' + issue.domain + ', </b> описание: <b>' + issue.issue_id + '</b>'] -%}
+                    {% endfor %}
+                    Обнаружены проблемы ({{- states('sensor.repairs_state') -}}шт):{{'\n'-}} {{ datanames.issue | join(', \n') }}

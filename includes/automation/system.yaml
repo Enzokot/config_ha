@@ -358,6 +358,8 @@
       event_type: repairs_issue_registry_updated
       event_data:
         action: create
+    - platform: homeassistant
+      event: start
   action:
     - service: homeassistant.update_entity
       data: 

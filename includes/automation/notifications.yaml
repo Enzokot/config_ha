@@ -883,6 +883,8 @@
                   {%- endif -%}
                 {%- elif state_attr(trigger.event.data.entity_id, 'release_url') is not none -%}
                   {{- state_attr(trigger.event.data.entity_id, 'release_url') -}}
+                {%- elif device_attr(trigger.event.data.entity_id, 'configuration_url') is match('homeassistant://', ignorecase=True) -%}
+                  {{- device_attr(trigger.event.data.entity_id, 'configuration_url') | replace('homeassistant:/', states('sensor.instance_external_url_config')) -}}
                 {%- else -%}
                   {{- states('sensor.instance_external_url_config') -}}/config/dashboard
                 {%- endif %}

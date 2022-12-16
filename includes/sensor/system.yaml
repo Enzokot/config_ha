@@ -18,22 +18,6 @@
     - type: memory_use_percent
     - type: last_boot
 
-#Размер базы influxdb
-  - platform: influxdb
-    host: a0d7b954-influxdb
-    port: 8086
-    username: !secret influxdb_user
-    password: !secret influxdb_password
-    queries:
-      - name: InfluxDB_DB_Size
-        unit_of_measurement: MB
-        value_template: '{{ (value | float(0.0) / 1024 / 1024) | round(1, "common", 0) }}'
-        group_function: mean
-        measurement: '"monitor"."tsm1_filestore"'
-        database: _internal
-        where: 'time > now() - 10s AND "database"=''homeassistant'''
-        field: diskBytes 
-
 #Сенсор длительности старта НА
 #   - platform: command_line
 #     name: "HA start time"

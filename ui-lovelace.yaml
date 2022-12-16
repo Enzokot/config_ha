@@ -42,6 +42,11 @@ views:
              **Использование э/э**
 
         - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
           cards:
             - type: energy-date-selection
             - type: energy-usage-graph
@@ -154,8 +159,6 @@ views:
               service_data:
                 entity_id: automation.db_purge_everyday
             - type: divider
-            - entity: sensor.influxdb_db_size
-              secondary_info: entity-id
             - entity: sensor.influxdb_db_folder_size
               secondary_info: entity-id
 
@@ -178,6 +181,11 @@ views:
                   text: Вкл/выкл розетку?
 
         - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
           cards:
             - type: entities
               show_header_toggle: false
@@ -197,6 +205,11 @@ views:
           content: >
              **Освещение детская** 
         - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
           title: 'Потолочный светильник'
           cards:
             - type: entities
@@ -221,6 +234,11 @@ views:
                   name: Ambilight
 
         - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
           cards:
             - type: entities
               show_header_toggle: false
@@ -297,9 +315,19 @@ views:
              **Шлюз** 
 
         - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
           cards:
 
             - type: custom:vertical-stack-in-card
+              card_mod:
+                style: |
+                  ha-card {
+                    border: none;
+                  }
               horizontal: true
               cards:
 
@@ -590,9 +618,19 @@ views:
              **Стик zigbee** 
 
         - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
           cards:
             - type: custom:vertical-stack-in-card
               horizontal: true
+              card_mod:
+                style: |
+                  ha-card {
+                    border: none;
+                  }
               cards:
 
                 - type: button
@@ -622,6 +660,11 @@ views:
              **Входная э/э** 
 
         - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
           cards:
             - type: entities
               show_header_toggle: false
@@ -636,6 +679,11 @@ views:
              **Розетка водонагревателя** 
 
         - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
           cards:
             - type: entities
               show_header_toggle: false
@@ -654,6 +702,11 @@ views:
              **Розетка обогревателя Electrolux** 
 
         - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
           cards:
             - type: entities
               show_header_toggle: false
@@ -672,6 +725,11 @@ views:
              **Розетка Data Storage** 
 
         - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
           cards:
             - type: entities
               show_header_toggle: false
@@ -688,6 +746,11 @@ views:
              **Розетка в кухне 1** 
 
         - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
           cards:
             - type: entities
               show_header_toggle: false
@@ -704,6 +767,11 @@ views:
              **Розетка в спальне 1** 
 
         - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
           cards:
             - type: entities
               show_header_toggle: false
@@ -720,6 +788,11 @@ views:
              **Розетка в спальне 2** 
 
         - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
           cards:
             - type: entities
               show_header_toggle: false
@@ -751,6 +824,11 @@ views:
              **Увлажнитель детская** 
 
         - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
           cards:
             - type: entities
               show_header_toggle: false
@@ -798,6 +876,11 @@ views:
              **Увлажнитель спальня** 
 
         - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
           cards:
             - type: entities
               show_header_toggle: false
@@ -848,6 +931,11 @@ views:
              **Температура, влажность, давление** 
         
         - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
           cards:
             - type: horizontal-stack
               cards:
@@ -952,8 +1040,18 @@ views:
           content: >
              **Термоголовка детская** 
         - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
           cards:
             - type: custom:vertical-stack-in-card
+              card_mod:
+                style: |
+                  ha-card {
+                    border: none;
+                  }
               horizontal: true
               cards:
                 - type: gauge
@@ -987,8 +1085,18 @@ views:
           content: >
              **Термоголовка спальня** 
         - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
           cards:
             - type: custom:vertical-stack-in-card
+              card_mod:
+                style: |
+                  ha-card {
+                    border: none;
+                  }
               horizontal: true
               cards:
 
@@ -1030,8 +1138,18 @@ views:
           content: >
              **Термоголовка гостиная** 
         - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
           cards:
             - type: custom:vertical-stack-in-card
+              card_mod:
+                style: |
+                  ha-card {
+                    border: none;
+                  }
               horizontal: true
               cards:
                 - type: gauge
@@ -1059,8 +1177,18 @@ views:
           content: >
              **Термоголовка кухня** 
         - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
           cards:
             - type: custom:vertical-stack-in-card
+              card_mod:
+                style: |
+                  ha-card {
+                    border: none;
+                  }
               horizontal: true
               cards:
                 - type: gauge

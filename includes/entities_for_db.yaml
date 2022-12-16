@@ -6,7 +6,6 @@
       - sensor.processor_temperature
       #База
       - sensor.maria_db_size
-      - sensor.influxdb_db_size
       - sensor.maria_db_folder_size
       - sensor.influxdb_db_folder_size
       #Входная дверь

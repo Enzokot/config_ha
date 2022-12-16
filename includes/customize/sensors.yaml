@@ -276,10 +276,6 @@ sensor.maria_db_size:
   friendly_name: Объем базы данных Maria
   icon: mdi:database
 
-sensor.influxdb_db_size:
-  friendly_name: Объем базы данных InfluxDB
-  icon: mdi:database
-
 sensor.maria_db_folder_size:
   friendly_name: Объем каталога БД Maria
 

@@ -1909,3 +1909,27 @@
                         {% set datanames.issue = datanames.issue + ['Домен: <b>' + issue.domain + ', </b> описание: <b>' + issue.issue_id + '</b>'] -%}
                     {% endfor %}
                     Обнаружены проблемы ({{- states('sensor.repairs_state') -}}шт):{{'\n'-}} {{ datanames.issue | join(', \n') }}
+
+#Логины SSH
+    - alias: login ssh from servers
+      id: login ssh from servers
+      mode: queued
+      trigger:
+        - platform: state
+          entity_id: sensor.login_ssh_kotletochka_dell_srv
+          not_from:
+            - "unknown"
+            - "unavailable"
+          not_to:
+            - "unknown"
+            - "unavailable"
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            parse_mode: 'html'
+            title: >-
+                     {{ '\U0001F5A7' }} <b>Вход по SSH</b>
+            message: >-
+                    {{- state_attr('sensor.login_ssh_kotletochka_dell_srv', 'friendly_name') -}}: <b>{{- as_timestamp(trigger.to_state.state) | timestamp_custom('%d.%m.%Y %H:%M:%S') -}}</b> 
+                    Пользователь: <b>{{- trigger.to_state.attributes.user -}}</b>, адрес: <b>{{- trigger.to_state.attributes.address -}}</b>, tty: <b>{{- trigger.to_state.attributes.tty -}}</b>

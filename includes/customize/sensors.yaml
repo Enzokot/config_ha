@@ -391,3 +391,6 @@ sensor.total_shelly_plug_s_2_cable_daily_electicity:
   
 sensor.total_shelly_plug_s_2_cable_monthly_electicity:
   friendly_name: DS потреб. мес.
+
+sensor.login_ssh_kotletochka_dell_srv:
+  friendly_name: Последний логин ssh DELL server

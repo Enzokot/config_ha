@@ -28,6 +28,7 @@
       - cover.cover_group_kitchen
       - media_player.samsung_tv_remote
       - switch.r4s01_kettle_boil
+      - switch.power_switch_n550jk
   entity_config:
     switch.0x086bd7fffe5d13c9:
       type: devices.types.light

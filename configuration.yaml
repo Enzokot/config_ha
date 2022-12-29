@@ -85,6 +85,7 @@ utility_meter: !include includes/utility_meter.yaml
 rest_command: !include includes/rest_command.yaml
 shell_command: !include includes/shell_command.yaml
 cover: !include includes/cover.yaml
+wake_on_lan:
 
 input_select: !include includes/input_select.yaml
 input_number: !include includes/input_number.yaml

@@ -326,6 +326,7 @@
 #Перезапуск интеграции LG Devices по недоступности сенсоров
 - alias: lg_devices_sensors_unavailable
   id: lg_devices_sensors_unavailable
+  mode: queued
   trigger:
     - platform: state
       entity_id: switch.kholodilnik_eco_friendly

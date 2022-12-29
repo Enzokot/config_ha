@@ -15,3 +15,10 @@
     name: internet availability yandex ping
     host: 'ya.ru'
     scan_interval: 120
+
+#Доступность n550jk в сети
+  - platform: ping
+    name: n550jk availability
+    host: 'n550jk.local'
+    count: 3
+    scan_interval: 30

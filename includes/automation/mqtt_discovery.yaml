@@ -266,3 +266,22 @@
                     "unique_id":"0x5c0272fffe8de819_local_temperature_calibration",
                     "device":{"identifiers":["zigbee2mqtt_0x5c0272fffe8de819"],"manufacturer":"TuYa","model":"Radiator valve with thermostat (TS0601_thermostat)","name":"Kitchen valve with thermostat"} 
                   }
+
+            #На хосте /etc/login_ssh.sh
+            - service: mqtt.publish
+              data: 
+                topic: homeassistant/sensor/login_ssh_kotletochka_dell_srv/config
+                retain: true 
+                payload: >- 
+                  { 
+                    "name":"login ssh kotletochka dell srv", 
+                    "state_topic":"login_ssh/kotletochka_dell_srv",
+                    "value_template":"{{ '{{' }} value_json.date {{ '}}' }}",
+                    "json_attributes_topic":"login_ssh/kotletochka_dell_srv",
+                    "json_attributes_template":"{{ '{{ {' }}'user':value_json.user, 'ruser':value_json.ruser, 'address':value_json.address, 'service':value_json.service, 'tty':value_json.tty{{ '}' }} | tojson {{ '}}' }}",
+                    "force_update":"true",
+                    "device_class":"timestamp",
+                    "icon":"mdi:ssh", 
+                    "unique_id":"login_ssh_kotletochka_dell_srv",
+                    "device":{"identifiers":["login_ssh"],"manufacturer":"Enzokot","model":"Local push","name":"Login's ssh info"}
+                  }

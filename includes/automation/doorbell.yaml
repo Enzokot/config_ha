@@ -41,10 +41,10 @@
             conditions:
                 - condition: time
                   after: '8:00:00'
-                  before: '14:00:00'
+                  before: '13:30:00'
                 - condition: time
-                  after: '17:30:00'
-                  before: '21:00:00'
+                  after: '16:10:00'
+                  before: '21:30:00'
           - service: xiaomi_aqara.stop_ringtone
             data:
               gw_mac: !secret gateway1_mac
@@ -67,10 +67,10 @@
             conditions:
                 - condition: time
                   after: '8:00:00'
-                  before: '14:00:00'
+                  before: '13:30:00'
                 - condition: time
-                  after: '17:30:00'
-                  before: '21:00:00'
+                  after: '16:10:00'
+                  before: '21:30:00'
           - condition: state
             entity_id: timer.doorbell_timer_restart_automation
             state: 'idle'

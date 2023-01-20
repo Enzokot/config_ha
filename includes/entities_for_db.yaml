@@ -22,7 +22,7 @@
       - sensor.0x158d000542ceaf_humidity
       - sensor.esp_xiaomi_kitchen_humidity
       - sensor.0x158d0006b860cf_humidity
-      - sensor.0x158d00042fd6f5_humidity
+      - sensor.0x00158d0008386b56_humidity
       - sensor.0x158d0006c5f21e_humidity
       - sensor.esp_xiaomi_living_room_humidity
       - sensor.esp_xiaomi_childrens_room_humidity
@@ -32,7 +32,7 @@
       - sensor.0x158d0004561de9_temperature
       - sensor.0x158d000542ceaf_temperature
       - sensor.0x158d0006b860cf_temperature
-      - sensor.0x158d00042fd6f5_temperature
+      - sensor.0x00158d0008386b56_temperature
       - sensor.0x158d0006c5f21e_temperature
       - sensor.zhimi_humidifier_cb1_humidity
       - sensor.zhimi_humidifier_cb1_temperature

@@ -73,7 +73,7 @@
           - switch.r4s01_kettle_boil
           - sensor.r4s0_gate_rssi
           - sensor.0x158d0006b860cf_battery
-          - sensor.0x158d00042fd6f5_battery
+          - sensor.0x00158d0008386b56_battery
           - sensor.0x158d0006c5f21e_battery
 
     temperature_summary_group_to_bot:
@@ -86,7 +86,7 @@
           - sensor.esp_xiaomi_kitchen_temperature
           - sensor.0x158d0006c5f21e_temperature
           - sensor.0x158d0006b860cf_temperature
-          - sensor.0x158d00042fd6f5_temperature
+          - sensor.0x00158d0008386b56_temperature
 
     entity_ids_for_turn_off_by_smoke_detector:
         entities:

@@ -148,39 +148,49 @@
               }}
   action:
       - parallel:
+          - sequence:
+            - if:
+                - "{{ states('humidifier.zhimi_humidifier_ca4') in ['unknown', 'unavailable'] }}"
+              then:
+                - wait_for_trigger:
+                    - platform: state
+                      entity_id: humidifier.zhimi_humidifier_ca4
+                      from: 
+                        - "unknown"
+                        - "unavailable"
+                  timeout: 75
+            - choose:
+                - conditions:
+                      - condition: template
+                        value_template: >
+                          {{ 
+                            trigger.to_state.state == 'on' and is_state('humidifier.zhimi_humidifier_ca4', 'on') 
+                            or trigger.to_state.state == 'off' and is_state('humidifier.zhimi_humidifier_ca4', 'off')
+                            and is_state('input_boolean.auto_triggered_fan_window_childrens_room', 'on')
+                          }}
+                  sequence:
+                      - service: >
+                                  {% if trigger.to_state.state == 'on' -%}
+                                    humidifier.turn_off
+                                  {%- else -%}
+                                    humidifier.turn_on
+                                  {%- endif %}
+                        data:
+                          entity_id: humidifier.zhimi_humidifier_ca4
+                      - service: input_boolean.toggle
+                        entity_id: input_boolean.auto_triggered_fan_window_childrens_room
+                - conditions:
+                      - condition: template
+                        value_template: >
+                          {{ 
+                            trigger.to_state.state == 'off'
+                            and is_state('input_boolean.auto_triggered_fan_window_childrens_room', 'on')
+                          }}
+                  sequence:
+                      - service: input_boolean.turn_off
+                        entity_id: input_boolean.auto_triggered_fan_window_childrens_room
           - choose:
-              - conditions:  
-                    - condition: template
-                      value_template: >
-                        {{ 
-                          trigger.to_state.state == 'on' and is_state('humidifier.zhimi_humidifier_ca4', 'on') 
-                          or trigger.to_state.state == 'off' and is_state('humidifier.zhimi_humidifier_ca4', 'off')
-                          and is_state('input_boolean.auto_triggered_fan_window_childrens_room', 'on')
-                        }}
-                sequence:
-                    - service: >
-                                {% if trigger.to_state.state == 'on' -%}
-                                  humidifier.turn_off
-                                {%- else -%}
-                                  humidifier.turn_on
-                                {%- endif %}
-                      data:
-                        entity_id: humidifier.zhimi_humidifier_ca4
-                    - service: input_boolean.toggle
-                      entity_id: input_boolean.auto_triggered_fan_window_childrens_room
-              - conditions:  
-                    - condition: template
-                      value_template: >
-                        {{ 
-                          trigger.to_state.state == 'off' and is_state('humidifier.zhimi_humidifier_ca4', 'on')
-                          and is_state('input_boolean.auto_triggered_fan_window_childrens_room', 'on')
-                        }}
-                sequence:
-                    - service: input_boolean.turn_off
-                      entity_id: input_boolean.auto_triggered_fan_window_childrens_room
-                        
-          - choose:
-              - conditions:  
+              - conditions:
                     - condition: template
                       value_template: >
                         {{ 
@@ -209,7 +219,7 @@
                       data:
                         entity_id: climate.0x5c0272fffec89454
                         preset_mode: manual
-              - conditions:  
+              - conditions:
                     - condition: template
                       value_template: >
                         {{ 
@@ -242,44 +252,54 @@
               }}
   action:
       - parallel:
+          - sequence:
+            - if:
+                - "{{ states('humidifier.zhimi_humidifier_cb1') in ['unknown', 'unavailable'] }}"
+              then:
+                - wait_for_trigger:
+                    - platform: state
+                      entity_id: humidifier.zhimi_humidifier_cb1
+                      from: 
+                        - "unknown"
+                        - "unavailable"
+                  timeout: 75
+            - choose:
+                - conditions:
+                      - condition: template
+                        value_template: >
+                          {{ 
+                            trigger.to_state.state == 'on' and is_state('humidifier.zhimi_humidifier_cb1', 'on') 
+                            or trigger.to_state.state == 'off' and is_state('humidifier.zhimi_humidifier_cb1', 'off')
+                            and is_state('input_boolean.auto_triggered_fan_window_bed_room', 'on')
+                          }}
+                  sequence:
+                      - service: >
+                                  {% if trigger.to_state.state == 'on' -%}
+                                    humidifier.turn_off
+                                  {%- else -%}
+                                    humidifier.turn_on
+                                  {%- endif %}
+                        data:
+                          entity_id: humidifier.zhimi_humidifier_cb1
+                      - service: >
+                                  {% if trigger.to_state.state == 'off' -%}
+                                    input_boolean.turn_off
+                                  {%- else -%}
+                                    input_boolean.turn_on
+                                  {%- endif %}
+                        entity_id: input_boolean.auto_triggered_fan_window_bed_room
+                - conditions:
+                      - condition: template
+                        value_template: >
+                          {{ 
+                            trigger.to_state.state == 'off'
+                            and is_state('input_boolean.auto_triggered_fan_window_bed_room', 'on')
+                          }}
+                  sequence:
+                      - service: input_boolean.turn_off
+                        entity_id: input_boolean.auto_triggered_fan_window_bed_room
           - choose:
-              - conditions:  
-                    - condition: template
-                      value_template: >
-                        {{ 
-                          trigger.to_state.state == 'on' and is_state('humidifier.zhimi_humidifier_cb1', 'on') 
-                          or trigger.to_state.state == 'off' and is_state('humidifier.zhimi_humidifier_cb1', 'off')
-                          and is_state('input_boolean.auto_triggered_fan_window_bed_room', 'on')
-                        }}
-                sequence:
-                    - service: >
-                                {% if trigger.to_state.state == 'on' -%}
-                                  humidifier.turn_off
-                                {%- else -%}
-                                  humidifier.turn_on
-                                {%- endif %}
-                      data:
-                        entity_id: humidifier.zhimi_humidifier_cb1
-                    - service: >
-                                {% if trigger.to_state.state == 'off' -%}
-                                  input_boolean.turn_off
-                                {%- else -%}
-                                  input_boolean.turn_on
-                                {%- endif %}
-                      entity_id: input_boolean.auto_triggered_fan_window_bed_room
-              - conditions:  
-                    - condition: template
-                      value_template: >
-                        {{ 
-                          trigger.to_state.state == 'off' and is_state('humidifier.zhimi_humidifier_cb1', 'on')
-                          and is_state('input_boolean.auto_triggered_fan_window_bed_room', 'on')
-                        }}
-                sequence:
-                    - service: input_boolean.turn_off
-                      entity_id: input_boolean.auto_triggered_fan_window_bed_room
-                        
-          - choose:
-              - conditions:  
+              - conditions:
                     - condition: template
                       value_template: >
                         {{ 
@@ -308,7 +328,7 @@
                       data:
                         entity_id: climate.0x60a423fffe968719
                         preset_mode: manual
-              - conditions:  
+              - conditions:
                     - condition: template
                       value_template: >
                         {{ 

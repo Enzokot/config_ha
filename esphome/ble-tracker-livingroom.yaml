@@ -140,6 +140,7 @@ sensor:
     weight:
       id: weight_miscale_ble
       internal: true
+      force_update: true
       on_value:
         then:
           - lambda: |-
@@ -153,6 +154,7 @@ sensor:
     icon: mdi:weight-kilogram
     accuracy_decimals: 2
     update_interval: never
+    force_update: true
     lambda: |-
       {return id(weight_global_float);}
 

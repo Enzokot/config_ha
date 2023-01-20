@@ -461,7 +461,7 @@ views:
               name: 'Ванная'
             - entity: sensor.0x158d0006b860cf_temperature
               name: 'Санузел'
-            - entity: sensor.0x158d00042fd6f5_temperature
+            - entity: sensor.0x00158d0008386b56_temperature
               name: 'Отопление'
 
       - type: vertical-stack
@@ -515,7 +515,7 @@ views:
                   - sensor.0x158d000542ceaf_battery
                   - sensor.0x158d0006c5f21e_battery
                   - sensor.0x158d0006b860cf_battery
-                  - sensor.0x158d00042fd6f5_battery
+                  - sensor.0x00158d0008386b56_battery
               - name: 'Движения (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
                 icon: 'mdi:motion-sensor'
@@ -554,7 +554,7 @@ views:
               tap_action: more-info
             - entity: sensor.0x158d0006b860cf_battery
               tap_action: more-info
-            - entity: sensor.0x158d00042fd6f5_battery
+            - entity: sensor.0x00158d0008386b56_battery
               tap_action: more-info
             - entity: sensor.0x158d0004561de9_battery
               tap_action: more-info

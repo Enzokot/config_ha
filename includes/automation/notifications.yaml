@@ -160,16 +160,6 @@
           entity_id: binary_sensor.0x158d000359304c_contact
           from: 'off'
           to: 'on'
-    #   condition:
-    #     condition: time
-    #     after: '7:00:00'
-    #     before: '21:00:00'
-    #     weekday:
-    #       - mon
-    #       - tue
-    #       - wed        
-    #       - thu
-    #       - fri
       action:
         - parallel:
             - service: telegram_bot.send_message
@@ -198,16 +188,6 @@
           entity_id: binary_sensor.0x158d000359304c_contact
           from: 'on'
           to: 'off'
-    #   condition:
-    #     condition: time
-    #     after: '7:00:00'
-    #     before: '21:00:00'
-    #     weekday:
-    #       - mon
-    #       - tue
-    #       - wed        
-    #       - thu
-    #       - fri
       action:
         - parallel:
             - service: telegram_bot.send_message
@@ -700,6 +680,7 @@
                     seconds: 5
         - variables:
             sm_g973f_rezhim_zvonka: "{{ states('sensor.sm_g973f_ringer_mode') }}"
+            areas_list: "{{ states.binary_sensor | selectattr('entity_id', 'match', '.*_smoke') | selectattr('state', 'eq', 'on') | map(attribute='entity_id') | map('area_name') | reject('none') | unique | join('\n') }}"
         - choose:
             - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
               sequence:
@@ -713,30 +694,11 @@
               data:
                 target: !secret telegram_all_chat_id
                 title: >-
-                         {{ '\U0001f6a8' }} *Датчик дыма*
-                message: >-
+                         {{ '\U0001F525' }} *Датчик дыма*
+                message: |-
                             Сработали датчики:
-                            {{ '\n' }}
-                            {%- if is_state('binary_sensor.0x158d0003943639_smoke', 'on') -%}
-                               _Кухня_
-                            {{- '\n' }}
-                            {%- endif -%} 
-                            {%- if is_state('binary_sensor.0x158d00039a8358_smoke', 'on') -%}
-                               _Гостиная_
-                            {{- '\n' }}
-                            {%- endif -%}
-                            {% if is_state('binary_sensor.0x158d00039d9398_smoke', 'on') -%}
-                               _Коридор_
-                            {{- '\n' }}
-                            {%- endif -%}
-                            {% if is_state('binary_sensor.0x158d00045ca483_smoke', 'on') -%}
-                               _Детская_
-                            {{- '\n' }}
-                            {%- endif -%}
-                            {%- if is_state('binary_sensor.0x158d00045cd551_smoke', 'on') -%}
-                               _Спальня_
-                            {{- '\n' }}
-                            {%- endif -%}
+                            {{- '\n' -}}
+                            _{{- areas_list -}}_
                 inline_keyboard:
                   - 'Выключить сирену:/stop_alarm'
             - service: notify.notify
@@ -748,55 +710,17 @@
                   actions:
                     - action: "stop_alarm"
                       title: "Выключить сирену"
-                title: "{{ '\U0001f6a8' }} Датчик дыма"
-                message: >-
+                title: "{{ '\U0001F525' }} Датчик дыма"
+                message: |-
                             Сработали датчики:
-                            {{ '\n' }}
-                            {%- if is_state('binary_sensor.0x158d0003943639_smoke', 'on') -%}
-                               Кухня
-                            {{- '\n' }}
-                            {%- endif -%} 
-                            {%- if is_state('binary_sensor.0x158d00039a8358_smoke', 'on') -%}
-                               Гостиная
-                            {{- '\n' }}
-                            {%- endif -%}
-                            {% if is_state('binary_sensor.0x158d00039d9398_smoke', 'on') -%}
-                               Коридор
-                            {{- '\n' }}
-                            {%- endif -%}
-                            {% if is_state('binary_sensor.0x158d00045ca483_smoke', 'on') -%}
-                               Детская
-                            {{- '\n' }}
-                            {%- endif -%}
-                            {%- if is_state('binary_sensor.0x158d00045cd551_smoke', 'on') -%}
-                               Спальня
-                            {{- '\n' }}
-                            {%- endif -%}
+                            {{- '\n' -}}
+                            {{- areas_list -}}
             - service: notify.huawei_lte
               data:
-                message: >-
-                            🚨 Сработали датчики дыма:
-                            {{ '\n' }}
-                            {%- if is_state('binary_sensor.0x158d0003943639_smoke', 'on') -%}
-                               Кухня
-                            {{- '\n' }}
-                            {%- endif -%} 
-                            {%- if is_state('binary_sensor.0x158d00039a8358_smoke', 'on') -%}
-                               Гостиная
-                            {{- '\n' }}
-                            {%- endif -%}
-                            {% if is_state('binary_sensor.0x158d00039d9398_smoke', 'on') -%}
-                               Коридор
-                            {{- '\n' }}
-                            {%- endif -%}
-                            {% if is_state('binary_sensor.0x158d00045ca483_smoke', 'on') -%}
-                               Детская
-                            {{- '\n' }}
-                            {%- endif -%}
-                            {%- if is_state('binary_sensor.0x158d00045cd551_smoke', 'on') -%}
-                               Спальня
-                            {{- '\n' }}
-                            {%- endif -%}
+                message: |-
+                            {{ '\U0001F525' }} Сработали датчики дыма:
+                            {{- '\n' -}}
+                            {{- areas_list -}}
                 target: !secret sms_phone_all
                 data:
                   url: 'http://192.168.8.1/'
@@ -1113,7 +1037,7 @@
                     - service: notify.kotletochka_tv
                       data:
                         message: >-
-                            Нет воды: _{{- device_attr(trigger.entity_id, 'name') -}}_
+                            Нет воды: {{- trigger.to_state.name -}}
 
 #Уведомление обслуживания пылесоса
     - alias: notification vacuum maintenance
@@ -1933,7 +1857,7 @@
             target: !secret telegram_enzokot_chat_id
             parse_mode: 'html'
             title: >-
-                     {{ '\U0001F5A7' }} <b>Вход по SSH</b>
+                     {{ '\U00002328' }} <b>Вход по SSH</b>
             message: >-
                     {{- state_attr('sensor.login_ssh_kotletochka_dell_srv', 'friendly_name') -}}: <b>{{- as_timestamp(trigger.to_state.state) | timestamp_custom('%d.%m.%Y %H:%M:%S') -}}</b> 
                     Пользователь: <b>{{- trigger.to_state.attributes.user -}}</b>, адрес: <b>{{- trigger.to_state.attributes.address -}}</b>, tty: <b>{{- trigger.to_state.attributes.tty -}}</b>

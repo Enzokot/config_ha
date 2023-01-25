@@ -7,12 +7,3 @@
 #     sidebar_title: SSH
 #     sidebar_icon: mdi:console
 #     module_url: dummy
-
-#   - name: panel-redirect
-#     url_path: esphome-redirection
-#     sidebar_title: ESPHome
-#     sidebar_icon: mdi:chip
-#     module_url: /local/community/panel-redirect/panel-redirect.js
-#     config:
-#       target: /hassio/ingress/a0d7b954_esphome
-#       httpstarget: /esphome/

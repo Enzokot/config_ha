@@ -1,7 +1,7 @@
 
 #Выключение звуков активации Алисы и подтверждения выполнения команд
-    - alias: change mute on alice activation sounds
-      id: change mute on alice activation sounds
+    - alias: change mute on off alice activation sounds
+      id: change mute on off alice activation sounds
       initial_state: true
       max_exceeded: silent
       trigger:
@@ -9,62 +9,25 @@
           event: start
         - platform: time
           at:
+            - "8:00:00"
             - "13:30:00"
+            - "16:00:00"
             - "21:30:00"
-      condition:
-        - condition: or
-          conditions:
-            - condition: time
-              after: "13:30:00"
-              before: "17:30:00"
-            - condition: time
-              after: "21:30:00"
-              before: "8:30:00"
       action:
+        - variables:
+            time_to_on: >
+                {% set time_now = now() %}
+                {{ today_at('8:00') <= time_now < today_at('13:30') or today_at('16:00') <= time_now < today_at('21:30') }}
         - service: media_player.play_media
           entity_id: media_player.yandex_station_ff98f029b620413b35e5e278
           data:
-           media_content_id: 'без лишних слов: да'
+           media_content_id: "{{- 'без лишних слов: ' + iif(time_to_on, 'нет', 'да') -}}"
            media_content_type: settings
         - delay: 2
         - service: media_player.play_media
           entity_id: media_player.yandex_station_ff98f029b620413b35e5e278
           data:
-           media_content_id: 'звук активации: нет'
-           media_content_type: settings
-
-#Включение звуков активации Алисы и подтверждения выполнения команд
-    - alias: change mute off alice activation sounds
-      id: change mute off alice activation sounds
-      initial_state: true
-      max_exceeded: silent
-      trigger:
-        - platform: homeassistant
-          event: start
-        - platform: time
-          at:
-            - "8:30:00"
-            - "17:30:00"
-      condition:
-        - condition: or
-          conditions:
-            - condition: time
-              after: "8:30:00"
-              before: "13:30:00"
-            - condition: time
-              after: "17:30:00"
-              before: "21:30:00"
-      action:
-        - service: media_player.play_media
-          entity_id: media_player.yandex_station_ff98f029b620413b35e5e278
-          data:
-           media_content_id: 'без лишних слов: нет'
-           media_content_type: settings
-        - delay: 2
-        - service: media_player.play_media
-          entity_id: media_player.yandex_station_ff98f029b620413b35e5e278
-          data:
-           media_content_id: 'звук активации: да'
+           media_content_id: "{{- 'звук активации: ' + iif(time_to_on, 'да', 'нет') -}}"
            media_content_type: settings
 
 #Изменение имени управляющей команды Алиса/Яндекс

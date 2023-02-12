@@ -773,6 +773,7 @@
           event_type: state_changed
       condition:
         - "{{ trigger.event.data.entity_id.startswith('update.') }}"
+        - "{{ trigger.event.data.old_state is not none and trigger.event.data.new_state is not none }}"
         - or:
             - condition: template
               value_template: >
@@ -1389,7 +1390,6 @@
 #Уведомление о неудачном бекапе Google Drive Backup
     - alias: notifications stale google drive backup
       id: notifications stale google drive backup
-      mode: single
       max_exceeded: silent
       initial_state: true
       trigger:
@@ -1517,7 +1517,6 @@
     - alias: notifications sms unread or full storage
       id: notifications sms unread or full storage
       initial_state: true
-      mode: single
       max_exceeded: silent
       trigger:
         - platform: state
@@ -1549,7 +1548,6 @@
     - alias: notifications link down keenetic
       id: notifications link down keenetic
       initial_state: true
-      mode: single
       max_exceeded: silent
       trigger:
         - platform: state
@@ -1613,7 +1611,6 @@
     - alias: notifications warnings or errors in syslog
       id: notifications warnings or errors in syslog
       initial_state: true
-      mode: single
       max_exceeded: silent
       trigger:
         - platform: time_pattern
@@ -1891,3 +1888,27 @@
                 {% else %} {{- first_name_daughter -}}
                 {% endif -%}*
                 весит `{{- trigger.to_state.state -}}` {{ trigger.to_state.attributes.unit_of_measurement -}}
+
+#Уведомление о наличии предупреждения на хосте по ext4
+    - alias: host kernel ext4 warning
+      id: host kernel ext4 warning
+      max_exceeded: silent
+      trigger:
+        - platform: state
+          entity_id: binary_sensor.kernel_ext4_warning
+          from: 'off'
+          to: 'on'
+        - platform: time
+          at: "10:30:00"
+      condition:
+        - condition: state
+          entity_id: binary_sensor.kernel_ext4_warning
+          state: 'on'
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            disable_notification: true
+            title: "⚠️ *Host Kernel log*"
+            message: >-
+                {{ state_attr('binary_sensor.kernel_ext4_warning', 'friendly_name') }}

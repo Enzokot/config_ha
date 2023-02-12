@@ -54,9 +54,11 @@ captive_portal:
 logger:
 #  level: NONE
 
+syslog:
+  ip_address: "kotletochka-ds.local"
+
 # Enable Home Assistant API
 api:
-  password: !secret api_password
   reboot_timeout: 0s
 
 ota:
@@ -70,6 +72,7 @@ esp32_ble_tracker:
  scan_parameters:
     interval: 320ms
     window: 30ms
+    active: false
     #interval: 512ms
     #window: 48ms
 
@@ -134,3 +137,6 @@ binary_sensor:
 button:
   - platform: restart
     name: ${devicename}_Restart
+
+  - platform: safe_mode
+    name: ${devicename}_Safe_Mode

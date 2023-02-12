@@ -12,7 +12,7 @@
 #Добавление устройств zigbee
     zigbee_permit_join:
         name: Осталось
-        duration: 600
+        duration: 240
         restore: true
         
 #Таймер звуковой сигнализации

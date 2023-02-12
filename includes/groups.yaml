@@ -28,7 +28,7 @@
           - sensor.0x5c0272fffec9db22_linkquality
           - sensor.0x158d0003a360b6_battery
           - sensor.0x158d00045a78af_battery
-          - sensor.0x54ef4410000ec80c_battery
+          - sensor.0x54ef4410000ebba0_battery
           - sensor.0x158d000542ceaf_battery
           - sensor.0x158d00039a2f33_battery
           - sensor.0x158d0003975d8b_battery

@@ -346,7 +346,7 @@ views:
               entities:
                 - entity: light.gateway_light_04cf8cabd77b
                 - entity: sensor.signalka_shliuza_illuminance
-                - entity: sensor.0x54ef4410000ec80c_illuminance
+                - entity: sensor.0x54ef4410000ebba0_illuminance
                 
 
         - type: markdown
@@ -531,7 +531,7 @@ views:
                 entities:
                   - sensor.0x158d0003a360b6_battery
                   - sensor.0x158d00045a78af_battery
-                  - sensor.0x54ef4410000ec80c_battery
+                  - sensor.0x54ef4410000ebba0_battery
               - name: 'Часы (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
                 icon: 'mdi:alarm-check'
@@ -558,7 +558,7 @@ views:
               tap_action: more-info
             - entity: sensor.0x158d0004561de9_battery
               tap_action: more-info
-            - entity: sensor.0x54ef4410000ec80c_battery
+            - entity: sensor.0x54ef4410000ebba0_battery
               tap_action: more-info
             - entity: sensor.0x158d00045cd551_battery
               tap_action: more-info
@@ -1113,11 +1113,7 @@ views:
               state_color: true
               columns: 3
               entities:
-                    # - type: entity
-                    #   name: Вкл/выкл термоголовку
-                    #   entity: switch.0x60a423fffe968719_valve_detection
-                    #   icon: mdi:home-thermometer-outline
-                    
+
                     - type: entity
                       name: Блок. кнопок
                       entity: switch.0x60a423fffe968719_child_lock_switch

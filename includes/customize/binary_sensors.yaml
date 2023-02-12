@@ -117,3 +117,6 @@ binary_sensor.yandex_station_lr0000000000000252130000de5d13d0_assumed_state:
 
 binary_sensor.yandex_station_m00ka4300h99tr_assumed_state:
   friendly_name: Яндекс станция мини спальня
+
+binary_sensor.kernel_ext4_warning:
+  friendly_name: Предупреждение по ext4 от Kernel

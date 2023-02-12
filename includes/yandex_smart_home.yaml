@@ -41,20 +41,35 @@
         input_source:
           one: ['YouTube']
           two: ['Мульт']
-          three: ['Дисней']
-          four: ['КАРУСЕЛЬ']
+          three: ['КАРУСЕЛЬ']
+      custom_modes:
+        input_source:
+          set_mode:
+            service: media_player.play_media
+            data:
+              entity_id: media_player.sony_bravia_tv
+              media_content_type: "{{ iif(mode == 'YouTube', 'app', 'channel') }}"
+              media_content_id: "{{ mode }}"
+      custom_toggles:
+        pause:
+          turn_on:
+            service: remote.send_command
+            data:
+              entity_id: remote.sony_bravia_tv
+              command: "Pause"
+          turn_off:
+            service: remote.send_command
+            data:
+              entity_id: remote.sony_bravia_tv
+              command: "Play"
       custom_ranges:
         channel:
           set_value:
-          #Для асинхронной смены абсолютного значения канала, т.к. скрипт для смены имеет много ветвлений
-            service: script.turn_on
+            service: media_player.play_media
             data:
-              entity_id: script.set_sony_braviatv_channel_number
-              variables:
-                entity: remote.sony_bravia_tv
-                channel: '{{ value }}'
-                ext_channel_name: 'Мульт'
-                media_entity: media_player.sony_bravia_tv
+              entity_id: media_player.sony_bravia_tv
+              media_content_type: "channel"
+              media_content_id: "{{ value }}"
           increase_value:
             service: remote.send_command
             data:
@@ -78,6 +93,18 @@
         input_source:
           one: ['YouTube']
           two: ['ТВ (LiveTV)']
+      custom_toggles:
+        pause:
+          turn_on:
+            service: webostv.button
+            data:
+              entity_id: media_player.lg_smart_tv
+              button: 'PAUSE'
+          turn_off:
+            service: webostv.button
+            data:
+              entity_id: media_player.lg_smart_tv
+              button: 'PLAY'
       custom_ranges:
         channel:
           set_value:
@@ -104,6 +131,20 @@
         service: esphome.perenio_petra01_kitchen_send_samsung_command
         data:
           data: '0xE0E040BF'
+      custom_toggles:
+        pause:
+          turn_on:
+            service: media_player.play_media
+            data:
+              entity_id: media_player.samsung_tv_remote
+              media_content_type: 'send_key'
+              media_content_id: 'KEY_PAUSE'
+          turn_off:
+            service: media_player.play_media
+            data:
+              entity_id: media_player.samsung_tv_remote
+              media_content_type: 'send_key'
+              media_content_id: 'KEY_PLAY'
       custom_ranges:
         channel:
           set_value:

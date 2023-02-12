@@ -1,5 +1,5 @@
 
-    - alias: mqtt_sensors_discovery  
+    - alias: mqtt_sensors_discovery
       id: mqtt_sensors_discovery
       initial_state: true 
       trigger: 
@@ -59,7 +59,7 @@
                 payload: >- 
                   { 
                     "name":"Maria DB folder size", 
-                    "state_topic":"folders_sizes/mariadb_homeassistant",
+                    "state_topic":"host_data/folders_sizes/mariadb_homeassistant",
                     "value_template":"{{ '{{' }} (value | float(0.0) / 1024) | round(1, 'common', 0) {{ '}}' }}",
                     "icon":"mdi:folder-eye", 
                     "unit_of_measurement":"MB",
@@ -75,7 +75,7 @@
                 payload: >- 
                   { 
                     "name":"InfluxDB DB folder size", 
-                    "state_topic":"folders_sizes/influxdb_homeassistant",
+                    "state_topic":"host_data/folders_sizes/influxdb_homeassistant",
                     "value_template":"{{ '{{' }} (value | float(0.0) / 1024) | round(1, 'common', 0) {{ '}}' }}",
                     "icon":"mdi:folder-eye", 
                     "unit_of_measurement":"MB",
@@ -90,7 +90,7 @@
                 payload: >- 
                   { 
                     "name":"check keenetic link down", 
-                    "state_topic":"network_diagnostics/check_keenetic_link_down",
+                    "state_topic":"host_data/network_diagnostics/check_keenetic_link_down",
                     "icon":"mdi:calendar-clock", 
                     "unique_id":"check_keenetic_link_down",
                     "device":{"identifiers":["network_info"],"manufacturer":"Enzokot","model":"Local polling","name":"Network info"}
@@ -115,8 +115,9 @@
                 retain: true 
                 payload: >- 
                   { 
+                    "avty":[{"topic":"zigbee2mqtt/bridge/state"}],
                     "name":"Zigbee2mqtt Bridge Uptime", 
-                    "state_topic":"zigbee2mqtt_start_at",
+                    "state_topic":"host_data/zigbee2mqtt_start_at",
                     "icon":"mdi:av-timer",
                     "unit_of_measurement":"s",
                     "unique_id":"zigbee2mqtt_bridge_uptime",
@@ -275,13 +276,27 @@
                 payload: >- 
                   { 
                     "name":"login ssh kotletochka dell srv", 
-                    "state_topic":"login_ssh/kotletochka_dell_srv",
+                    "state_topic":"host_data/login_ssh/kotletochka_dell_srv",
                     "value_template":"{{ '{{' }} value_json.date {{ '}}' }}",
-                    "json_attributes_topic":"login_ssh/kotletochka_dell_srv",
+                    "json_attributes_topic":"host_data/login_ssh/kotletochka_dell_srv",
                     "json_attributes_template":"{{ '{{ {' }}'user':value_json.user, 'ruser':value_json.ruser, 'address':value_json.address, 'service':value_json.service, 'tty':value_json.tty{{ '}' }} | tojson {{ '}}' }}",
                     "force_update":"true",
                     "device_class":"timestamp",
                     "icon":"mdi:ssh", 
                     "unique_id":"login_ssh_kotletochka_dell_srv",
                     "device":{"identifiers":["login_ssh"],"manufacturer":"Enzokot","model":"Local push","name":"Login's ssh info"}
+                  }
+
+            - service: mqtt.publish
+              data: 
+                topic: homeassistant/binary_sensor/dmesg_ext4_warning/config
+                retain: true 
+                payload: >- 
+                  { 
+                    "name":"Kernel_EXT4_warning", 
+                    "state_topic":"host_data/dmesg_ext4_warning",
+                    "icon":"mdi:harddisk",
+                    "device_class":"problem",
+                    "unique_id":"dmesg_ext4_warning",
+                    "device":{"identifiers":["host_kernel_info"],"manufacturer":"Enzokot","model":"Local polling","name":"Host kernel info"}
                   }

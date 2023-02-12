@@ -29,8 +29,10 @@ http_request:
 
 logger:
 
+syslog:
+  ip_address: "kotletochka-ds.local"
+    
 api:
-  password: !secret api_password
   reboot_timeout: 0s
   services:
     - service: send_samsung_command
@@ -141,3 +143,6 @@ text_sensor:
 button:
   - platform: restart
     name: ${devicename}_Restart
+
+  - platform: safe_mode
+    name: ${devicename}_Safe_Mode

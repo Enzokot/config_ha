@@ -1,5 +1,5 @@
 
-#Выключение звуков активации Алисы и подтверждения выполнения команд
+#Включение/выключение звуков активации Алисы и подтверждения выполнения команд
     - alias: change mute on off alice activation sounds
       id: change mute on off alice activation sounds
       initial_state: true

@@ -5,3 +5,10 @@
     entities:
       - cover.0x847127fffed4907d
       - cover.0x847127fffed62861
+
+#Шторы гостиная
+  - platform: group
+    name: 'cover_group_living_room'
+    entities:
+      - cover.0x54ef4410005602ed
+      - cover.0x54ef44100055ff04

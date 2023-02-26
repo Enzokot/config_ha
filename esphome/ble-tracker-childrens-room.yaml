@@ -59,6 +59,12 @@ api:
 ota:
   password: !secret ota_password
 
+time:
+  - platform: sntp
+    id: sntp_time
+    servers: 'kotletochka.local'
+    timezone: 'Europe/Moscow'
+
 text_sensor:
   - platform: wifi_info
     ssid:

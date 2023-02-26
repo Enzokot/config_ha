@@ -286,24 +286,6 @@ views:
             - entity: switch.0x086bd7fffe5aecf8_right
               secondary_info: last-changed
 
-      - type: vertical-stack
-        cards:
-        - type: markdown
-          content: >
-             **Шторы кухня**    
-
-        - type: 'custom:shutter-card'
-          entities:
-            - entity: cover.cover_group_kitchen
-              name: Группа
-              buttons_position: right
-            - entity: cover.0x847127fffed62861
-              name: Левая
-              buttons_position: right
-            - entity: cover.0x847127fffed4907d
-              name: Правая
-              buttons_position: right
-
   - title: Zigbee
     icon: mdi:zigbee
     
@@ -541,7 +523,14 @@ views:
                   - sensor.esp_xiaomi_kitchen_battery_level
                   - sensor.esp_xiaomi_living_room_battery_level
                   - sensor.esp_xiaomi_childrens_room_battery_level
-          entities:          
+              - name: 'Моторы штор (min: {min}%, кол-во: {count})'
+                secondary_info: 'Диапазон заряда {range}%'
+                icon: 'mdi:alarm-check'
+                min: 30
+                entities:
+                  - sensor.0x54ef4410005602ed_battery
+                  - sensor.0x54ef44100055ff04_battery
+          entities:
             - entity: sensor.0x158d000359304c_battery
               tap_action: more-info
             - entity: sensor.0x158d0003cfa725_battery
@@ -611,6 +600,10 @@ views:
             - entity: sensor.0x158d0003975d8b_battery
               tap_action: more-info
             - entity: sensor.0x158d00039a2f33_battery
+              tap_action: more-info
+            - entity: sensor.0x54ef4410005602ed_battery
+              tap_action: more-info
+            - entity: sensor.0x54ef44100055ff04_battery
               tap_action: more-info
 
         - type: markdown
@@ -1207,6 +1200,54 @@ views:
                     - type: entity
                       name: Низкий заряд
                       entity: binary_sensor.debounce_trv_kitchen_low_battery
+
+  - title: Шторы
+    icon: mdi:roller-shade
+    cards:
+
+      - type: vertical-stack
+        cards:
+        - type: markdown
+          content: >
+             **Шторы кухня**
+
+        - type: 'custom:mushroom-cover-card'
+          entity: cover.cover_group_kitchen
+          name: Группа
+          show_position_control: true
+          show_buttons_control: true
+
+        - type: 'custom:mushroom-cover-card'
+          entity: cover.0x847127fffed62861
+          name: Левая
+          show_position_control: true
+
+        - type: 'custom:mushroom-cover-card'
+          entity: cover.0x847127fffed4907d
+          name: Правая
+          show_position_control: true
+
+      - type: vertical-stack
+        cards:
+        - type: markdown
+          content: >
+             **Шторы гостиная**
+
+        - type: 'custom:mushroom-cover-card'
+          entity: cover.cover_group_living_room
+          name: Группа
+          show_position_control: true
+          show_buttons_control: true
+
+        - type: 'custom:mushroom-cover-card'
+          entity: cover.0x54ef4410005602ed
+          name: Левая
+          show_position_control: true
+
+        - type: 'custom:mushroom-cover-card'
+          entity: cover.0x54ef44100055ff04
+          name: Правая
+          show_position_control: true
 
   - title: Пылесос
     #panel: true

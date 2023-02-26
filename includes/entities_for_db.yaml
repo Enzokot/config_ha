@@ -85,6 +85,9 @@
       #Шторы на кухне
       - cover.0x847127fffed4907d
       - cover.0x847127fffed62861
+      #Шторы в гостиной
+      - cover.0x54ef4410005602ed
+      - cover.0x54ef44100055ff04
       #Объекты энергии
       - sensor.shelly_em_energy
       - sensor.shelly_plug_s_1_energy

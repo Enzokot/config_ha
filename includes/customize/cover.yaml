@@ -1,7 +1,30 @@
+
 cover.0x847127fffed4907d:
   friendly_name: Правая штора кухня
   icon: mdi:blinds
+  device_class: shade
 
 cover.0x847127fffed62861:
   friendly_name: Левая штора кухня
   icon: mdi:blinds
+  device_class: shade
+
+cover.cover_group_kitchen:
+  friendly_name: Шторы кухня
+  icon: mdi:blinds
+  device_class: shade
+
+cover.0x54ef4410005602ed:
+  friendly_name: Левая штора гостиная
+  icon: mdi:blinds-vertical
+  device_class: curtain
+
+cover.0x54ef44100055ff04:
+  friendly_name: Правая штора гостиная
+  icon: mdi:blinds-vertical
+  device_class: curtain
+
+cover.cover_group_living_room:
+  friendly_name: Шторы гостиная
+  icon: mdi:blinds-vertical
+  device_class: curtain

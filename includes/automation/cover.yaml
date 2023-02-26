@@ -80,3 +80,75 @@
             servicename: 'cover.close_cover'
             groupname: 'cover.cover_group_kitchen'
             statename: 'open'
+
+#Открытие штор в гостиной, по уличному датчику света
+    - alias: open shades living room on outside light sensor
+      id: open shades living room on outside light sensor
+      mode: restart
+      trigger:
+      - platform: numeric_state
+        entity_id: sensor.0x54ef4410000ebba0_illuminance
+        above: 250
+        for:
+          minutes: 10
+      - platform: numeric_state
+        id: 'sun'
+        entity_id: sun.sun
+        attribute: elevation
+        above: 4
+      condition:
+        - condition: template
+          value_template: >-
+            {{ 
+              trigger.id == 'sun' or
+              trigger.from_state.state not in ['unknown', 'unavailable', 'none', ''] and 
+              trigger.from_state.state != trigger.to_state.state
+            }}
+        - "{{ is_state_attr('sun.sun', 'rising', true) }}"
+        - "{{ states.cover | selectattr('entity_id', 'in', state_attr('cover.cover_group_living_room', 'entity_id')) | selectattr('state', 'eq', 'open') | map(attribute='entity_id') | list | length == 0 }}"
+      action:
+        - service: cover.open_cover
+          data:
+            entity_id: 'cover.cover_group_living_room'
+
+#Закрытие штор в гостиной, по уличному датчику света
+    - alias: close shades living room on outside light sensor
+      id: close shades living room on outside light sensor
+      mode: restart
+      trigger:
+      - platform: numeric_state
+        entity_id: sensor.0x54ef4410000ebba0_illuminance
+        below: 150
+        for:
+          minutes: 10
+      condition:
+        - condition: template
+          value_template: >-
+            {{ 
+              trigger.from_state.state not in ['unknown', 'unavailable', 'none', ''] and 
+              trigger.from_state.state != trigger.to_state.state
+            }}
+        - "{{ state_attr('sun.sun', 'elevation') | float(0.0) <= iif(states('weather.kotletochka_home') in ['rainy', 'pouring', 'cloudy', 'lightning', 'lightning-rainy'], 15, 7, 7) }}"
+        - "{{ is_state_attr('sun.sun', 'rising', false) }}"
+        - "{{ states.cover | selectattr('entity_id', 'in', state_attr('cover.cover_group_living_room', 'entity_id')) | selectattr('state', 'eq', 'closed') | map(attribute='entity_id') | list | length == 0 }}"
+      action:
+        - service: cover.close_cover
+          data:
+            entity_id: 'cover.cover_group_living_room'
+
+    - alias: close shades living room on sun and min outside lux
+      id: close shades living room on sun and min outside lux
+      mode: restart
+      trigger:
+      - platform: numeric_state
+        entity_id: sun.sun
+        attribute: elevation
+        below: 2
+      condition:
+        - "{{ states('sensor.0x54ef4410000ebba0_illuminance') | int(0) <= 250 }}"
+        - "{{ is_state_attr('sun.sun', 'rising', false) }}"
+        - "{{ states.cover | selectattr('entity_id', 'in', state_attr('cover.cover_group_living_room', 'entity_id')) | selectattr('state', 'eq', 'closed') | map(attribute='entity_id') | list | length == 0 }}"
+      action:
+        - service: cover.close_cover
+          data:
+            entity_id: 'cover.cover_group_living_room'

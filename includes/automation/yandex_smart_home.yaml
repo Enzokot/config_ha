@@ -114,3 +114,24 @@
                     | replace('коридора', '21') 
                     | int(0)
                 }}
+
+#Данные с уличной метеостанции
+    - alias: outdoor climate by comand from voice assistant
+      id: outdoor climate by comand from voice assistant
+      initial_state: true
+      max_exceeded: silent
+      trigger:
+        - platform: event
+          event_type: yandex_speaker
+          event_data:
+            instance: text_action
+            value: "Сделай громче на 0-"
+      action:
+        - service: media_player.play_media
+          data:
+            entity_id: "{{ trigger.event.data.entity_id }}"
+            media_content_type: text
+            media_content_id: > 
+                Температура {{ states('sensor.0x158d000542ceaf_temperature') | round(0, 'ceil', 0) | format(morph='градус', as_text=false) }} цельсия. 
+                Давление {{ states('sensor.158d000542ceaf_pressure') | round(0, 'ceil', 0) | format(morph='миллиметр', as_text=false) }} ртутного столба
+                Влажность {{ states('sensor.0x158d000542ceaf_humidity') | round(0, 'ceil', 0) | format(morph='процент', as_text=false) }}

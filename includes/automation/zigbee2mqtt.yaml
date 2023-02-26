@@ -137,7 +137,7 @@
                     {% set missing_count = missing | count %}
                     {% set z2m_uptime = ((as_timestamp(now(), 0) - (states('sensor.zigbee2mqtt_bridge_uptime') | int(0))) / 3600) | round(1, 'common', 0) %}
                     
-                    {% if missing_count > 0 %}Более 3 часов {{- iif(is_state('sensor.zigbee2mqtt_bridge_uptime', 'unavailable'), ' ', ' (время работы z2m: ' + z2m_uptime + 'ч) ') -}} не было данных от: {{ missing | join(', ') }}
+                    {% if missing_count > 0 %}Более 3 часов {{- iif(is_state('sensor.zigbee2mqtt_bridge_uptime', 'unavailable'), ' ', ' (время работы z2m: ' + z2m_uptime | string + 'ч) ') -}} не было данных от: {{ missing | join(', ') }}
                     {% else %}Все устройства доступны.{% endif %}
 
 #Проверка качества связи устройств zigbee

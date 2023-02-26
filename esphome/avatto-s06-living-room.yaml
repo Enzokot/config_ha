@@ -81,6 +81,12 @@ api:
 ota:
   password: !secret ota_password
 
+time:
+  - platform: sntp
+    id: sntp_time
+    servers: 'kotletochka.local'
+    timezone: 'Europe/Moscow'
+
 status_led:
   pin: GPIO4
 

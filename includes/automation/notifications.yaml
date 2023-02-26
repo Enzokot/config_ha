@@ -766,6 +766,7 @@
 
 #Уведомление о новых версиях в домене update
     - alias: update available or installed notification
+      id: update available or installed notification
       initial_state: true
       mode: queued
       trigger:
@@ -839,14 +840,16 @@
                     disable_web_page_preview: true
                     inline_keyboard: >-
                       {{ iif(state_attr(trigger.event.data.entity_id, 'supported_features') | int(0) > 0, ['Установить:/installupdate ' + trigger.event.data.entity_id], []) }}
-                - service: notify.html5_notifier_n550jk
-                  data:
-                    title: "{{ '\U0001f389' }} *Системное обновление*"
-                    message: "Доступна {{ latest_version }} версия {{ friendlyname }} для установки, текущая {{ installed_version }}"
+                - sequence:
+                  - condition: "{{ not is_state_attr(trigger.event.data.entity_id, 'device_class', 'firmware') }}"
+                  - service: notify.html5_notifier_n550jk
                     data:
-                      url: "{{- release_url }}"
-                      tag: >
-                        update_available_notify_ {{- trigger.event.data.entity_id | replace('update.', '') }}
+                      title: "{{ '\U0001f389' }} *Системное обновление*"
+                      message: "Доступна {{ latest_version }} версия {{ friendlyname }} для установки, текущая {{ installed_version }}"
+                      data:
+                        url: "{{- release_url }}"
+                        tag: >
+                          update_available_notify_ {{- trigger.event.data.entity_id | replace('update.', '') }}
 
 #Доступны для обновления аддоны HACS
     - alias: update HACS addons available notification

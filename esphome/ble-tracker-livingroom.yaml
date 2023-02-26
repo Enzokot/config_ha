@@ -63,6 +63,12 @@ api:
 ota:
   password: !secret ota_password
 
+time:
+  - platform: sntp
+    id: sntp_time
+    servers: 'kotletochka.local'
+    timezone: 'Europe/Moscow'
+
 globals:
    - id: weight_global_float
      type: float

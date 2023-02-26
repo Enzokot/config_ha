@@ -11,9 +11,9 @@
       type: module
     - url: /local/community/mini-graph-card/mini-graph-card-bundle.js
       type: module
-    - url: /local/community/hass-shutter-card/hass-shutter-card.js
-      type: module
     - url: /local/community/flex-table-card/flex-table-card.js
       type: module
     - url: /local/community/ha-yandex-icons/yandex-icons.js
+      type: module
+    - url: /local/community/lovelace-mushroom/mushroom.js
       type: module

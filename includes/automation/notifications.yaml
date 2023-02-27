@@ -1234,16 +1234,26 @@
         - platform: homeassistant
           event: shutdown
       action:
-        - choose:
-              conditions:
-                - condition: trigger
-                  id: homeassistant_start
-              sequence:
-                - service: homeassistant.update_entity
-                  target:
-                    entity_id: 
-                      - sensor.errors_in_system_log_command_line
-                      - sensor.warnings_in_system_log_command_line
+        - variables:
+            long_start_integrations_name: >-
+              {% if states.sensor.start_time.attributes is defined %}
+                {% set separator = joiner(', ') %}
+                {% set attrs = states.sensor.start_time.attributes %}
+                {% for attr in attrs if attrs[attr] | float(0.0) >= 9 %}
+                    {{- separator() + attr -}}
+                {% endfor %}
+              {% else %}
+                {{ '' }}
+              {% endif %}
+        - if:
+            - condition: trigger
+              id: homeassistant_start
+          then:
+            - service: homeassistant.update_entity
+              data:
+                entity_id: 
+                  - sensor.errors_in_system_log_command_line
+                  - sensor.warnings_in_system_log_command_line
         - service: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -1258,7 +1268,8 @@
             message: >
                 {% if trigger.id == 'homeassistant_start' -%}
                     Home Assistant запущен за {{ states('sensor.start_time') }}сек. (версия Core: [{{ state_attr('update.home_assistant_core_update', 'installed_version') }}](https://github.com/home-assistant/core/releases/tag/{{- state_attr('update.home_assistant_core_update', 'installed_version') }})) {{- '\n' -}}
-                    Ошибок: *{{ states('sensor.errors_in_system_log_command_line') }}*, предупреждений: *{{ states('sensor.warnings_in_system_log_command_line') }}*
+                    Ошибок: *{{ states('sensor.errors_in_system_log_command_line') }}*, предупреждений: *{{ states('sensor.warnings_in_system_log_command_line') }}* {{- '\n' -}}
+                    {{ iif(long_start_integrations_name != '', 'Интеграции (>9c.): _' + long_start_integrations_name + '_', '') }}
                 {% else -%}
                     Home Assistant *остановлен*, время работы: {{ states('sensor.online_custom') }}
                 {% endif -%}

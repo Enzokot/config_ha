@@ -4,6 +4,9 @@
       "gate": gateway.info.name,
       "fw_version": device.fw_ver
     }}}
+    {% elif attr == 'gateway' %}{{{
+      "fw_version": device.fw_ver,
+    }}}
     {% elif attr == 'battery' %}{{{
       "gate": gateway.info.name
     }}}

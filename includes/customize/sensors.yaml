@@ -394,3 +394,9 @@ sensor.total_shelly_plug_s_2_cable_monthly_electicity:
 
 sensor.login_ssh_kotletochka_dell_srv:
   friendly_name: Последний логин ssh DELL server
+
+sensor.0x54ef4410005602ed_battery:
+  friendly_name: Лев. окно гостиная
+
+sensor.0x54ef44100055ff04_battery:
+  friendly_name: Прав. окно гостиная

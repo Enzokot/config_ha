@@ -50,6 +50,7 @@ captive_portal:
 http_request:
 
 logger:
+  baud_rate: 0
 
 syslog:
   ip_address: "kotletochka-ds.local"
@@ -171,7 +172,7 @@ sensor:
   - platform: uptime
     name: "$devicename Uptime Sensor"
     id: uptime_sec
-    update_interval: 15s    
+    update_interval: 15s
 
   - platform: wifi_signal
     name: "$devicename WiFi RSSI"

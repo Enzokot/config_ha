@@ -3,6 +3,7 @@ title: Kotletochka smart home
 views:
 
   - title: Главная
+    path: main-page
     icon: mdi:home-assistant
     cards:
 
@@ -195,10 +196,9 @@ views:
                   - entity: sensor.total_server_socket_cable_monthly_electicity
 
   - title: Освещение
+    path: lights
     icon: mdi:lightbulb-group
-
     cards:
-    
       - type: vertical-stack
         cards:
         - type: markdown
@@ -287,8 +287,8 @@ views:
               secondary_info: last-changed
 
   - title: Zigbee
+    path: zigbee-devices
     icon: mdi:zigbee
-    
     cards:
       - type: vertical-stack
         cards:
@@ -525,7 +525,7 @@ views:
                   - sensor.esp_xiaomi_childrens_room_battery_level
               - name: 'Моторы штор (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
-                icon: 'mdi:alarm-check'
+                icon: 'mdi:blinds-vertical'
                 min: 30
                 entities:
                   - sensor.0x54ef4410005602ed_battery
@@ -798,8 +798,8 @@ views:
                   - entity: sensor.total_bedroom_socket_2_cable_monthly_electicity
 
   - title: Климат
+    path: climate-device
     icon: mdi:home-thermometer
-    
     cards:
       - type: vertical-stack
         cards:
@@ -1203,6 +1203,7 @@ views:
 
   - title: Шторы
     icon: mdi:roller-shade
+    path: shades
     cards:
 
       - type: vertical-stack
@@ -1211,21 +1212,28 @@ views:
           content: >
              **Шторы кухня**
 
-        - type: 'custom:mushroom-cover-card'
-          entity: cover.cover_group_kitchen
-          name: Группа
-          show_position_control: true
-          show_buttons_control: true
-
-        - type: 'custom:mushroom-cover-card'
-          entity: cover.0x847127fffed62861
-          name: Левая
-          show_position_control: true
-
-        - type: 'custom:mushroom-cover-card'
-          entity: cover.0x847127fffed4907d
-          name: Правая
-          show_position_control: true
+        - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
+          cards:
+            - type: 'custom:mushroom-cover-card'
+              entity: cover.cover_group_kitchen
+              name: Группа
+              show_position_control: true
+              show_buttons_control: true
+    
+            - type: 'custom:mushroom-cover-card'
+              entity: cover.0x847127fffed62861
+              name: Левая
+              show_position_control: true
+    
+            - type: 'custom:mushroom-cover-card'
+              entity: cover.0x847127fffed4907d
+              name: Правая
+              show_position_control: true
 
       - type: vertical-stack
         cards:
@@ -1233,27 +1241,34 @@ views:
           content: >
              **Шторы гостиная**
 
-        - type: 'custom:mushroom-cover-card'
-          entity: cover.cover_group_living_room
-          name: Группа
-          show_position_control: true
-          show_buttons_control: true
-
-        - type: 'custom:mushroom-cover-card'
-          entity: cover.0x54ef4410005602ed
-          name: Левая
-          show_position_control: true
-
-        - type: 'custom:mushroom-cover-card'
-          entity: cover.0x54ef44100055ff04
-          name: Правая
-          show_position_control: true
+        - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
+          cards:
+            - type: 'custom:mushroom-cover-card'
+              entity: cover.cover_group_living_room
+              name: Группа
+              show_position_control: true
+              show_buttons_control: true
+    
+            - type: 'custom:mushroom-cover-card'
+              entity: cover.0x54ef4410005602ed
+              name: Левая
+              show_position_control: true
+    
+            - type: 'custom:mushroom-cover-card'
+              entity: cover.0x54ef44100055ff04
+              name: Правая
+              show_position_control: true
 
   - title: Пылесос
+    path: vacuum
     #panel: true
     icon: mdi:robot-vacuum
     cards:
-
       - type: custom:xiaomi-vacuum-map-card
         entity: vacuum.xiaomi_vacuum_cleaner
         map_locked: true
@@ -1624,6 +1639,7 @@ views:
               th.left: "padding: 0px 0px 10px 10px"
 
   - title: Карта
+    path: map
     panel: true
     # badges:
     #   - person.kostik

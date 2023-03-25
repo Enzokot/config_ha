@@ -47,7 +47,8 @@ captive_portal:
 
 # Enable logging
 logger:
-#  level: NONE
+  #level: NONE
+  baud_rate: 0
 
 syslog:
   ip_address: "kotletochka-ds.local"
@@ -74,8 +75,8 @@ text_sensor:
 
 esp32_ble_tracker:
   scan_parameters:
-    window: 48ms
-    interval: 512ms
+    #window: 48ms
+    #interval: 512ms
     active: false
 
 sensor:

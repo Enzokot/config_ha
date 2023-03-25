@@ -8,7 +8,7 @@
           - sensor.0x158d0004561de9_battery
           - sensor.0x588e81fffeff5c4f_linkquality
           - sensor.0x60a423fffe968719_linkquality
-          #- sensor.ble_tracker_bed_room_wifi_rssi
+          - sensor.ble_tracker_bed_room_wifi_rssi
           - sensor.ble_tracker_childrens_room_wifi_rssi
           - sensor.0x158d00054b8d72_battery
           - sensor.0x158d000566bde7_battery

@@ -152,22 +152,27 @@
                     data:
                       gw_mac: !secret gateway1_mac
 
-    - alias: notification front door open
-      id: notification front door open
+    - alias: notification front door open close
+      id: notification front door open close
+      mode: queued
       initial_state: true
       trigger:
         - platform: state
           entity_id: binary_sensor.0x158d000359304c_contact
-          from: 'off'
-          to: 'on'
+          from: 
+            - 'off'
+            - 'on'
+          to: 
+            - 'on'
+            - 'off'
       action:
+        - variables:
+            text_for_message: "{{ iif(trigger.to_state.state == 'on', 'открыта', 'закрыта') }}"
         - parallel:
             - service: telegram_bot.send_message
               data:
-                  title: >-
-                         {{ '\U0001F6AA' }} *Датчик открытия/закрытия*
-                  message: >-
-                           Входная дверь: открыта
+                  title: "{{ iif(trigger.to_state.state == 'on', '\U0001F6AA', '\U0001f510') }} *Датчик открытия/закрытия*"
+                  message: "Входная дверь: {{ text_for_message }}"
                   disable_notification: true
                   target: !secret telegram_enzokot_chat_id
             - choose:
@@ -178,35 +183,7 @@
                   sequence:
                     - service: notify.kotletochka_tv
                       data:
-                        message: 'Входная дверь: открыта'
-
-    - alias: notification front door close
-      id: notification front door close
-      initial_state: true
-      trigger:
-        - platform: state
-          entity_id: binary_sensor.0x158d000359304c_contact
-          from: 'on'
-          to: 'off'
-      action:
-        - parallel:
-            - service: telegram_bot.send_message
-              data:
-                  title: >-
-                         {{ '\U0001f510' }} *Датчик открытия/закрытия*
-                  message: >-
-                           Входная дверь: закрыта
-                  disable_notification: true
-                  target: !secret telegram_enzokot_chat_id
-            - choose:
-                - conditions:
-                    - condition: state
-                      entity_id: media_player.lg_smart_tv
-                      state: 'on'
-                  sequence:
-                    - service: notify.kotletochka_tv
-                      data:
-                        message: 'Входная дверь: закрыта'
+                        message: "Входная дверь: {{ text_for_message }}"
 
     - alias: notification front door open armed
       id: notification front door open armed
@@ -816,12 +793,13 @@
                 {%- endif %}
             latest_version: "{{ trigger.event.data.new_state.attributes.latest_version }}"
             installed_version: "{{ state_attr(trigger.event.data.entity_id, 'installed_version') }}"
-            old_installed_version: "{{ trigger.event.data.old_state.attributes.installed_version }}"
             friendlyname: "{{- trigger.event.data.new_state.name | replace(' Update', '') -}}"
         - choose:
             - conditions: >
                 {{ trigger.event.data.new_state.attributes.installed_version != trigger.event.data.old_state.attributes.installed_version }}
               sequence:
+                - variables:
+                    old_installed_version: "{{ trigger.event.data.old_state.attributes.installed_version }}"
                 - service: telegram_bot.send_message
                   data:
                     target: !secret telegram_enzokot_chat_id
@@ -1240,7 +1218,7 @@
                 {% set separator = joiner(', ') %}
                 {% set attrs = states.sensor.start_time.attributes %}
                 {% for attr in attrs if attrs[attr] | float(0.0) >= 9 %}
-                    {{- separator() + attr -}}
+                    {{- separator() + attr | replace('_', '-') -}}
                 {% endfor %}
               {% else %}
                 {{ '' }}

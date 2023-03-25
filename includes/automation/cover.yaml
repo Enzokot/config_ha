@@ -25,11 +25,11 @@
         - "{{ is_state_attr('sun.sun', 'rising', true) }}"
         - "{{ states.cover | selectattr('entity_id', 'in', state_attr('cover.cover_group_kitchen', 'entity_id')) | selectattr('state', 'eq', 'open') | map(attribute='entity_id') | list | length == 0 }}"
       action:
-        - service: script.auto_cover_open_close
+        - service: script.auto_cover_open_close_kitchen
           data:
             servicename: 'cover.open_cover'
             groupname: 'cover.cover_group_kitchen'
-            statename: 'closed'
+            statename: 'open'
 
 #Закрытие штор на кухне, по уличному датчику света
     - alias: close shades kitchen on outside light sensor
@@ -56,11 +56,11 @@
         #   below: 7
         - "{{ states.cover | selectattr('entity_id', 'in', state_attr('cover.cover_group_kitchen', 'entity_id')) | selectattr('state', 'eq', 'closed') | map(attribute='entity_id') | list | length == 0 }}"
       action:
-        - service: script.auto_cover_open_close
+        - service: script.auto_cover_open_close_kitchen
           data:
             servicename: 'cover.close_cover'
             groupname: 'cover.cover_group_kitchen'
-            statename: 'open'
+            statename: 'closed'
 
     - alias: close shades kitchen on sun and min outside lux
       id: close shades kitchen on sun and min outside lux
@@ -75,11 +75,11 @@
         - "{{ is_state_attr('sun.sun', 'rising', false) }}"
         - "{{ states.cover | selectattr('entity_id', 'in', state_attr('cover.cover_group_kitchen', 'entity_id')) | selectattr('state', 'eq', 'closed') | map(attribute='entity_id') | list | length == 0 }}"
       action:
-        - service: script.auto_cover_open_close
+        - service: script.auto_cover_open_close_kitchen
           data:
             servicename: 'cover.close_cover'
             groupname: 'cover.cover_group_kitchen'
-            statename: 'open'
+            statename: 'closed'
 
 #Открытие штор в гостиной, по уличному датчику света
     - alias: open shades living room on outside light sensor
@@ -107,9 +107,11 @@
         - "{{ is_state_attr('sun.sun', 'rising', true) }}"
         - "{{ states.cover | selectattr('entity_id', 'in', state_attr('cover.cover_group_living_room', 'entity_id')) | selectattr('state', 'eq', 'open') | map(attribute='entity_id') | list | length == 0 }}"
       action:
-        - service: cover.open_cover
+        - service: script.auto_cover_open_close_living_room
           data:
-            entity_id: 'cover.cover_group_living_room'
+            servicename: 'cover.open_cover'
+            groupname: 'cover.cover_group_living_room'
+            statename: 'open'
 
 #Закрытие штор в гостиной, по уличному датчику света
     - alias: close shades living room on outside light sensor
@@ -132,9 +134,11 @@
         - "{{ is_state_attr('sun.sun', 'rising', false) }}"
         - "{{ states.cover | selectattr('entity_id', 'in', state_attr('cover.cover_group_living_room', 'entity_id')) | selectattr('state', 'eq', 'closed') | map(attribute='entity_id') | list | length == 0 }}"
       action:
-        - service: cover.close_cover
+        - service: script.auto_cover_open_close_living_room
           data:
-            entity_id: 'cover.cover_group_living_room'
+            servicename: 'cover.close_cover'
+            groupname: 'cover.cover_group_living_room'
+            statename: 'closed'
 
     - alias: close shades living room on sun and min outside lux
       id: close shades living room on sun and min outside lux
@@ -149,6 +153,8 @@
         - "{{ is_state_attr('sun.sun', 'rising', false) }}"
         - "{{ states.cover | selectattr('entity_id', 'in', state_attr('cover.cover_group_living_room', 'entity_id')) | selectattr('state', 'eq', 'closed') | map(attribute='entity_id') | list | length == 0 }}"
       action:
-        - service: cover.close_cover
+        - service: script.auto_cover_open_close_living_room
           data:
-            entity_id: 'cover.cover_group_living_room'
+            servicename: 'cover.close_cover'
+            groupname: 'cover.cover_group_living_room'
+            statename: 'closed'

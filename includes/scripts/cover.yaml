@@ -1,6 +1,6 @@
-#Открытие/закрытие штор
-    auto_cover_open_close:
-        alias: Открытие/закрытие штор
+#Открытие/закрытие штор кухня
+    auto_cover_open_close_kitchen:
+        alias: Открытие/закрытие штор на кухне
         icon: mdi:blinds
         mode: restart
         fields:
@@ -18,9 +18,10 @@
                 {{ servicename }}
             data:
               entity_id: >-
-                {{ expand(groupname) | map(attribute = 'entity_id') | list | join(', ') }}
+                {{ groupname }}
           - wait_template: >-
-              {{ states.cover | selectattr('entity_id', 'in', state_attr(groupname, 'entity_id')) | selectattr('state', 'eq', statename) | map(attribute='entity_id') | list | length == 0 }}
+              {{ expand(groupname) | selectattr('state', 'eq', statename) | map(attribute='entity_id') | list | length 
+                == state_attr(groupname, 'entity_id') | list | count }}
             timeout: 
               minutes: 1
           - choose:
@@ -30,4 +31,39 @@
                         {{ servicename }}
                     data:
                       entity_id: >-
-                        {{ states.cover | selectattr('entity_id', 'in', state_attr(groupname, 'entity_id')) | selectattr('state', 'eq', statename) | map(attribute='entity_id') | list | join(', ') }}
+                        {{ expand(groupname) | selectattr('state', 'ne', statename) | map(attribute='entity_id') | list | join(', ') }}
+
+#Открытие/закрытие штор в гостиной
+    auto_cover_open_close_living_room:
+        alias: Открытие/закрытие штор в гостиной
+        icon: mdi:blinds
+        mode: restart
+        fields:
+          servicename:
+            description: 'Имя сервиса'
+            example: 'cover.close_cover'
+          groupname:
+            description: 'Имя группы'
+            example: 'group.window_shades_kitchen_group'
+          statename:
+            description: 'Имя состояния'
+            example: 'closed'
+        sequence:
+          - service: >-
+                {{ servicename }}
+            data:
+              entity_id: >-
+                {{ groupname }}
+          - wait_template: >-
+              {{ expand(groupname) | selectattr('state', 'eq', statename) | map(attribute='entity_id') | list | length 
+                == state_attr(groupname, 'entity_id') | list | count }}
+            timeout: 
+              minutes: 1
+          - choose:
+              - conditions: "{{ not wait.completed }}"
+                sequence:
+                  - service: >-
+                        {{ servicename }}
+                    data:
+                      entity_id: >-
+                        {{ expand(groupname) | selectattr('state', 'ne', statename) | map(attribute='entity_id') | list | join(', ') }}

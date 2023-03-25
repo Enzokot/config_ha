@@ -357,16 +357,33 @@
       turn_on:
         service: script.turn_on
         data:
-          entity_id: script.auto_cover_open_close
+          entity_id: script.auto_cover_open_close_kitchen
           variables:
             servicename: 'cover.open_cover'
             groupname: 'cover.cover_group_kitchen'
-            statename: 'closed'
+            statename: 'open'
       turn_off:
         service: script.turn_on
         data:
-          entity_id: script.auto_cover_open_close
+          entity_id: script.auto_cover_open_close_kitchen
           variables:
             servicename: 'cover.close_cover'
             groupname: 'cover.cover_group_kitchen'
+            statename: 'closed'
+    cover.cover_group_living_room:
+      turn_on:
+        service: script.turn_on
+        data:
+          entity_id: script.auto_cover_open_close_living_room
+          variables:
+            servicename: 'cover.open_cover'
+            groupname: 'cover.cover_group_living_room'
             statename: 'open'
+      turn_off:
+        service: script.turn_on
+        data:
+          entity_id: script.auto_cover_open_close_living_room
+          variables:
+            servicename: 'cover.close_cover'
+            groupname: 'cover.cover_group_living_room'
+            statename: 'closed'

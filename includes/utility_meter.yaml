@@ -1,107 +1,125 @@
   total_heater_socket_cable_daily:
     source: sensor.total_heater_socket_cable
+    unique_id: total_heater_socket_cable_daily
     cycle: daily
     tariffs:
       - electicity
 
   total_heater_socket_cable_monthly:
     source: sensor.total_heater_socket_cable
+    unique_id: total_heater_socket_cable_monthly
     cycle: monthly
     tariffs:
       - electicity
 
   total_water_heater_socket_cable_daily:
     source: sensor.total_water_heater_socket_cable
+    unique_id: total_water_heater_socket_cable_daily
     cycle: daily
     tariffs:
       - electicity
 
   total_water_heater_socket_cable_monthly:
     source: sensor.total_water_heater_socket_cable
+    unique_id: total_water_heater_socket_cable_monthly
     cycle: monthly
     tariffs:
       - electicity
 
   total_kithen_socket_1_cable_daily:
     source: sensor.total_kitchen_socket_1_cable
+    unique_id: total_kithen_socket_1_cable_daily
     cycle: daily
     tariffs:
       - electicity
 
   total_kitchen_socket_1_cable_monthly:
     source: sensor.total_kitchen_socket_1_cable
+    unique_id: total_kitchen_socket_1_cable_monthly
     cycle: monthly
     tariffs:
       - electicity
 
   total_bedroom_socket_1_cable_daily:
     source: sensor.total_bedroom_socket_1_cable
+    unique_id: total_bedroom_socket_1_cable_daily
     cycle: daily
     tariffs:
       - electicity
 
   total_bedroom_socket_1_cable_monthly:
     source: sensor.total_bedroom_socket_1_cable
+    unique_id: total_bedroom_socket_1_cable_monthly
     cycle: monthly
     tariffs:
       - electicity
 
   total_bedroom_socket_2_cable_daily:
     source: sensor.total_bedroom_socket_2_cable
+    unique_id: total_bedroom_socket_2_cable_daily
     cycle: daily
     tariffs:
       - electicity
 
   total_bedroom_socket_2_cable_monthly:
     source: sensor.total_bedroom_socket_2_cable
+    unique_id: total_bedroom_socket_2_cable_monthly
     cycle: monthly
     tariffs:
       - electicity
 
   total_server_socket_cable_daily:
     source: sensor.total_server_socket_cable
+    unique_id: total_server_socket_cable_daily
     cycle: daily
     tariffs:
       - electicity
 
   total_server_socket_cable_monthly:
     source: sensor.total_server_socket_cable
+    unique_id: total_server_socket_cable_monthly
     cycle: monthly
     tariffs:
       - electicity
 
   total_yeelight_ceiling_relay_cable_daily:
     source: sensor.total_yeelight_ceiling_relay_cable
+    unique_id: total_yeelight_ceiling_relay_cable_daily
     cycle: daily
     tariffs:
       - electicity
 
   total_yeelight_ceiling_relay_cable_monthly:
     source: sensor.total_yeelight_ceiling_relay_cable
+    unique_id: total_yeelight_ceiling_relay_cable_monthly
     cycle: monthly
     tariffs:
       - electicity
 
   total_shelly_em_cable_daily:
     source: sensor.total_shelly_em_cable
+    unique_id: total_shelly_em_cable_daily
     cycle: daily
     tariffs:
       - electicity
 
   total_shelly_em_cable_monthly:
     source: sensor.total_shelly_em_cable
+    unique_id: total_shelly_em_cable_monthly
     cycle: monthly
     tariffs:
       - electicity
 
   total_shelly_plug_s_2_cable_daily:
     source: sensor.total_shelly_plug_s_2_cable
+    unique_id: total_shelly_plug_s_2_cable_daily
     cycle: daily
     tariffs:
       - electicity
 
   total_shelly_plug_s_2_cable_monthly:
     source: sensor.total_shelly_plug_s_2_cable
+    unique_id: total_shelly_plug_s_2_cable_monthly
     cycle: monthly
     tariffs:
       - electicity

@@ -452,7 +452,7 @@
             message: >-
                 {% set temp_array = expand('group.temperature_summary_group_to_bot') | selectattr('state', 'defined') | selectattr('state', 'ne', None) %}
                 {%- for state in temp_array -%}
-                  {%- if loop.first -%}_Данные температуры_: {{-'\n'-}}{%- endif -%} {{- state.name -}}: *{{ state.state -}}*°C {%- if not loop.last -%}{{-'\n'-}} {%- endif -%} 
+                  {%- if loop.first -%}_Данные температуры_: {{-'\n'-}}{%- endif -%} {{- state.name -}}: *{{ states(state.entity_id, rounded=True) -}}*°C {%- if not loop.last -%}{{-'\n'-}} {%- endif -%} 
                 {%- endfor %}
 
 #Установка обновления по кнопке из уведомления по обновлению

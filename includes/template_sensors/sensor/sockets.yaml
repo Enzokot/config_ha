@@ -3,44 +3,44 @@
         - name: total_heater_socket_cable
           unit_of_measurement: kWh
           icon: mdi:horizontal-rotate-counterclockwise
-          state: "{{ states('input_number.total_heater_socket_saved')}}"
+          state: "{{ states('input_number.total_heater_socket_saved') }}"
           
         - name: total_water_heater_socket_cable
           unit_of_measurement: kWh
           icon: mdi:horizontal-rotate-counterclockwise
-          state: "{{ states('input_number.total_water_heater_socket_saved')}}"
+          state: "{{ states('input_number.total_water_heater_socket_saved') }}"
 
         - name: total_bedroom_socket_1_cable
           unit_of_measurement: kWh
           icon: mdi:horizontal-rotate-counterclockwise
-          state: "{{ states('input_number.total_bedroom_socket1_saved')}}"
+          state: "{{ states('input_number.total_bedroom_socket1_saved') }}"
 
         - name: total_bedroom_socket_2_cable
           unit_of_measurement: kWh
           icon: mdi:horizontal-rotate-counterclockwise
-          state: "{{ states('input_number.total_bedroom_socket2_saved')}}"
+          state: "{{ states('input_number.total_bedroom_socket2_saved') }}"
           
         - name: total_kitchen_socket_1_cable
           unit_of_measurement: kWh
           icon: mdi:horizontal-rotate-counterclockwise
-          state: "{{ states('input_number.total_kitchen_socket1_saved')}}"
+          state: "{{ states('input_number.total_kitchen_socket1_saved') }}"
 
         - name: total_yeelight_ceiling_relay_cable
           unit_of_measurement: kWh
           icon: mdi:horizontal-rotate-counterclockwise
-          state: "{{ states('input_number.total_yeelight_ceiling_relay_saved')}}"
+          state: "{{ states('input_number.total_yeelight_ceiling_relay_saved') }}"
 
         - name: total_shelly_em_cable
           unit_of_measurement: kWh
           icon: mdi:horizontal-rotate-counterclockwise
-          state: "{{ states('input_number.total_shelly_em_saved')}}"
+          state: "{{ states('input_number.total_shelly_em_saved') }}"
 
         - name: total_server_socket_cable
           unit_of_measurement: kWh
           icon: mdi:horizontal-rotate-counterclockwise
-          state: "{{ states('input_number.total_server_ac_saved')}}"
+          state: "{{ states('input_number.total_server_ac_saved') }}"
 
         - name: total_shelly_plug_s_2_cable
           unit_of_measurement: kWh
           icon: mdi:horizontal-rotate-counterclockwise
-          state: "{{ states('input_number.total_shelly_plug_s_2_saved')}}"
+          state: "{{ states('input_number.total_shelly_plug_s_2_saved') }}"

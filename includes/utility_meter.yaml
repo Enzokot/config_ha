@@ -1,3 +1,4 @@
+
   total_heater_socket_cable_daily:
     source: sensor.total_heater_socket_cable
     unique_id: total_heater_socket_cable_daily
@@ -123,3 +124,131 @@
     cycle: monthly
     tariffs:
       - electicity
+
+#-------------------------------------------------------------------------------
+
+#   total_heater_socket_cable_daily:
+#     source: sensor.0x842e14fffe5047f5_energy
+#     unique_id: total_heater_socket_cable_daily
+#     cycle: daily
+#     tariffs:
+#       - electicity
+
+#   total_heater_socket_cable_monthly:
+#     source: sensor.0x842e14fffe5047f5_energy
+#     unique_id: total_heater_socket_cable_monthly
+#     cycle: monthly
+#     tariffs:
+#       - electicity
+
+#   total_water_heater_socket_cable_daily:
+#     source: sensor.0x842e14fffe13a854_energy
+#     unique_id: total_water_heater_socket_cable_daily
+#     cycle: daily
+#     tariffs:
+#       - electicity
+
+#   total_water_heater_socket_cable_monthly:
+#     source: sensor.0x842e14fffe13a854_energy
+#     unique_id: total_water_heater_socket_cable_monthly
+#     cycle: monthly
+#     tariffs:
+#       - electicity
+
+#   total_kithen_socket_1_cable_daily:
+#     source: sensor.0x842e14fffe36661f_energy
+#     unique_id: total_kithen_socket_1_cable_daily
+#     cycle: daily
+#     tariffs:
+#       - electicity
+
+#   total_kitchen_socket_1_cable_monthly:
+#     source: sensor.0x842e14fffe36661f_energy
+#     unique_id: total_kitchen_socket_1_cable_monthly
+#     cycle: monthly
+#     tariffs:
+#       - electicity
+
+#   total_bedroom_socket_1_cable_daily:
+#     source: sensor.0x588e81fffeff5c4f_energy
+#     unique_id: total_bedroom_socket_1_cable_daily
+#     cycle: daily
+#     tariffs:
+#       - electicity
+
+#   total_bedroom_socket_1_cable_monthly:
+#     source: sensor.0x588e81fffeff5c4f_energy
+#     unique_id: total_bedroom_socket_1_cable_monthly
+#     cycle: monthly
+#     tariffs:
+#       - electicity
+
+#   total_bedroom_socket_2_cable_daily:
+#     source: sensor.0x60a423fffef8d41a_energy
+#     unique_id: total_bedroom_socket_2_cable_daily
+#     cycle: daily
+#     tariffs:
+#       - electicity
+
+#   total_bedroom_socket_2_cable_monthly:
+#     source: sensor.0x60a423fffef8d41a_energy
+#     unique_id: total_bedroom_socket_2_cable_monthly
+#     cycle: monthly
+#     tariffs:
+#       - electicity
+
+#   total_server_socket_cable_daily:
+#     source: sensor.shelly_plug_s_1_energy
+#     unique_id: total_server_socket_cable_daily
+#     cycle: daily
+#     tariffs:
+#       - electicity
+
+#   total_server_socket_cable_monthly:
+#     source: sensor.shelly_plug_s_1_energy
+#     unique_id: total_server_socket_cable_monthly
+#     cycle: monthly
+#     tariffs:
+#       - electicity
+
+#   total_yeelight_ceiling_relay_cable_daily:
+#     source: sensor.0x54ef441000096cbc_energy
+#     unique_id: total_yeelight_ceiling_relay_cable_daily
+#     cycle: daily
+#     tariffs:
+#       - electicity
+
+#   total_yeelight_ceiling_relay_cable_monthly:
+#     source: sensor.0x54ef441000096cbc_energy
+#     unique_id: total_yeelight_ceiling_relay_cable_monthly
+#     cycle: monthly
+#     tariffs:
+#       - electicity
+
+#   total_shelly_em_cable_daily:
+#     source: sensor.shelly_em_energy
+#     unique_id: total_shelly_em_cable_daily
+#     cycle: daily
+#     tariffs:
+#       - electicity
+
+#   total_shelly_em_cable_monthly:
+#     source: sensor.shelly_em_energy
+#     unique_id: total_shelly_em_cable_monthly
+#     cycle: monthly
+#     tariffs:
+#       - electicity
+
+#   total_shelly_plug_s_2_cable_daily:
+#     source: sensor.shelly_plug_s_2_energy
+#     unique_id: total_shelly_plug_s_2_cable_daily
+#     cycle: daily
+#     tariffs:
+#       - electicity
+
+#   total_shelly_plug_s_2_cable_monthly:
+#     source: sensor.shelly_plug_s_2_energy
+#     unique_id: total_shelly_plug_s_2_cable_monthly
+#     cycle: monthly
+#     tariffs:
+#       - electicity

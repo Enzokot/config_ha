@@ -1,5 +1,5 @@
 
-  recognition_lang: ru-RU
+  #recognition_lang: ru-RU
   intents:
     включи режим тишины:
     теперь ты алиса: хорошо, буду алисой

@@ -1001,6 +1001,8 @@
           entity_id: binary_sensor.zhimi_humidifier_ca4_low_water_level
           from: 'off'
           to: 'on'
+      condition:
+        - "{{ states(trigger.entity_id | replace('binary_sensor.', 'sensor.') | replace('_low', '')) | int(0) > 0 }}"
       action:
         - parallel:
             - service: telegram_bot.send_message

@@ -313,11 +313,14 @@ views:
               horizontal: true
               cards:
 
-                - type: alarm-panel
+                - type: tile
                   entity: alarm_control_panel.signalka_shliuza_alarm
-                  name: 'GW: '
-                  states:
-                    - arm_away
+                  name: 'Сигналка'
+                  features:
+                    - type: "alarm-modes"
+                      modes:
+                        - armed_away
+                        - disarmed
 
                 - type: button
                   show_name: false
@@ -823,14 +826,15 @@ views:
                 border: none;
               }
           cards:
-            - type: entities
-              show_header_toggle: false
-              entities:
-                  - entity: humidifier.zhimi_humidifier_ca4
-                    type: custom:custom-fan-card
-                    name: 'Вкл/Выкл'
-                    state_color: true
-                    model: 'zhimi.humidifier.ca4'
+        #     - type: entities
+        #       show_header_toggle: false
+        #       entities:
+        #           - entity: humidifier.zhimi_humidifier_ca4
+        #             type: custom:custom-fan-card
+        #             name: 'Вкл/Выкл'
+        #             state_color: true
+        #             model: 'zhimi.humidifier.ca4'
+
             - type: horizontal-stack
               cards:
                   - type: entities
@@ -875,14 +879,16 @@ views:
                 border: none;
               }
           cards:
-            - type: entities
-              show_header_toggle: false
-              entities:
-                  - entity: humidifier.zhimi_humidifier_cb1
-                    type: custom:custom-fan-card
-                    name: 'Вкл/Выкл'
-                    state_color: true
-                    model: 'zhimi.humidifier.cb1'
+        #     - type: entities
+        #       show_header_toggle: false
+        #       entities:
+        #           - entity: humidifier.zhimi_humidifier_cb1
+        #             type: custom:custom-fan-card
+        #             name: 'Вкл/Выкл'
+        #             state_color: true
+        #             model: 'zhimi.humidifier.cb1'
+
+                  
             - type: horizontal-stack
               cards:
                   - type: entities

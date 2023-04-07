@@ -99,7 +99,7 @@ yandex_smart_home: !include includes/yandex_smart_home.yaml
 yandex_station: !include includes/yandex_station.yaml
 xiaomi_gateway3: !include includes/xiaomi_gateway3.yaml
 
-conversation: !include includes/conversation.yaml
+#conversation: !include includes/conversation.yaml
 media_player: !include includes/media_player.yaml
 # smartir: 
 # climate: !include includes/smartir/climate.yaml

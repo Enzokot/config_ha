@@ -833,6 +833,9 @@ views:
                   entity: humidifier.zhimi_humidifier_ca4
                   icon: mdi:fan-auto
                   show_name: false
+                  styles:
+                    card:
+                      - height: 60px
                   state:
                     - operator: template
                       value: >
@@ -841,12 +844,12 @@ views:
                             && (entity.attributes.mode == 'Auto'))
                         ]]]
                       styles:
-                        icon: 
+                        icon:
                           - color: var(--state-active-color)
                       spin: true
                     - operator: default
                       styles:
-                        icon: 
+                        icon:
                           - color: "[[[ return ((entity.state == 'on') || (entity.state == 'off') ? 'var(--paper-item-icon-color)' : 'var(--state-unavailable-color)') ]]]"
                   hold_action:
                     action: more-info
@@ -869,6 +872,9 @@ views:
                   entity: humidifier.zhimi_humidifier_ca4
                   icon: mdi:fan-speed-1
                   show_name: false
+                  styles:
+                    card:
+                      - height: 60px
                   state:
                     - operator: template
                       value: >
@@ -877,12 +883,12 @@ views:
                             && (entity.attributes.mode == 'Low'))
                         ]]]
                       styles:
-                        icon: 
+                        icon:
                           - color: var(--state-active-color)
                       spin: true
                     - operator: default
                       styles:
-                        icon: 
+                        icon:
                           - color: "[[[ return ((entity.state == 'on') || (entity.state == 'off') ? 'var(--paper-item-icon-color)' : 'var(--state-unavailable-color)') ]]]"
                   hold_action:
                     action: more-info
@@ -905,6 +911,9 @@ views:
                   entity: humidifier.zhimi_humidifier_ca4
                   icon: mdi:fan-speed-2
                   show_name: false
+                  styles:
+                    card:
+                      - height: 60px
                   state:
                     - operator: template
                       value: >
@@ -913,12 +922,12 @@ views:
                             && (entity.attributes.mode == 'Mid'))
                         ]]]
                       styles:
-                        icon: 
+                        icon:
                           - color: var(--state-active-color)
                       spin: true
                     - operator: default
                       styles:
-                        icon: 
+                        icon:
                           - color: "[[[ return ((entity.state == 'on') || (entity.state == 'off') ? 'var(--paper-item-icon-color)' : 'var(--state-unavailable-color)') ]]]"
                   hold_action:
                     action: more-info
@@ -941,6 +950,9 @@ views:
                   entity: humidifier.zhimi_humidifier_ca4
                   icon: mdi:fan-speed-3
                   show_name: false
+                  styles:
+                    card:
+                      - height: 60px
                   state:
                     - operator: template
                       value: >
@@ -949,12 +961,12 @@ views:
                             && (entity.attributes.mode == 'High'))
                         ]]]
                       styles:
-                        icon: 
+                        icon:
                           - color: var(--state-active-color)
                       spin: true
                     - operator: default
                       styles:
-                        icon: 
+                        icon:
                           - color: "[[[ return ((entity.state == 'on') || (entity.state == 'off') ? 'var(--paper-item-icon-color)' : 'var(--state-unavailable-color)') ]]]"
                   hold_action:
                     action: more-info
@@ -976,13 +988,16 @@ views:
                 - type: 'custom:button-card'
                   entity: humidifier.zhimi_humidifier_ca4
                   show_name: false
+                  styles:
+                    card:
+                      - height: 60px
                   state:
                     - operator: template
                       value: >
                         [[[ return entity.state === 'off' ]]]
                       icon: mdi:fan-off
                       styles:
-                        icon: 
+                        icon:
                           - color: var(--state-active-color)
                     - operator: template
                       value: >
@@ -994,7 +1009,7 @@ views:
                     - operator: default
                       icon: mdi:fan-off
                       styles:
-                        icon: 
+                        icon:
                           - color: var(--state-unavailable-color)
                   hold_action:
                     action: more-info
@@ -1060,6 +1075,9 @@ views:
                   entity: humidifier.zhimi_humidifier_cb1
                   icon: mdi:fan-auto
                   show_name: false
+                  styles:
+                    card:
+                      - height: 60px
                   state:
                     - operator: template
                       value: >
@@ -1068,12 +1086,12 @@ views:
                             && (entity.attributes.mode == 'Auto'))
                         ]]]
                       styles:
-                        icon: 
+                        icon:
                           - color: var(--state-active-color)
                       spin: true
                     - operator: default
                       styles:
-                        icon: 
+                        icon:
                           - color: "[[[ return ((entity.state == 'on') || (entity.state == 'off') ? 'var(--paper-item-icon-color)' : 'var(--state-unavailable-color)') ]]]"
                   hold_action:
                     action: more-info
@@ -1096,6 +1114,9 @@ views:
                   entity: humidifier.zhimi_humidifier_cb1
                   icon: mdi:fan-speed-1
                   show_name: false
+                  styles:
+                    card:
+                      - height: 60px
                   state:
                     - operator: template
                       value: >
@@ -1104,12 +1125,12 @@ views:
                             && (entity.attributes.mode == 'Silent'))
                         ]]]
                       styles:
-                        icon: 
+                        icon:
                           - color: var(--state-active-color)
                       spin: true
                     - operator: default
                       styles:
-                        icon: 
+                        icon:
                           - color: "[[[ return ((entity.state == 'on') || (entity.state == 'off') ? 'var(--paper-item-icon-color)' : 'var(--state-unavailable-color)') ]]]"
                   hold_action:
                     action: more-info
@@ -1132,6 +1153,9 @@ views:
                   entity: humidifier.zhimi_humidifier_cb1
                   icon: mdi:fan-speed-2
                   show_name: false
+                  styles:
+                    card:
+                      - height: 60px
                   state:
                     - operator: template
                       value: >
@@ -1140,12 +1164,12 @@ views:
                             && (entity.attributes.mode == 'Medium'))
                         ]]]
                       styles:
-                        icon: 
+                        icon:
                           - color: var(--state-active-color)
                       spin: true
                     - operator: default
                       styles:
-                        icon: 
+                        icon:
                           - color: "[[[ return ((entity.state == 'on') || (entity.state == 'off') ? 'var(--paper-item-icon-color)' : 'var(--state-unavailable-color)') ]]]"
                   hold_action:
                     action: more-info
@@ -1168,6 +1192,9 @@ views:
                   entity: humidifier.zhimi_humidifier_cb1
                   icon: mdi:fan-speed-3
                   show_name: false
+                  styles:
+                    card:
+                      - height: 60px
                   state:
                     - operator: template
                       value: >
@@ -1176,12 +1203,12 @@ views:
                             && (entity.attributes.mode == 'High'))
                         ]]]
                       styles:
-                        icon: 
+                        icon:
                           - color: var(--state-active-color)
                       spin: true
                     - operator: default
                       styles:
-                        icon: 
+                        icon:
                           - color: "[[[ return ((entity.state == 'on') || (entity.state == 'off') ? 'var(--paper-item-icon-color)' : 'var(--state-unavailable-color)') ]]]"
                   hold_action:
                     action: more-info
@@ -1203,20 +1230,23 @@ views:
                 - type: 'custom:button-card'
                   entity: humidifier.zhimi_humidifier_cb1
                   show_name: false
+                  styles:
+                    card:
+                      - height: 60px
                   state:
                     - operator: template
                       value: >
                         [[[ return entity.state === 'off' ]]]
                       icon: mdi:fan-off
                       styles:
-                        icon: 
+                        icon:
                           - color: var(--state-active-color)
                     - operator: template
                       value: >
                         [[[ return entity.state === 'on' ]]]
                       icon: mdi:fan-off
                       styles:
-                        icon: 
+                        icon:
                           - color: var(--paper-item-icon-color)
                     - operator: default
                       icon: mdi:fan-off

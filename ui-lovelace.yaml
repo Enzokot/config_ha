@@ -847,14 +847,14 @@ views:
                     - operator: default
                       styles:
                         icon: 
-                          - color: var(--paper-item-icon-color)
+                          - color: "[[[ return ((entity.state == 'on') || (entity.state == 'off') ? 'var(--paper-item-icon-color)' : 'var(--state-unavailable-color)') ]]]"
                   hold_action:
                     action: more-info
                   tap_action:
                     action: >
                         [[[
                           if ((entity.state == 'off')
-                              || (entity.attributes 
+                              || (entity.attributes && entity.attributes.mode
                                   && (entity.attributes.mode != 'Auto')))
                             return "call-service";
                           return "none";
@@ -883,14 +883,14 @@ views:
                     - operator: default
                       styles:
                         icon: 
-                          - color: var(--paper-item-icon-color)
+                          - color: "[[[ return ((entity.state == 'on') || (entity.state == 'off') ? 'var(--paper-item-icon-color)' : 'var(--state-unavailable-color)') ]]]"
                   hold_action:
                     action: more-info
                   tap_action:
                     action: >
                         [[[
                           if ((entity.state == 'off')
-                              || (entity.attributes 
+                              || (entity.attributes && entity.attributes.mode
                                   && (entity.attributes.mode != 'Low')))
                             return "call-service";
                           return "none";
@@ -919,14 +919,14 @@ views:
                     - operator: default
                       styles:
                         icon: 
-                          - color: var(--paper-item-icon-color)
+                          - color: "[[[ return ((entity.state == 'on') || (entity.state == 'off') ? 'var(--paper-item-icon-color)' : 'var(--state-unavailable-color)') ]]]"
                   hold_action:
                     action: more-info
                   tap_action:
                     action: >
                         [[[
                           if ((entity.state == 'off')
-                              || (entity.attributes 
+                              || (entity.attributes && entity.attributes.mode
                                   && (entity.attributes.mode != 'Mid')))
                             return "call-service";
                           return "none";
@@ -955,14 +955,14 @@ views:
                     - operator: default
                       styles:
                         icon: 
-                          - color: var(--paper-item-icon-color)
+                          - color: "[[[ return ((entity.state == 'on') || (entity.state == 'off') ? 'var(--paper-item-icon-color)' : 'var(--state-unavailable-color)') ]]]"
                   hold_action:
                     action: more-info
                   tap_action:
                     action: >
                         [[[
                           if ((entity.state == 'off')
-                              || (entity.attributes 
+                              || (entity.attributes && entity.attributes.mode
                                   && (entity.attributes.mode != 'High')))
                             return "call-service";
                           return "none";
@@ -993,6 +993,9 @@ views:
                           - color: var(--paper-item-icon-color)
                     - operator: default
                       icon: mdi:fan-off
+                      styles:
+                        icon: 
+                          - color: var(--state-unavailable-color)
                   hold_action:
                     action: more-info
                   tap_action:
@@ -1071,14 +1074,14 @@ views:
                     - operator: default
                       styles:
                         icon: 
-                          - color: var(--paper-item-icon-color)
+                          - color: "[[[ return ((entity.state == 'on') || (entity.state == 'off') ? 'var(--paper-item-icon-color)' : 'var(--state-unavailable-color)') ]]]"
                   hold_action:
                     action: more-info
                   tap_action:
                     action: >
                         [[[
                           if ((entity.state == 'off')
-                              || (entity.attributes 
+                              || (entity.attributes  && entity.attributes.mode
                                   && (entity.attributes.mode != 'Auto')))
                             return "call-service";
                           return "none";
@@ -1107,14 +1110,14 @@ views:
                     - operator: default
                       styles:
                         icon: 
-                          - color: var(--paper-item-icon-color)
+                          - color: "[[[ return ((entity.state == 'on') || (entity.state == 'off') ? 'var(--paper-item-icon-color)' : 'var(--state-unavailable-color)') ]]]"
                   hold_action:
                     action: more-info
                   tap_action:
                     action: >
                         [[[
                           if ((entity.state == 'off')
-                              || (entity.attributes 
+                              || (entity.attributes  && entity.attributes.mode
                                   && (entity.attributes.mode != 'Silent')))
                             return "call-service";
                           return "none";
@@ -1143,14 +1146,14 @@ views:
                     - operator: default
                       styles:
                         icon: 
-                          - color: var(--paper-item-icon-color)
+                          - color: "[[[ return ((entity.state == 'on') || (entity.state == 'off') ? 'var(--paper-item-icon-color)' : 'var(--state-unavailable-color)') ]]]"
                   hold_action:
                     action: more-info
                   tap_action:
                     action: >
                         [[[
                           if ((entity.state == 'off')
-                              || (entity.attributes 
+                              || (entity.attributes  && entity.attributes.mode
                                   && (entity.attributes.mode != 'Medium')))
                             return "call-service";
                           return "none";
@@ -1179,14 +1182,14 @@ views:
                     - operator: default
                       styles:
                         icon: 
-                          - color: var(--paper-item-icon-color)
+                          - color: "[[[ return ((entity.state == 'on') || (entity.state == 'off') ? 'var(--paper-item-icon-color)' : 'var(--state-unavailable-color)') ]]]"
                   hold_action:
                     action: more-info
                   tap_action:
                     action: >
                         [[[
                           if ((entity.state == 'off')
-                              || (entity.attributes 
+                              || (entity.attributes  && entity.attributes.mode
                                   && (entity.attributes.mode != 'High')))
                             return "call-service";
                           return "none";
@@ -1217,6 +1220,9 @@ views:
                           - color: var(--paper-item-icon-color)
                     - operator: default
                       icon: mdi:fan-off
+                      styles:
+                        icon: 
+                          - color: var(--state-unavailable-color)
                   hold_action:
                     action: more-info
                   tap_action:

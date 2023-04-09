@@ -77,9 +77,9 @@
             conditions:
               - condition: time
                 after: '9:00:00'
-                before: '14:00:00'
+                before: '13:30:00'
               - condition: time
-                after: '17:30:00'
+                after: '16:30:00'
                 before: '21:00:00'
       action:
           - service: timer.start
@@ -130,7 +130,7 @@
       initial_state: true
       trigger:
            - platform: time
-             at: "14:00:00"
+             at: "13:30:00"
            - platform: time
              at: "21:00:00"
            - platform: state

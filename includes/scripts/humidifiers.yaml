@@ -1,0 +1,50 @@
+
+    turn_on_set_mode_humidifier_cb1:
+        alias: Включение и установка режима увлажнителя в спальне
+        icon: mdi:air-humidifier
+        mode: restart
+        fields:
+          entity_id:
+            description: 'Имя устройства'
+            example: 'humidifier.zhimi_humidifier_ca4'
+          mode:
+            description: 'Режим'
+            example: 'Auto'
+        sequence:
+          - condition: "{{ has_value(entity_id) }}"
+          - if:
+              - "{{ is_state(entity_id, 'off') }}"
+            then:
+              - service: humidifier.turn_on
+                data:
+                  entity_id: "{{ entity_id }}"
+              - delay: 2
+          - service: humidifier.set_mode
+            data:
+              entity_id: "{{ entity_id }}"
+              mode: "{{ mode }}"
+
+    turn_on_set_mode_humidifier_ca4:
+        alias: Включение и установка режима увлажнителя в детской
+        icon: mdi:air-humidifier
+        mode: restart
+        fields:
+          entity_id:
+            description: 'Имя устройства'
+            example: 'humidifier.zhimi_humidifier_ca4'
+          mode:
+            description: 'Режим'
+            example: 'Auto'
+        sequence:
+          - condition: "{{ has_value(entity_id) }}"
+          - if:
+              - "{{ is_state(entity_id, 'off') }}"
+            then:
+              - service: humidifier.turn_on
+                data:
+                  entity_id: "{{ entity_id }}"
+              - delay: 2
+          - service: humidifier.set_mode
+            data:
+              entity_id: "{{ entity_id }}"
+              mode: "{{ mode }}"

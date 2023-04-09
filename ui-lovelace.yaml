@@ -826,14 +826,185 @@ views:
                 border: none;
               }
           cards:
-        #     - type: entities
-        #       show_header_toggle: false
-        #       entities:
-        #           - entity: humidifier.zhimi_humidifier_ca4
-        #             type: custom:custom-fan-card
-        #             name: 'Вкл/Выкл'
-        #             state_color: true
-        #             model: 'zhimi.humidifier.ca4'
+
+            - type: horizontal-stack
+              cards:
+                - type: 'custom:button-card'
+                  entity: humidifier.zhimi_humidifier_ca4
+                  icon: mdi:fan-auto
+                  show_name: false
+                  state:
+                    - operator: template
+                      value: >
+                        [[[ return ((entity.state == 'on')
+                            && entity.attributes 
+                            && (entity.attributes.mode == 'Auto'))
+                        ]]]
+                      styles:
+                        icon: 
+                          - color: var(--state-active-color)
+                      spin: true
+                    - operator: default
+                      styles:
+                        icon: 
+                          - color: var(--paper-item-icon-color)
+                  hold_action:
+                    action: more-info
+                  tap_action:
+                    action: >
+                        [[[
+                          if ((entity.state == 'off')
+                              || (entity.attributes 
+                                  && (entity.attributes.mode != 'Auto')))
+                            return "call-service";
+                          return "none";
+                        ]]]
+                    service: script.turn_on
+                    service_data:
+                      entity_id: script.turn_on_set_mode_humidifier_ca4
+                      variables:
+                        entity_id: "[[[ return entity.entity_id ]]]"
+                        mode: 'Auto'
+                - type: 'custom:button-card'
+                  entity: humidifier.zhimi_humidifier_ca4
+                  icon: mdi:fan-speed-1
+                  show_name: false
+                  state:
+                    - operator: template
+                      value: >
+                        [[[ return ((entity.state == 'on')
+                            && entity.attributes 
+                            && (entity.attributes.mode == 'Low'))
+                        ]]]
+                      styles:
+                        icon: 
+                          - color: var(--state-active-color)
+                      spin: true
+                    - operator: default
+                      styles:
+                        icon: 
+                          - color: var(--paper-item-icon-color)
+                  hold_action:
+                    action: more-info
+                  tap_action:
+                    action: >
+                        [[[
+                          if ((entity.state == 'off')
+                              || (entity.attributes 
+                                  && (entity.attributes.mode != 'Low')))
+                            return "call-service";
+                          return "none";
+                        ]]]
+                    service: script.turn_on
+                    service_data:
+                      entity_id: script.turn_on_set_mode_humidifier_ca4
+                      variables:
+                        entity_id: "[[[ return entity.entity_id ]]]"
+                        mode: 'Low'
+                - type: 'custom:button-card'
+                  entity: humidifier.zhimi_humidifier_ca4
+                  icon: mdi:fan-speed-2
+                  show_name: false
+                  state:
+                    - operator: template
+                      value: >
+                        [[[ return ((entity.state == 'on')
+                            && entity.attributes 
+                            && (entity.attributes.mode == 'Mid'))
+                        ]]]
+                      styles:
+                        icon: 
+                          - color: var(--state-active-color)
+                      spin: true
+                    - operator: default
+                      styles:
+                        icon: 
+                          - color: var(--paper-item-icon-color)
+                  hold_action:
+                    action: more-info
+                  tap_action:
+                    action: >
+                        [[[
+                          if ((entity.state == 'off')
+                              || (entity.attributes 
+                                  && (entity.attributes.mode != 'Mid')))
+                            return "call-service";
+                          return "none";
+                        ]]]
+                    service: script.turn_on
+                    service_data:
+                      entity_id: script.turn_on_set_mode_humidifier_ca4
+                      variables:
+                        entity_id: "[[[ return entity.entity_id ]]]"
+                        mode: 'Mid'
+                - type: 'custom:button-card'
+                  entity: humidifier.zhimi_humidifier_ca4
+                  icon: mdi:fan-speed-3
+                  show_name: false
+                  state:
+                    - operator: template
+                      value: >
+                        [[[ return ((entity.state == 'on')
+                            && entity.attributes 
+                            && (entity.attributes.mode == 'High'))
+                        ]]]
+                      styles:
+                        icon: 
+                          - color: var(--state-active-color)
+                      spin: true
+                    - operator: default
+                      styles:
+                        icon: 
+                          - color: var(--paper-item-icon-color)
+                  hold_action:
+                    action: more-info
+                  tap_action:
+                    action: >
+                        [[[
+                          if ((entity.state == 'off')
+                              || (entity.attributes 
+                                  && (entity.attributes.mode != 'High')))
+                            return "call-service";
+                          return "none";
+                        ]]]
+                    service: script.turn_on
+                    service_data:
+                      entity_id: script.turn_on_set_mode_humidifier_ca4
+                      variables:
+                        entity_id: "[[[ return entity.entity_id ]]]"
+                        mode: 'High'
+                - type: 'custom:button-card'
+                  entity: humidifier.zhimi_humidifier_ca4
+                  show_name: false
+                  state:
+                    - operator: template
+                      value: >
+                        [[[ return entity.state === 'off' ]]]
+                      icon: mdi:fan-off
+                      styles:
+                        icon: 
+                          - color: var(--state-active-color)
+                    - operator: template
+                      value: >
+                        [[[ return entity.state === 'on' ]]]
+                      icon: mdi:fan-off
+                      styles:
+                        icon: 
+                          - color: var(--paper-item-icon-color)
+                    - operator: default
+                      icon: mdi:fan-off
+                  hold_action:
+                    action: more-info
+                  tap_action:
+                    action: >
+                        [[[
+                          if (entity.state == 'on')
+                            return "call-service";
+                          return "none";
+                        ]]]
+                    service: 'humidifier.turn_off'
+                    service_data:
+                      entity_id: entity
 
             - type: horizontal-stack
               cards:
@@ -879,16 +1050,186 @@ views:
                 border: none;
               }
           cards:
-        #     - type: entities
-        #       show_header_toggle: false
-        #       entities:
-        #           - entity: humidifier.zhimi_humidifier_cb1
-        #             type: custom:custom-fan-card
-        #             name: 'Вкл/Выкл'
-        #             state_color: true
-        #             model: 'zhimi.humidifier.cb1'
 
-                  
+            - type: horizontal-stack
+              cards:
+                - type: 'custom:button-card'
+                  entity: humidifier.zhimi_humidifier_cb1
+                  icon: mdi:fan-auto
+                  show_name: false
+                  state:
+                    - operator: template
+                      value: >
+                        [[[ return ((entity.state == 'on')
+                            && entity.attributes 
+                            && (entity.attributes.mode == 'Auto'))
+                        ]]]
+                      styles:
+                        icon: 
+                          - color: var(--state-active-color)
+                      spin: true
+                    - operator: default
+                      styles:
+                        icon: 
+                          - color: var(--paper-item-icon-color)
+                  hold_action:
+                    action: more-info
+                  tap_action:
+                    action: >
+                        [[[
+                          if ((entity.state == 'off')
+                              || (entity.attributes 
+                                  && (entity.attributes.mode != 'Auto')))
+                            return "call-service";
+                          return "none";
+                        ]]]
+                    service: script.turn_on
+                    service_data:
+                      entity_id: script.turn_on_set_mode_humidifier_cb1
+                      variables:
+                        entity_id: "[[[ return entity.entity_id ]]]"
+                        mode: 'Auto'
+                - type: 'custom:button-card'
+                  entity: humidifier.zhimi_humidifier_cb1
+                  icon: mdi:fan-speed-1
+                  show_name: false
+                  state:
+                    - operator: template
+                      value: >
+                        [[[ return ((entity.state == 'on')
+                            && entity.attributes 
+                            && (entity.attributes.mode == 'Silent'))
+                        ]]]
+                      styles:
+                        icon: 
+                          - color: var(--state-active-color)
+                      spin: true
+                    - operator: default
+                      styles:
+                        icon: 
+                          - color: var(--paper-item-icon-color)
+                  hold_action:
+                    action: more-info
+                  tap_action:
+                    action: >
+                        [[[
+                          if ((entity.state == 'off')
+                              || (entity.attributes 
+                                  && (entity.attributes.mode != 'Silent')))
+                            return "call-service";
+                          return "none";
+                        ]]]
+                    service: script.turn_on
+                    service_data:
+                      entity_id: script.turn_on_set_mode_humidifier_cb1
+                      variables:
+                        entity_id: "[[[ return entity.entity_id ]]]"
+                        mode: 'Silent'
+                - type: 'custom:button-card'
+                  entity: humidifier.zhimi_humidifier_cb1
+                  icon: mdi:fan-speed-2
+                  show_name: false
+                  state:
+                    - operator: template
+                      value: >
+                        [[[ return ((entity.state == 'on')
+                            && entity.attributes 
+                            && (entity.attributes.mode == 'Medium'))
+                        ]]]
+                      styles:
+                        icon: 
+                          - color: var(--state-active-color)
+                      spin: true
+                    - operator: default
+                      styles:
+                        icon: 
+                          - color: var(--paper-item-icon-color)
+                  hold_action:
+                    action: more-info
+                  tap_action:
+                    action: >
+                        [[[
+                          if ((entity.state == 'off')
+                              || (entity.attributes 
+                                  && (entity.attributes.mode != 'Medium')))
+                            return "call-service";
+                          return "none";
+                        ]]]
+                    service: script.turn_on
+                    service_data:
+                      entity_id: script.turn_on_set_mode_humidifier_cb1
+                      variables:
+                        entity_id: "[[[ return entity.entity_id ]]]"
+                        mode: 'Medium'
+                - type: 'custom:button-card'
+                  entity: humidifier.zhimi_humidifier_cb1
+                  icon: mdi:fan-speed-3
+                  show_name: false
+                  state:
+                    - operator: template
+                      value: >
+                        [[[ return ((entity.state == 'on')
+                            && entity.attributes 
+                            && (entity.attributes.mode == 'High'))
+                        ]]]
+                      styles:
+                        icon: 
+                          - color: var(--state-active-color)
+                      spin: true
+                    - operator: default
+                      styles:
+                        icon: 
+                          - color: var(--paper-item-icon-color)
+                  hold_action:
+                    action: more-info
+                  tap_action:
+                    action: >
+                        [[[
+                          if ((entity.state == 'off')
+                              || (entity.attributes 
+                                  && (entity.attributes.mode != 'High')))
+                            return "call-service";
+                          return "none";
+                        ]]]
+                    service: script.turn_on
+                    service_data:
+                      entity_id: script.turn_on_set_mode_humidifier_cb1
+                      variables:
+                        entity_id: "[[[ return entity.entity_id ]]]"
+                        mode: 'High'
+                - type: 'custom:button-card'
+                  entity: humidifier.zhimi_humidifier_cb1
+                  show_name: false
+                  state:
+                    - operator: template
+                      value: >
+                        [[[ return entity.state === 'off' ]]]
+                      icon: mdi:fan-off
+                      styles:
+                        icon: 
+                          - color: var(--state-active-color)
+                    - operator: template
+                      value: >
+                        [[[ return entity.state === 'on' ]]]
+                      icon: mdi:fan-off
+                      styles:
+                        icon: 
+                          - color: var(--paper-item-icon-color)
+                    - operator: default
+                      icon: mdi:fan-off
+                  hold_action:
+                    action: more-info
+                  tap_action:
+                    action: >
+                        [[[
+                          if (entity.state == 'on')
+                            return "call-service";
+                          return "none";
+                        ]]]
+                    service: 'humidifier.turn_off'
+                    service_data:
+                      entity_id: entity
+
             - type: horizontal-stack
               cards:
                   - type: entities

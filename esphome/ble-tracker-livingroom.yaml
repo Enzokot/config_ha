@@ -1,15 +1,20 @@
 substitutions:
   devicename: ble-tracker-livingroom
 
+external_components:
+  - source: github://TheStaticTurtle/esphome_syslog
+    components: [syslog]
+
 esphome:
   name: $devicename
-  platform: ESP32
-  board: nodemcu-32s
   comment: Monitoring HA state and BLE living room
   on_boot:
     priority: -10
     then:
       - lambda: 'id(weight_miscale).update();'
+
+esp32:
+  board: wemos_d1_mini32
 
 wifi:
   #fast_connect: true

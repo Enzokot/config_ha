@@ -3,11 +3,16 @@ substitutions:
   telegram_api_token: !secret telegram_api
   telegram_chat_id: !secret telegram_enzokot_chat_id  
 
+external_components:
+  - source: github://TheStaticTurtle/esphome_syslog
+    components: [syslog]
+
 esphome:
   name: $devicename
-  platform: ESP8266
-  board: esp_wroom_02
   comment: IR and notify telegram HA state kithcen
+
+esp8266:
+  board: esp_wroom_02
 
 wifi:
   fast_connect: true

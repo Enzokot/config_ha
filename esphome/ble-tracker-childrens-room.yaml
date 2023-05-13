@@ -1,11 +1,16 @@
 substitutions:
   devicename: ble-tracker-childrens-room
 
+external_components:
+  - source: github://TheStaticTurtle/esphome_syslog
+    components: [syslog]
+
 esphome:
   name: $devicename
-  platform: ESP32
-  board: nodemcu-32s
   comment: BLE childrens room
+
+esp32:
+  board: wemos_d1_mini32
 
 wifi:
   fast_connect: true

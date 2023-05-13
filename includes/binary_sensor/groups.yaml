@@ -11,8 +11,8 @@
       name: window_bed_room_group
       device_class: opening
       entities:
-        - binary_sensor.0x158d0003981f6d_contact
-        - binary_sensor.0x158d0003fa6b60_contact
+        - binary_sensor.0x00158d0003981f6d_contact
+        - binary_sensor.0x00158d0003fa6b60_contact
 
     - platform: group
       name: window_living_room_group

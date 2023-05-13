@@ -365,13 +365,13 @@ views:
         - type: glance
           columns: 5
           entities:
-            - entity: binary_sensor.0x158d00045cd551_smoke
+            - entity: binary_sensor.0x00158d00045cd551_smoke
               show_last_changed: true
               name: Спальня
-            - entity: binary_sensor.0x158d0003fa6b60_contact
+            - entity: binary_sensor.0x00158d0003fa6b60_contact
               show_last_changed: true
               name: Окно
-            - entity: binary_sensor.0x158d0003981f6d_contact
+            - entity: binary_sensor.0x00158d0003981f6d_contact
               show_last_changed: true
               name: Балкон
 
@@ -442,7 +442,7 @@ views:
         - type: glance
           columns: 5
           entities:
-            - entity: sensor.0x158d0006c5f21e_temperature
+            - entity: sensor.0x00158d0006c5f21e_temperature
               name: 'Ванная'
             - entity: sensor.0x158d0006b860cf_temperature
               name: 'Санузел'
@@ -473,8 +473,8 @@ views:
                   - sensor.0x158d000490fe9d_battery
                   - sensor.0x158d0003f37a0f_battery
                   - sensor.0x158d00039677d9_battery
-                  - sensor.0x158d0003981f6d_battery
-                  - sensor.0x158d0003fa6b60_battery
+                  - sensor.0x00158d0003981f6d_battery
+                  - sensor.0x00158d0003fa6b60_battery
                   - sensor.0x158d000396f1f9_battery
                   - sensor.0x158d0003975b4c_battery
                   - sensor.0x158d000396f197_battery
@@ -489,16 +489,16 @@ views:
                   - sensor.0x158d00039a8358_battery
                   - sensor.0x158d00039d9398_battery
                   - sensor.0x158d00045ca483_battery
-                  - sensor.0x158d00045cd551_battery
+                  - sensor.0x00158d00045cd551_battery
                   - sensor.0x158d0003943639_battery
               - name: 'Т&Rh (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
                 icon: 'mdi:thermometer'
                 min: 30
                 entities:
-                  - sensor.0x158d0004561de9_battery
+                  - sensor.0x00158d0004561de9_battery
                   - sensor.0x158d000542ceaf_battery
-                  - sensor.0x158d0006c5f21e_battery
+                  - sensor.0x00158d0006c5f21e_battery
                   - sensor.0x158d0006b860cf_battery
                   - sensor.0x00158d0008386b56_battery
               - name: 'Движения (min: {min}%, кол-во: {count})'
@@ -542,17 +542,17 @@ views:
               tap_action: more-info
             - entity: sensor.0x158d000542ceaf_battery
               tap_action: more-info
-            - entity: sensor.0x158d0006c5f21e_battery
+            - entity: sensor.0x00158d0006c5f21e_battery
               tap_action: more-info
             - entity: sensor.0x158d0006b860cf_battery
               tap_action: more-info
             - entity: sensor.0x00158d0008386b56_battery
               tap_action: more-info
-            - entity: sensor.0x158d0004561de9_battery
+            - entity: sensor.0x00158d0004561de9_battery
               tap_action: more-info
             - entity: sensor.0x54ef4410000ebba0_battery
               tap_action: more-info
-            - entity: sensor.0x158d00045cd551_battery
+            - entity: sensor.0x00158d00045cd551_battery
               tap_action: more-info
             - entity: sensor.0x158d00045ca483_battery
               tap_action: more-info
@@ -588,9 +588,9 @@ views:
               name: 'Часы детская'
             - entity: sensor.0x158d000396f1f9_battery
               tap_action: more-info
-            - entity: sensor.0x158d0003fa6b60_battery
+            - entity: sensor.0x00158d0003fa6b60_battery
               tap_action: more-info
-            - entity: sensor.0x158d0003981f6d_battery
+            - entity: sensor.0x00158d0003981f6d_battery
               tap_action: more-info
             - entity: sensor.0x158d00039677d9_battery
               tap_action: more-info
@@ -1376,11 +1376,11 @@ views:
                   - type: entities
                     show_header_toggle: false
                     entities:
-                        - entity: sensor.0x158d0004561de9_temperature
+                        - entity: sensor.0x00158d0004561de9_temperature
                   - type: entities
                     show_header_toggle: false
                     entities:
-                        - entity: sensor.0x158d0004561de9_humidity
+                        - entity: sensor.0x00158d0004561de9_humidity
             - type: horizontal-stack
               cards:
                   - type: entities

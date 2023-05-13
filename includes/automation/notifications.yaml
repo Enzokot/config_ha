@@ -637,7 +637,7 @@
            - binary_sensor.0x158d00039a8358_smoke
            - binary_sensor.0x158d00039d9398_smoke
            - binary_sensor.0x158d00045ca483_smoke
-           - binary_sensor.0x158d00045cd551_smoke
+           - binary_sensor.0x00158d00045cd551_smoke
          to: 'on'
       action:
         - variables:
@@ -1708,7 +1708,7 @@
         - platform: numeric_state
           id: 'below'
           entity_id:
-            - sensor.0x158d0006c5f21e_temperature
+            - sensor.0x00158d0006c5f21e_temperature
             - sensor.0x158d0006b860cf_temperature
             - sensor.0x00158d0008386b56_temperature
           below: 40
@@ -1716,7 +1716,7 @@
             minutes: 5
         - platform: numeric_state
           entity_id:
-            - sensor.0x158d0006c5f21e_temperature
+            - sensor.0x00158d0006c5f21e_temperature
             - sensor.0x158d0006b860cf_temperature
             - sensor.0x00158d0008386b56_temperature
           above: 40
@@ -1732,7 +1732,7 @@
                 message: >-
                   {{ iif(trigger.id == 'below', 'Остывает' , 'Нагревается') }} горячая труба *{{ area_name(trigger.entity_id) }}*.
             - choose:
-              - conditions: "{{ trigger.id == 'below' and trigger.entity_id == 'sensor.0x158d0006c5f21e_temperature' }}"
+              - conditions: "{{ trigger.id == 'below' and trigger.entity_id == 'sensor.0x00158d0006c5f21e_temperature' }}"
                 sequence:
                   - service: notify.huawei_lte
                     data:
@@ -1749,6 +1749,9 @@
       trigger:
         - platform: webhook
           webhook_id: !secret webhook_id_system_down_uptime_kuma
+          local_only: true
+          allowed_methods:
+            - POST
       condition:
         - "{{ trigger.json.monitor is not none }}"
       action:

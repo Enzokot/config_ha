@@ -16,7 +16,7 @@ binary_sensor.0x158d00045ca483_smoke:
   friendly_name: Датчик дыма детская
   icon: mdi:smoke-detector
 
-binary_sensor.0x158d00045cd551_smoke:
+binary_sensor.0x00158d00045cd551_smoke:
   friendly_name: Датчик дыма спальня
   icon: mdi:smoke-detector
 
@@ -50,10 +50,10 @@ binary_sensor.0x158d0003953ee9_motion:
 binary_sensor.0x158d00039677d9_contact:
   friendly_name: Балконная дверь детская
 
-binary_sensor.0x158d0003981f6d_contact:
+binary_sensor.0x00158d0003981f6d_contact:
   friendly_name: Балконная дверь спальня
 
-binary_sensor.0x158d0003fa6b60_contact:
+binary_sensor.0x00158d0003fa6b60_contact:
   friendly_name: Окно спальня
   device_class: window
 

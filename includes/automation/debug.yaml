@@ -77,6 +77,9 @@
     #   trigger:
     #     - platform: webhook
     #       webhook_id: !secret webhook_id_system_down_uptime_kuma
+    #       local_only: true
+    #       allowed_methods:
+    #         - POST
     #   action:
     #     - service: telegram_bot.send_message
     #       data:

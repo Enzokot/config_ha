@@ -3,6 +3,7 @@
     - oauth_token: !secret yandex_oauth_token
       skill_id: !secret yandex_skill_id
       user_id: !secret yandex_user_id
+
   filter:
     include_entities:
       - switch.0x086bd7fffe5d13c9
@@ -16,7 +17,7 @@
       - media_player.sony_bravia_tv
       - sensor.0x158d000542ceaf_temperature
       - sensor.esp_xiaomi_childrens_room_temperature
-      - sensor.0x158d0004561de9_temperature
+      - sensor.0x00158d0004561de9_temperature
       - sensor.esp_xiaomi_kitchen_temperature
       - sensor.esp_xiaomi_bed_room_temperature
       - sensor.esp_xiaomi_living_room_temperature
@@ -32,14 +33,19 @@
       - cover.0x54ef4410005602ed
       - cover.0x54ef44100055ff04
       - cover.cover_group_living_room
+
   entity_config:
     switch.0x086bd7fffe5d13c9:
       type: devices.types.light
+
     switch.0x086bd7fffe5b7c7f_right:
       type: devices.types.light
+
     switch.0x086bd7fffe5aecf8_left:
       type: devices.types.light
+
     media_player.sony_bravia_tv:
+      type: devices.types.media_device.tv
       modes:
         input_source:
           one: ['YouTube']
@@ -86,7 +92,9 @@
           range:
             min: 1
             max: 204
+
     media_player.lg_smart_tv:
+      type: devices.types.media_device.tv
       turn_off:
         service: remote.send_command
         data:
@@ -129,7 +137,9 @@
           range:
             min: 1
             max: 156
+
     media_player.samsung_tv_remote:
+      type: devices.types.media_device.tv
       turn_off:
         service: esphome.perenio_petra01_kitchen_send_samsung_command
         data:
@@ -174,186 +184,215 @@
           range:
             min: 1
             max: 204
+
     sensor.0x158d000542ceaf_temperature:
-        properties:
-          - type: humidity
-            entity: sensor.0x158d000542ceaf_humidity
-          - type: pressure
-            entity: sensor.0x158d000542ceaf_pressure
+      type: devices.types.sensor.climate
+      properties:
+        - type: humidity
+          entity: sensor.0x158d000542ceaf_humidity
+        - type: pressure
+          entity: sensor.0x158d000542ceaf_pressure
+        - type: battery_level
+          entity: sensor.0x158d000542ceaf_battery
+
     sensor.esp_xiaomi_living_room_temperature:
-        properties:
-          - type: humidity
-            entity: sensor.esp_xiaomi_living_room_humidity
+      type: devices.types.sensor.climate
+      properties:
+        - type: humidity
+          entity: sensor.esp_xiaomi_living_room_humidity
+        - type: battery_level
+          entity: sensor.esp_xiaomi_living_room_battery_level
+
     sensor.esp_xiaomi_bed_room_temperature:
-        properties:
-          - type: humidity
-            entity: sensor.esp_xiaomi_bed_room_humidity
+      type: devices.types.sensor.climate
+      properties:
+        - type: humidity
+          entity: sensor.esp_xiaomi_bed_room_humidity
+        - type: battery_level
+          entity: sensor.esp_xiaomi_bed_room_battery_level
+
     sensor.esp_xiaomi_kitchen_temperature:
-        properties:
-          - type: humidity
-            entity: sensor.esp_xiaomi_kitchen_humidity
-    sensor.0x158d0004561de9_temperature:
-        properties:
-          - type: humidity
-            entity: sensor.0x158d0004561de9_humidity
+      type: devices.types.sensor.climate
+      properties:
+        - type: humidity
+          entity: sensor.esp_xiaomi_kitchen_humidity
+        - type: battery_level
+          entity: sensor.esp_xiaomi_kitchen_battery_level
+
+    sensor.0x00158d0004561de9_temperature:
+      type: devices.types.sensor.climate
+      properties:
+        - type: humidity
+          entity: sensor.0x00158d0004561de9_humidity
+        - type: battery_level
+          entity: sensor.0x00158d0004561de9_battery
+
     sensor.esp_xiaomi_childrens_room_temperature:
-        properties:
-          - type: humidity
-            entity: sensor.esp_xiaomi_childrens_room_humidity
+      type: devices.types.sensor.climate
+      properties:
+        - type: humidity
+          entity: sensor.esp_xiaomi_childrens_room_humidity
+        - type: battery_level
+          entity: sensor.esp_xiaomi_childrens_room_battery_level
+
     switch.r4s01_kettle_boil:
-        type: devices.types.cooking.kettle
-        properties:
-          - type: temperature
-            entity: climate.r4s01_kettle_temp
-            attribute: current_temperature
-          - type: water_level
-            entity: sensor.r4s01_kettle_volumelast
-        custom_toggles:
-          mute:
-            state_entity_id: binary_sensor.r4s01_kettle_beep_inverted
-            turn_on:
-              service: switch.turn_off
-              entity_id: switch.r4s01_kettle_beep
-            turn_off:
-              service: switch.turn_on
-              entity_id: switch.r4s01_kettle_beep
-          oscillation:
-            state_entity_id: switch.r4s01_kettle_backlight
-            turn_on:
-              service: switch.turn_on
-              entity_id: switch.r4s01_kettle_backlight
-            turn_off:
-              service: switch.turn_off
-              entity_id: switch.r4s01_kettle_backlight
-          backlight:
-            state_entity_id: light.r4s01_kettle_light
-            turn_on:
-              service: light.turn_on
-              entity_id: light.r4s01_kettle_light
-            turn_off:
-              service: light.turn_off
-              entity_id: light.r4s01_kettle_light
-          keep_warm:
-            state_entity_id: switch.r4s01_kettle_heat
-            turn_on:
-              service: switch.turn_on
-              entity_id: switch.r4s01_kettle_heat
-            turn_off:
-              service: switch.turn_off
-              entity_id: switch.r4s01_kettle_heat
-        custom_ranges:
-          temperature:
-            state_entity_id: sensor.r4s01_kettle_temp_current_temp
-            set_value:
-              service: climate.set_temperature
-              data:
-                entity_id: climate.r4s01_kettle_temp
-                temperature: '{{ value }}'
-            range:
-              min: 40
-              max: 85
-              precision: 15
+      type: devices.types.cooking.kettle
+      properties:
+        - type: temperature
+          entity: climate.r4s01_kettle_temp
+          attribute: current_temperature
+        - type: water_level
+          entity: sensor.r4s01_kettle_volumelast
+      custom_toggles:
+        mute:
+          state_entity_id: binary_sensor.r4s01_kettle_beep_inverted
+          turn_on:
+            service: switch.turn_off
+            entity_id: switch.r4s01_kettle_beep
+          turn_off:
+            service: switch.turn_on
+            entity_id: switch.r4s01_kettle_beep
+        oscillation:
+          state_entity_id: switch.r4s01_kettle_backlight
+          turn_on:
+            service: switch.turn_on
+            entity_id: switch.r4s01_kettle_backlight
+          turn_off:
+            service: switch.turn_off
+            entity_id: switch.r4s01_kettle_backlight
+        backlight:
+          state_entity_id: light.r4s01_kettle_light
+          turn_on:
+            service: light.turn_on
+            entity_id: light.r4s01_kettle_light
+          turn_off:
+            service: light.turn_off
+            entity_id: light.r4s01_kettle_light
+        keep_warm:
+          state_entity_id: switch.r4s01_kettle_heat
+          turn_on:
+            service: switch.turn_on
+            entity_id: switch.r4s01_kettle_heat
+          turn_off:
+            service: switch.turn_off
+            entity_id: switch.r4s01_kettle_heat
+      custom_ranges:
+        temperature:
+          state_entity_id: sensor.r4s01_kettle_temp_current_temp
+          set_value:
+            service: climate.set_temperature
+            data:
+              entity_id: climate.r4s01_kettle_temp
+              temperature: '{{ value }}'
+          range:
+            min: 40
+            max: 85
+            precision: 15
 
 #Увлажнитель детская
     humidifier.zhimi_humidifier_ca4:
-        modes:
-            heat:
-              max: ['bright']
-              min: ['off']
-              normal: ['dim']
-        custom_modes:
-            heat:
-              state_entity_id: select.zhimi_humidifier_ca4_led_brightness
-              set_mode:
-                service: select.select_option
-                data:
-                  entity_id: select.zhimi_humidifier_ca4_led_brightness
-                  option: '{{ mode }}'
-        properties:
-          - type: temperature
-            entity: sensor.zhimi_humidifier_ca4_temperature
-          - type: humidity
-            entity: sensor.zhimi_humidifier_ca4_humidity
-          - type: water_level
-            entity: sensor.zhimi_humidifier_ca4_water_level
-          - type: power
-            entity: sensor.zhimi_humidifier_ca4_actual_speed
-        custom_toggles:
-          mute:
-            state_entity_id: switch.zhimi_humidifier_ca4_buzzer
-            turn_on:
-              service: switch.turn_on
-              entity_id: switch.zhimi_humidifier_ca4_buzzer
-            turn_off:
-              service: switch.turn_off
-              entity_id: switch.zhimi_humidifier_ca4_buzzer
-          controls_locked:
-            state_entity_id: switch.zhimi_humidifier_ca4_child_lock
-            turn_on:
-              service: switch.turn_on
-              entity_id: switch.zhimi_humidifier_ca4_child_lock
-            turn_off:
-              service: switch.turn_off
-              entity_id: switch.zhimi_humidifier_ca4_child_lock
-          ionization:
-            state_entity_id: switch.zhimi_humidifier_ca4_dry_mode
-            turn_on:
-              service: switch.turn_on
-              entity_id: switch.zhimi_humidifier_ca4_dry_mode
-            turn_off:
-              service: switch.turn_off
-              entity_id: switch.zhimi_humidifier_ca4_dry_mode
+      type: devices.types.humidifier
+      modes:
+        heat:
+          max: ['bright']
+          min: ['off']
+          normal: ['dim']
+      custom_modes:
+        heat:
+          state_entity_id: select.zhimi_humidifier_ca4_led_brightness
+          set_mode:
+            service: select.select_option
+            data:
+              entity_id: select.zhimi_humidifier_ca4_led_brightness
+              option: '{{ mode }}'
+      properties:
+        - type: temperature
+          entity: sensor.zhimi_humidifier_ca4_temperature
+        - type: humidity
+          entity: sensor.zhimi_humidifier_ca4_humidity
+        - type: water_level
+          entity: sensor.zhimi_humidifier_ca4_water_level
+        - type: power
+          entity: sensor.zhimi_humidifier_ca4_actual_speed
+      custom_toggles:
+        mute:
+          state_entity_id: switch.zhimi_humidifier_ca4_buzzer
+          turn_on:
+            service: switch.turn_on
+            entity_id: switch.zhimi_humidifier_ca4_buzzer
+          turn_off:
+            service: switch.turn_off
+            entity_id: switch.zhimi_humidifier_ca4_buzzer
+        controls_locked:
+          state_entity_id: switch.zhimi_humidifier_ca4_child_lock
+          turn_on:
+            service: switch.turn_on
+            entity_id: switch.zhimi_humidifier_ca4_child_lock
+          turn_off:
+            service: switch.turn_off
+            entity_id: switch.zhimi_humidifier_ca4_child_lock
+        ionization:
+          state_entity_id: switch.zhimi_humidifier_ca4_dry_mode
+          turn_on:
+            service: switch.turn_on
+            entity_id: switch.zhimi_humidifier_ca4_dry_mode
+          turn_off:
+            service: switch.turn_off
+            entity_id: switch.zhimi_humidifier_ca4_dry_mode
 
 #Увлажнитель спальня
     humidifier.zhimi_humidifier_cb1:
-        modes:
-            heat:
-              max: ['bright']
-              min: ['off']
-              normal: ['dim']
-        custom_modes:
-            heat:
-              state_entity_id: select.zhimi_humidifier_cb1_led_brightness
-              set_mode:
-                service: select.select_option
-                data:
-                  entity_id: select.zhimi_humidifier_cb1_led_brightness
-                  option: '{{ mode }}'
-        properties:
-          - type: temperature
-            entity: sensor.zhimi_humidifier_cb1_temperature
-          - type: humidity
-            entity: sensor.zhimi_humidifier_cb1_humidity
-          - type: water_level
-            entity: sensor.zhimi_humidifier_cb1_water_level
-          - type: power
-            entity: sensor.zhimi_humidifier_cb1_motor_speed
-        custom_toggles:
-          mute:
-            state_entity_id: switch.zhimi_humidifier_cb1_buzzer
-            turn_on:
-              service: switch.turn_on
-              entity_id: switch.zhimi_humidifier_cb1_buzzer
-            turn_off:
-              service: switch.turn_off
-              entity_id: switch.zhimi_humidifier_cb1_buzzer
-          controls_locked:
-            state_entity_id: switch.zhimi_humidifier_cb1_child_lock
-            turn_on:
-              service: switch.turn_on
-              entity_id: switch.zhimi_humidifier_cb1_child_lock
-            turn_off:
-              service: switch.turn_off
-              entity_id: switch.zhimi_humidifier_cb1_child_lock
-          ionization:
-            state_entity_id: switch.zhimi_humidifier_cb1_dry_mode
-            turn_on:
-              service: switch.turn_on
-              entity_id: switch.zhimi_humidifier_cb1_dry_mode
-            turn_off:
-              service: switch.turn_off
-              entity_id: switch.zhimi_humidifier_cb1_dry_mode
+      type: devices.types.humidifier
+      modes:
+        heat:
+          max: ['bright']
+          min: ['off']
+          normal: ['dim']
+      custom_modes:
+        heat:
+          state_entity_id: select.zhimi_humidifier_cb1_led_brightness
+          set_mode:
+            service: select.select_option
+            data:
+              entity_id: select.zhimi_humidifier_cb1_led_brightness
+              option: '{{ mode }}'
+      properties:
+        - type: temperature
+          entity: sensor.zhimi_humidifier_cb1_temperature
+        - type: humidity
+          entity: sensor.zhimi_humidifier_cb1_humidity
+        - type: water_level
+          entity: sensor.zhimi_humidifier_cb1_water_level
+        - type: power
+          entity: sensor.zhimi_humidifier_cb1_motor_speed
+      custom_toggles:
+        mute:
+          state_entity_id: switch.zhimi_humidifier_cb1_buzzer
+          turn_on:
+            service: switch.turn_on
+            entity_id: switch.zhimi_humidifier_cb1_buzzer
+          turn_off:
+            service: switch.turn_off
+            entity_id: switch.zhimi_humidifier_cb1_buzzer
+        controls_locked:
+          state_entity_id: switch.zhimi_humidifier_cb1_child_lock
+          turn_on:
+            service: switch.turn_on
+            entity_id: switch.zhimi_humidifier_cb1_child_lock
+          turn_off:
+            service: switch.turn_off
+            entity_id: switch.zhimi_humidifier_cb1_child_lock
+        ionization:
+          state_entity_id: switch.zhimi_humidifier_cb1_dry_mode
+          turn_on:
+            service: switch.turn_on
+            entity_id: switch.zhimi_humidifier_cb1_dry_mode
+          turn_off:
+            service: switch.turn_off
+            entity_id: switch.zhimi_humidifier_cb1_dry_mode
+
     cover.cover_group_kitchen:
+      type: devices.types.openable.curtain
       turn_on:
         service: script.turn_on
         data:
@@ -370,7 +409,9 @@
             servicename: 'cover.close_cover'
             groupname: 'cover.cover_group_kitchen'
             statename: 'closed'
+
     cover.cover_group_living_room:
+      type: devices.types.openable.curtain
       turn_on:
         service: script.turn_on
         data:

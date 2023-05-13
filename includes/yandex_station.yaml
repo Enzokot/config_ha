@@ -1,5 +1,5 @@
 
-  #recognition_lang: ru-RU
+  tts_service_name: alice_yandex_station_say
   intents:
     включи режим тишины:
     теперь ты алиса: хорошо, буду алисой

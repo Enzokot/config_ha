@@ -262,7 +262,7 @@
               - conditions:
                   - condition: template
                     value_template: "{{ trigger.platform == 'state' and trigger.to_state.domain == 'input_boolean' }}"
-                sequence:      
+                sequence:
                     - service: >
                             {% if is_state('input_boolean.thermostat_bedroom_night_mode', 'off') and is_state('input_boolean.thermostat_childrensroom_night_mode', 'off') %}
                               automation.turn_off
@@ -273,7 +273,7 @@
               - conditions:
                   - condition: template
                     value_template: "{{ trigger.platform == 'state' and trigger.to_state.domain == 'automation' }}"
-                sequence:      
+                sequence:
                     - service: >
                             {% if is_state('automation.auto_boost_mode_thermostats_at_sleeping_time', 'off') %}
                               input_boolean.turn_off

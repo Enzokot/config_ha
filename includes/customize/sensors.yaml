@@ -11,13 +11,13 @@ sensor.illumination_04cf8cabd77b:
 sensor.0x158d000542ceaf_temperature:
   friendly_name: Т улица
 
-sensor.0x158d0004561de9_temperature:
+sensor.0x00158d0004561de9_temperature:
   friendly_name: Т ванная
   
 sensor.0x158d000542ceaf_humidity:
   friendly_name: Rh улица
 
-sensor.0x158d0004561de9_humidity:
+sensor.0x00158d0004561de9_humidity:
   friendly_name: Rh ванная
 
 sensor.processor_temperature:
@@ -78,7 +78,7 @@ sensor.0x158d0003953ee9_battery:
 sensor.0x158d0003953ee9_zigbee:
   friendly_name: Датчик движения коридор 2
 
-sensor.0x158d0004561de9_battery:
+sensor.0x00158d0004561de9_battery:
   friendly_name: Т&Rh ванная
 
 sensor.0x158d000542ceaf_battery:
@@ -96,7 +96,7 @@ sensor.0x158d0003cfa725_battery:
 sensor.0x158d000490fe9d_battery:
   friendly_name: Питание кондиционер
 
-sensor.0x158d00045cd551_battery:
+sensor.0x00158d00045cd551_battery:
   friendly_name: Датчик дыма спальня
 
 sensor.0x158d00045ca483_battery:
@@ -181,10 +181,10 @@ sensor.0x158d000396f1f9_battery:
   device_class: battery
   friendly_name: Окно детская
 
-sensor.0x158d0003fa6b60_battery:
+sensor.0x00158d0003fa6b60_battery:
   friendly_name: Окно спальня
 
-sensor.0x158d0003981f6d_battery:
+sensor.0x00158d0003981f6d_battery:
   friendly_name: Балконная дверь спальня
 
 sensor.0x158d00039677d9_battery:
@@ -323,13 +323,13 @@ sensor.0x5c0272fffec9db22_local_temperature:
 sensor.0x5c0272fffe8de819_local_temperature:
   friendly_name: Значение Т для TRV на кухне
 
-sensor.0x158d0006c5f21e_temperature:
+sensor.0x00158d0006c5f21e_temperature:
   friendly_name: Т горячая труба ванная
 
-sensor.0x158d0006c5f21e_battery:
+sensor.0x00158d0006c5f21e_battery:
   friendly_name: Т&Rh горячая труба ванная
 
-sensor.0x158d0006c5f21e_humidity:
+sensor.0x00158d0006c5f21e_humidity:
   friendly_name: Rh горячая труба ванная
 
 sensor.0x158d0006b860cf_temperature:

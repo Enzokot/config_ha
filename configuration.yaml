@@ -57,7 +57,9 @@ logger:
   filters:
     homeassistant.components.xiaomi_miio:
       - "Timeout fetching Увлажнитель детская data"
+      - "Error fetching Увлажнитель детская data: Unable to discover the device*"
       - "Timeout fetching Увлажнитель спальня data"
+      - "Error fetching Увлажнитель спальня data: Unable to discover the device*"
       - "Timeout fetching Xiaomi Vacuum cleaner data"
 system_log:
   fire_event: true
@@ -99,7 +101,6 @@ yandex_smart_home: !include includes/yandex_smart_home.yaml
 yandex_station: !include includes/yandex_station.yaml
 xiaomi_gateway3: !include includes/xiaomi_gateway3.yaml
 
-#conversation: !include includes/conversation.yaml
 media_player: !include includes/media_player.yaml
 # smartir: 
 # climate: !include includes/smartir/climate.yaml

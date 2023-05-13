@@ -122,7 +122,7 @@
            - binary_sensor.0x158d00039a8358_smoke
            - binary_sensor.0x158d00039d9398_smoke
            - binary_sensor.0x158d00045ca483_smoke
-           - binary_sensor.0x158d00045cd551_smoke
+           - binary_sensor.0x00158d00045cd551_smoke
          to: 'on'
       condition:
        - condition: state
@@ -143,7 +143,7 @@
            - binary_sensor.0x158d00039a8358_smoke
            - binary_sensor.0x158d00039d9398_smoke
            - binary_sensor.0x158d00045ca483_smoke
-           - binary_sensor.0x158d00045cd551_smoke
+           - binary_sensor.0x00158d00045cd551_smoke
          from: 'on'
          to: 'off'
       condition:
@@ -160,7 +160,7 @@
          entity_id: binary_sensor.0x158d00045ca483_smoke
          state: 'off'      
        - condition: state
-         entity_id: binary_sensor.0x158d00045cd551_smoke
+         entity_id: binary_sensor.0x00158d00045cd551_smoke
          state: 'off'
        - condition: state
          entity_id: input_boolean.alarm_gateway_button
@@ -173,7 +173,6 @@
 #Включение сигнализации по датчикам открытия и движения
     - alias: door and motion alarm to gateway
       id: door and motion alarm to gateway
-      mode: single
       max_exceeded: silent
       initial_state: true
       trigger:
@@ -323,13 +322,13 @@
       action:
           - choose:
               - conditions: "{{ is_state('input_boolean.alarm_gateway_button', 'on') }}"
-                sequence:            
+                sequence:
                     - service: input_boolean.turn_off
                       data:
                         entity_id: input_boolean.alarm_gateway_button
           - choose:
               - conditions: "{{ trigger.id == 'telegram_callback_stop_alarm' }}"
-                sequence:            
+                sequence:
                     - service: telegram_bot.delete_message
                       data:
                         chat_id: '{{ trigger.event.data.chat_id }}'
@@ -371,7 +370,7 @@
             - binary_sensor.0x158d00039a8358_smoke
             - binary_sensor.0x158d00039d9398_smoke
             - binary_sensor.0x158d00045ca483_smoke
-            - binary_sensor.0x158d00045cd551_smoke
+            - binary_sensor.0x00158d00045cd551_smoke
          to: 'on'
       action:
           - service: homeassistant.turn_off
@@ -419,7 +418,7 @@
 #Включение сигнализации на всех шлюзах, которые в режиме охраны
     - alias: gateway alarm to turn on to all gateways
       id: gateway alarm to turn on to all gateways
-      mode: queued
+      max_exceeded: silent
       initial_state: true
       trigger:
         - platform: state
@@ -431,18 +430,20 @@
         - platform: state
           entity_id: input_boolean.alarm_gateway_button
           to: 'on'
+      condition:
+        - "{{ now() - state_attr(this.entity_id, 'last_triggered') > timedelta(seconds = 5) }}"
       action:
+        - variables:
+            entities: >-
+              {{ states.alarm_control_panel | selectattr('state', 'in', ['armed_away', 'disarmed']) | rejectattr('entity_id', 'eq', 'alarm_control_panel.signalka_shliuza_alarm') | map(attribute = 'entity_id') | list | to_json }}
         - parallel:
           - choose:
               - conditions: 
-                - "{{ states.alarm_control_panel | selectattr('state', 'in', ['armed_away', 'disarmed']) | rejectattr('entity_id', 'eq', 'alarm_control_panel.signalka_shliuza_alarm') | list | count > 0 }}"
+                - "{{ entities | from_json | count > 0 }}"
                 sequence:
-                  - variables:
-                      entities: >-
-                        {{ states.alarm_control_panel | selectattr('state', 'in', ['armed_away', 'disarmed']) | rejectattr('entity_id', 'eq', 'alarm_control_panel.signalka_shliuza_alarm') | map(attribute = 'entity_id') | list }}
                   - service: alarm_control_panel.alarm_trigger
                     data: 
-                      entity_id: "{{ entities }}"
+                      entity_id: "{{ entities | from_json | join(', ') }}"
           - choose:
               - conditions: 
                 - condition: state

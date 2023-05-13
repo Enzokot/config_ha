@@ -3,9 +3,9 @@
         entities:
           - sensor.0x158d000490fe9d_battery
           - sensor.avatto_s06_living_room_wifi_rssi
-          - sensor.0x158d0003981f6d_battery
+          - sensor.0x00158d0003981f6d_battery
           - sensor.0x158d00039677d9_battery
-          - sensor.0x158d0004561de9_battery
+          - sensor.0x00158d0004561de9_battery
           - sensor.0x588e81fffeff5c4f_linkquality
           - sensor.0x60a423fffe968719_linkquality
           - sensor.ble_tracker_bed_room_wifi_rssi
@@ -35,7 +35,7 @@
           - sensor.0x00124b00215bb163_linkquality
           - switch.shelly_plug_s_1
           - switch.shelly_plug_s_2
-          - sensor.0x158d00045cd551_battery
+          - sensor.0x00158d00045cd551_battery
           - sensor.0x158d00045ca483_battery
           - sensor.0x158d00039d9398_battery
           - sensor.0x158d0003943639_battery
@@ -43,7 +43,7 @@
           - sensor.0x158d0003f37a0f_battery
           - sensor.0x842e14fffe13a854_linkquality
           - sensor.0x086bd7fffe5b7c7f_linkquality
-          - sensor.0x158d0003fa6b60_battery
+          - sensor.0x00158d0003fa6b60_battery
           - sensor.0x158d000396f1f9_battery
           - alarm_control_panel.54ef44cb80fd_alarm
           - alarm_control_panel.54ef44315770_alarm
@@ -74,7 +74,7 @@
           - sensor.r4s0_gate_rssi
           - sensor.0x158d0006b860cf_battery
           - sensor.0x00158d0008386b56_battery
-          - sensor.0x158d0006c5f21e_battery
+          - sensor.0x00158d0006c5f21e_battery
           - sensor.0x54ef4410005602ed_linkquality
           - sensor.0x54ef44100055ff04_linkquality
 
@@ -84,9 +84,9 @@
           - sensor.0x158d000542ceaf_temperature
           - sensor.esp_xiaomi_bed_room_temperature
           - sensor.esp_xiaomi_living_room_temperature
-          - sensor.0x158d0004561de9_temperature
+          - sensor.0x00158d0004561de9_temperature
           - sensor.esp_xiaomi_kitchen_temperature
-          - sensor.0x158d0006c5f21e_temperature
+          - sensor.0x00158d0006c5f21e_temperature
           - sensor.0x158d0006b860cf_temperature
           - sensor.0x00158d0008386b56_temperature
 

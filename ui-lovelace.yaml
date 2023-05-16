@@ -434,6 +434,9 @@ views:
             - entity: binary_sensor.0x158d0003953ee9_motion
               show_last_changed: true
               name: 'Коридор 2'
+            - entity: binary_sensor.0x00158d000913dbf1_contact
+              show_last_changed: true
+              name: 'Пол табмур'
 
         - type: markdown
           content: >
@@ -481,6 +484,7 @@ views:
                   - sensor.0x158d0003d05782_battery
                   - sensor.0x158d0003975d8b_battery
                   - sensor.0x158d00039a2f33_battery
+                  - sensor.0x00158d000913dbf1_battery
               - name: 'Дыма (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
                 icon: 'mdi:smoke-detector'
@@ -607,6 +611,8 @@ views:
             - entity: sensor.0x54ef4410005602ed_battery
               tap_action: more-info
             - entity: sensor.0x54ef44100055ff04_battery
+              tap_action: more-info
+            - entity: sensor.0x00158d000913dbf1_battery
               tap_action: more-info
 
         - type: markdown

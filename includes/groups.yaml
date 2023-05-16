@@ -77,6 +77,7 @@
           - sensor.0x00158d0006c5f21e_battery
           - sensor.0x54ef4410005602ed_linkquality
           - sensor.0x54ef44100055ff04_linkquality
+          - sensor.0x00158d000913dbf1_battery
 
     temperature_summary_group_to_bot:
         entities:

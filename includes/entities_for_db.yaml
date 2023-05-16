@@ -98,3 +98,6 @@
       - sensor.0x842e14fffe13a854_energy
       - sensor.0x54ef441000096cbc_energy
       - sensor.shelly_plug_s_2_energy
+      #Мойка полов в тамбуре
+      - binary_sensor.0x00158d000913dbf1_contact
+

@@ -192,15 +192,23 @@
                     entity_id: automation.night_mode_timer_heater_off      
 
 #Сохранение значений потребления при рестарте НА или z2m
-    - alias: restart z2m or instance for heater
-      id: restart z2m or instance for heater
+    - alias: restart z2m or instance for energy
+      id: restart z2m or instance for energy
       initial_state: true
-      mode: single
-      max_exceeded: silent
+      mode: parallel
+      max: 100
       trigger:
         - platform: state
-          entity_id: sensor.0x842e14fffe5047f5_energy
-          #attribute: energy
+          entity_id: 
+            - sensor.0x842e14fffe5047f5_energy
+            - sensor.0x842e14fffe13a854_energy
+            - sensor.0x842e14fffe36661f_energy
+            - sensor.0x588e81fffeff5c4f_energy
+            - sensor.0x60a423fffef8d41a_energy
+            - sensor.0x54ef441000096cbc_energy
+            - sensor.shelly_em_energy
+            - sensor.shelly_plug_s_1_energy
+            - sensor.shelly_plug_s_2_energy
       condition:
         - condition: template
           value_template: >- 
@@ -210,110 +218,23 @@
                    trigger.to_state.state != trigger.from_state.state
                 }}
       action:
-          - service: input_number.set_value
-            data:
-              entity_id: input_number.total_heater_socket_saved
-              value: "{{ trigger.to_state.state }}"
-        #   - service: telegram_bot.send_message
-        #     data:
-        #       target: !secret telegram_enzokot_chat_id
-        #       parse_mode: 'html'
-        #       title: >-
-        #               {{ '\U0001F41B' }} <b>Отладка</b>
-        #       message: >-
-        #               {{ trigger.entity_id }} {{ trigger.from_state.state }} -> {{ trigger.to_state.state }}
-
-    - alias: restart z2m or instance for water heater
-      id: restart z2m or instance for water heater
-      initial_state: true
-      mode: single
-      max_exceeded: silent
-      trigger:
-        - platform: state
-          entity_id: sensor.0x842e14fffe13a854_energy
-          #attribute: energy
-      condition:
-        - condition: template
-          value_template: >- 
-                {% set ignore = ['unknown', 'unavailable', 'none'] %}
-                {{ trigger.to_state.state not in ignore and
-                   trigger.from_state.state not in ignore and
-                   trigger.to_state.state != trigger.from_state.state
-                }}
-      action:
-          - service: input_number.set_value
-            data:
-              entity_id: input_number.total_water_heater_socket_saved
-              value: "{{ trigger.to_state.state }}"
-
-    - alias: restart z2m or instance for kitchen socket 1
-      id: restart z2m or instance for kitchen socket 1
-      initial_state: true
-      mode: single
-      max_exceeded: silent
-      trigger:
-        - platform: state
-          entity_id: sensor.0x842e14fffe36661f_energy
-          #attribute: energy
-      condition:
-        - condition: template
-          value_template: >- 
-                {% set ignore = ['unknown', 'unavailable', 'none'] %}
-                {{ trigger.to_state.state not in ignore and
-                   trigger.from_state.state not in ignore and
-                   trigger.to_state.state != trigger.from_state.state
-                }}
-      action:
-          - service: input_number.set_value
-            data:
-              entity_id: input_number.total_kitchen_socket1_saved
-              value: "{{ trigger.to_state.state }}"
-
-    - alias: restart z2m or instance for bedroom socket 1
-      id: restart z2m or instance for bedroom socket 1
-      initial_state: true
-      mode: single
-      max_exceeded: silent
-      trigger:
-        - platform: state
-          entity_id: sensor.0x588e81fffeff5c4f_energy
-          #attribute: energy
-      condition:
-        - condition: template
-          value_template: >- 
-                {% set ignore = ['unknown', 'unavailable', 'none'] %}
-                {{ trigger.to_state.state not in ignore and
-                   trigger.from_state.state not in ignore and
-                   trigger.to_state.state != trigger.from_state.state
-                }}
-      action:
-          - service: input_number.set_value
-            data:
-              entity_id: input_number.total_bedroom_socket1_saved
-              value: "{{ trigger.to_state.state }}"
-
-    - alias: restart z2m or instance for bedroom socket 2
-      id: restart z2m or instance for bedroom socket 2
-      initial_state: true
-      mode: single
-      max_exceeded: silent
-      trigger:
-        - platform: state
-          entity_id: sensor.0x60a423fffef8d41a_energy
-          #attribute: energy
-      condition:
-        - condition: template
-          value_template: >- 
-                {% set ignore = ['unknown', 'unavailable', 'none'] %}
-                {{ trigger.to_state.state not in ignore and
-                   trigger.from_state.state not in ignore and
-                   trigger.to_state.state != trigger.from_state.state
-                }}
-      action:
-          - service: input_number.set_value
-            data:
-              entity_id: input_number.total_bedroom_socket2_saved
-              value: "{{ trigger.to_state.state }}"
+        - variables:
+            entity_id: >-
+              {% set v = '{"sensor.0x842e14fffe5047f5_energy": "input_number.total_heater_socket_saved",
+                           "sensor.0x842e14fffe13a854_energy": "input_number.total_water_heater_socket_saved",
+                           "sensor.0x842e14fffe36661f_energy": "input_number.total_kitchen_socket1_saved",
+                           "sensor.0x588e81fffeff5c4f_energy": "input_number.total_bedroom_socket1_saved",
+                           "sensor.0x60a423fffef8d41a_energy": "input_number.total_bedroom_socket2_saved",
+                           "sensor.0x54ef441000096cbc_energy": "input_number.total_yeelight_ceiling_relay_saved",
+                           "sensor.shelly_em_energy": "input_number.total_shelly_em_saved",
+                           "sensor.shelly_plug_s_1_energy": "input_number.total_server_ac_saved",
+                           "sensor.shelly_plug_s_2_energy": "input_number.total_shelly_plug_s_2_saved"}' 
+                          | from_json %}
+              {{ v[trigger.entity_id] }}
+        - service: input_number.set_value
+          data:
+            entity_id: "{{ entity_id }}"
+            value: "{{ trigger.to_state.state }}"
 
 #Гирлянда в детской
     - alias: on move turn on garland childrens room
@@ -363,103 +284,3 @@
           - service: switch.turn_off
             data:
               entity_id: switch.0x842e14fffe5047f5
-
-#Сохранение значения энергии при перезапуске z2m или HA
-    - alias: restart z2m or instance for childrens room relay yeelight ceiling
-      id: restart z2m or instance for childrens room relay yeelight ceiling
-      initial_state: true
-      mode: single
-      max_exceeded: silent
-      trigger:
-        - platform: state
-          entity_id: sensor.0x54ef441000096cbc_energy
-      condition:
-        - condition: template
-          value_template: >- 
-                {% set ignore = ['unknown', 'unavailable', 'none'] %}
-                {{ trigger.to_state.state not in ignore and
-                   trigger.from_state.state not in ignore and
-                   trigger.to_state.state != trigger.from_state.state
-                }}
-      action:
-          - service: input_number.set_value
-            data:
-              entity_id: input_number.total_yeelight_ceiling_relay_saved
-              value: "{{ trigger.to_state.state }}"
-        #   - service: telegram_bot.send_message
-        #     data:
-        #       target: !secret telegram_enzokot_chat_id
-        #       parse_mode: 'html'
-        #       title: >-
-        #               {{ '\U0001F41B' }} <b>Отладка</b>
-        #       message: >-
-        #               {{ trigger.entity_id }} {{ trigger.from_state.state }} -> {{ trigger.to_state.state }}
-
-#Сохранение значения энергии при перезапуске HA
-    - alias: restart instance for shelly EM
-      id: restart instance for shelly EM
-      initial_state: true
-      mode: single
-      max_exceeded: silent
-      trigger:
-        - platform: state
-          entity_id: sensor.shelly_em_energy
-      condition:
-        - condition: template
-          value_template: >- 
-                {% set ignore = ['unknown', 'unavailable', 'none'] %}
-                {{ trigger.to_state.state not in ignore and
-                   trigger.from_state.state not in ignore and
-                   trigger.to_state.state != trigger.from_state.state
-                }}
-      action:
-          - service: input_number.set_value
-            data:
-              entity_id: input_number.total_shelly_em_saved
-              value: "{{ trigger.to_state.state }}"
-
-#Сохранение значения энергии при перезапуске HA
-    - alias: restart instance for shelly plug s 1
-      id: restart instance for shelly plug s 1
-      initial_state: true
-      mode: single
-      max_exceeded: silent
-      trigger:
-        - platform: state
-          entity_id: sensor.shelly_plug_s_1_energy
-      condition:
-        - condition: template
-          value_template: >- 
-                {% set ignore = ['unknown', 'unavailable', 'none'] %}
-                {{ trigger.to_state.state not in ignore and
-                   trigger.from_state.state not in ignore and
-                   trigger.to_state.state != trigger.from_state.state
-                }}
-      action:
-          - service: input_number.set_value
-            data:
-              entity_id: input_number.total_server_ac_saved
-              value: "{{ trigger.to_state.state }}"
-
-#Сохранение значения энергии при перезапуске HA
-    - alias: restart instance for shelly plug s 2
-      id: restart instance for shelly plug s 2
-      initial_state: true
-      mode: single
-      max_exceeded: silent
-      trigger:
-        - platform: state
-          entity_id: sensor.shelly_plug_s_2_energy
-      condition:
-        - condition: template
-          value_template: >- 
-                {% set ignore = ['unknown', 'unavailable', 'none'] %}
-                {{ trigger.to_state.state not in ignore and
-                   trigger.from_state.state not in ignore and
-                   trigger.to_state.state != trigger.from_state.state
-                }}
-      action:
-          - service: input_number.set_value
-            data:
-              entity_id: input_number.total_shelly_plug_s_2_saved
-              value: "{{ trigger.to_state.state }}"

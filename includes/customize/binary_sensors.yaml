@@ -120,3 +120,8 @@ binary_sensor.yandex_station_m00ka4300h99tr_assumed_state:
 
 binary_sensor.kernel_ext4_warning:
   friendly_name: Предупреждение по ext4 от Kernel
+
+binary_sensor.0x00158d000913dbf1_contact:
+  friendly_name: Датчик мойки полов табмур
+  device_class: moisture
+  invert_state: 1

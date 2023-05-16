@@ -400,3 +400,6 @@ sensor.0x54ef4410005602ed_battery:
 
 sensor.0x54ef44100055ff04_battery:
   friendly_name: Прав. окно гостиная
+
+sensor.0x00158d000913dbf1_battery:
+  friendly_name: Датчик мойки полов тамбур

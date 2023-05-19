@@ -668,13 +668,18 @@ views:
                 border: none;
               }
           cards:
-            - type: entities
-              show_header_toggle: false
+            - type: glance
+              columns: 4
+              show_icon: false
               entities:
                   - entity: sensor.shelly_em_voltage
+                    name: 'Напряжение'
                   - entity: sensor.shelly_em_power
+                    name: 'Мощность'
                   - entity: sensor.total_shelly_em_cable_daily_electicity
+                    name: 'День'
                   - entity: sensor.total_shelly_em_cable_monthly_electicity
+                    name: 'Ночь'
 
         - type: markdown
           content: >
@@ -695,10 +700,18 @@ views:
                     secondary_info: last-changed
                   - entity: input_boolean.water_heater_season
                     state_color: true
+            - type: divider
+            - type: glance
+              columns: 3
+              show_icon: false
+              entities:
                   - entity: sensor.0x842e14fffe13a854_power
+                    name: 'Мощность'
                   - entity: sensor.total_water_heater_socket_cable_daily_electicity
+                    name: 'День'
                   - entity: sensor.total_water_heater_socket_cable_monthly_electicity
-                  
+                    name: 'Ночь'
+
         - type: markdown
           content: >
              **Розетка обогревателя Electrolux** 
@@ -718,9 +731,17 @@ views:
                     secondary_info: last-changed
                   - entity: input_boolean.heater_night_mode
                     state_color: true
+            - type: divider
+            - type: glance
+              columns: 3
+              show_icon: false
+              entities:
                   - entity: sensor.0x842e14fffe5047f5_power
+                    name: 'Мощность'
                   - entity: sensor.total_heater_socket_cable_daily_electicity
+                    name: 'День'
                   - entity: sensor.total_heater_socket_cable_monthly_electicity
+                    name: 'Ночь'
 
         - type: markdown
           content: >
@@ -739,9 +760,17 @@ views:
                   - entity: switch.shelly_plug_s_2
                     state_color: true
                     secondary_info: last-changed
+            - type: divider
+            - type: glance
+              columns: 3
+              show_icon: false
+              entities:
                   - entity: sensor.shelly_plug_s_2_power
+                    name: 'Мощность'
                   - entity: sensor.total_shelly_plug_s_2_cable_daily_electicity
+                    name: 'День'
                   - entity: sensor.total_shelly_plug_s_2_cable_monthly_electicity
+                    name: 'Ночь'
 
         - type: markdown
           content: >
@@ -760,9 +789,17 @@ views:
                   - entity: switch.0x842e14fffe36661f
                     state_color: true
                     secondary_info: last-changed
+            - type: divider
+            - type: glance
+              columns: 3
+              show_icon: false
+              entities:
                   - entity: sensor.0x842e14fffe36661f_power
+                    name: 'Мощность'
                   - entity: sensor.total_kithen_socket_1_cable_daily_electicity
+                    name: 'День'
                   - entity: sensor.total_kitchen_socket_1_cable_monthly_electicity
+                    name: 'Ночь'
 
         - type: markdown
           content: >
@@ -781,9 +818,17 @@ views:
                   - entity: switch.0x588e81fffeff5c4f
                     state_color: true
                     secondary_info: last-changed
+            - type: divider
+            - type: glance
+              columns: 3
+              show_icon: false
+              entities:
                   - entity: sensor.0x588e81fffeff5c4f_power
+                    name: 'Мощность'
                   - entity: sensor.total_bedroom_socket_1_cable_daily_electicity
+                    name: 'День'
                   - entity: sensor.total_bedroom_socket_1_cable_monthly_electicity
+                    name: 'Ночь'
 
         - type: markdown
           content: >
@@ -802,9 +847,17 @@ views:
                   - entity: switch.0x60a423fffef8d41a
                     state_color: true
                     secondary_info: last-changed
+            - type: divider
+            - type: glance
+              columns: 3
+              show_icon: false
+              entities:
                   - entity: sensor.0x60a423fffef8d41a_power
+                    name: 'Мощность'
                   - entity: sensor.total_bedroom_socket_2_cable_daily_electicity
+                    name: 'День'
                   - entity: sensor.total_bedroom_socket_2_cable_monthly_electicity
+                    name: 'Ночь'
 
   - title: Климат
     path: climate-device

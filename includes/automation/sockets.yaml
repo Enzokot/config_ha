@@ -220,7 +220,7 @@
       action:
         - variables:
             entity_id: >-
-              {% set v = '{"sensor.0x842e14fffe5047f5_energy": "input_number.total_heater_socket_saved",
+              {% set v = {"sensor.0x842e14fffe5047f5_energy": "input_number.total_heater_socket_saved",
                            "sensor.0x842e14fffe13a854_energy": "input_number.total_water_heater_socket_saved",
                            "sensor.0x842e14fffe36661f_energy": "input_number.total_kitchen_socket1_saved",
                            "sensor.0x588e81fffeff5c4f_energy": "input_number.total_bedroom_socket1_saved",
@@ -228,8 +228,8 @@
                            "sensor.0x54ef441000096cbc_energy": "input_number.total_yeelight_ceiling_relay_saved",
                            "sensor.shelly_em_energy": "input_number.total_shelly_em_saved",
                            "sensor.shelly_plug_s_1_energy": "input_number.total_server_ac_saved",
-                           "sensor.shelly_plug_s_2_energy": "input_number.total_shelly_plug_s_2_saved"}' 
-                          | from_json %}
+                           "sensor.shelly_plug_s_2_energy": "input_number.total_shelly_plug_s_2_saved"}
+              %}
               {{ v[trigger.entity_id] }}
         - service: input_number.set_value
           data:

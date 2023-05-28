@@ -20,7 +20,7 @@
           - sensor.0x158d000359304c_battery
           - sensor.0x158d0003cfa725_battery
           - sensor.0x842e14fffe5047f5_linkquality
-          - sensor.0x086bd7fffe5d13c9_linkquality
+          - sensor.0x54ef441000691265_linkquality
           - sensor.0x842e14fffe36661f_linkquality
           - sensor.0x5c0272fffe8de819_linkquality
           - sensor.0x158d0003975b4c_battery
@@ -78,6 +78,8 @@
           - sensor.0x54ef4410005602ed_linkquality
           - sensor.0x54ef44100055ff04_linkquality
           - sensor.0x00158d000913dbf1_battery
+          - climate.devireg_hw
+          - climate.devireg_k
 
     temperature_summary_group_to_bot:
         entities:
@@ -97,7 +99,7 @@
           - switch.0x086bd7fffe5aecf8_right
           - switch.0x086bd7fffe5b7c7f_left
           - switch.0x086bd7fffe5b7c7f_right
-          - switch.0x086bd7fffe5d13c9
+          - switch.0x54ef441000691265
           - switch.0x54ef441000096cbc
           - switch.0x588e81fffeff5c4f
           - switch.0x60a423fffef8d41a

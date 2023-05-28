@@ -125,6 +125,20 @@
     tariffs:
       - electicity
 
+  total_kitchen_light_switch_working_area_cable_daily:
+    source: sensor.total_kitchen_light_switch_working_area_cable
+    unique_id: total_kitchen_light_switch_working_area_cable_daily
+    cycle: daily
+    tariffs:
+      - electicity
+
+  total_kitchen_light_switch_working_area_cable_monthly:
+    source: sensor.total_kitchen_light_switch_working_area_cable
+    unique_id: total_kitchen_light_switch_working_area_cable_monthly
+    cycle: monthly
+    tariffs:
+      - electicity
+
 #-------------------------------------------------------------------------------
 
 #   total_heater_socket_cable_daily:
@@ -249,6 +263,20 @@
 #   total_shelly_plug_s_2_cable_monthly:
 #     source: sensor.shelly_plug_s_2_energy
 #     unique_id: total_shelly_plug_s_2_cable_monthly
+#     cycle: monthly
+#     tariffs:
+#       - electicity
+
+#   total_kitchen_light_switch_working_area_cable_daily:
+#     source: sensor.0x54ef441000691265_energy
+#     unique_id: total_kitchen_light_switch_working_area_cable_daily
+#     cycle: daily
+#     tariffs:
+#       - electicity
+
+#   total_kitchen_light_switch_working_area_cable_monthly:
+#     source: sensor.0x54ef441000691265_energy
+#     unique_id: total_kitchen_light_switch_working_area_cable_monthly
 #     cycle: monthly
 #     tariffs:
 #       - electicity

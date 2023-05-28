@@ -1,0 +1,8 @@
+
+climate.devireg_k:
+  friendly_name: 'Теплый пол кухня'
+  icon: mdi:heating-coil
+
+climate.devireg_hw:
+  friendly_name: 'Теплый пол коридор'
+  icon: mdi:heating-coil

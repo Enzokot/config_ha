@@ -23,7 +23,7 @@ switch.shelly_plug_s_1:
   friendly_name: Вкл/выкл розетка сервера
   icon: mdi:power-socket-eu
 
-switch.0x086bd7fffe5d13c9:
+switch.0x54ef441000691265:
   friendly_name: Подсветка столешницы
   icon: mdi:lightbulb-variant
 

@@ -6,7 +6,7 @@
 
   filter:
     include_entities:
-      - switch.0x086bd7fffe5d13c9
+      - switch.0x54ef441000691265
       - switch.0x086bd7fffe5b7c7f_right
       - switch.0x086bd7fffe5b7c7f_left
       - switch.0x086bd7fffe5aecf8_left
@@ -25,7 +25,6 @@
       - humidifier.zhimi_humidifier_cb1
       - humidifier.zhimi_humidifier_ca4
       - media_player.lg_smart_tv
-      - media_player.yandex_intents
       - cover.cover_group_kitchen
       - media_player.samsung_tv_remote
       - switch.r4s01_kettle_boil
@@ -35,8 +34,15 @@
       - cover.cover_group_living_room
 
   entity_config:
-    switch.0x086bd7fffe5d13c9:
+    switch.0x54ef441000691265:
       type: devices.types.light
+      properties:
+        - type: amperage
+          entity: sensor.0x54ef441000691265_current
+        - type: power
+          entity: sensor.0x54ef441000691265_power
+        - type: voltage
+          entity: sensor.0x54ef441000691265_voltage
 
     switch.0x086bd7fffe5b7c7f_right:
       type: devices.types.light
@@ -428,3 +434,6 @@
             servicename: 'cover.close_cover'
             groupname: 'cover.cover_group_living_room'
             statename: 'closed'
+
+    climate.avatto_living_room_ac:
+      type: devices.types.thermostat.ac

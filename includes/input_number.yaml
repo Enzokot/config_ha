@@ -77,3 +77,9 @@
     icon: mdi:horizontal-rotate-counterclockwise
     min: 0
     max: 1000000
+  
+  total_kitchen_light_switch_working_area_saved:
+    name: "Потребление электроэнергии подстветка столешницы"
+    icon: mdi:horizontal-rotate-counterclockwise
+    min: 0
+    max: 1000000

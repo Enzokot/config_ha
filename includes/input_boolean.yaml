@@ -53,6 +53,14 @@
         name: Восстановление кондиционера после закрытия окна в гостиной
         icon: mdi:window-open
 
+    # auto_triggered_heating_floor_window_hallway:
+    #     name: Восстановление теплого пола коридор
+    #     icon: mdi:window-open
+
+    auto_triggered_heating_floor_window_kitchen:
+        name: Восстановление теплого пола кухня
+        icon: mdi:window-open
+
 #Флаг остановки НА
     instances_stoping:
         icon: mdi:home-assistant

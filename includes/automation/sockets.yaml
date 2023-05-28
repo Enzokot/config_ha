@@ -209,6 +209,7 @@
             - sensor.shelly_em_energy
             - sensor.shelly_plug_s_1_energy
             - sensor.shelly_plug_s_2_energy
+            - sensor.0x54ef441000691265_energy
       condition:
         - condition: template
           value_template: >- 
@@ -228,7 +229,8 @@
                            "sensor.0x54ef441000096cbc_energy": "input_number.total_yeelight_ceiling_relay_saved",
                            "sensor.shelly_em_energy": "input_number.total_shelly_em_saved",
                            "sensor.shelly_plug_s_1_energy": "input_number.total_server_ac_saved",
-                           "sensor.shelly_plug_s_2_energy": "input_number.total_shelly_plug_s_2_saved"}
+                           "sensor.shelly_plug_s_2_energy": "input_number.total_shelly_plug_s_2_saved",
+                           "sensor.0x54ef441000691265_energy": "input_number.total_kitchen_light_switch_working_area_saved"}
               %}
               {{ v[trigger.entity_id] }}
         - service: input_number.set_value

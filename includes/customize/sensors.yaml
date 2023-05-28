@@ -403,3 +403,6 @@ sensor.0x54ef44100055ff04_battery:
 
 sensor.0x00158d000913dbf1_battery:
   friendly_name: Датчик мойки полов тамбур
+
+sensor.0x54ef441000691265_power:
+  friendly_name: Тек. мощность

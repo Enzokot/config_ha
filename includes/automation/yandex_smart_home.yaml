@@ -39,16 +39,16 @@
         - platform: event
           event_type: yandex_intent
           event_data:
-            text: откликайся на алису
+            text: теперь ты алиса
         - platform: event
           event_type: yandex_intent
           event_data:
-            text: откликайся на яндекс
+            text: теперь ты яндекс
       action:
         - service: media_player.play_media
           entity_id: media_player.yandex_station_ff98f029b620413b35e5e278
           data:
-           media_content_id: "имя: {{ trigger.event.data.text | replace('откликайся на ', '') | replace('у', 'а') }}"
+           media_content_id: "имя: {{ trigger.event.data.text | replace('теперь ты ', '') | replace('у', 'а') }}"
            media_content_type: settings
 
 #Уборка конкретных комнат

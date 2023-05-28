@@ -214,7 +214,7 @@ views:
           cards:
             - type: entities
               show_header_toggle: false
-              entities:          
+              entities:
                 - entity: binary_sensor.0x158d0003f37a0f_contact
                   secondary_info: last-changed
                   state_color: true
@@ -251,18 +251,36 @@ views:
         cards:
         - type: markdown
           content: >
-             **Освещение кухня**    
+             **Освещение кухня**
 
-        - type: entities
-          show_header_toggle: false
-          state_color: true
-          entities:
-            - entity: switch.0x086bd7fffe5d13c9
-              secondary_info: last-changed
+        - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
+          cards:
+            - type: entities
+              show_header_toggle: false
+              state_color: true
+              entities:
+                - entity: switch.0x54ef441000691265
+                  secondary_info: last-changed
+            - type: divider
+            - type: glance
+              columns: 3
+              show_icon: false
+              entities:
+                  - entity: sensor.0x54ef441000691265_power
+                    name: 'Мощность'
+                  - entity: sensor.total_kitchen_light_switch_working_area_cable_daily_electicity
+                    name: 'День'
+                  - entity: sensor.total_kitchen_light_switch_working_area_cable_monthly_electicity
+                    name: 'Месяц'
 
         - type: markdown
           content: >
-             **Освещение/вытяжка туалет**    
+             **Освещение/вытяжка туалет**
 
         - type: entities
           show_header_toggle: false
@@ -275,7 +293,7 @@ views:
 
         - type: markdown
           content: >
-             **Освещение/вытяжка ванная**    
+             **Освещение/вытяжка ванная**
 
         - type: entities
           show_header_toggle: false
@@ -679,7 +697,7 @@ views:
                   - entity: sensor.total_shelly_em_cable_daily_electicity
                     name: 'День'
                   - entity: sensor.total_shelly_em_cable_monthly_electicity
-                    name: 'Ночь'
+                    name: 'Месяц'
 
         - type: markdown
           content: >
@@ -710,7 +728,7 @@ views:
                   - entity: sensor.total_water_heater_socket_cable_daily_electicity
                     name: 'День'
                   - entity: sensor.total_water_heater_socket_cable_monthly_electicity
-                    name: 'Ночь'
+                    name: 'Месяц'
 
         - type: markdown
           content: >
@@ -741,7 +759,7 @@ views:
                   - entity: sensor.total_heater_socket_cable_daily_electicity
                     name: 'День'
                   - entity: sensor.total_heater_socket_cable_monthly_electicity
-                    name: 'Ночь'
+                    name: 'Месяц'
 
         - type: markdown
           content: >
@@ -770,7 +788,7 @@ views:
                   - entity: sensor.total_shelly_plug_s_2_cable_daily_electicity
                     name: 'День'
                   - entity: sensor.total_shelly_plug_s_2_cable_monthly_electicity
-                    name: 'Ночь'
+                    name: 'Месяц'
 
         - type: markdown
           content: >
@@ -799,7 +817,7 @@ views:
                   - entity: sensor.total_kithen_socket_1_cable_daily_electicity
                     name: 'День'
                   - entity: sensor.total_kitchen_socket_1_cable_monthly_electicity
-                    name: 'Ночь'
+                    name: 'Месяц'
 
         - type: markdown
           content: >
@@ -828,7 +846,7 @@ views:
                   - entity: sensor.total_bedroom_socket_1_cable_daily_electicity
                     name: 'День'
                   - entity: sensor.total_bedroom_socket_1_cable_monthly_electicity
-                    name: 'Ночь'
+                    name: 'Месяц'
 
         - type: markdown
           content: >
@@ -857,7 +875,7 @@ views:
                   - entity: sensor.total_bedroom_socket_2_cable_daily_electicity
                     name: 'День'
                   - entity: sensor.total_bedroom_socket_2_cable_monthly_electicity
-                    name: 'Ночь'
+                    name: 'Месяц'
 
   - title: Климат
     path: climate-device

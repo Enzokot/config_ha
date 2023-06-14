@@ -1,0 +1,6 @@
+
+selected_router_for_permit_join_z2m:
+    options:
+      - 'Не выбрано'
+    name: 'Добавить через'
+    icon: mdi:zigbee

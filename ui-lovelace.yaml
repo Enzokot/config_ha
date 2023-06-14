@@ -637,12 +637,13 @@ views:
           content: >
              **Стик zigbee** 
 
-        - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
+        #- type: custom:vertical-stack-in-card
+        #   card_mod:
+        #     style: |
+        #       ha-card {
+        #         border: none;
+        #       }
+        - type: vertical-stack
           cards:
             - type: custom:vertical-stack-in-card
               horizontal: true
@@ -662,8 +663,14 @@ views:
 
                 - type: entities
                   show_header_toggle: false
-                  entities:          
-                    - entity: timer.zigbee_permit_join
+                  entities:
+                    - entity: sensor.permit_join_timeout_z2m
+                      name: "Осталось"
+                      
+            - type: 'custom:mushroom-select-card'
+              entity: input_select.selected_router_for_permit_join_z2m
+              secondary_info: none
+              layout: horizontal
 
             - type: entities
               show_header_toggle: false
@@ -1938,51 +1945,78 @@ views:
             sort_by: friendly_name
             columns:
               - data: friendly_name
-                name: Friendly Name
+                name: Name
                 modify: '(x+"").replace(/ Gateway$/,"")'
+                align: center
+              - data: miio
+                name: miIO (rst)
+                align: center
+                modify: >
+                  var start = isNaN(x.cloud_starts) ? "" : "(" + x.cloud_starts + ")";
+                  var state = x.cloud_state == "cloud_connected" ? "On" : "Off";
+                  [state, start].join(" ");
               - data: network_pan_id
                 name: PAN ID
+                align: center
                 modify: 'x == "" ? "-" : x+""'
               - data: fw_version
                 name: FW ver
+                align: center
               - data: radio_tx_power
                 name: TX Power
+                align: center
                 modify: 'isNaN(parseInt(x, 10)) ? "-" : parseInt(x, 10)'
               - data: radio_channel
                 name: Channel
+                align: center
                 modify: 'isNaN(parseInt(x, 10)) ? "-" : parseInt(x, 10)'
               - data: free_mem
                 name: Mem Free (KB)
+                align: center
                 modify: 'isNaN(parseInt(x, 10)) ? "" : parseInt(x, 10)'
               - data: load_avg
                 name: Load Avg (1m, 5m, 15m)
+                align: center
                 modify: '(x+"").split("|").slice(0, 3).join(", ")'
-              - data: zigbee_tx
+              - data: zigbee
+                name: ZB rst
+                align: center
+                modify: x.z3_starts
+              - data: serial
                 name: ZB Tx
-                modify: 'isNaN(parseInt(x, 10)) ? 0 : parseInt(x, 10)'
-              - data: zigbee_rx
+                align: center
+                modify: x.zigbee_tx || ''
+              - data: serial
                 name: ZB Rx
-                modify: 'isNaN(parseInt(x, 10)) ? 0 : parseInt(x, 10)'
-              - data: zigbee_oe
+                align: center
+                modify: x.zigbee_rx || ''
+              - data: serial
                 name: ZB Err
-                modify: 'isNaN(parseInt(x, 10)) ? 0 : parseInt(x, 10)'
-            #   - data: bluetooth_tx
+                align: center
+                modify: x.zigbee_oe || ''
+            #   - data: serial
             #     name: BT Tx
-            #     modify: 'isNaN(parseInt(x, 10)) ? 0 : parseInt(x, 10)'
-            #   - data: bluetooth_rx
+            #     align: center
+            #     modify: x.bluetooth_tx || ''
+            #   - data: serial
             #     name: BT Rx
-            #     modify: 'isNaN(parseInt(x, 10)) ? 0 : parseInt(x, 10)'
-            #   - data: bluetooth_oe
+            #     align: center
+            #     modify: x.bluetooth_rx || ''
+            #   - data: serial
             #     name: BT Err
-            #     modify: 'isNaN(parseInt(x, 10)) ? 0 : parseInt(x, 10)'
+            #     align: center
+            #     modify: x.bluetooth_oe || ''
               - data: rssi
                 name: RSSI
+                align: center
                 modify: 'isNaN(parseInt(x, 10)) ? "" : (100 + parseInt(x, 10)) * -1'
               - data: uptime
                 name: Gateway Uptime
+                align: center
                 modify: x+''
               - name: Connected Since
                 data: last_changed, state
+                align: center
                 multi_delimiter: ","
                 modify: >
                   if (x.split(",")[1] == 'on') {
@@ -2039,10 +2073,7 @@ views:
               - data: last_missed
                 name: Missed (Last)
                 modify: 'isNaN(parseInt(x, 10)) ? 0 : parseInt(x, 10)'
-              - data: unresponsive
-                name: Unresponsive
-                modify: 'isNaN(parseInt(x, 10)) ? 0 : parseInt(x, 10)'
-              - data: reset_cnt
+              - data: new_resets
                 name: Reset Count
                 modify: 'isNaN(parseInt(x, 10)) ? 0 : parseInt(x, 10)'
               - data: linkquality

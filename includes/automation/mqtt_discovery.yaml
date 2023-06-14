@@ -26,7 +26,7 @@
                       "state_topic":"$SYS/broker/uptime", 
                       "icon":"mdi:timer-outline", 
                       "unit_of_measurement":"s", 
-                      "entity_category": "diagnostic", 
+                      "entity_category":"diagnostic", 
                       "unique_id":"mqtt_broker_uptime",
                       "value_template":"{{ '{{' }} value | regex_replace('[^\\d]','') | trim {{ '}}' }}", 
                       "json_attributes_topic":"$SYS/broker/version", 
@@ -42,12 +42,46 @@
                   { 
                     "name":"permit_join_switch_z2m", 
                     "state_topic":"zigbee2mqtt/bridge/info",
-                    "command_topic": "zigbee2mqtt/bridge/request/permit_join",
-                    "payload_on":"true",
-                    "payload_off":"false",
+                    "command_topic":"zigbee2mqtt/bridge/request/permit_join",
+                    "payload_on":"{\"value\": true, \"time\": 254}",
+                    "payload_off":"{\"value\": false}",
+                    "state_off":"false",
+                    "state_on":"true",
                     "icon":"mdi:cellphone-wireless",
                     "unique_id":"permit_join_switch_z2m",
                     "value_template":"{{ '{{' }} value_json.permit_join | lower {{ '}}' }}",
+                    "device":{"identifiers":["z2m_info"],"manufacturer":"Enzokot","model":"Local polling","name":"Zigbee2MQTT add-on"}
+                  }
+
+            - service: mqtt.publish
+              data: 
+                topic: homeassistant/sensor/permit_join_timeout_z2m/config
+                retain: true 
+                payload: >- 
+                  { 
+                    "name":"permit join timeout z2m", 
+                    "state_topic":"zigbee2mqtt/bridge/info",
+                    "value_template":"{{ '{{' }} iif(value_json.permit_join, value_json.permit_join_timeout, 0) | int(0) {{ '}}' }}",
+                    "device_class":"duration",
+                    "unit_of_measurement":"s",
+                    "icon":"mdi:timer-outline", 
+                    "unique_id":"permit_join_timeout_z2m",
+                    "device":{"identifiers":["z2m_info"],"manufacturer":"Enzokot","model":"Local polling","name":"Zigbee2MQTT add-on"}
+                  }
+
+            - service: mqtt.publish
+              data: 
+                topic: homeassistant/sensor/router_devices_z2m/config
+                retain: true 
+                payload: >- 
+                  { 
+                    "name":"router devices z2m", 
+                    "state_topic":"zigbee2mqtt/bridge/devices",
+                    "value_template":"{{ '{{' }} value_json | to_json | from_json | selectattr('type', 'defined') | selectattr('type', 'in', ['Coordinator', 'Router']) | map(attribute='friendly_name') | list | count {{ '}}' }}",
+                    "json_attributes_topic":"zigbee2mqtt/bridge/devices",
+                    "json_attributes_template":"{{ '{{ {' }}'routers':value_json | to_json | from_json | selectattr('type', 'defined') | selectattr('type', 'in', ['Coordinator', 'Router']) | map(attribute='friendly_name') | list{{ '}' }} | tojson {{ '}}' }}",
+                    "icon":"mdi:router-wireless", 
+                    "unique_id":"router_devices_z2m",
                     "device":{"identifiers":["z2m_info"],"manufacturer":"Enzokot","model":"Local polling","name":"Zigbee2MQTT add-on"}
                   }
 
@@ -132,7 +166,7 @@
                   { 
                     "name":"Zigbee2mqtt Coordinator Version", 
                     "state_topic":"zigbee2mqtt/bridge/info",
-                    "value_template":"{{ '{{' }} value_json.coordinator {{ '}}' }}",
+                    "value_template":"{{ '{{' }} value_json.coordinator['ieee_address'] {{ '}}' }}",
                     "json_attributes_topic":"zigbee2mqtt/bridge/info",
                     "json_attributes_template":"{{ '{{ {' }}'revision':value_json.coordinator['meta'].revision, 'type':value_json.coordinator['type']{{ '}' }} | tojson {{ '}}' }}",
                     "icon":"mdi:chip",

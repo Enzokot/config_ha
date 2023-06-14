@@ -69,7 +69,7 @@
       id: keyboard alarm home
       initial_state: true
       mode: single
-      max_exceeded: silent  
+      max_exceeded: silent
       trigger:
         platform: event
         event_type: telegram_command
@@ -139,7 +139,7 @@
       id: do tuc tuc gateway
       initial_state: true
       mode: single
-      max_exceeded: silent  
+      max_exceeded: silent
       trigger:
         - platform: event
           event_type: telegram_callback

@@ -1104,8 +1104,6 @@
                and state_attr('sensor.backup_state', 'backups') | count > 0
             }}
       action:
-        - variables:
-            index_backup: "{{ (state_attr('sensor.backup_state', 'backups') | count) - 1 }}"
         - service: homeassistant.update_entity
           entity_id: sensor.disk_use_percent
         - wait_for_trigger:
@@ -1119,7 +1117,7 @@
             title: >-
                   {{ '\U0001F4BD' }} *Резервное копирование*
             message: >-
-                     Создана резервная копия с именем `{{ state_attr('sensor.backup_state', 'backups')[index_backup].name }}`, системный диск заполнен на *{{ states('sensor.disk_use_percent') -}}*%, свободно на Google диске *{{ state_attr('sensor.backup_state', 'free_space_in_google_drive') | replace(' ', '') }}*
+                     Создана резервная копия с именем `{{ state_attr('sensor.backup_state', 'backups')[-1].name }}`, системный диск заполнен на *{{ states('sensor.disk_use_percent') -}}*%, свободно на Google диске *{{ state_attr('sensor.backup_state', 'free_space_in_google_drive') | replace(' ', '') }}*
 
 #Уведоление о неуспешном входе или о блокировки IP по неуспешным логинам
     - alias: notifications failed login or block IP
@@ -1127,27 +1125,25 @@
       mode: parallel
       initial_state: true
       trigger:
-        - platform: state
-          entity_id: 
-           - persistent_notification.ip_ban
-           - persistent_notification.http_login
-          to: 'notifying'
+        - platform: event
+          event_type: system_log_event
+          event_data:
+            name: homeassistant.components.http.ban
       action:
         - parallel:
             - service: telegram_bot.send_message
               data:
                 target: !secret telegram_enzokot_chat_id
                 title: >-
-                    {%- if 'with invalid authentication' in trigger.to_state.attributes.message | lower %}
+                    {%- if trigger.event.data.message is search('with invalid authentication', ignorecase=True) %}
                         {{- '\U0001F6AB' -}}
                     {% else %}
                         {{- '\U0001F6AB' -}}
                     {% endif %} *Вход в систему*
                 message: >
-                    {% set ipadress = trigger.to_state.attributes.message.split('from ')[1] | regex_replace('\s+.*') %}
-                    {% set ipadress = trigger.to_state.attributes.message | regex_replace('.*\((?=\d+\.\d+\.\d+\.\d+)') | regex_replace('\).*') %}
+                    {% set ipadress = trigger.event.data.message | replace('\n', ' ') | regex_replace('.*\((?=\d+\.\d+\.\d+\.\d+)') | regex_replace('\).*') %}
                     
-                    {% if 'with invalid authentication' in trigger.to_state.attributes.message | lower -%}
+                    {% if trigger.event.data.message is search('with invalid authentication', ignorecase=True) -%}
                         Неудачная попытка входа в систему с адреса [{{ ipadress }}](https://whatismyipaddress.com/ip/{{- ipadress }})
                     {%- else -%}
                         Заблокирован IP адрес [{{ ipadress }}](https://whatismyipaddress.com/ip/{{- ipadress }}), 5 попыток входа
@@ -1155,52 +1151,7 @@
                 disable_web_page_preview: true
             - service: persistent_notification.dismiss
               data:
-                notification_id: >
-                    {% if 'with invalid authentication' in trigger.to_state.attributes.message | lower %}
-                        http_login
-                    {% else %}
-                        ip_ban
-                    {% endif %}
-
-#Уведомление о неуспешной проверке конфигурации
-    - alias: notification check configuration failed
-      id: notification check configuration failed
-      mode: parallel
-      initial_state: true
-      trigger:
-        - platform: state
-          entity_id: 
-            - persistent_notification.homeassistant_check_config
-            - persistent_notification.invalid_config
-          to: 'notifying'
-      action:
-        - service: telegram_bot.send_message
-          data:
-            target: !secret telegram_enzokot_chat_id
-            disable_web_page_preview: true
-            title: "{{ '\U0000203C' }} *Проверка конфигурации*"
-            message: >
-                {{ trigger.to_state.attributes.message | replace(' and [logs](/config/logs)', ' and [logs](' + states('sensor.instance_external_url_config') + '/config/logs)') }} 
-
-    - alias: notification dismiss check configuration failed
-      id: notification dismiss check configuration failed
-      mode: parallel
-      initial_state: true
-      trigger:
-        - platform: state
-          entity_id: 
-            - persistent_notification.homeassistant_check_config
-            - persistent_notification.invalid_config
-          to: 'notifying'
-      action:
-        - service: persistent_notification.dismiss
-          data:
-            notification_id: >
-                {% if 'could not be set up' in trigger.to_state.attributes.message | lower %}
-                    invalid_config
-                {% else %}
-                    homeassistant_check_config
-                {% endif %}
+                notification_id: "{{ iif(trigger.event.data.message is search('banned ip', ignorecase=True), 'ip_ban', 'http_login') }}"
 
 #Уведомление о перезапуске НА
     - alias: notification start or stop home assistant
@@ -1253,27 +1204,6 @@
                 {% else -%}
                     Home Assistant *остановлен*, время работы: {{ states('sensor.online_custom') }}
                 {% endif -%}
-
-#Уведомление об утечке пароля
-    - alias: notifications loss passwords
-      id: notifications loss passwords
-      mode: parallel
-      initial_state: true
-      trigger:
-        - platform: state
-          entity_id: persistent_notification.supervisor_issue_pwned
-          to: 'notifying'
-      action:
-        - parallel:
-            - service: telegram_bot.send_message
-              data:
-                target: !secret telegram_enzokot_chat_id
-                title: "{{ '\U0000203C' }} *Проверка паролей*"
-                message: >
-                    {{ trigger.to_state.attributes.message }}
-            - service: persistent_notification.dismiss
-              data:
-                notification_id: 'supervisor_issue_pwned'
 
 #Уведомление об ошибках выполнения автоматизаций/скриптов
     - alias: notifications errors in automations or scripts
@@ -1406,9 +1336,8 @@
       mode: queued
       initial_state: true
       trigger:
-        - platform: state
-          entity_id: persistent_notification.config_entry_discovery
-          to: 'notifying'
+        - platform: event
+          event_type: config_entry_discovered
       action:
         - parallel:
             - service: telegram_bot.send_message

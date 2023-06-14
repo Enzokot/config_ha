@@ -9,12 +9,6 @@
         duration: 600
         restore: true
 
-#Добавление устройств zigbee
-    zigbee_permit_join:
-        name: Осталось
-        duration: 240
-        restore: true
-        
 #Таймер звуковой сигнализации
     alarm_gateway_sound:
         name: Осталось до выключения звука сигнализации

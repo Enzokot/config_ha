@@ -1,40 +1,5 @@
 
 #Добавление устройств zigbee
-    - alias: disable_zigbee_join_timer
-      id: disable_zigbee_join_timer
-      initial_state: true
-      trigger:
-      - platform: event
-        event_type: timer.finished
-        event_data:
-          entity_id: timer.zigbee_permit_join
-      action:
-          - service: switch.turn_off
-            data:
-              entity_id: switch.permit_join_switch_z2m
-
-    - alias: start_stop_zigbee_join_timer
-      id: start_stop_zigbee_join_timer
-      initial_state: true
-      trigger:
-      - platform: state
-        entity_id: switch.permit_join_switch_z2m
-        from:
-          - 'on'
-          - 'off'
-        to:
-          - 'on'
-          - 'off'
-      action:
-          - service: >
-                {% if trigger.to_state.state == 'on' %}
-                  timer.start
-                {%- else -%}
-                  timer.cancel
-                {%- endif %}
-            data:
-              entity_id: timer.zigbee_permit_join
-
     - alias: zigbee_device_joined_notification
       id: zigbee_device_joined_notification
       mode: queued
@@ -317,3 +282,110 @@
             disable_notification: true
             title: "{{ '\U0001F527' }} *Обслуживание устройств*"
             message: "Выполнено обслуживание TRV, необходимо проверить состояние и физическое положение штоков."
+
+#Установка списка роутеров
+    - alias: set_options_for_selected_router_for_permit_join_z2m
+      id: set_options_for_selected_router_for_permit_join_z2m
+      mode: queued
+      trigger:
+        - platform: state
+          entity_id: sensor.router_devices_z2m
+          not_from:
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: automation_reloaded
+        - platform: event
+          id: 'input_select_reload'
+          event_type: call_service
+          event_data:
+            domain: input_select
+            service: reload
+      action:
+        - if:
+            - condition: trigger
+              id: input_select_reload
+          then:
+            - wait_for_trigger:
+                - platform: state
+                  entity_id: input_select.selected_router_for_permit_join_z2m
+                  to:
+              timeout:
+                seconds: 2
+        - variables:
+            new_options: > 
+                {% set select_options = iif(states('sensor.router_devices_z2m') | int(0) > 0, state_attr('sensor.router_devices_z2m', 'routers'), ['Не выбрано']) %}
+                {% set data = namespace(entities=[]) %}
+                {% for i in select_options -%}
+                    {% if loop.first %}
+                      {% set data.entities = data.entities + ['Не выбрано'] %}
+                    {% endif %}
+                    {% set data.entities = data.entities + [i] %}
+                {% endfor %}
+                {{ data.entities | unique | list }}
+            old_options_with_new: >
+                {% set data = namespace(entities=[]) %}
+                {% for i in new_options -%}
+                    {% set data.entities = data.entities + [i] %}
+                    {% if loop.last %}
+                      {% set data.entities = data.entities + [states('input_select.selected_router_for_permit_join_z2m')] %}
+                    {% endif %}
+                {% endfor %}
+                {{ data.entities | unique | list }}
+        - service: input_select.set_options
+          data:
+            entity_id: input_select.selected_router_for_permit_join_z2m
+            options: "{{ old_options_with_new }}"
+        - service: input_select.select_option
+          data:
+            entity_id: input_select.selected_router_for_permit_join_z2m
+            option: "{{ new_options | first }}"
+        - service: input_select.set_options
+          data:
+            entity_id: input_select.selected_router_for_permit_join_z2m
+            options: "{{ new_options }}"
+        - service: input_select.select_first
+          data:
+            entity_id: input_select.selected_router_for_permit_join_z2m
+
+#Запуск добавления устройств через роутер
+    - alias: start_selected_router_permit_join_z2m
+      id: start_selected_router_permit_join_z2m
+      mode: restart
+      trigger:
+        - platform: event
+          event_type: call_service
+          event_data:
+            domain: input_select
+            service: select_option
+            service_data:
+              entity_id: input_select.selected_router_for_permit_join_z2m
+      condition:
+        - "{{ states.person | selectattr('attributes.user_id', 'eq', trigger.event.context.user_id) | list | count > 0 }}"
+      action:
+        - service: mqtt.publish
+          data:
+            topic: "zigbee2mqtt/bridge/request/permit_join"
+            payload: >
+                {{ '{"value": ' ~ iif(trigger.event.data.service_data.option == 'Не выбрано', 'false', 'true, "time": 254, "device": "' ~ trigger.event.data.service_data.option) ~ '"}' }}
+
+#Смена состояния выбора по состоянию в z2m
+    - alias: set_option_for_selected_router_from_info_topic_z2m
+      id: set_option_for_selected_router_from_info_topic_z2m
+      mode: restart
+      trigger:
+        - platform: state
+          id: 'switch_permit_join'
+          entity_id: switch.permit_join_switch_z2m
+          to: 'off'
+      action:
+        - parallel:
+          - if:
+              - condition: trigger
+                id: switch_permit_join
+              - "{{ not is_state('input_select.select_option', 'Не выбрано') }}"
+            then:
+              - service: input_select.select_option
+                data:
+                  entity_id: input_select.selected_router_for_permit_join_z2m
+                  option: 'Не выбрано'

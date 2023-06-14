@@ -77,6 +77,9 @@
           then:
             - delay:
                 seconds: 45
+            - service: homeassistant.update_entity
+              data:
+                entity_id: camera.roborock_vacuum_map
             - service: camera.turn_off
               entity_id: camera.roborock_vacuum_map
           else:

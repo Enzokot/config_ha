@@ -133,21 +133,3 @@
           data:
             topic: "zigbee2mqtt/{{- namevalve -}}/set/local_temperature_calibration"
             payload: '{{ calibration_local }}'
-
-#Установка скорости для мотора штор
-    set_speed_shades_drive_motor:
-        alias: Установка скорости мотора штор
-        icon: mdi:test-tube
-        mode: queued
-        fields:
-          namemotor:
-            description: 'FRIENDLY_NAME из z2m мотора'
-            example: 'Left shades drive motor kitchen'
-          speed:
-            description: 'Скорость'
-            example: '40'
-        sequence:
-            - service: mqtt.publish
-              data:
-                topic: "zigbee2mqtt/ {{- namemotor -}} /set"
-                payload: "{\"options\":{\"motor_speed\":\"{{- speed -}}\"}}"

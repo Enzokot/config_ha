@@ -1125,25 +1125,34 @@
       mode: parallel
       initial_state: true
       trigger:
-        - platform: event
-          event_type: system_log_event
-          event_data:
-            name: homeassistant.components.http.ban
+        - platform: persistent_notification
+          id: 'http-login'
+          update_type:
+           - added
+           - updated
+          notification_id: http-login
+        - platform: persistent_notification
+          id: 'ip-ban'
+          update_type:
+           - added
+           - updated
+          notification_id: ip-ban
       action:
         - parallel:
             - service: telegram_bot.send_message
               data:
                 target: !secret telegram_enzokot_chat_id
                 title: >-
-                    {%- if trigger.event.data.message is search('with invalid authentication', ignorecase=True) %}
+                    {%- if trigger.id == 'http-login' %}
                         {{- '\U0001F6AB' -}}
                     {% else %}
-                        {{- '\U0001F6AB' -}}
+                        {{- '\U000026D4' -}}
                     {% endif %} *Вход в систему*
                 message: >
-                    {% set ipadress = trigger.event.data.message | replace('\n', ' ') | regex_replace('.*\((?=\d+\.\d+\.\d+\.\d+)') | regex_replace('\).*') %}
+                    {% set ipadress = trigger.notification.message | replace('\n', ' ') | regex_replace('.*\((?=\d+\.\d+\.\d+\.\d+)') | regex_replace('\).*')
+                        | replace('Too many login attempts from ', '') %}
                     
-                    {% if trigger.event.data.message is search('with invalid authentication', ignorecase=True) -%}
+                    {% if trigger.id == 'http-login' -%}
                         Неудачная попытка входа в систему с адреса [{{ ipadress }}](https://whatismyipaddress.com/ip/{{- ipadress }})
                     {%- else -%}
                         Заблокирован IP адрес [{{ ipadress }}](https://whatismyipaddress.com/ip/{{- ipadress }}), 5 попыток входа
@@ -1151,7 +1160,7 @@
                 disable_web_page_preview: true
             - service: persistent_notification.dismiss
               data:
-                notification_id: "{{ iif(trigger.event.data.message is search('banned ip', ignorecase=True), 'ip_ban', 'http_login') }}"
+                notification_id: "{{ trigger.id }}"
 
 #Уведомление о перезапуске НА
     - alias: notification start or stop home assistant
@@ -1336,8 +1345,11 @@
       mode: queued
       initial_state: true
       trigger:
-        - platform: event
-          event_type: config_entry_discovered
+        - platform: persistent_notification
+          update_type:
+           - added
+           - updated
+          notification_id: config_entry_discovery
       action:
         - parallel:
             - service: telegram_bot.send_message
@@ -1838,3 +1850,33 @@
             title: "⚠️ *Host Kernel log*"
             message: >-
                 {{ state_attr('binary_sensor.kernel_ext4_warning', 'friendly_name') }}
+
+#Уведомление о мойке полов в тамбуре
+    - alias: notification wet entrance floor
+      id: notification wet entrance floor
+      initial_state: true
+      max_exceeded: silent
+      trigger:
+        - platform: state
+          entity_id: binary_sensor.0x00158d000913dbf1_contact
+          from: 'off'
+          to: 'on'
+          for: 
+            seconds: 5
+      condition:
+        - condition: time
+          after: "06:00:00"
+          before: "20:00:00"
+      action:
+        - parallel:
+            - service: telegram_bot.send_message
+              data:
+                target: !secret telegram_enzokot_chat_id
+                title: "{{ '\U0001F9F9' }} *Влажная уборка*"
+                message: "Обнаружена уборка в общем коридоре"
+            - service: notify.huawei_lte
+              data:
+                message: "Обнаружена уборка в общем коридоре"
+                target: !secret sms_phone_user59
+                data:
+                  url: 'http://192.168.8.1/'

@@ -54,7 +54,7 @@ captive_portal:
 http_request:
 
 logger:
-  baud_rate: 0
+  #baud_rate: 0
 
 syslog:
   ip_address: "kotletochka-ds.local"

@@ -61,6 +61,8 @@ logger:
       - "Timeout fetching Увлажнитель спальня data"
       - "Error fetching Увлажнитель спальня data: Unable to discover the device*"
       - "Timeout fetching Xiaomi Vacuum cleaner data"
+      - "Unexpected error fetching Увлажнитель спальня data: byte indices must be integers or slices, not str"
+      - "Unexpected error fetching Увлажнитель детская data: byte indices must be integers or slices, not str"
 system_log:
   fire_event: true
 
@@ -88,6 +90,7 @@ rest_command: !include includes/rest_command.yaml
 shell_command: !include includes/shell_command.yaml
 cover: !include includes/cover.yaml
 wake_on_lan:
+command_line: !include_dir_merge_list includes/command_line
 
 input_select: !include includes/input_select.yaml
 input_number: !include includes/input_number.yaml

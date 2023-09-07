@@ -249,25 +249,18 @@
       trigger:
         - platform: state
           entity_id: light.yeelight_ceiling_cr
-          to: 'unavailable'
+          to:
         - platform: homeassistant
           event: start
       condition:
-        - condition: state
-          entity_id: light.yeelight_ceiling_cr
-          state: 'unavailable'
-        - condition: template
-          value_template: >
-            {% set ignore = ['off', 'unknown', 'unavailable', 'none', None, null, ''] %}
-            {{ states('switch.0x54ef441000096cbc') not in ignore }}
+        - "{{ as_timestamp(now()) - as_timestamp(state_attr(this.entity_id, 'last_triggered')) > 60 }}"
+        - "{{ not has_value('light.yeelight_ceiling_cr') }}"
+        - "{{ has_value('switch.0x54ef441000096cbc') }}"
       action:
-        - wait_for_trigger:
-            - platform: state
-              entity_id: light.yeelight_ceiling_cr
-              from: 'unavailable'
+        - wait_template: "{{ has_value('light.yeelight_ceiling_cr') }}"
           timeout: "00:02:00"
         - choose:
-            - conditions: "{{ wait.trigger == None and is_state('binary_sensor.local_network_availability', 'on') }}"
+            - conditions: "{{ not wait.completed and is_state('binary_sensor.local_network_availability', 'on') }}"
               sequence:
                   - service: switch.turn_off
                     data:

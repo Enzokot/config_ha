@@ -53,6 +53,7 @@
       event_data:
         entity_id: 'sensor.speedtest_upload'
   condition:
+    - "{{ as_timestamp(now()) - as_timestamp(state_attr(this.entity_id, 'last_triggered')) > 60 }}"
     - condition: state
       entity_id: input_boolean.instances_stoping
       state: 'off'
@@ -240,24 +241,22 @@
 #Перезапуск интеграции проверки длительности сертификата для asuscomm по недоступности сенсоров
 - alias: cert_expiry_timestamp_asuscomm_unavailable
   id: cert_expiry_timestamp_asuscomm_unavailable
+  mode: single
+  max_exceeded: silent
   trigger:
     - platform: state
       entity_id: sensor.cert_expiry_timestamp_asuscomm
-      to: 'unavailable'
+      to:
     - platform: homeassistant
       event: start
   condition:
-    - condition: state
-      entity_id: sensor.cert_expiry_timestamp_asuscomm
-      state: 'unavailable'
+    - "{{ as_timestamp(now()) - as_timestamp(state_attr(this.entity_id, 'last_triggered')) > 60 }}"
+    - "{{ not has_value('sensor.cert_expiry_timestamp_asuscomm') }}"
   action:
-    - wait_for_trigger:
-        - platform: state
-          entity_id: sensor.cert_expiry_timestamp_asuscomm
-          from: 'unavailable'
+    - wait_template: "{{ has_value('sensor.cert_expiry_timestamp_asuscomm') }}"
       timeout: "00:01:00"
     - choose:
-        - conditions: "{{ wait.trigger == None and is_state('binary_sensor.local_network_availability', 'on') }}"
+        - conditions: "{{ not wait.completed and is_state('binary_sensor.local_network_availability', 'on') }}"
           sequence:
             - service: homeassistant.reload_config_entry
               data:
@@ -266,25 +265,26 @@
 #Перезапуск интеграции LG Devices по недоступности сенсоров
 - alias: lg_devices_sensors_unavailable
   id: lg_devices_sensors_unavailable
-  mode: queued
+  mode: single
+  max_exceeded: silent
   trigger:
-    - platform: state
-      entity_id: switch.kholodilnik_eco_friendly
-      to: 'unavailable'
     - platform: homeassistant
       event: start
-  condition:
-    - condition: state
+    - platform: state
       entity_id: switch.kholodilnik_eco_friendly
-      state: 'unavailable'
+      to:
+    - platform: state
+      entity_id: climate.kholodilnik_freezer
+      attribute: current_temperature
+      to:
+  condition:
+    - "{{ as_timestamp(now()) - as_timestamp(state_attr(this.entity_id, 'last_triggered')) > 60 }}"
+    - "{{ not has_value('switch.kholodilnik_eco_friendly') or state_attr('climate.kholodilnik_freezer', 'current_temperature') is none }}"
   action:
-    - wait_for_trigger:
-        - platform: state
-          entity_id: switch.kholodilnik_eco_friendly
-          from: 'unavailable'
+    - wait_template: "{{ has_value('switch.kholodilnik_eco_friendly') and state_attr('climate.kholodilnik_freezer', 'current_temperature') is not none }}"
       timeout: "00:05:00"
     - choose:
-        - conditions: "{{ wait.trigger == None and is_state('binary_sensor.local_network_availability', 'on') }}"
+        - conditions: "{{ not wait.completed and is_state('binary_sensor.local_network_availability', 'on') }}"
           sequence:
             - service: homeassistant.reload_config_entry
               data:

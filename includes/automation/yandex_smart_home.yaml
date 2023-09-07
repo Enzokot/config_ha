@@ -10,14 +10,12 @@
         - platform: time
           at:
             - "8:00:00"
-            - "13:30:00"
-            - "16:00:00"
             - "21:30:00"
       action:
         - variables:
             time_to_on: >
                 {% set time_now = now() %}
-                {{ today_at('8:00') <= time_now < today_at('13:30') or today_at('16:00') <= time_now < today_at('21:30') }}
+                {{ today_at('8:00') <= time_now < today_at('21:29:59') }}
         - service: media_player.play_media
           entity_id: media_player.yandex_station_ff98f029b620413b35e5e278
           data:

@@ -1877,6 +1877,6 @@
             - service: notify.huawei_lte
               data:
                 message: "Обнаружена уборка в общем коридоре"
-                target: !secret sms_phone_user59
+                target: !secret sms_phone_users56_59
                 data:
                   url: 'http://192.168.8.1/'

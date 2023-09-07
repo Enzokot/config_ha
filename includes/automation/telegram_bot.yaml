@@ -459,8 +459,7 @@
     - alias: install update telegram bot
       id: install update telegram bot
       initial_state: true
-      mode: single
-      max_exceeded: silent
+      mode: parallel
       trigger:
         - platform: event
           event_type: telegram_callback

@@ -37,14 +37,10 @@
               message: >- 
                          Кто-то звонит в дверь
               target: !secret telegram_all_chat_id
-          - condition: or
-            conditions:
-                - condition: time
-                  after: '8:00:00'
-                  before: '13:30:00'
-                - condition: time
-                  after: '16:10:00'
-                  before: '21:30:00'
+          - condition: 
+              - condition: time
+                after: '8:00:00'
+                before: '21:30:00'
           - service: xiaomi_aqara.stop_ringtone
             data:
               gw_mac: !secret gateway1_mac
@@ -63,14 +59,9 @@
         - platform: state
           entity_id: sensor.0x158d00045a78af_action
       condition:
-          - condition: or
-            conditions:
-                - condition: time
-                  after: '8:00:00'
-                  before: '13:30:00'
-                - condition: time
-                  after: '16:10:00'
-                  before: '21:30:00'
+          - condition: time
+            after: '8:00:00'
+            before: '21:30:00'
           - condition: state
             entity_id: timer.doorbell_timer_restart_automation
             state: 'idle'
@@ -82,7 +73,7 @@
             state: 'disarmed'
           - condition: template
             value_template: >
-                              {{ trigger.to_state.state not in ['release', 'unavailable', 'unknown', '', 'None'] }}
+                {{ trigger.to_state.state not in ['release', 'unavailable', 'unknown', '', 'None'] }}
       action:
         - parallel:
             - service: script.alice_custom_tts_volume
@@ -116,7 +107,7 @@
             state: 'disarmed'
           - condition: template
             value_template: >
-                              {{ trigger.to_state.state not in ['release', 'unavailable', 'unknown', '', 'None'] }}
+                {{ trigger.to_state.state not in ['release', 'unavailable', 'unknown', '', 'None'] }}
       action:
         - service: scene.create
           data:

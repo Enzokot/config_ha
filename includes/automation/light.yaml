@@ -158,6 +158,10 @@
         to: 'on'
       condition:
         - condition: state
+          entity_id: automation.turn_on_light_doorbell
+          attribute: current
+          state: 0
+        - condition: state
           entity_id: input_boolean.alarm_gateway_button
           state: 'off'
       action:
@@ -165,7 +169,7 @@
           data:
             scene_id: before_light_door_open
             snapshot_entities:
-              - light.gateway_light_04cf8cabd77b      
+              - light.gateway_light_04cf8cabd77b
         - service: light.turn_on
           entity_id: light.gateway_light_04cf8cabd77b
           data:
@@ -253,11 +257,14 @@
         - platform: homeassistant
           event: start
       condition:
+        - condition: state
+          entity_id: input_boolean.instances_stoping
+          state: 'off'
         - "{{ as_timestamp(now()) - as_timestamp(state_attr(this.entity_id, 'last_triggered')) > 60 }}"
         - "{{ not has_value('light.yeelight_ceiling_cr') }}"
         - "{{ has_value('switch.0x54ef441000096cbc') }}"
       action:
-        - wait_template: "{{ has_value('light.yeelight_ceiling_cr') }}"
+        - wait_template: "{{ has_value('light.yeelight_ceiling_cr') or is_state('input_boolean.instances_stoping', 'on') }}"
           timeout: "00:02:00"
         - choose:
             - conditions: "{{ not wait.completed and is_state('binary_sensor.local_network_availability', 'on') }}"

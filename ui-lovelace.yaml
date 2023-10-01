@@ -455,6 +455,12 @@ views:
             - entity: binary_sensor.0x00158d000913dbf1_contact
               show_last_changed: true
               name: 'Пол табмур'
+            - entity: binary_sensor.0x00158d00093e4111_contact
+              show_last_changed: true
+              name: 'Шкаф NVR'
+            - entity: binary_sensor.0x00158d0009ea0949_water_leak
+              show_last_changed: true
+              name: 'Шкаф NVR'
 
         - type: markdown
           content: >
@@ -502,7 +508,7 @@ views:
                   - sensor.0x158d0003d05782_battery
                   - sensor.0x158d0003975d8b_battery
                   - sensor.0x158d00039a2f33_battery
-                  - sensor.0x00158d000913dbf1_battery
+                  - sensor.0x00158d00093e4111_battery
               - name: 'Дыма (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
                 icon: 'mdi:smoke-detector'
@@ -555,6 +561,13 @@ views:
                 entities:
                   - sensor.0x54ef4410005602ed_battery
                   - sensor.0x54ef44100055ff04_battery
+              - name: 'Датчики протечки (min: {min}%, кол-во: {count})'
+                secondary_info: 'Диапазон заряда {range}%'
+                icon: 'mdi:water'
+                min: 30
+                entities:
+                  - sensor.0x00158d0009ea0949_battery
+                  - sensor.0x00158d000913dbf1_battery
           entities:
             - entity: sensor.0x158d000359304c_battery
               tap_action: more-info
@@ -631,6 +644,10 @@ views:
             - entity: sensor.0x54ef44100055ff04_battery
               tap_action: more-info
             - entity: sensor.0x00158d000913dbf1_battery
+              tap_action: more-info
+            - entity: sensor.0x00158d0009ea0949_battery
+              tap_action: more-info
+            - entity: sensor.0x00158d00093e4111_battery
               tap_action: more-info
 
         - type: markdown
@@ -882,6 +899,35 @@ views:
                   - entity: sensor.total_bedroom_socket_2_cable_daily_electicity
                     name: 'День'
                   - entity: sensor.total_bedroom_socket_2_cable_monthly_electicity
+                    name: 'Месяц'
+
+        - type: markdown
+          content: >
+             **Розетка NVR** 
+
+        - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: switch.shelly_plug_s_nvr
+                    state_color: true
+                    secondary_info: last-changed
+            - type: divider
+            - type: glance
+              columns: 3
+              show_icon: false
+              entities:
+                  - entity: sensor.shelly_plug_s_nvr_power
+                    name: 'Мощность'
+                  - entity: sensor.total_shelly_plug_s_nvr_cable_daily_electicity
+                    name: 'День'
+                  - entity: sensor.total_shelly_plug_s_nvr_cable_monthly_electicity
                     name: 'Месяц'
 
   - title: Климат
@@ -1492,6 +1538,41 @@ views:
         - type: thermostat
           entity: climate.avatto_living_room_ac
           name: " "
+
+        - type: markdown
+          content: >
+             **Теплый пол** 
+        - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
+          cards:
+            - type: tile
+              entity: climate.devireg_k
+              name: "Кухня"
+              icon_tap_action:
+                action: call-service
+                service: script.turn_on
+                data:
+                  entity_id: script.toggle_climate_from_ui
+                  variables:
+                    entityid: climate.devireg_k
+              features:
+                - type: "target-temperature"
+            - type: tile
+              entity: climate.devireg_hw
+              name: "Коридор"
+              icon_tap_action:
+                action: call-service
+                service: script.turn_on
+                data:
+                  entity_id: script.toggle_climate_from_ui
+                  variables:
+                    entityid: climate.devireg_hw
+              features:
+                - type: "target-temperature"
 
       - type: vertical-stack
         cards:

@@ -1,0 +1,17 @@
+#При обнаружении протечки отключить NVR
+
+    - alias: turn off nvr from water leak
+      id: turn off nvr from water leak
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id:
+            - binary_sensor.0x00158d0009ea0949_water_leak
+          from: 'off'
+          to: 'on'
+          for:
+            seconds: 10
+      action:
+        - service: switch.turn_off
+          data:
+            entity_id: switch.shelly_plug_s_nvr

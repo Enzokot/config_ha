@@ -83,3 +83,9 @@
     icon: mdi:horizontal-rotate-counterclockwise
     min: 0
     max: 1000000
+
+  total_shelly_plug_s_nvr_saved:
+    name: "Потребление электроэнергии NVR"
+    icon: mdi:horizontal-rotate-counterclockwise
+    min: 0
+    max: 1000000

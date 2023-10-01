@@ -151,6 +151,7 @@
             - sensor.shelly_plug_s_1_power
             - sensor.0x60a423fffef8d41a_power
             - sensor.shelly_plug_s_2_power
+            - sensor.shelly_plug_s_nvr_power
         above: 3000
       action:
           - service: switch.turn_off
@@ -210,6 +211,7 @@
             - sensor.shelly_plug_s_1_energy
             - sensor.shelly_plug_s_2_energy
             - sensor.0x54ef441000691265_energy
+            - sensor.shelly_plug_s_nvr_energy
       condition:
         - condition: template
           value_template: >- 
@@ -230,7 +232,8 @@
                            "sensor.shelly_em_energy": "input_number.total_shelly_em_saved",
                            "sensor.shelly_plug_s_1_energy": "input_number.total_server_ac_saved",
                            "sensor.shelly_plug_s_2_energy": "input_number.total_shelly_plug_s_2_saved",
-                           "sensor.0x54ef441000691265_energy": "input_number.total_kitchen_light_switch_working_area_saved"}
+                           "sensor.0x54ef441000691265_energy": "input_number.total_kitchen_light_switch_working_area_saved",
+                           "sensor.shelly_plug_s_nvr_energy": "input_number.total_shelly_plug_s_nvr_saved"}
               %}
               {{ v[trigger.entity_id] }}
         - service: input_number.set_value

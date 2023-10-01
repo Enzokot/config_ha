@@ -56,3 +56,7 @@ switch.permit_join_switch_z2m:
 switch.shelly_plug_s_2:
   friendly_name: Вкл/выкл розетка DS
   icon: mdi:power-socket-eu
+
+switch.shelly_plug_s_nvr:
+  friendly_name: Вкл/выкл розетка NVR
+  icon: mdi:power-socket-eu

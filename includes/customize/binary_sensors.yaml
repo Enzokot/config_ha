@@ -125,3 +125,10 @@ binary_sensor.0x00158d000913dbf1_contact:
   friendly_name: Датчик мойки полов табмур
   device_class: moisture
   invert_state: 1
+
+binary_sensor.0x00158d0009ea0949_water_leak:
+  friendly_name: Протечка воды около NVR
+
+binary_sensor.0x00158d00093e4111_contact:
+  friendly_name: Дверца шкафа NVR
+  icon: mdi:file-cabinet

@@ -35,6 +35,7 @@
           - sensor.0x00124b00215bb163_linkquality
           - switch.shelly_plug_s_1
           - switch.shelly_plug_s_2
+          - switch.shelly_plug_s_nvr
           - sensor.0x00158d00045cd551_battery
           - sensor.0x158d00045ca483_battery
           - sensor.0x158d00039d9398_battery
@@ -80,6 +81,8 @@
           - sensor.0x00158d000913dbf1_battery
           - climate.devireg_hw
           - climate.devireg_k
+          - sensor.0x00158d0009ea0949_battery
+          - sensor.0x00158d00093e4111_battery
 
     temperature_summary_group_to_bot:
         entities:

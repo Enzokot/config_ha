@@ -1,0 +1,13 @@
+#Виртуализация toggle для UI
+    toggle_climate_from_ui:
+        alias: Вкл/выкл сущностей climate
+        icon: mdi:home-thermometer
+        mode: parallel
+        fields:
+          entityid:
+            description: 'Имя сущности climate'
+            example: 'climate.devireg_hw'
+        sequence:
+          - service: "climate.{{- iif(is_state(entityid, 'off'), 'turn_on', 'turn_off') }}"
+            data:
+              entity_id: "{{ entityid }}"

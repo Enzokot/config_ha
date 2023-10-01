@@ -49,3 +49,8 @@
           unit_of_measurement: kWh
           icon: mdi:horizontal-rotate-counterclockwise
           state: "{{ states('input_number.total_kitchen_light_switch_working_area_saved') }}"
+
+        - name: total_shelly_plug_s_nvr_cable
+          unit_of_measurement: kWh
+          icon: mdi:horizontal-rotate-counterclockwise
+          state: "{{ states('input_number.total_shelly_plug_s_nvr_saved') }}"

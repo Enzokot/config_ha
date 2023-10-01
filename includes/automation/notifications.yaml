@@ -936,6 +936,7 @@
                 - sensor.shelly_plug_s_1_power
                 - sensor.0x60a423fffef8d41a_power
                 - sensor.shelly_plug_s_2_power
+                - sensor.shelly_plug_s_nvr_power
             above: 3000
       action:
         - service: telegram_bot.send_message
@@ -1880,3 +1881,156 @@
                 target: !secret sms_phone_users56_59
                 data:
                   url: 'http://192.168.8.1/'
+
+#Уведомление о протечки в подъезде возле шкафа NVR
+    - alias: notification water leak near nvr
+      id: notification water leak near nvr
+      initial_state: true
+      mode: queued
+      trigger:
+        - platform: state
+          entity_id:
+            - binary_sensor.0x00158d0009ea0949_water_leak
+          from: 'off'
+          to: 'on'
+          for: 
+            seconds: 10
+      action:
+        - parallel:
+            - service: telegram_bot.send_message
+              data:
+                target: !secret telegram_enzokot_chat_id
+                title: "{{ '\U0001F4A7' }} *Датчики протечки*"
+                message: "Обнаружена протечка возле NVR: *{{ state_attr(trigger.entity_id, 'friendly_name') }}*"
+            - service: notify.huawei_lte
+              data:
+                message: "Обнаружена протечка возле NVR: {{ state_attr(trigger.entity_id, 'friendly_name') }}"
+                target: !secret sms_phone_users59_60
+                data:
+                  url: 'http://192.168.8.1/'
+            - sequence:
+                - variables:
+                    sm_g973f_rezhim_ne_bespokoit: "{{ states('sensor.sm_g973f_do_not_disturb_sensor') }}"
+                - choose:
+                    - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
+                      sequence:
+                        - service: notify.mobile_app_sm_g973f
+                          data:
+                            message: 'command_dnd'
+                            data:
+                              command: 'off'
+                        - wait_for_trigger:
+                            - platform: state
+                              entity_id: sensor.sm_g973f_do_not_disturb_sensor
+                          timeout:
+                            seconds: 5
+                - variables:
+                    sm_g973f_rezhim_zvonka: "{{ states('sensor.sm_g973f_ringer_mode') }}"
+                - choose:
+                    - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+                      sequence:
+                        - service: notify.notify
+                          data:
+                            message: 'command_ringer_mode'
+                            data:
+                              command: 'normal'
+                - service: notify.notify
+                  data:
+                    title: "{{ '\U0001F4A7' }} Датчики протечки"
+                    message: "Обнаружена протечка возле NVR: {{ state_attr(trigger.entity_id, 'friendly_name') }}"
+                    data:
+                      ttl: 0
+                      priority: high
+                      channel: alarm_stream
+                - choose:
+                    - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+                      sequence:
+                        - service: notify.mobile_app_sm_g973f
+                          data:
+                            message: 'command_ringer_mode'
+                            data:
+                              command: "{{ sm_g973f_rezhim_zvonka }}"
+                - choose:
+                    - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
+                      sequence:
+                        - service: notify.mobile_app_sm_g973f
+                          data:
+                            message: 'command_dnd'
+                            data:
+                              command: "{{ sm_g973f_rezhim_ne_bespokoit }}"
+
+#Уведомление об открытии дверцы шкафа NVR
+    - alias: notification open door nvr box
+      id: notification open door nvr box
+      initial_state: true
+      mode: queued
+      trigger:
+        - platform: state
+          entity_id: binary_sensor.0x00158d00093e4111_contact
+          from: 'off'
+          to: 'on'
+          for: 
+            seconds: 5
+      action:
+        - parallel:
+            - service: telegram_bot.send_message
+              data:
+                target: !secret telegram_enzokot_chat_id
+                title: "{{ '\U0001F511' }} *Датчик открытия/закрытия*"
+                message: "Обнаружено *открытие* дверцы шкафа с NVR"
+            - service: notify.huawei_lte
+              data:
+                message: "Обнаружено открытие дверцы шкафа с NVR"
+                target: !secret sms_phone_users59_60
+                data:
+                  url: 'http://192.168.8.1/'
+            - sequence:
+                - variables:
+                    sm_g973f_rezhim_ne_bespokoit: "{{ states('sensor.sm_g973f_do_not_disturb_sensor') }}"
+                - choose:
+                    - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
+                      sequence:
+                        - service: notify.mobile_app_sm_g973f
+                          data:
+                            message: 'command_dnd'
+                            data:
+                              command: 'off'
+                        - wait_for_trigger:
+                            - platform: state
+                              entity_id: sensor.sm_g973f_do_not_disturb_sensor
+                          timeout:
+                            seconds: 5
+                - variables:
+                    sm_g973f_rezhim_zvonka: "{{ states('sensor.sm_g973f_ringer_mode') }}"
+                - choose:
+                    - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+                      sequence:
+                        - service: notify.notify
+                          data:
+                            message: 'command_ringer_mode'
+                            data:
+                              command: 'normal'
+                - service: notify.notify
+                  data:
+                    title: "{{ '\U0001F511' }} Датчик открытия/закрытия"
+                    message: "Обнаружено открытие дверцы шкафа с NVR"
+                    data:
+                      ttl: 0
+                      priority: high
+                      channel: alarm_stream
+                - choose:
+                    - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+                      sequence:
+                        - service: notify.mobile_app_sm_g973f
+                          data:
+                            message: 'command_ringer_mode'
+                            data:
+                              command: "{{ sm_g973f_rezhim_zvonka }}"
+                - choose:
+                    - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
+                      sequence:
+                        - service: notify.mobile_app_sm_g973f
+                          data:
+                            message: 'command_dnd'
+                            data:
+                              command: "{{ sm_g973f_rezhim_ne_bespokoit }}"

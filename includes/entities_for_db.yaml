@@ -60,6 +60,8 @@
       - sensor.r4s01_kettle_energy
       - sensor.total_shelly_plug_s_2_cable_daily_electicity
       - sensor.total_shelly_plug_s_2_cable_monthly_electicity
+      - sensor.total_shelly_plug_s_nvr_cable_daily_electicity
+      - sensor.total_shelly_plug_s_nvr_cable_monthly_electicity
       #Датчик освещенности улица
       - sensor.0x54ef4410000ebba0_illuminance
       #Положение штока термоголовок
@@ -70,7 +72,6 @@
       #Напряжение в сети
       - sensor.0x842e14fffe13a854_voltage
       - sensor.shelly_em_voltage
-      - sensor.shelly_em_energy_returned
       #Трекер персоны
       - person.kostik
       #- device_tracker.sm_g973f
@@ -99,6 +100,9 @@
       - sensor.0x54ef441000096cbc_energy
       - sensor.shelly_plug_s_2_energy
       - sensor.0x54ef441000691265_energy
+      - sensor.shelly_plug_s_nvr_energy
       #Мойка полов в тамбуре
       - binary_sensor.0x00158d000913dbf1_contact
-
+      #NVR
+      - binary_sensor.0x00158d0009ea0949_water_leak
+      - binary_sensor.0x00158d00093e4111_contact

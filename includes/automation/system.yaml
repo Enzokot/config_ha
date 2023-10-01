@@ -19,6 +19,9 @@
       minutes: "/45"
   condition:
     - condition: state
+      entity_id: input_boolean.instances_stoping
+      state: 'off'
+    - condition: state
       entity_id: binary_sensor.local_network_availability
       state: 'on'
     - condition: template
@@ -53,10 +56,10 @@
       event_data:
         entity_id: 'sensor.speedtest_upload'
   condition:
-    - "{{ as_timestamp(now()) - as_timestamp(state_attr(this.entity_id, 'last_triggered')) > 60 }}"
     - condition: state
       entity_id: input_boolean.instances_stoping
       state: 'off'
+    - "{{ as_timestamp(now()) - as_timestamp(state_attr(this.entity_id, 'last_triggered')) > 60 }}"
     - condition: state
       entity_id: binary_sensor.local_network_availability
       state: 'on'
@@ -108,25 +111,28 @@
     # - platform: event
     #   event_type: homeassistant_started
     #   id: 'homeassistant_start'
-    - platform: event
-      event_type: homeassistant_stop
+    - platform: homeassistant
+      event: shutdown
+    # - platform: event
+    #   event_type: homeassistant_stop
   action:
-    - service: >
-        {% if trigger.id == 'homeassistant_start' -%}
-            input_boolean.turn_off
-        {% else -%}
-            input_boolean.turn_on
-        {% endif %}
-      data:
-        entity_id: input_boolean.instances_stoping
-    - service: >
-        {% if trigger.id == 'homeassistant_start' -%}
-            automation.turn_on
-        {% else -%}
-            automation.turn_off
-        {% endif %}
-      data:
-        entity_id: automation.notifications_objects_in_unavailable_status
+    - parallel:
+        - service: >
+            {% if trigger.id == 'homeassistant_start' -%}
+                input_boolean.turn_off
+            {% else -%}
+                input_boolean.turn_on
+            {% endif %}
+          data:
+            entity_id: input_boolean.instances_stoping
+        - service: >
+            {% if trigger.id == 'homeassistant_start' -%}
+                automation.turn_on
+            {% else -%}
+                automation.turn_off
+            {% endif %}
+          data:
+            entity_id: automation.notifications_objects_in_unavailable_status
 
 #Счетчик числа событий link down для лога Keenetic
 - alias: counter increment link down keenetic
@@ -203,21 +209,19 @@
   trigger:
     - platform: state
       entity_id: sensor.huawei_e3372h_320_sinr
-      to: 'unavailable'
+      to:
     - platform: homeassistant
       event: start
   condition:
     - condition: state
-      entity_id: sensor.huawei_e3372h_320_sinr
-      state: 'unavailable'
+      entity_id: input_boolean.instances_stoping
+      state: 'off'
+    - "{{ not has_value('sensor.huawei_e3372h_320_sinr') }}"
   action:
-    - wait_for_trigger:
-        - platform: state
-          entity_id: sensor.huawei_e3372h_320_sinr
-          from: 'unavailable'
+    - wait_template: "{{ has_value('sensor.huawei_e3372h_320_sinr') or is_state('input_boolean.instances_stoping', 'on') }}"
       timeout: "00:05:00"
     - choose:
-        - conditions: "{{ wait.trigger == None and is_state('binary_sensor.local_network_availability', 'on') }}"
+        - conditions: "{{ not wait.completed and is_state('binary_sensor.local_network_availability', 'on') }}"
           sequence:
               - service: huawei_lte.reboot
                 data:
@@ -250,10 +254,13 @@
     - platform: homeassistant
       event: start
   condition:
+    - condition: state
+      entity_id: input_boolean.instances_stoping
+      state: 'off'
     - "{{ as_timestamp(now()) - as_timestamp(state_attr(this.entity_id, 'last_triggered')) > 60 }}"
     - "{{ not has_value('sensor.cert_expiry_timestamp_asuscomm') }}"
   action:
-    - wait_template: "{{ has_value('sensor.cert_expiry_timestamp_asuscomm') }}"
+    - wait_template: "{{ has_value('sensor.cert_expiry_timestamp_asuscomm') or is_state('input_boolean.instances_stoping', 'on') }}"
       timeout: "00:01:00"
     - choose:
         - conditions: "{{ not wait.completed and is_state('binary_sensor.local_network_availability', 'on') }}"
@@ -278,10 +285,16 @@
       attribute: current_temperature
       to:
   condition:
+    - condition: state
+      entity_id: input_boolean.instances_stoping
+      state: 'off'
     - "{{ as_timestamp(now()) - as_timestamp(state_attr(this.entity_id, 'last_triggered')) > 60 }}"
     - "{{ not has_value('switch.kholodilnik_eco_friendly') or state_attr('climate.kholodilnik_freezer', 'current_temperature') is none }}"
   action:
-    - wait_template: "{{ has_value('switch.kholodilnik_eco_friendly') and state_attr('climate.kholodilnik_freezer', 'current_temperature') is not none }}"
+    - wait_template: >
+        {{ has_value('switch.kholodilnik_eco_friendly') and state_attr('climate.kholodilnik_freezer', 'current_temperature') is not none 
+           or is_state('input_boolean.instances_stoping', 'on')
+        }}
       timeout: "00:05:00"
     - choose:
         - conditions: "{{ not wait.completed and is_state('binary_sensor.local_network_availability', 'on') }}"

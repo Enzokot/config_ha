@@ -406,3 +406,18 @@ sensor.0x00158d000913dbf1_battery:
 
 sensor.0x54ef441000691265_power:
   friendly_name: Тек. мощность
+
+sensor.shelly_plug_s_nvr_power:
+  friendly_name: Тек. мощность
+
+sensor.total_shelly_plug_s_nvr_cable_daily_electicity:
+  friendly_name: NVR потреб. день
+  
+sensor.total_shelly_plug_s_nvr_cable_monthly_electicity:
+  friendly_name: NVR потреб. мес.
+
+sensor.0x00158d0009ea0949_battery:
+  friendly_name: Протечка воды около NVR
+
+sensor.0x00158d00093e4111_battery:
+  friendly_name: Дверца шкафа NVR

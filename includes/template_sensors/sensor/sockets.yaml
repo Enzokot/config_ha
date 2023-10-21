@@ -54,3 +54,8 @@
           unit_of_measurement: kWh
           icon: mdi:horizontal-rotate-counterclockwise
           state: "{{ states('input_number.total_shelly_plug_s_nvr_saved') }}"
+
+        - name: total_shelly_1pm_fan_nvr_box_cable
+          unit_of_measurement: kWh
+          icon: mdi:horizontal-rotate-counterclockwise
+          state: "{{ states('input_number.total_shelly_1pm_fan_nvr_box_saved') }}"

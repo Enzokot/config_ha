@@ -36,6 +36,7 @@
           - switch.shelly_plug_s_1
           - switch.shelly_plug_s_2
           - switch.shelly_plug_s_nvr
+          - switch.shelly_1pm_fan_nvr_box
           - sensor.0x00158d00045cd551_battery
           - sensor.0x158d00045ca483_battery
           - sensor.0x158d00039d9398_battery
@@ -83,6 +84,12 @@
           - climate.devireg_k
           - sensor.0x00158d0009ea0949_battery
           - sensor.0x00158d00093e4111_battery
+          - sensor.0x00158d0009ea1c0e_battery
+          - binary_sensor.elevators_motion
+          - binary_sensor.emergency_exit_motion
+          - binary_sensor.entrance_door_motion
+          - binary_sensor.hallway_1_motion
+          - button.kotletochka_nvr_hw_restart
 
     temperature_summary_group_to_bot:
         entities:

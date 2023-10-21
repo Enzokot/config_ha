@@ -257,6 +257,13 @@
           at: "10:00:00"
       condition:
         - "{{ now().timestamp() | timestamp_custom('%d') | int(0) in [1, 15] }}"
+        - condition: state
+          entity_id:
+            - climate.0x5c0272fffec89454
+            - climate.0x60a423fffe968719
+            - climate.0x5c0272fffec9db22
+            - climate.0x5c0272fffe8de819
+          state: "heat"
       action:
         - service: climate.set_hvac_mode
           data:
@@ -265,7 +272,7 @@
               - climate.0x60a423fffe968719
               - climate.0x5c0272fffec9db22
               - climate.0x5c0272fffe8de819
-            hvac_mode: 'off'
+            hvac_mode: "off"
         - delay: "00:02:00"
         - service: climate.set_hvac_mode
           data:
@@ -274,7 +281,7 @@
               - climate.0x60a423fffe968719
               - climate.0x5c0272fffec9db22
               - climate.0x5c0272fffe8de819
-            hvac_mode: 'heat'
+            hvac_mode: "heat"
         - delay: "00:01:00"
         - service: telegram_bot.send_message
           data:

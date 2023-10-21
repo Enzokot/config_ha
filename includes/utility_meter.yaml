@@ -153,6 +153,20 @@
     tariffs:
       - electicity
 
+  total_shelly_1pm_fan_nvr_box_cable_daily:
+    source: sensor.total_shelly_1pm_fan_nvr_box_cable
+    unique_id: total_shelly_1pm_fan_nvr_box_cable_daily
+    cycle: daily
+    tariffs:
+      - electicity
+
+  total_shelly_1pm_fan_nvr_box_cable_monthly:
+    source: sensor.total_shelly_1pm_fan_nvr_box_cable
+    unique_id: total_shelly_1pm_fan_nvr_box_cable_monthly
+    cycle: monthly
+    tariffs:
+      - electicity
+
 #-------------------------------------------------------------------------------
 
 #   total_heater_socket_cable_daily:
@@ -291,6 +305,20 @@
 #   total_shelly_plug_s_nvr_cable_monthly:
 #     source: sensor.shelly_plug_s_nvr_energy
 #     unique_id: total_shelly_plug_s_nvr_cable_monthly
+#     cycle: monthly
+#     tariffs:
+#       - electicity
+
+#   total_shelly_1pm_fan_nvr_box_cable_daily:
+#     source: sensor.shelly_1pm_fan_nvr_box_energy
+#     unique_id: total_shelly_1pm_fan_nvr_box_cable_daily
+#     cycle: daily
+#     tariffs:
+#       - electicity
+
+#   total_shelly_1pm_fan_nvr_box_cable_monthly:
+#     source: sensor.shelly_1pm_fan_nvr_box_energy
+#     unique_id: total_shelly_1pm_fan_nvr_box_cable_monthly
 #     cycle: monthly
 #     tariffs:
 #       - electicity

@@ -953,6 +953,7 @@
     - alias: notification public ip changed
       id: notification public ip changed
       initial_state: true
+      mode: queued
       trigger:
           - platform: state
             entity_id: sensor.myip
@@ -1891,6 +1892,7 @@
         - platform: state
           entity_id:
             - binary_sensor.0x00158d0009ea0949_water_leak
+            - binary_sensor.0x00158d0009ea1c0e_water_leak
           from: 'off'
           to: 'on'
           for: 
@@ -1901,10 +1903,10 @@
               data:
                 target: !secret telegram_enzokot_chat_id
                 title: "{{ '\U0001F4A7' }} *Датчики протечки*"
-                message: "Обнаружена протечка возле NVR: *{{ state_attr(trigger.entity_id, 'friendly_name') }}*"
+                message: "Обнаружена протечка возле NVR/Камер: *{{ state_attr(trigger.entity_id, 'friendly_name') }}*"
             - service: notify.huawei_lte
               data:
-                message: "Обнаружена протечка возле NVR: {{ state_attr(trigger.entity_id, 'friendly_name') }}"
+                message: "Обнаружена протечка возле NVR/Камер: {{ state_attr(trigger.entity_id, 'friendly_name') }}"
                 target: !secret sms_phone_users59_60
                 data:
                   url: 'http://192.168.8.1/'
@@ -1981,7 +1983,7 @@
             - service: notify.huawei_lte
               data:
                 message: "Обнаружено открытие дверцы шкафа с NVR"
-                target: !secret sms_phone_users59_60
+                target: !secret sms_phone_enzokot
                 data:
                   url: 'http://192.168.8.1/'
             - sequence:
@@ -2014,6 +2016,115 @@
                   data:
                     title: "{{ '\U0001F511' }} Датчик открытия/закрытия"
                     message: "Обнаружено открытие дверцы шкафа с NVR"
+                    data:
+                      ttl: 0
+                      priority: high
+                      channel: alarm_stream
+                - choose:
+                    - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+                      sequence:
+                        - service: notify.mobile_app_sm_g973f
+                          data:
+                            message: 'command_ringer_mode'
+                            data:
+                              command: "{{ sm_g973f_rezhim_zvonka }}"
+                - choose:
+                    - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
+                      sequence:
+                        - service: notify.mobile_app_sm_g973f
+                          data:
+                            message: 'command_dnd'
+                            data:
+                              command: "{{ sm_g973f_rezhim_ne_bespokoit }}"
+
+#Уведомление о перегреве реле кулера шкафа NVR
+    - alias: notification overheating 1pm fan nvr box
+      id: notification overheating 1pm fan nvr box
+      initial_state: true
+      mode: queued
+      trigger:
+        - platform: state
+          id: 'overheating'
+          entity_id: binary_sensor.shelly_1pm_fan_nvr_box_overheating
+          from: 'off'
+          to: 'on'
+          for: 
+            seconds: 5
+        - platform: numeric_state
+          entity_id: sensor.shelly_1pm_fan_nvr_box_temperature
+          above: 35
+          for:
+            seconds: 5
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: "{{ '\U0001F321' }} *Реле кулера шкафа NVR*"
+            message: >-
+              {{ 
+                iif(trigger.id == 'overheating', 
+                'Обнаружен *перегрев* реле кулера шкафа NVR', 
+                'Обнаружена высокая (*' + trigger.to_state.state + '*) температура в шкафу NVR')
+              }}
+
+#Уведомление об отключении NVR
+    - alias: notification nvr in unavailable status
+      id: notification nvr in unavailable status
+      initial_state: true
+      mode: queued
+      trigger:
+        - platform: state
+          entity_id: button.kotletochka_nvr_hw_restart
+          to:
+          for: 
+            seconds: 10
+      condition:
+        - condition: state
+          entity_id: input_boolean.instances_stoping
+          state: 'off'
+      action:
+        - parallel:
+            - service: telegram_bot.send_message
+              data:
+                target: !secret telegram_enzokot_chat_id
+                title: "{{ '\U0001F4FC' }} *Состояние NVR*"
+                message: "Обнаружено *отключение* NVR"
+            - service: notify.huawei_lte
+              data:
+                message: "Обнаружено отключение NVR"
+                target: !secret sms_phone_enzokot
+                data:
+                  url: 'http://192.168.8.1/'
+            - sequence:
+                - variables:
+                    sm_g973f_rezhim_ne_bespokoit: "{{ states('sensor.sm_g973f_do_not_disturb_sensor') }}"
+                - choose:
+                    - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
+                      sequence:
+                        - service: notify.mobile_app_sm_g973f
+                          data:
+                            message: 'command_dnd'
+                            data:
+                              command: 'off'
+                        - wait_for_trigger:
+                            - platform: state
+                              entity_id: sensor.sm_g973f_do_not_disturb_sensor
+                          timeout:
+                            seconds: 5
+                - variables:
+                    sm_g973f_rezhim_zvonka: "{{ states('sensor.sm_g973f_ringer_mode') }}"
+                - choose:
+                    - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+                      sequence:
+                        - service: notify.notify
+                          data:
+                            message: 'command_ringer_mode'
+                            data:
+                              command: 'normal'
+                - service: notify.notify
+                  data:
+                    title: "{{ '\U0001F4FC' }} Состояние NVR"
+                    message: "Обнаружено отключение NVR"
                     data:
                       ttl: 0
                       priority: high

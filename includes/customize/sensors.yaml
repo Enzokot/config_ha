@@ -421,3 +421,18 @@ sensor.0x00158d0009ea0949_battery:
 
 sensor.0x00158d00093e4111_battery:
   friendly_name: Дверца шкафа NVR
+
+sensor.shelly_1pm_fan_nvr_box_power:
+  friendly_name: Тек. мощность
+
+sensor.total_shelly_1pm_fan_nvr_box_cable_daily_electicity:
+  friendly_name: NVR потреб. день
+  
+sensor.total_shelly_1pm_fan_nvr_box_cable_monthly_electicity:
+  friendly_name: NVR потреб. мес.
+
+sensor.shelly_1pm_fan_nvr_box_temperature:
+  friendly_name: Т шкаф NVR
+
+sensor.0x00158d0009ea1c0e_battery:
+  friendly_name: Протечка воды около камеры тамбурной двери

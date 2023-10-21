@@ -454,7 +454,7 @@
               }}
   action:
       - choose:
-          - conditions:  
+          - conditions:
                 - condition: template
                   value_template: >
                     {{ 
@@ -540,24 +540,22 @@
   trigger:
     - platform: state
       entity_id: humidifier.zhimi_humidifier_cb1
-      to: 'unavailable'
+      to:
     - platform: homeassistant
       event: start
   condition:
     - condition: state
-      entity_id: humidifier.zhimi_humidifier_cb1
-      state: 'unavailable'
+      entity_id: input_boolean.instances_stoping
+      state: 'off'
+    - "{{ not has_value('humidifier.zhimi_humidifier_cb1') }}"
     - condition: state
       entity_id: switch.0x60a423fffef8d41a
       state: 'on'
   action:
-    - wait_for_trigger:
-        - platform: state
-          entity_id: humidifier.zhimi_humidifier_cb1
-          from: 'unavailable'
+    - wait_template: "{{ has_value('humidifier.zhimi_humidifier_cb1') }}"
       timeout: "00:05:00"
     - choose:
-        - conditions: "{{ wait.trigger == None and is_state('binary_sensor.local_network_availability', 'on') }}"
+        - conditions: "{{ wait.completed == false and is_state('binary_sensor.local_network_availability', 'on') }}"
           sequence:
               - service: switch.turn_off
                 data:

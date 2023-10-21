@@ -440,9 +440,6 @@ views:
             - entity: binary_sensor.0x158d00039d9398_smoke
               show_last_changed: true
               name: 'Коридор'
-            - entity: binary_sensor.0x158d0003cfa725_contact
-              show_last_changed: true
-              name: 'Тамбурная'
             - entity: binary_sensor.0x158d000359304c_contact
               show_last_changed: true
               name: 'Входная'
@@ -452,6 +449,17 @@ views:
             - entity: binary_sensor.0x158d0003953ee9_motion
               show_last_changed: true
               name: 'Коридор 2'
+
+        - type: markdown
+          content: >
+             **Двери, движение, протечки общий коридор** 
+        
+        - type: glance
+          columns: 5
+          entities:
+            - entity: binary_sensor.0x158d0003cfa725_contact
+              show_last_changed: true
+              name: 'Тамбурная'
             - entity: binary_sensor.0x00158d000913dbf1_contact
               show_last_changed: true
               name: 'Пол табмур'
@@ -461,6 +469,22 @@ views:
             - entity: binary_sensor.0x00158d0009ea0949_water_leak
               show_last_changed: true
               name: 'Шкаф NVR'
+            - entity: binary_sensor.0x00158d0009ea1c0e_water_leak
+              show_last_changed: true
+              name: 'ТЭ ИПУ'
+            - entity: binary_sensor.hallway_1_motion
+              show_last_changed: true
+              name: 'Коридор 1'
+            - entity: binary_sensor.entrance_door_motion
+              show_last_changed: true
+              name: 'Вх. дверь'
+            - entity: binary_sensor.elevators_motion
+              show_last_changed: true
+              name: 'Лифты'
+            - entity: binary_sensor.emergency_exit_motion
+              show_last_changed: true
+              name: 'Балкон'
+
 
         - type: markdown
           content: >
@@ -568,6 +592,7 @@ views:
                 entities:
                   - sensor.0x00158d0009ea0949_battery
                   - sensor.0x00158d000913dbf1_battery
+                  - sensor.0x00158d0009ea1c0e_battery
           entities:
             - entity: sensor.0x158d000359304c_battery
               tap_action: more-info
@@ -648,6 +673,8 @@ views:
             - entity: sensor.0x00158d0009ea0949_battery
               tap_action: more-info
             - entity: sensor.0x00158d00093e4111_battery
+              tap_action: more-info
+            - entity: sensor.0x00158d0009ea1c0e_battery
               tap_action: more-info
 
         - type: markdown
@@ -928,6 +955,37 @@ views:
                   - entity: sensor.total_shelly_plug_s_nvr_cable_daily_electicity
                     name: 'День'
                   - entity: sensor.total_shelly_plug_s_nvr_cable_monthly_electicity
+                    name: 'Месяц'
+
+        - type: markdown
+          content: >
+             **Кулер шкафа NVR** 
+
+        - type: custom:vertical-stack-in-card
+          card_mod:
+            style: |
+              ha-card {
+                border: none;
+              }
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: switch.shelly_1pm_fan_nvr_box
+                    state_color: true
+                    secondary_info: last-changed
+            - type: divider
+            - type: glance
+              columns: 4
+              show_icon: false
+              entities:
+                  - entity: sensor.shelly_1pm_fan_nvr_box_power
+                    name: 'Мощность'
+                  - entity: sensor.shelly_1pm_fan_nvr_box_temperature
+                    name: 'Т'
+                  - entity: sensor.total_shelly_1pm_fan_nvr_box_cable_daily_electicity
+                    name: 'День'
+                  - entity: sensor.total_shelly_1pm_fan_nvr_box_cable_monthly_electicity
                     name: 'Месяц'
 
   - title: Климат
@@ -2225,3 +2283,51 @@ views:
             - person.kostik
           hours_to_show: 48
           default_zoom: 15
+
+  - title: Камеры
+    path: cctv
+    icon: mdi:cctv
+    cards:
+      - type: vertical-stack
+        cards:
+            - type: 'custom:webrtc-camera'
+              url: 'hallway_1_sub'
+              #entity: camera.hallway_1_sub
+              ui: false
+              muted: true
+              intersection: 0.50
+              background: false
+              style: ".mode {display: none}"
+              mode: webrtc
+
+            - type: 'custom:webrtc-camera'
+              url: 'elevators_sub'
+              #entity: camera.elevators_sub
+              ui: false
+              muted: true
+              intersection: 0.50
+              background: false
+              style: ".mode {display: none}"
+              mode: webrtc
+
+      - type: vertical-stack
+        cards:
+            - type: 'custom:webrtc-camera'
+              url: 'entrance_door_sub'
+              #entity: camera.entrance_door_sub
+              ui: false
+              muted: true
+              intersection: 0.50
+              background: false
+              style: ".mode {display: none} video {aspect-ratio: 16/9; object-fit: fill;}"
+              mode: webrtc
+            
+            - type: 'custom:webrtc-camera'
+              url: 'emergency_exit_sub'
+              #entity: camera.emergency_exit_sub
+              ui: false
+              muted: true
+              intersection: 0.50
+              mode: webrtc
+              background: false
+              style: ".mode {display: none}"

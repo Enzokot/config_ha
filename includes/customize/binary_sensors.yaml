@@ -132,3 +132,18 @@ binary_sensor.0x00158d0009ea0949_water_leak:
 binary_sensor.0x00158d00093e4111_contact:
   friendly_name: Дверца шкафа NVR
   icon: mdi:file-cabinet
+
+binary_sensor.0x00158d0009ea1c0e_water_leak:
+  friendly_name: Протечка воды около камеры тамбурной двери
+
+binary_sensor.elevators_motion:
+  friendly_name: Датчик движения лифты
+
+binary_sensor.emergency_exit_motion:
+  friendly_name: Датчик движения запасной выход
+
+binary_sensor.entrance_door_motion:
+  friendly_name: Датчик движения тамбурная дверь
+
+binary_sensor.hallway_1_motion:
+  friendly_name: Датчик движения общий коридор 1

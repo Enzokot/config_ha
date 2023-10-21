@@ -62,6 +62,8 @@
       - sensor.total_shelly_plug_s_2_cable_monthly_electicity
       - sensor.total_shelly_plug_s_nvr_cable_daily_electicity
       - sensor.total_shelly_plug_s_nvr_cable_monthly_electicity
+      - sensor.total_shelly_1pm_fan_nvr_box_cable_daily_electicity
+      - sensor.total_shelly_1pm_fan_nvr_box_cable_monthly_electicity
       #Датчик освещенности улица
       - sensor.0x54ef4410000ebba0_illuminance
       #Положение штока термоголовок
@@ -101,8 +103,15 @@
       - sensor.shelly_plug_s_2_energy
       - sensor.0x54ef441000691265_energy
       - sensor.shelly_plug_s_nvr_energy
+      - sensor.shelly_1pm_fan_nvr_box_energy
+      - sensor.shelly_1pm_fan_nvr_box_temperature
       #Мойка полов в тамбуре
       - binary_sensor.0x00158d000913dbf1_contact
       #NVR
       - binary_sensor.0x00158d0009ea0949_water_leak
       - binary_sensor.0x00158d00093e4111_contact
+      - binary_sensor.0x00158d0009ea1c0e_water_leak
+      - binary_sensor.elevators_motion
+      - binary_sensor.emergency_exit_motion
+      - binary_sensor.entrance_door_motion
+      - binary_sensor.hallway_1_motion

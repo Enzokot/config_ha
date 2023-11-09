@@ -277,15 +277,16 @@ views:
                     name: 'День'
                   - entity: sensor.total_kitchen_light_switch_working_area_cable_monthly_electicity
                     name: 'Месяц'
-            - type: tile
-              entity: light.yeelight_lessons_lamp
-              name: 'Настольная лампа для уроков'
-              state_content:
-                - state
-                - last-changed
-                - brightness
-              features:
-                - type: "light-brightness"
+
+        - type: tile
+          entity: light.yeelight_lessons_lamp
+          name: 'Настольная лампа для уроков'
+          state_content:
+            - state
+            - last-changed
+            - brightness
+          features:
+            - type: "light-brightness"
 
         - type: markdown
           content: >

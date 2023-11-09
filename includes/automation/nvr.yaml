@@ -39,7 +39,7 @@
         - platform: numeric_state
           entity_id:
             - sensor.shelly_1pm_fan_nvr_box_temperature
-          above: 32
+          above: 34.5
       condition:
         - condition: state
           entity_id: 
@@ -52,7 +52,7 @@
             {% set time_now = now() %}
             {{ 
                 trigger.id == 'time_trigger' and 
-                (today_at('9:00') <= time_now < today_at('21:00:00') or states('sensor.shelly_1pm_fan_nvr_box_temperature') | float(0.0) > 32)
+                (today_at('9:00') <= time_now < today_at('21:00:00') or states('sensor.shelly_1pm_fan_nvr_box_temperature') | float(0.0) > 34.5)
                 or trigger.id != 'time_trigger' and (time_now >= today_at('21:00:00') or time_now < today_at('9:00:00')) 
             }}
       action:

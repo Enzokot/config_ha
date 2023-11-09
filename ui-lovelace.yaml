@@ -277,6 +277,15 @@ views:
                     name: 'День'
                   - entity: sensor.total_kitchen_light_switch_working_area_cable_monthly_electicity
                     name: 'Месяц'
+            - type: tile
+              entity: light.yeelight_lessons_lamp
+              name: 'Настольная лампа для уроков'
+              state_content:
+                - state
+                - last-changed
+                - brightness
+              features:
+                - type: "light-brightness"
 
         - type: markdown
           content: >
@@ -334,6 +343,9 @@ views:
                 - type: tile
                   entity: alarm_control_panel.signalka_shliuza_alarm
                   name: 'Сигналка'
+                  state_content:
+                    - state
+                    - last-changed
                   features:
                     - type: "alarm-modes"
                       modes:
@@ -512,7 +524,8 @@ views:
               - "#ff0000" # red
               - "#ffff00" # yellow
               - "#008000" # green
-          sort_by_level: "asc"
+          sort: 
+              - "state"
           collapse: 
               - name: 'Герконы (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
@@ -666,8 +679,14 @@ views:
               tap_action: more-info
             - entity: sensor.0x54ef4410005602ed_battery
               tap_action: more-info
+              charging_state:
+                entity_id: binary_sensor.0x54ef4410005602ed_charging
+                state: "on"
             - entity: sensor.0x54ef44100055ff04_battery
               tap_action: more-info
+              charging_state:
+                entity_id: binary_sensor.0x54ef44100055ff04_charging
+                state: "on"
             - entity: sensor.0x00158d000913dbf1_battery
               tap_action: more-info
             - entity: sensor.0x00158d0009ea0949_battery
@@ -1610,6 +1629,10 @@ views:
             - type: tile
               entity: climate.devireg_k
               name: "Кухня"
+              state_content:
+                - hvac_action
+                - current_temperature
+                - last-changed
               icon_tap_action:
                 action: call-service
                 service: script.turn_on
@@ -1622,6 +1645,10 @@ views:
             - type: tile
               entity: climate.devireg_hw
               name: "Коридор"
+              state_content:
+                - hvac_action
+                - current_temperature
+                - last-changed
               icon_tap_action:
                 action: call-service
                 service: script.turn_on

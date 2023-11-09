@@ -90,6 +90,7 @@
           - binary_sensor.entrance_door_motion
           - binary_sensor.hallway_1_motion
           - button.kotletochka_nvr_hw_restart
+          - light.yeelight_lessons_lamp
 
     temperature_summary_group_to_bot:
         entities:
@@ -124,3 +125,4 @@
           - light.gateway_light_04cf8cabd77b
           - humidifier.zhimi_humidifier_ca4
           - humidifier.zhimi_humidifier_cb1
+          - light.yeelight_lessons_lamp

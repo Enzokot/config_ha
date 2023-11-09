@@ -16,3 +16,7 @@ light.yeelight_ceiling_cr_ambilight:
   
 light.yeelight_ceiling_cr_nightlight:
   friendly_name: Ночник светильник детская
+
+#Настольные лампы
+light.yeelight_lessons_lamp:
+  friendly_name: Настольная лампа для уроков

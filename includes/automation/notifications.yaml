@@ -2063,7 +2063,7 @@
             message: >-
               {{ 
                 iif(trigger.id == 'overheating', 
-                'Обнаружен *перегрев* реле кулера шкафа NVR', 
+                'Обнаружен *перегрев* реле кулера шкафа NVR (*T=' + states('sensor.shelly_1pm_fan_nvr_box_device_temperature', true, true) + '*)', 
                 'Обнаружена высокая (*' + trigger.to_state.state + '*) температура в шкафу NVR')
               }}
 

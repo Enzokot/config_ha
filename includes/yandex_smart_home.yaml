@@ -32,6 +32,7 @@
       - cover.0x54ef4410005602ed
       - cover.0x54ef44100055ff04
       - cover.cover_group_living_room
+      - light.yeelight_lessons_lamp
 
   entity_config:
     switch.0x54ef441000691265:

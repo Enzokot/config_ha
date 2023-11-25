@@ -133,3 +133,21 @@
                 Температура {{ states('sensor.0x158d000542ceaf_temperature') | round(0, 'ceil', 0) | format(morph='градус', as_text=false) }} цельсия. 
                 Давление {{ states('sensor.158d000542ceaf_pressure') | round(0, 'ceil', 0) | format(morph='миллиметр', as_text=false) }} ртутного столба
                 Влажность {{ states('sensor.0x158d000542ceaf_humidity') | round(0, 'ceil', 0) | format(morph='процент', as_text=false) }}
+
+#Отправка карты уборки пылесоса
+    - alias: vacuum send map from alice command
+      id: vacuum send map from alice command
+      initial_state: true
+      max_exceeded: silent
+      trigger:
+        - platform: event
+          event_type: yandex_intent
+          event_data:
+            text: отправь карту уборки
+      action:
+        - service: telegram_bot.send_photo
+          data:
+            target: !secret telegram_all_chat_id
+            url: "{{- 'http://homeassistant.local.hass.io:8123' + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
+            caption: >-
+                   {{ '\U0001F5FA' }} *Степа* {{- '\n' -}} Текущая карта уборки

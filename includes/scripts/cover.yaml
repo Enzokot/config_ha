@@ -59,8 +59,11 @@
                 == state_attr(groupname, 'entity_id') | list | count }}
             timeout: 
               minutes: 1
+          - delay: 2
           - choose:
-              - conditions: "{{ not wait.completed }}"
+              - conditions: >-
+                    {{ not wait.completed or expand(groupname) | selectattr('state', 'eq', statename) | map(attribute='entity_id') | list | length 
+                        != state_attr(groupname, 'entity_id') | list | count}}
                 sequence:
                   - service: >-
                         {{ servicename }}

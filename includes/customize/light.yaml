@@ -20,3 +20,4 @@ light.yeelight_ceiling_cr_nightlight:
 #Настольные лампы
 light.yeelight_lessons_lamp:
   friendly_name: Настольная лампа для уроков
+  effect_list: []

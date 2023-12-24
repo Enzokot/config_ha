@@ -438,3 +438,12 @@
 
     climate.avatto_living_room_ac:
       type: devices.types.thermostat.ac
+
+    light.yeelight_lessons_lamp:
+      properties:
+        - type: amperage
+          entity: sensor.0x842e14fffe36661f_current
+        - type: power
+          entity: sensor.0x842e14fffe36661f_power
+        - type: voltage
+          entity: sensor.0x842e14fffe36661f_voltage

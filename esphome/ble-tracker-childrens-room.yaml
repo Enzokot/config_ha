@@ -1,12 +1,13 @@
 substitutions:
-  devicename: ble-tracker-childrens-room
+  devicename: ble_tracker_childrens_room
+  nodename: ble-tracker-childrens-room
 
 external_components:
   - source: github://TheStaticTurtle/esphome_syslog
     components: [syslog]
 
 esphome:
-  name: $devicename
+  name: $nodename
   comment: BLE childrens room
 
 esp32:
@@ -45,7 +46,7 @@ wifi:
     priority: 2
     
   ap:
-    ssid: "${devicename}"
+    ssid: "${nodename}"
     password: !secret wifi_password
 
 captive_portal:
@@ -74,9 +75,9 @@ time:
 text_sensor:
   - platform: wifi_info
     ssid:
-      name: "${devicename} Connected SSID"
+      name: "${devicename}_Connected_SSID"
     bssid:
-      name: "${devicename} Connected BSSID" 
+      name: "${devicename}_Connected_BSSID" 
 
 esp32_ble_tracker:
   scan_parameters:
@@ -95,7 +96,7 @@ sensor:
      name: "ESP Xiaomi Childrens Room Battery Level"
   
   - platform: wifi_signal
-    name: "$devicename WiFi RSSI"
+    name: "${devicename}_WiFi_RSSI"
     update_interval: 60s
 
 button:

@@ -1,12 +1,13 @@
 substitutions:
-  devicename: ble-tracker-bed-room
+  devicename: ble_tracker_bed_room
+  nodename: ble-tracker-bed-room
 
 external_components:
   - source: github://TheStaticTurtle/esphome_syslog
     components: [syslog]
 
 esphome:
-  name: $devicename
+  name: $nodename
   comment: BLE bed room
 
 esp32:
@@ -49,7 +50,7 @@ wifi:
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
-    ssid: "${devicename}"
+    ssid: "${nodename}"
     password: !secret wifi_password
 
 captive_portal:
@@ -107,13 +108,13 @@ sensor:
       name: "ESP Xiaomi Bed Room Battery Level"
 
   - platform: wifi_signal
-    name: "$devicename WiFi RSSI"
+    name: "${devicename}_WiFi_RSSI"
     update_interval: 60s
 
 switch:
   - platform: gpio
     id: onboard_led
-    name: "$devicename On Board Led"
+    name: "${devicename}_On_Board_Led"
     pin:
       number: GPIO2
       mode: OUTPUT
@@ -122,13 +123,13 @@ switch:
 text_sensor:
   - platform: wifi_info
     ssid:
-      name: "${devicename} Connected SSID"
+      name: "${devicename}_Connected_SSID"
     bssid:
-      name: "${devicename} Connected BSSID" 
+      name: "${devicename}_Connected_BSSID" 
 
 binary_sensor:
   - platform: status
-    name: "$devicename Status"
+    name: "${devicename}_Status"
     id: status_connection
     internal: true
     on_state:

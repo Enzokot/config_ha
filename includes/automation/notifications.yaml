@@ -2082,6 +2082,9 @@
         - condition: state
           entity_id: input_boolean.instances_stoping
           state: 'off'
+        - condition: numeric_state
+          entity_id: sensor.shelly_plug_s_nvr_power
+          below: 15
       action:
         - parallel:
             - service: telegram_bot.send_message
@@ -2145,3 +2148,23 @@
                             message: 'command_dnd'
                             data:
                               command: "{{ sm_g973f_rezhim_ne_bespokoit }}"
+
+#Уведомление о зарядке телефона
+    - alias: notification full battery level sm g973f
+      id: notification full battery level sm g973f
+      initial_state: true
+      max_exceeded: silent
+      trigger:
+        - platform: numeric_state
+          entity_id: sensor.sm_g973f_battery_level
+          above: 99
+      condition:
+        - condition: state
+          entity_id: binary_sensor.sm_g973f_is_charging
+          state: "on"
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: "{{ '\U0001F50B' }} *Состояние телефона*"
+            message: "Телефон полностью заряжен"

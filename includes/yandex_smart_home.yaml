@@ -26,7 +26,7 @@
       - humidifier.zhimi_humidifier_ca4
       - media_player.lg_smart_tv
       - cover.cover_group_kitchen
-      - media_player.samsung_tv_remote
+      - media_player.tv_kotletochka_tv_sam
       - switch.r4s01_kettle_boil
       - switch.power_switch_n550jk
       - cover.0x54ef4410005602ed
@@ -38,12 +38,12 @@
     switch.0x54ef441000691265:
       type: devices.types.light
       properties:
+        - type: voltage
+          entity: sensor.0x54ef441000691265_voltage
         - type: amperage
           entity: sensor.0x54ef441000691265_current
         - type: power
           entity: sensor.0x54ef441000691265_power
-        - type: voltage
-          entity: sensor.0x54ef441000691265_voltage
 
     switch.0x086bd7fffe5b7c7f_right:
       type: devices.types.light
@@ -78,27 +78,6 @@
             data:
               entity_id: remote.sony_bravia_tv
               command: "Play"
-      custom_ranges:
-        channel:
-          set_value:
-            service: media_player.play_media
-            data:
-              entity_id: media_player.sony_bravia_tv
-              media_content_type: "channel"
-              media_content_id: "{{ value }}"
-          increase_value:
-            service: remote.send_command
-            data:
-              entity_id: remote.sony_bravia_tv
-              command: 'ChannelUp'
-          decrease_value:
-            service: remote.send_command
-            data:
-              entity_id: remote.sony_bravia_tv
-              command: 'ChannelDown'
-          range:
-            min: 1
-            max: 204
 
     media_player.lg_smart_tv:
       type: devices.types.media_device.tv
@@ -123,6 +102,18 @@
             data:
               entity_id: media_player.lg_smart_tv
               button: 'PLAY'
+        mute:
+          state_attribute: is_volume_muted
+          turn_on:
+            service: webostv.button
+            data:
+              entity_id: media_player.lg_smart_tv
+              button: 'MUTE'
+          turn_off:
+            service: webostv.button
+            data:
+              entity_id: media_player.lg_smart_tv
+              button: 'MUTE'
       custom_ranges:
         channel:
           set_value:
@@ -145,8 +136,12 @@
             min: 1
             max: 156
 
-    media_player.samsung_tv_remote:
+    media_player.tv_kotletochka_tv_sam:
       type: devices.types.media_device.tv
+      turn_on:
+        service: esphome.perenio_petra01_kitchen_send_samsung_command
+        data:
+          data: '0xE0E040BF'
       turn_off:
         service: esphome.perenio_petra01_kitchen_send_samsung_command
         data:
@@ -154,17 +149,15 @@
       custom_toggles:
         pause:
           turn_on:
-            service: media_player.play_media
+            service: remote.send_command
             data:
-              entity_id: media_player.samsung_tv_remote
-              media_content_type: 'send_key'
-              media_content_id: 'KEY_PAUSE'
+              entity_id: remote.tv_kotletochka_tv_sam
+              command: 'KEY_PAUSE'
           turn_off:
-            service: media_player.play_media
+            service: remote.send_command
             data:
-              entity_id: media_player.samsung_tv_remote
-              media_content_type: 'send_key'
-              media_content_id: 'KEY_PLAY'
+              entity_id: remote.tv_kotletochka_tv_sam
+              command: 'KEY_PLAY'
       custom_ranges:
         channel:
           set_value:
@@ -173,21 +166,19 @@
             data:
               entity_id: script.media_player_play_media_content_type
               variables:
-                entity: media_player.samsung_tv_remote
+                entity: media_player.tv_kotletochka_tv_sam
                 content_id: "{{ value }}"
                 content_type: "channel"
           increase_value:
-            service: media_player.play_media
+            service: remote.send_command
             data:
-              entity_id: media_player.samsung_tv_remote
-              media_content_id: "KEY_CHUP"
-              media_content_type: "send_key"
+              entity_id: remote.tv_kotletochka_tv_sam
+              command: "KEY_CHUP"
           decrease_value:
-            service: media_player.play_media
+            service: remote.send_command
             data:
-              entity_id: media_player.samsung_tv_remote
-              media_content_id: "KEY_CHDOWN"
-              media_content_type: "send_key"
+              entity_id: remote.tv_kotletochka_tv_sam
+              command: "KEY_CHDOWN"
           range:
             min: 1
             max: 204
@@ -441,9 +432,19 @@
 
     light.yeelight_lessons_lamp:
       properties:
+        - type: voltage
+          entity: sensor.0x842e14fffe36661f_voltage
         - type: amperage
           entity: sensor.0x842e14fffe36661f_current
         - type: power
           entity: sensor.0x842e14fffe36661f_power
-        - type: voltage
-          entity: sensor.0x842e14fffe36661f_voltage
+
+    cover.0x54ef4410005602ed:
+      properties:
+        - type: battery_level
+          entity: sensor.0x54ef4410005602ed_battery
+
+    cover.0x54ef44100055ff04:
+      properties:
+        - type: battery_level
+          entity: sensor.0x54ef44100055ff04_battery

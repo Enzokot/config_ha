@@ -36,7 +36,7 @@
                       string_now_time: "{{ now().strftime('%Y%m%d-%H%M%S') }}"
                   - service: camera.snapshot
                     data:
-                      entity_id: camera.hallway_1_sub
+                      entity_id: camera.hallway_1_fluent
                       filename: "/share/obmen/Doorbeel_Snapshots/snapshot_hallway_1_{{ string_now_time }}.jpg"
               
                   - service: telegram_bot.send_photo

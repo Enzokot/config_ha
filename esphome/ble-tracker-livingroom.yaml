@@ -137,8 +137,12 @@ sensor:
     mac_address: !secret clock_bt_living_room_mac
     temperature:
       name: "ESP Xiaomi Living Room Temperature"
+      filters:
+          - timeout: 3h
     humidity:
       name: "ESP Xiaomi Living Room Humidity"
+      filters:
+          - timeout: 3h
     battery_level:
       name: "ESP Xiaomi Living Room Battery Level"
 
@@ -146,8 +150,12 @@ sensor:
     mac_address: !secret clock_bt_kitchen_mac
     temperature:
       name: "ESP Xiaomi Kitchen Temperature"
+      filters:
+          - timeout: 3h
     humidity:
       name: "ESP Xiaomi Kitchen Humidity"
+      filters:
+          - timeout: 3h
     battery_level:
       name: "ESP Xiaomi Kitchen Battery Level"
 

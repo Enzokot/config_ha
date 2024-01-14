@@ -436,3 +436,6 @@ sensor.shelly_1pm_fan_nvr_box_temperature:
 
 sensor.0x00158d0009ea1c0e_battery:
   friendly_name: Протечка воды около камеры тамбурной двери
+
+sensor.sostoianie_mosta:
+  friendly_name: Состояние моста

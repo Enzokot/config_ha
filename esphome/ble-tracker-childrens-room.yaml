@@ -89,11 +89,15 @@ sensor:
   - platform: xiaomi_lywsd02
     mac_address: !secret clock_bt_childrens_room_mac
     temperature:
-     name: "ESP Xiaomi Childrens Room Temperature"
+      name: "ESP Xiaomi Childrens Room Temperature"
+      filters:
+          - timeout: 3h
     humidity:
-     name: "ESP Xiaomi Childrens Room Humidity"
+      name: "ESP Xiaomi Childrens Room Humidity"
+      filters:
+          - timeout: 3h
     battery_level:
-     name: "ESP Xiaomi Childrens Room Battery Level"
+      name: "ESP Xiaomi Childrens Room Battery Level"
   
   - platform: wifi_signal
     name: "${devicename}_WiFi_RSSI"

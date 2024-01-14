@@ -114,7 +114,7 @@
     - platform: homeassistant
       event: shutdown
     # - platform: event
-    #   event_type: homeassistant_stop
+    #   event_type: shutdown
   action:
     - parallel:
         - service: >

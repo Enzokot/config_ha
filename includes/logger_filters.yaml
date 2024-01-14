@@ -9,7 +9,9 @@
     - "Unexpected error fetching Увлажнитель детская data: byte indices must be integers or slices, not str"
   homeassistant.helpers.entity:
     - "Update of media_player.lg_smart_tv is taking over*"
+    - "Update of media_player.tv_kotletochka_tv_sam is taking over*"
   homeassistant.components.media_player:
     - "Updating webostv media_player took longer than the scheduled update interval*"
+    - "Updating samsungtv media_player took longer than the scheduled update interval*"
   homeassistant.components.camera:
     - "Updating xiaomi_cloud_map_extractor camera took longer than the scheduled update interval*"

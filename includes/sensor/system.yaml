@@ -5,19 +5,6 @@
       - 'date'
       - 'time_date'
 
-  - platform: systemmonitor
-    resources:
-    - type: processor_use
-    - type: processor_temperature
-    - type: disk_use_percent
-      arg: /
-    - type: disk_use
-      arg: /
-    - type: disk_free
-      arg: /
-    - type: memory_use_percent
-    - type: last_boot
-
 #Сенсор external_url для чтения данных с конфига
   - platform: python_script
     name: instance external url config

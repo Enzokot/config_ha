@@ -102,8 +102,12 @@ sensor:
     mac_address: !secret clock_bt_bed_room_mac
     temperature:
       name: "ESP Xiaomi Bed Room Temperature"
+      filters:
+          - timeout: 3h
     humidity:
       name: "ESP Xiaomi Bed Room Humidity"
+      filters:
+          - timeout: 3h
     battery_level:
       name: "ESP Xiaomi Bed Room Battery Level"
 

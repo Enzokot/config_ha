@@ -96,6 +96,4 @@ yandex_smart_home: !include includes/yandex_smart_home.yaml
 yandex_station: !include includes/yandex_station.yaml
 xiaomi_gateway3: !include includes/xiaomi_gateway3.yaml
 
-# smartir: 
-# climate: !include includes/smartir/climate.yaml
 feedreader: !include includes/feedreader.yaml

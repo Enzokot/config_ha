@@ -241,15 +241,19 @@
           attribute: current_temperature
         - type: water_level
           entity: sensor.r4s01_kettle_volumelast
+        - type: electricity_meter
+          entity: sensor.r4s01_kettle_energy
+        - type: meter
+          entity: sensor.r4s01_kettle_oncount
       custom_toggles:
         mute:
-          state_entity_id: binary_sensor.r4s01_kettle_beep_inverted
+          state_entity_id: switch.r4s01_kettle_mute
           turn_on:
-            service: switch.turn_off
-            entity_id: switch.r4s01_kettle_beep
-          turn_off:
             service: switch.turn_on
-            entity_id: switch.r4s01_kettle_beep
+            entity_id: switch.r4s01_kettle_mute
+          turn_off:
+            service: switch.turn_off
+            entity_id: switch.r4s01_kettle_mute
         oscillation:
           state_entity_id: switch.r4s01_kettle_backlight
           turn_on:

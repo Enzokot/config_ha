@@ -13,7 +13,7 @@
         - name: zhimi_humidifier_cb1_low_water_level
           icon: mdi:water-off
           availability: "{{ not is_state('sensor.zhimi_humidifier_cb1_water_level', 'unavailable') }}"
-          state: "{{ is_state('binary_sensor.zhimi_humidifier_cb1_water_tank', 'on') and states('sensor.zhimi_humidifier_cb1_water_level') | int(0) < 15 }}"
+          state: "{{ is_state('binary_sensor.zhimi_humidifier_cb1_water_tank', 'on') and states('sensor.zhimi_humidifier_cb1_water_level') | int(0) < 25 }}"
           delay_on:
             minutes: 1
           delay_off:

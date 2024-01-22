@@ -1076,6 +1076,8 @@
                         (trigger.from_state.state | float(0.0) >= trigger.below
                         or trigger.from_state.state | float(0.0) <= trigger.above)
                         )
+                        and trigger.from_state.state | float(-1.0) >= 0
+                        and trigger.to_state.state | float(-1.0) >= 0
                     }}
       action:
         - service: telegram_bot.send_message

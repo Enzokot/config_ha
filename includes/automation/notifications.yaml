@@ -1867,7 +1867,9 @@
       condition:
         - condition: time
           after: "06:00:00"
-          before: "20:00:00"
+          before: "16:00:00"
+          weekday:
+            - mon
       action:
         - parallel:
             - service: telegram_bot.send_message
@@ -2167,3 +2169,27 @@
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0001F50B' }} *Состояние телефона*"
             message: "Телефон полностью заряжен"
+
+#Уведомление об отключении камер в детской и коридоре
+    - alias: notification tapo c100 cr or hw disconnected
+      id: notification tapo c100 cr or hw disconnected
+      initial_state: true
+      mode: parallel
+      trigger:
+        - platform: webhook
+          id: 'cr'
+          webhook_id: !secret webhook_id_cctv_cr_off
+          local_only: true
+          allowed_methods:
+            - PUT
+        - platform: webhook
+          webhook_id: !secret webhook_id_cctv_hw_off
+          local_only: true
+          allowed_methods:
+            - PUT
+      action:
+        - service: telegram_bot.send_message
+          data:
+            target: !secret telegram_enzokot_chat_id
+            title: "⚠️ *Трекинг устройств*"
+            message: "Камера в *{{- iif(trigger.id == 'cr', 'детской', 'коридоре') -}}* отключена"

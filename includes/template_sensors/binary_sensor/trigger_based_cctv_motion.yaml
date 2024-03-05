@@ -1,0 +1,30 @@
+
+#Сенсор наличия движения по камере в детской
+  - trigger:
+      - platform: webhook
+        webhook_id: !secret webhook_id_cctv_cr_motion
+        allowed_methods:
+          - PUT
+        local_only: true
+    binary_sensor:
+      - name: Tapo C110 CR Motion
+        unique_id: tapo_c110_cr_motion
+        state: "{{ true }}"
+        device_class: motion
+        auto_off:
+          seconds: 6
+
+#Сенсор наличия движения по камере в коридоре
+  - trigger:
+      - platform: webhook
+        webhook_id: !secret webhook_id_cctv_hw_motion
+        allowed_methods:
+          - PUT
+        local_only: true
+    binary_sensor:
+      - name: Tapo C110 HW Motion
+        unique_id: tapo_c110_hw_motion
+        state: "{{ true }}"
+        device_class: motion
+        auto_off:
+          seconds: 6

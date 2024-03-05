@@ -104,3 +104,20 @@
     #                  {{ '\U0001F41B' }} <b>Отладка</b>
     #         message: >-
     #                 repairs_issue_registry_updated: {{ trigger.event.data | e }}
+
+    # - alias: debug webhook notifications
+    #   trigger:
+    #     - platform: webhook
+    #       webhook_id: !secret webhook_id_cctv_cr_off
+    #       local_only: true
+    #       allowed_methods:
+    #         - PUT
+    #   action:
+    #     - service: telegram_bot.send_message
+    #       data:
+    #         target: !secret telegram_enzokot_chat_id
+    #         parse_mode: 'html'
+    #         title: >-
+    #                  {{ '\U0001F41B' }} <b>Отладка</b>
+    #         message: >-
+    #                 {{ iif(trigger.json.Event is none, "Пустое имя", trigger.json.Event, "Пустое имя") | e }} -> {{ iif(trigger.json.Device is none, "Пустое имя камеры", trigger.json.Device, "Пустое имя камеры") | e }}

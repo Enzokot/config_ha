@@ -124,7 +124,6 @@ binary_sensor.kernel_ext4_warning:
 binary_sensor.0x00158d000913dbf1_contact:
   friendly_name: Датчик мойки полов табмур
   device_class: moisture
-  invert_state: 1
 
 binary_sensor.0x00158d0009ea0949_water_leak:
   friendly_name: Протечка воды около NVR
@@ -147,3 +146,9 @@ binary_sensor.entrance_door_motion:
 
 binary_sensor.hallway_1_motion:
   friendly_name: Датчик движения общий коридор 1
+
+binary_sensor.tapo_c110_cr_motion:
+  friendly_name: Движение на камере детская
+
+binary_sensor.tapo_c110_hw_motion:
+  friendly_name: Движение на камере коридор

@@ -362,7 +362,7 @@ views:
               entities:
                 - entity: light.gateway_light_04cf8cabd77b
                 - entity: sensor.signalka_shliuza_illuminance
-                - entity: sensor.0x54ef4410000ebba0_illuminance
+                - entity: sensor.0x54ef4410000ebba0_illuminance_lux
                 
 
         - type: markdown
@@ -378,6 +378,9 @@ views:
             - entity: binary_sensor.0x158d00054b8d72_motion
               show_last_changed: true
               name: Детская
+            - entity: binary_sensor.tapo_c110_cr_motion
+              show_last_changed: true
+              name: Камера
             - entity: binary_sensor.0x158d0003f37a0f_contact
               show_last_changed: true
               icon: mdi:ceiling-light
@@ -462,6 +465,9 @@ views:
             - entity: binary_sensor.0x158d0003953ee9_motion
               show_last_changed: true
               name: 'Коридор 2'
+            - entity: binary_sensor.tapo_c110_hw_motion
+              show_last_changed: true
+              name: 'Камера'
 
         - type: markdown
           content: >
@@ -521,6 +527,7 @@ views:
              **Уровень заряда** 
 
         - type: custom:battery-state-card
+          default_state_formatting: false
           color_gradient:
               - "#ff0000" # red
               - "#ffff00" # yellow
@@ -885,7 +892,7 @@ views:
               entities:
                   - entity: sensor.0x842e14fffe36661f_power
                     name: 'Мощность'
-                  - entity: sensor.total_kithen_socket_1_cable_daily_electicity
+                  - entity: sensor.total_kitchen_socket_1_cable_daily_electicity
                     name: 'День'
                   - entity: sensor.total_kitchen_socket_1_cable_monthly_electicity
                     name: 'Месяц'
@@ -2359,3 +2366,23 @@ views:
               mode: webrtc
               background: false
               style: ".mode {display: none}"
+
+      - type: vertical-stack
+        cards:
+            - type: 'custom:webrtc-camera'
+              url: 'tapo_c110_hw_main'
+              ui: false
+              muted: true
+              intersection: 0.50
+              background: false
+              style: ".mode {display: none}"
+              mode: webrtc
+
+            - type: 'custom:webrtc-camera'
+              url: 'tapo_c110_cr_main'
+              ui: false
+              muted: true
+              intersection: 0.50
+              background: false
+              style: ".mode {display: none}"
+              mode: webrtc

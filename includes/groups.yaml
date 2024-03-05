@@ -12,7 +12,7 @@
           - sensor.ble_tracker_childrens_room_wifi_rssi
           - sensor.0x158d00054b8d72_battery
           - sensor.0x158d000566bde7_battery
-          - sensor.0x158d0003953ee9_battery
+          - sensor.0x158d0003953ee9_batt
           - remote.broadlink_ir_rm4_mini
           - sensor.0x158d0003d05782_battery
           - sensor.0x5c0272fffec89454_linkquality
@@ -111,6 +111,7 @@
           - sensor.0x00158d0006c5f21e_temperature
           - sensor.0x158d0006b860cf_temperature
           - sensor.0x00158d0008386b56_temperature
+          - sensor.shelly_1pm_fan_nvr_box_temperature
 
     entity_ids_for_turn_off_by_smoke_detector:
         entities:

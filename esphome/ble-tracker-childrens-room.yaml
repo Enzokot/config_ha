@@ -91,11 +91,11 @@ sensor:
     temperature:
       name: "ESP Xiaomi Childrens Room Temperature"
       filters:
-          - timeout: 3h
+          - timeout: 1h
     humidity:
       name: "ESP Xiaomi Childrens Room Humidity"
       filters:
-          - timeout: 3h
+          - timeout: 1h
     battery_level:
       name: "ESP Xiaomi Childrens Room Battery Level"
   

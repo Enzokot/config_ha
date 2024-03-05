@@ -27,9 +27,9 @@
     tariffs:
       - electicity
 
-  total_kithen_socket_1_cable_daily:
+  total_kitchen_socket_1_cable_daily:
     source: sensor.total_kitchen_socket_1_cable
-    unique_id: total_kithen_socket_1_cable_daily
+    unique_id: total_kitchen_socket_1_cable_daily
     cycle: daily
     tariffs:
       - electicity
@@ -197,9 +197,9 @@
 #     tariffs:
 #       - electicity
 
-#   total_kithen_socket_1_cable_daily:
+#   total_kitchen_socket_1_cable_daily:
 #     source: sensor.0x842e14fffe36661f_energy
-#     unique_id: total_kithen_socket_1_cable_daily
+#     unique_id: total_kitchen_socket_1_cable_daily
 #     cycle: daily
 #     tariffs:
 #       - electicity

@@ -5,7 +5,7 @@
       mode: restart
       trigger:
       - platform: numeric_state
-        entity_id: sensor.0x54ef4410000ebba0_illuminance
+        entity_id: sensor.0x54ef4410000ebba0_illuminance_lux
         above: 250
         for:
           minutes: 10
@@ -37,7 +37,7 @@
       mode: restart
       trigger:
       - platform: numeric_state
-        entity_id: sensor.0x54ef4410000ebba0_illuminance
+        entity_id: sensor.0x54ef4410000ebba0_illuminance_lux
         below: 150
         for:
           minutes: 10
@@ -71,7 +71,7 @@
         attribute: elevation
         below: 2
       condition:
-        - "{{ states('sensor.0x54ef4410000ebba0_illuminance') | int(0) <= 250 }}"
+        - "{{ states('sensor.0x54ef4410000ebba0_illuminance_lux') | int(0) <= 250 }}"
         - "{{ is_state_attr('sun.sun', 'rising', false) }}"
         - "{{ expand('cover.cover_group_kitchen') | selectattr('state', 'eq', 'closed') | map(attribute='entity_id') | list | length == 0 }}"
       action:
@@ -87,7 +87,7 @@
       mode: restart
       trigger:
       - platform: numeric_state
-        entity_id: sensor.0x54ef4410000ebba0_illuminance
+        entity_id: sensor.0x54ef4410000ebba0_illuminance_lux
         above: 250
         for:
           minutes: 10
@@ -119,7 +119,7 @@
       mode: restart
       trigger:
       - platform: numeric_state
-        entity_id: sensor.0x54ef4410000ebba0_illuminance
+        entity_id: sensor.0x54ef4410000ebba0_illuminance_lux
         below: 150
         for:
           minutes: 10
@@ -149,7 +149,7 @@
         attribute: elevation
         below: 2
       condition:
-        - "{{ states('sensor.0x54ef4410000ebba0_illuminance') | int(0) <= 250 }}"
+        - "{{ states('sensor.0x54ef4410000ebba0_illuminance_lux') | int(0) <= 250 }}"
         - "{{ is_state_attr('sun.sun', 'rising', false) }}"
         - "{{ expand('cover.cover_group_living_room') | selectattr('state', 'eq', 'closed') | map(attribute='entity_id') | list | length == 0 }}"
       action:

@@ -141,7 +141,7 @@ sensor.total_server_socket_cable_daily_electicity:
 sensor.total_server_socket_cable_monthly_electicity:
   friendly_name: Сервер потреб. мес.
 
-sensor.total_kithen_socket_1_cable_daily_electicity:
+sensor.total_kitchen_socket_1_cable_daily_electicity:
   friendly_name: Кухня роз. 1 потреб. день
   
 sensor.total_kitchen_socket_1_cable_monthly_electicity:
@@ -171,7 +171,7 @@ sensor.0x60a423fffef8d41a_power:
 sensor.shelly_plug_s_1_power:
   friendly_name: Тек. мощность
 
-sensor.0x54ef4410000ebba0_illuminance:
+sensor.0x54ef4410000ebba0_illuminance_lux:
   friendly_name: Улица освещенность
 
 sensor.0x54ef4410000ebba0_battery:

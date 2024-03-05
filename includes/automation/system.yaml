@@ -223,9 +223,9 @@
     - choose:
         - conditions: "{{ not wait.completed and is_state('binary_sensor.local_network_availability', 'on') }}"
           sequence:
-              - service: huawei_lte.reboot
+              - service: button.press
                 data:
-                  url: 'http://192.168.8.1/'
+                  entity_id: button.e3372h_320_restart
 
 #Обновление Telegram bot API token в input text
 - alias: update input text telegram bot api token

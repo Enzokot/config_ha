@@ -1,14 +1,26 @@
 
+  devices:
+    ble:
+      entities: false
+    mesh:
+      entities: false
+    "0x00158d00054b8d72":
+      occupancy_timeout: 62
+    "0x00158d000566bde7":
+      occupancy_timeout: 62
+    "0x00158d0003953ee9":
+      occupancy_timeout: 62
+
   attributes_template: |
     {% if attr in ('zigbee', 'ble', 'mesh') %}{{{
-      "gate": gateway.info.name,
-      "fw_version": device.fw_ver
+      "gate": gateway.human_name,
+      "fw_version": device.firmware
     }}}
     {% elif attr == 'gateway' %}{{{
-      "fw_version": device.fw_ver,
+      "fw_version": gateway.firmware,
     }}}
     {% elif attr == 'battery' %}{{{
-      "gate": gateway.info.name
+      "gate": gateway.human_name
     }}}
     {% endif %}
   logger:

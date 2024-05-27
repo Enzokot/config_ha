@@ -8,13 +8,13 @@ sensor.illumination_04cf8cabd77b:
   friendly_name: Шлюз освещенность
   device_class: illuminance
 
-sensor.0x158d000542ceaf_temperature:
+sensor.0x00158d000542ceaf_temperature:
   friendly_name: Т улица
 
 sensor.0x00158d0004561de9_temperature:
   friendly_name: Т ванная
   
-sensor.0x158d000542ceaf_humidity:
+sensor.0x00158d000542ceaf_humidity:
   friendly_name: Rh улица
 
 sensor.0x00158d0004561de9_humidity:
@@ -81,7 +81,7 @@ sensor.0x158d0003953ee9_zigbee:
 sensor.0x00158d0004561de9_battery:
   friendly_name: Т&Rh ванная
 
-sensor.0x158d000542ceaf_battery:
+sensor.0x00158d000542ceaf_battery:
   friendly_name: Т&Rh улица
 
 sensor.0x158d0003f37a0f_battery:
@@ -254,12 +254,6 @@ sensor.zhimi_humidifier_ca4_temperature:
 sensor.zhimi_humidifier_ca4_humidity:
   friendly_name: Rh увлажнитель детская
 
-sensor.temp_for_ac_living_room:
-  friendly_name: Температура
-
-sensor.humidity_for_ac_living_room:
-  friendly_name: Влажность
-
 sensor.thermostat_bedroom_valve_position:
   friendly_name: Положение штока
 
@@ -396,10 +390,10 @@ sensor.login_ssh_kotletochka_dell_srv:
   friendly_name: Последний логин ssh DELL server
 
 sensor.0x54ef4410005602ed_battery:
-  friendly_name: Лев. окно гостиная
+  friendly_name: Лев. окно шторы гостиная
 
 sensor.0x54ef44100055ff04_battery:
-  friendly_name: Прав. окно гостиная
+  friendly_name: Прав. окно шторы гостиная
 
 sensor.0x00158d000913dbf1_battery:
   friendly_name: Датчик мойки полов тамбур
@@ -439,3 +433,21 @@ sensor.0x00158d0009ea1c0e_battery:
 
 sensor.sostoianie_mosta:
   friendly_name: Состояние моста
+
+sensor.temperature_humidity_sensor_500d_temperature:
+  friendly_name: Т общий коридор
+
+sensor.temperature_humidity_sensor_500d_humidity:
+  friendly_name: Rh общий коридор
+
+sensor.temperature_humidity_sensor_500d_battery:
+  friendly_name: Т&Rh общий коридор
+
+sensor.shelly_plug_s_keenetic_hw_power:
+  friendly_name: Тек. мощность
+
+sensor.total_shelly_plug_s_keenetic_hw_cable_daily_electicity:
+  friendly_name: Keenetic HW потреб. день
+  
+sensor.total_shelly_plug_s_keenetic_hw_cable_monthly_electicity:
+  friendly_name: Keenetic HW потреб. мес.

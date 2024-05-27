@@ -14,6 +14,8 @@
 #Перезапуск интеграции speedtest.net по недоступности сенсоров
 - alias: speedtest_integration_restart
   id: speedtest_integration_restart
+  trigger_variables:
+    not_has_state: "{{ ['unknown', 'unavailable', 'none'] }}"
   trigger:
     - platform: time_pattern
       minutes: "/45"
@@ -26,10 +28,9 @@
       state: 'on'
     - condition: template
       value_template: >
-            {% set ignore = ['unknown', 'unavailable', 'none'] %}
-            {{ states('sensor.speedtest_ping') in ignore and
-               states('sensor.speedtest_download') in ignore and
-               states('sensor.speedtest_upload') in ignore
+            {{ states('sensor.speedtest_ping') in not_has_state and
+               states('sensor.speedtest_download') in not_has_state and
+               states('sensor.speedtest_upload') in not_has_state
             }}
   action:
     - service: homeassistant.reload_config_entry
@@ -42,6 +43,8 @@
   id: speedtest_integration_restart_on_event
   mode: single
   max_exceeded: silent
+  trigger_variables:
+    not_has_state: "{{ ['unknown', 'unavailable', 'none'] }}"
   trigger:
     - platform: event
       event_type: state_changed
@@ -66,7 +69,7 @@
     - condition: template
       value_template: >-
         {{ trigger.event.data.new_state.state != trigger.event.data.old_state.state 
-            and trigger.event.data.new_state.state in ['unknown', 'unavailable', 'none']
+            and trigger.event.data.new_state.state in not_has_state
         }}
   action:
     - choose:
@@ -80,25 +83,6 @@
             - service: homeassistant.reload_config_entry
               data:
                 entry_id: "{{ config_entry_id('sensor.speedtest_ping') }}"
-
-#Удаление устройств, без удаления интеграции
-- alias: device_entity_deletion_python_script
-  id: device_entity_deletion_python_script
-  initial_state: true
-  mode: parallel
-  max: 200
-  trigger:
-    - platform: event
-      event_type: device_registry_updated
-  action:
-    - service: python_script.exec
-      data:
-        device_id: "{{ trigger.event.data.device_id }}"
-        source: |
-          registry = hass.data['device_registry']
-          device = registry.async_get(data['device_id'])
-          if device and device.name_by_user == 'delete_this':
-              registry.async_remove_device(data['device_id'])
 
 #Установка флага перезапуска НА
 - alias: system_event_instances_starting_stoping_set
@@ -140,15 +124,16 @@
   initial_state: true
   mode: single
   max_exceeded: silent
+  trigger_variables:
+    not_has_state: "{{ ['unknown', 'unavailable', 'none', None, null, '', 'null'] }}"
   trigger:
     - platform: state
       entity_id: sensor.check_keenetic_link_down
   condition:
     - condition: template
       value_template: >
-        {% set ignore = ['unknown', 'unavailable', 'none', None, null, '', 'null'] %}
         {{ 
-           trigger.to_state.state not in ignore and trigger.from_state.state != '' and
+           trigger.to_state.state not in not_has_state and trigger.from_state.state != '' and
            trigger.to_state.state != trigger.from_state.state
         }}
   action:

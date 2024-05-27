@@ -153,6 +153,7 @@
             - sensor.shelly_plug_s_2_power
             - sensor.shelly_plug_s_nvr_power
             - sensor.shelly_1pm_fan_nvr_box_power
+            - sensor.shelly_plug_s_keenetic_hw_power
         above: 3000
       action:
           - service: switch.turn_off
@@ -199,6 +200,24 @@
       initial_state: true
       mode: parallel
       max: 100
+      trigger_variables:
+        not_has_state: "{{ ['unknown', 'unavailable', 'none'] }}"
+        entity_dict: >-
+            {{
+                {"sensor.0x842e14fffe5047f5_energy": "input_number.total_heater_socket_saved",
+                   "sensor.0x842e14fffe13a854_energy": "input_number.total_water_heater_socket_saved",
+                   "sensor.0x842e14fffe36661f_energy": "input_number.total_kitchen_socket1_saved",
+                   "sensor.0x588e81fffeff5c4f_energy": "input_number.total_bedroom_socket1_saved",
+                   "sensor.0x60a423fffef8d41a_energy": "input_number.total_bedroom_socket2_saved",
+                   "sensor.0x54ef441000096cbc_energy": "input_number.total_yeelight_ceiling_relay_saved",
+                   "sensor.shelly_em_energy": "input_number.total_shelly_em_saved",
+                   "sensor.shelly_plug_s_1_energy": "input_number.total_server_ac_saved",
+                   "sensor.shelly_plug_s_2_energy": "input_number.total_shelly_plug_s_2_saved",
+                   "sensor.0x54ef441000691265_energy": "input_number.total_kitchen_light_switch_working_area_saved",
+                   "sensor.shelly_1pm_fan_nvr_box_energy": "input_number.total_shelly_1pm_fan_nvr_box_saved",
+                   "sensor.shelly_plug_s_keenetic_hw_energy": "input_number.total_shelly_plug_s_keenetic_hw_saved",
+                   "sensor.shelly_plug_s_nvr_energy": "input_number.total_shelly_plug_s_nvr_saved"}
+            }}
       trigger:
         - platform: state
           entity_id: 
@@ -214,31 +233,18 @@
             - sensor.0x54ef441000691265_energy
             - sensor.shelly_plug_s_nvr_energy
             - sensor.shelly_1pm_fan_nvr_box_energy
+            - sensor.shelly_plug_s_keenetic_hw_energy
       condition:
         - condition: template
           value_template: >- 
-                {% set ignore = ['unknown', 'unavailable', 'none'] %}
-                {{ trigger.to_state.state not in ignore and
-                   trigger.from_state.state not in ignore and
+                {{ trigger.to_state.state not in not_has_state and
+                   trigger.from_state.state not in not_has_state and
                    trigger.to_state.state != trigger.from_state.state
                 }}
       action:
         - variables:
             entity_id: >-
-              {% set v = {"sensor.0x842e14fffe5047f5_energy": "input_number.total_heater_socket_saved",
-                           "sensor.0x842e14fffe13a854_energy": "input_number.total_water_heater_socket_saved",
-                           "sensor.0x842e14fffe36661f_energy": "input_number.total_kitchen_socket1_saved",
-                           "sensor.0x588e81fffeff5c4f_energy": "input_number.total_bedroom_socket1_saved",
-                           "sensor.0x60a423fffef8d41a_energy": "input_number.total_bedroom_socket2_saved",
-                           "sensor.0x54ef441000096cbc_energy": "input_number.total_yeelight_ceiling_relay_saved",
-                           "sensor.shelly_em_energy": "input_number.total_shelly_em_saved",
-                           "sensor.shelly_plug_s_1_energy": "input_number.total_server_ac_saved",
-                           "sensor.shelly_plug_s_2_energy": "input_number.total_shelly_plug_s_2_saved",
-                           "sensor.0x54ef441000691265_energy": "input_number.total_kitchen_light_switch_working_area_saved",
-                           "sensor.shelly_1pm_fan_nvr_box_energy": "input_number.total_shelly_1pm_fan_nvr_box_saved",
-                           "sensor.shelly_plug_s_nvr_energy": "input_number.total_shelly_plug_s_nvr_saved"}
-              %}
-              {{ v[trigger.entity_id] }}
+              {{ entity_dict[trigger.entity_id] }}
         - service: input_number.set_value
           data:
             entity_id: "{{ entity_id }}"

@@ -102,7 +102,7 @@ remote_receiver:
     mode: INPUT_PULLUP
     inverted: true
   dump: all
-  tolerance: 55
+  tolerance: 55%
   id: "receiver_s06_living_room"
 
 remote_transmitter:

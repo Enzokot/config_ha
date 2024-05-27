@@ -21,6 +21,7 @@ homeassistant:
       include:
         - telegram_enzokot_to_bot
       message: "\U0001F511 *Двухфакторная аутентификация*\n`{}` код для завершения авторизации Home Assistant"
+  debug: false
 
 config:
 frontend:
@@ -28,7 +29,6 @@ lovelace:
   mode: yaml
   resources: !include includes/resources.yaml
 panel_custom: !include includes/panel_custom.yaml
-panel_iframe: !include includes/panel_iframe.yaml
 
 dhcp:
 ssdp:
@@ -53,8 +53,14 @@ logbook:
 recorder: !include includes/recorder.yaml
 influxdb: !include includes/influxdb.yaml
 logger:
-  default: warn
+  default: info
+#  default: warn
   filters: !include includes/logger_filters.yaml
+#   logs:
+#     homeassistant.bootstrap: debug
+#     homeassistant.setup: debug
+#     homeassistant.loader: debug
+#     homeassistant.config_entries: debug
 system_log:
   fire_event: true
 

@@ -29,7 +29,7 @@
           - sensor.0x158d0003a360b6_battery
           - sensor.0x158d00045a78af_battery
           - sensor.0x54ef4410000ebba0_battery
-          - sensor.0x158d000542ceaf_battery
+          - sensor.0x00158d000542ceaf_battery
           - sensor.0x158d00039a2f33_battery
           - sensor.0x158d0003975d8b_battery
           - sensor.0x00124b00215bb163_linkquality
@@ -37,6 +37,7 @@
           - switch.shelly_plug_s_2
           - switch.shelly_plug_s_nvr
           - switch.shelly_1pm_fan_nvr_box
+          - switch.shelly_plug_s_keenetic_hw
           - sensor.0x00158d00045cd551_battery
           - sensor.0x158d00045ca483_battery
           - sensor.0x158d00039d9398_battery
@@ -99,11 +100,14 @@
           - sensor.esp_xiaomi_living_room_humidity
           - sensor.esp_xiaomi_kitchen_temperature
           - sensor.esp_xiaomi_kitchen_humidity
+          - sensor.temperature_humidity_sensor_500d_temperature
+          - sensor.temperature_humidity_sensor_500d_humidity
+          - switch.014020518886002182_bsh_common_setting_powerstate
 
     temperature_summary_group_to_bot:
         entities:
           - sensor.esp_xiaomi_childrens_room_temperature
-          - sensor.0x158d000542ceaf_temperature
+          - sensor.0x00158d000542ceaf_temperature
           - sensor.esp_xiaomi_bed_room_temperature
           - sensor.esp_xiaomi_living_room_temperature
           - sensor.0x00158d0004561de9_temperature
@@ -112,6 +116,7 @@
           - sensor.0x158d0006b860cf_temperature
           - sensor.0x00158d0008386b56_temperature
           - sensor.shelly_1pm_fan_nvr_box_temperature
+          - sensor.temperature_humidity_sensor_500d_temperature
 
     entity_ids_for_turn_off_by_smoke_detector:
         entities:
@@ -135,3 +140,4 @@
           - humidifier.zhimi_humidifier_ca4
           - humidifier.zhimi_humidifier_cb1
           - light.yeelight_lessons_lamp
+          - switch.shelly_plug_s_2

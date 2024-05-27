@@ -37,15 +37,12 @@ binary_sensor.0x158d000490fe9d_contact:
 
 binary_sensor.0x158d00054b8d72_motion:
   friendly_name: Датчик движения детская
-  occupancy_timeout: 62
 
 binary_sensor.0x158d000566bde7_motion:
   friendly_name: Датчик движения коридор 1
-  occupancy_timeout: 62
 
 binary_sensor.0x158d0003953ee9_motion:
   friendly_name: Датчик движения коридор 2
-  occupancy_timeout: 62
 
 binary_sensor.0x158d00039677d9_contact:
   friendly_name: Балконная дверь детская

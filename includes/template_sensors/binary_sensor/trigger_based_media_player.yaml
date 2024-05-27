@@ -1,5 +1,13 @@
-    - binary_sensor:
+
 #Сенсоры отключения колонками локального режима
+    - trigger:
+        - platform: state
+          entity_id: media_player.yandex_station_ff98f029b620413b35e5e278
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      binary_sensor:
         - name: yandex_station_ff98f029b620413b35e5e278_assumed_state
           icon: mdi:cloud-alert
           availability: "{{ not is_state('media_player.yandex_station_ff98f029b620413b35e5e278', 'unavailable') }}"
@@ -9,6 +17,14 @@
           delay_off:
             seconds: 5
 
+    - trigger:
+        - platform: state
+          entity_id: media_player.yandex_station_lr0000000000000252130000de5d13d0
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      binary_sensor:
         - name: yandex_station_lr0000000000000252130000de5d13d0_assumed_state
           icon: mdi:cloud-alert
           availability: "{{ not is_state('media_player.yandex_station_lr0000000000000252130000de5d13d0', 'unavailable') }}"
@@ -18,6 +34,14 @@
           delay_off:
             seconds: 5
 
+    - trigger:
+        - platform: state
+          entity_id: media_player.yandex_station_m00ka4300h99tr
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      binary_sensor:
         - name: yandex_station_m00ka4300h99tr_assumed_state
           icon: mdi:cloud-alert
           availability: "{{ not is_state('media_player.yandex_station_m00ka4300h99tr', 'unavailable') }}"

@@ -1,0 +1,169 @@
+
+    - trigger:
+        - platform: state
+          entity_id: input_number.total_heater_socket_saved
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      sensor:
+        - name: total_heater_socket_cable
+          unit_of_measurement: kWh
+          icon: mdi:horizontal-rotate-counterclockwise
+          state: "{{ states('input_number.total_heater_socket_saved') }}"
+
+    - trigger:
+        - platform: state
+          entity_id: input_number.total_water_heater_socket_saved
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      sensor:
+        - name: total_water_heater_socket_cable
+          unit_of_measurement: kWh
+          icon: mdi:horizontal-rotate-counterclockwise
+          state: "{{ states('input_number.total_water_heater_socket_saved') }}"
+
+    - trigger:
+        - platform: state
+          entity_id: input_number.total_bedroom_socket1_saved
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      sensor:
+        - name: total_bedroom_socket_1_cable
+          unit_of_measurement: kWh
+          icon: mdi:horizontal-rotate-counterclockwise
+          state: "{{ states('input_number.total_bedroom_socket1_saved') }}"
+
+    - trigger:
+        - platform: state
+          entity_id: input_number.total_bedroom_socket2_saved
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      sensor:
+        - name: total_bedroom_socket_2_cable
+          unit_of_measurement: kWh
+          icon: mdi:horizontal-rotate-counterclockwise
+          state: "{{ states('input_number.total_bedroom_socket2_saved') }}"
+
+    - trigger:
+        - platform: state
+          entity_id: input_number.total_kitchen_socket1_saved
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      sensor:
+        - name: total_kitchen_socket_1_cable
+          unit_of_measurement: kWh
+          icon: mdi:horizontal-rotate-counterclockwise
+          state: "{{ states('input_number.total_kitchen_socket1_saved') }}"
+
+    - trigger:
+        - platform: state
+          entity_id: input_number.total_yeelight_ceiling_relay_saved
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      sensor:
+        - name: total_yeelight_ceiling_relay_cable
+          unit_of_measurement: kWh
+          icon: mdi:horizontal-rotate-counterclockwise
+          state: "{{ states('input_number.total_yeelight_ceiling_relay_saved') }}"
+
+    - trigger:
+        - platform: state
+          entity_id: input_number.total_shelly_em_saved
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      sensor:
+        - name: total_shelly_em_cable
+          unit_of_measurement: kWh
+          icon: mdi:horizontal-rotate-counterclockwise
+          state: "{{ states('input_number.total_shelly_em_saved') }}"
+
+    - trigger:
+        - platform: state
+          entity_id: input_number.total_server_ac_saved
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      sensor:
+        - name: total_server_socket_cable
+          unit_of_measurement: kWh
+          icon: mdi:horizontal-rotate-counterclockwise
+          state: "{{ states('input_number.total_server_ac_saved') }}"
+
+    - trigger:
+        - platform: state
+          entity_id: input_number.total_shelly_plug_s_2_saved
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      sensor:
+        - name: total_shelly_plug_s_2_cable
+          unit_of_measurement: kWh
+          icon: mdi:horizontal-rotate-counterclockwise
+          state: "{{ states('input_number.total_shelly_plug_s_2_saved') }}"
+
+    - trigger:
+        - platform: state
+          entity_id: input_number.total_kitchen_light_switch_working_area_saved
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      sensor:
+        - name: total_kitchen_light_switch_working_area_cable
+          unit_of_measurement: kWh
+          icon: mdi:horizontal-rotate-counterclockwise
+          state: "{{ states('input_number.total_kitchen_light_switch_working_area_saved') }}"
+
+    - trigger:
+        - platform: state
+          entity_id: input_number.total_shelly_plug_s_nvr_saved
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      sensor:
+        - name: total_shelly_plug_s_nvr_cable
+          unit_of_measurement: kWh
+          icon: mdi:horizontal-rotate-counterclockwise
+          state: "{{ states('input_number.total_shelly_plug_s_nvr_saved') }}"
+
+    - trigger:
+        - platform: state
+          entity_id: input_number.total_shelly_1pm_fan_nvr_box_saved
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      sensor:
+        - name: total_shelly_1pm_fan_nvr_box_cable
+          unit_of_measurement: kWh
+          icon: mdi:horizontal-rotate-counterclockwise
+          state: "{{ states('input_number.total_shelly_1pm_fan_nvr_box_saved') }}"
+
+    - trigger:
+        - platform: state
+          entity_id: input_number.total_shelly_plug_s_keenetic_hw_saved
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      sensor:
+        - name: total_shelly_plug_s_keenetic_hw_cable
+          unit_of_measurement: kWh
+          icon: mdi:horizontal-rotate-counterclockwise
+          state: "{{ states('input_number.total_shelly_plug_s_keenetic_hw_saved') }}"

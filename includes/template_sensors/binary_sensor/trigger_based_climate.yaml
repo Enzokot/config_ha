@@ -1,6 +1,15 @@
 
-    - binary_sensor:
 #Сенсоры низкого уровня воды в увлажнителях
+    - trigger:
+        - platform: state
+          entity_id: 
+            - sensor.zhimi_humidifier_ca4_water_level
+            - binary_sensor.zhimi_humidifier_ca4_water_tank
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      binary_sensor:
         - name: zhimi_humidifier_ca4_low_water_level
           icon: mdi:water-off
           availability: "{{ not is_state('sensor.zhimi_humidifier_ca4_water_level', 'unavailable') }}"
@@ -10,6 +19,16 @@
           delay_off:
             minutes: 5
         
+    - trigger:
+        - platform: state
+          entity_id: 
+            - sensor.zhimi_humidifier_cb1_water_level
+            - binary_sensor.zhimi_humidifier_cb1_water_tank
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      binary_sensor:
         - name: zhimi_humidifier_cb1_low_water_level
           icon: mdi:water-off
           availability: "{{ not is_state('sensor.zhimi_humidifier_cb1_water_level', 'unavailable') }}"
@@ -20,8 +39,24 @@
             minutes: 5
 
 #Сенсор текущего режима увлажнителей для карточки conditional в UI
+    - trigger:
+        - platform: state
+          entity_id: humidifier.zhimi_humidifier_ca4
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      binary_sensor:
         - name: zhimi_humidifier_ca4_current_mode
           state: "{{ is_state('humidifier.zhimi_humidifier_ca4', 'on') and is_state_attr('humidifier.zhimi_humidifier_ca4', 'mode', 'Auto') }}"
 
+    - trigger:
+        - platform: state
+          entity_id: humidifier.zhimi_humidifier_cb1
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      binary_sensor:
         - name: zhimi_humidifier_cb1_current_mode
           state: "{{ is_state('humidifier.zhimi_humidifier_cb1', 'on') and is_state_attr('humidifier.zhimi_humidifier_cb1', 'mode', 'Auto') }}"

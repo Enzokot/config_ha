@@ -64,3 +64,7 @@ switch.shelly_plug_s_nvr:
 switch.shelly_1pm_fan_nvr_box:
   friendly_name: Вкл/выкл кулер шкафа NVR
   icon: mdi:fan
+
+switch.shelly_plug_s_keenetic_hw:
+  friendly_name: Вкл/выкл Keenetic HW
+  icon: mdi:power-socket-eu

@@ -21,13 +21,14 @@
 
     - alias: notification public ip compare debug
       id: notification public ip compare debug
+      trigger_variables:
+        not_has_state: "{{ ['unknown', 'unavailable', 'none', None, null, ''] }}"
       trigger:
           - platform: state
             entity_id: sensor.myip_keenetic
       condition: >
-            {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
-            {{ trigger.from_state.state not in ignore and
-               trigger.to_state.state not in ignore and
+            {{ trigger.from_state.state not in not_has_state and
+               trigger.to_state.state not in not_has_state and
                trigger.from_state.state != trigger.to_state.state and
                trigger.to_state.state != states('sensor.myip')
             }}

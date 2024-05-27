@@ -20,14 +20,16 @@
   initial_state: true
   mode: single
   max_exceeded: silent
+  trigger_variables:
+    not_has_state: "{{ ['unknown', 'unavailable', 'none', none, null] }}"
   trigger:
     - platform: state
       entity_id: sensor.zhimi_humidifier_cb1_target_humidity
   condition:
     - condition: template
       value_template: >
-        {% set ignore = ['unknown', 'unavailable', 'none', none, null] %}
-        {{ trigger.to_state.state not in ignore and 
+        {{ trigger.to_state.state is defined and
+          trigger.to_state.state not in not_has_state and 
           trigger.to_state.state != trigger.from_state.state
         }}
   action:
@@ -60,14 +62,16 @@
   initial_state: true
   mode: single
   max_exceeded: silent
+  trigger_variables:
+    not_has_state: "{{ ['unknown', 'unavailable', 'none', none, null] }}"
   trigger:
     - platform: state
       entity_id: sensor.zhimi_humidifier_ca4_target_humidity
   condition:
     - condition: template
       value_template: >
-        {% set ignore = ['unknown', 'unavailable', 'none', none, null] %}
-        {{ trigger.to_state.state not in ignore and 
+        {{ trigger.to_state.state is defined and
+          trigger.to_state.state not in not_has_state and 
           trigger.to_state.state != trigger.from_state.state
         }}
   action:
@@ -130,6 +134,8 @@
   id: turn on off climate devices childrens room window open close
   mode: single
   max_exceeded: silent
+  trigger_variables:
+    not_has_state: "{{ ['unknown', 'unavailable'] }}"
   trigger:
     - platform: state
       entity_id: binary_sensor.window_childrens_room_group
@@ -151,7 +157,7 @@
       - parallel:
           - sequence:
             - if:
-                - "{{ states('humidifier.zhimi_humidifier_ca4') in ['unknown', 'unavailable'] }}"
+                - "{{ states('humidifier.zhimi_humidifier_ca4') in not_has_state }}"
               then:
                 - wait_for_trigger:
                     - platform: state
@@ -235,6 +241,8 @@
   id: turn on off climate devices bed room window open close
   mode: single
   max_exceeded: silent
+  trigger_variables:
+    not_has_state: "{{ ['unknown', 'unavailable'] }}"
   trigger:
     - platform: state
       entity_id: binary_sensor.window_bed_room_group
@@ -256,7 +264,7 @@
       - parallel:
           - sequence:
             - if:
-                - "{{ states('humidifier.zhimi_humidifier_cb1') in ['unknown', 'unavailable'] }}"
+                - "{{ states('humidifier.zhimi_humidifier_cb1') in not_has_state }}"
               then:
                 - wait_for_trigger:
                     - platform: state

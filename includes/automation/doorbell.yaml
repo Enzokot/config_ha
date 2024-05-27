@@ -20,13 +20,7 @@
             state: 'disarmed'
           - condition: template
             value_template: >
-                              {{ trigger.to_state.state not in ['release', 'unavailable', 'unknown', '', 'None'] }}
-                #  - 'hold'
-                #  - 'single'
-                #  - 'double'
-                #  - 'triple'
-                #  - 'quadruple'
-                #  - 'many'
+                {{ trigger.to_state.state not in ['release', 'unavailable', 'unknown', '', 'None'] }}
       action:
           - service: timer.start
             entity_id: timer.doorbell_timer_restart_automation
@@ -57,99 +51,57 @@
                       gw_mac: !secret gateway1_mac
                       ringtone_id: 10001
                       ringtone_vol: 45
-
-    - alias: turn_on_doorbell_alice_custom_tts
-      id: turn_on_doorbell_alice_custom_tts
-      initial_state: true
-      mode: single
-      max_exceeded: silent
-      trigger:
-        - platform: state
-          entity_id: sensor.0x158d00045a78af_action
-      condition:
-          - condition: time
-            after: '8:00:00'
-            before: '21:30:00'
-          - condition: state
-            entity_id: timer.doorbell_timer_restart_automation
-            state: 'idle'
-          - condition: state
-            entity_id: input_boolean.alarm_gateway_button
-            state: 'off'
-          - condition: state
-            entity_id: alarm_control_panel.signalka_shliuza_alarm
-            state: 'disarmed'
-          - condition: template
-            value_template: >
-                {{ trigger.to_state.state not in ['release', 'unavailable', 'unknown', '', 'None'] }}
-      action:
-        - parallel:
-            - service: script.alice_custom_tts_volume
-              data:
-                entity: 'media_player.yandex_station_ff98f029b620413b35e5e278'
-                text: 'Кто то звонит в дверь'
-                vol_level: '0.65'
-            - service: script.alice_custom_tts_volume
-              data:
-                entity: 'media_player.yandex_station_m00ka4300h99tr'
-                text: 'Кто то звонит в дверь'
-                vol_level: '0.45'
-
-    - alias: turn_on_light_doorbell
-      id: turn_on_light_doorbell
-      initial_state: true
-      mode: single
-      max_exceeded: silent
-      trigger:
-        - platform: state
-          entity_id: sensor.0x158d00045a78af_action
-      condition:
-          - condition: state
-            entity_id: automation.light_gateway_toggle
-            attribute: current
-            state: 0
-          - condition: state
-            entity_id: timer.doorbell_timer_restart_automation
-            state: 'idle'
-          - condition: state
-            entity_id: input_boolean.alarm_gateway_button
-            state: 'off'
-          - condition: state
-            entity_id: alarm_control_panel.signalka_shliuza_alarm
-            state: 'disarmed'
-          - condition: template
-            value_template: >
-                {{ trigger.to_state.state not in ['release', 'unavailable', 'unknown', '', 'None'] }}
-      action:
-        - service: scene.create
-          data:
-            scene_id: before_doorbell_light
-            snapshot_entities:
-              - light.gateway_light_04cf8cabd77b
-        - repeat:
-             while:
-                - condition: template
-                  value_template: "{{ repeat.index <= 3 }}"
-             sequence:
-                - service: light.turn_on
-                  entity_id: light.gateway_light_04cf8cabd77b
-                  data:
-                    rgb_color: [255,128,0]
-                    brightness: 128
-                - delay:
-                    milliseconds: 150
-                - service: light.turn_off
-                  entity_id: light.gateway_light_04cf8cabd77b
-                - delay:
-                    milliseconds: 50
-                - service: light.turn_on
-                  entity_id: light.gateway_light_04cf8cabd77b
-                  data:
-                    rgb_color: [255,128,0]
-                    brightness: 128
-                - delay:
-                    milliseconds: 150
-                - service: light.turn_off
-                  entity_id: light.gateway_light_04cf8cabd77b
-        - service: scene.turn_on
-          entity_id: scene.before_doorbell_light
+              - sequence:
+                  - condition:
+                    - condition: state
+                      entity_id: automation.light_gateway_toggle
+                      attribute: current
+                      state: 0
+                  - service: scene.create
+                    data:
+                      scene_id: before_doorbell_light
+                      snapshot_entities:
+                        - light.gateway_light_04cf8cabd77b
+                  - repeat:
+                       while:
+                          - condition: template
+                            value_template: "{{ repeat.index <= 3 }}"
+                       sequence:
+                          - service: light.turn_on
+                            entity_id: light.gateway_light_04cf8cabd77b
+                            data:
+                              rgb_color: [255,128,0]
+                              brightness: 128
+                          - delay:
+                              milliseconds: 150
+                          - service: light.turn_off
+                            entity_id: light.gateway_light_04cf8cabd77b
+                          - delay:
+                              milliseconds: 50
+                          - service: light.turn_on
+                            entity_id: light.gateway_light_04cf8cabd77b
+                            data:
+                              rgb_color: [255,128,0]
+                              brightness: 128
+                          - delay:
+                              milliseconds: 150
+                          - service: light.turn_off
+                            entity_id: light.gateway_light_04cf8cabd77b
+                  - service: scene.turn_on
+                    entity_id: scene.before_doorbell_light
+              - sequence:
+                  - condition:
+                    - condition: time
+                      after: '8:00:00'
+                      before: '21:30:00'
+                  - parallel:
+                      - service: script.alice_custom_tts_volume
+                        data:
+                          entity: 'media_player.yandex_station_ff98f029b620413b35e5e278'
+                          text: 'Кто то звонит в дверь'
+                          vol_level: '0.65'
+                      - service: script.alice_custom_tts_volume
+                        data:
+                          entity: 'media_player.yandex_station_m00ka4300h99tr'
+                          text: 'Кто то звонит в дверь'
+                          vol_level: '0.45'

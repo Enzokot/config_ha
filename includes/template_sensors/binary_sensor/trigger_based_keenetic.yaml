@@ -1,9 +1,16 @@
 
 #Сенсор наличия записей link down в логе Keenetic
   - trigger:
-      - platform: template
-        value_template: >
-            {{ is_state('binary_sensor.check_keenetic_link_down', 'on') or states('counter.counter_keenetic_link_down') | int(0) > 0 }}
+      - platform: state
+        entity_id: binary_sensor.check_keenetic_link_down
+        to: "on"
+      - platform: numeric_state
+        entity_id: counter.counter_keenetic_link_down
+        above: 0
+      - platform: homeassistant
+        event: start
+      - platform: event
+        event_type: event_template_reloaded
     binary_sensor:
       - name: check_keenetic_link_down
         state: "{{ states('counter.counter_keenetic_link_down') | int(0) > 0 }}"

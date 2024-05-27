@@ -46,9 +46,9 @@
             {%- set state_ms = state.state -%}
             {%- else -%}
             {%- set time_ms = 1 -%} 
-            {%- set state_ms = as_timestamp(state.state) -%}
+            {%- set state_ms = as_timestamp(state.state , 0) -%}
             {%- endif -%}
-            {%- if (state_ms | int(time_limit * time_ms)) < (time_limit * time_ms) -%}
+            {%- if (state_ms | int(time_limit * time_ms, 0)) < (time_limit * time_ms) -%}
             {%- set datanames.last_seen = datanames.last_seen + [state] -%}
             {%- endif -%}
             {%- endfor -%}

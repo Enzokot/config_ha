@@ -1,5 +1,12 @@
 
-    - binary_sensor:
+    - trigger:
+        - platform: state
+          entity_id: binary_sensor.0x158d0003cfa725_contact
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      binary_sensor:
         - name: lobby_door_open_long_time
           state: "{{ is_state('binary_sensor.0x158d0003cfa725_contact', 'on') }}"
           delay_on:
@@ -8,24 +15,56 @@
             seconds: 10
 
 #Для debounce бинарника батареейки TRV
+    - trigger:
+        - platform: state
+          entity_id: binary_sensor.0x60a423fffe968719_battery_low
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      binary_sensor:
         - name: debounce_trv_bedroom_low_battery
           state: "{{ is_state('binary_sensor.0x60a423fffe968719_battery_low', 'on') }}"
           device_class: battery
           delay_off:
             hours: 12
 
+    - trigger:
+        - platform: state
+          entity_id: binary_sensor.0x5c0272fffec89454_battery_low
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      binary_sensor:
         - name: debounce_trv_childrens_room_low_battery
           state: "{{ is_state('binary_sensor.0x5c0272fffec89454_battery_low', 'on') }}"
           device_class: battery
           delay_off:
             hours: 12
 
+    - trigger:
+        - platform: state
+          entity_id: binary_sensor.0x5c0272fffe8de819_battery_low
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      binary_sensor:
         - name: debounce_trv_kitchen_low_battery
           state: "{{ is_state('binary_sensor.0x5c0272fffe8de819_battery_low', 'on') }}"
           device_class: battery
           delay_off:
             hours: 12
 
+    - trigger:
+        - platform: state
+          entity_id: binary_sensor.0x5c0272fffec9db22_battery_low
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      binary_sensor:
         - name: debounce_trv_living_room_low_battery
           state: "{{ is_state('binary_sensor.0x5c0272fffec9db22_battery_low', 'on') }}"
           device_class: battery
@@ -33,6 +72,14 @@
             hours: 12
 
 #Просроченные сертификаты ssl
+    - trigger:
+        - platform: state
+          entity_id: sensor.cert_expiry_keenetic_domain
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      binary_sensor:
         - name: cert_expired_keenetic_domain
           state: "{{ states('sensor.cert_expiry_keenetic_domain') | int(0) <= 5 }}"
           availability: "{{ not is_state('sensor.cert_expiry_keenetic_domain', 'unavailable') }}"
@@ -41,6 +88,14 @@
           delay_off:
             minutes: 1
 
+    - trigger:
+        - platform: state
+          entity_id: sensor.cert_expiry_asuscomm_domain_klg
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      binary_sensor:
         - name: cert_expired_asuscomm_domain_klg
           state: "{{ states('sensor.cert_expiry_asuscomm_domain_klg') | int(0) <= 5 }}"
           availability: "{{ not is_state('sensor.cert_expiry_asuscomm_domain_klg', 'unavailable') }}"

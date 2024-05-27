@@ -1,0 +1,49 @@
+
+    - trigger:
+        - platform: state
+          entity_id: sensor.backup_state
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      sensor:
+        - name: last_google_backup_train
+          state: >
+               {% if states('sensor.backup_state') == 'unknown'
+                  or (state_attr('sensor.backup_state', 'backups') | count) - 1 < 0
+               %}
+                   unknown
+               {% elif state_attr('sensor.backup_state', 'backups')[(state_attr('sensor.backup_state', 'backups') | count) - 1].state == 'Pending' %}
+                   {{ states('sensor.last_google_backup_train') }}
+               {% else %}
+                   {{ as_timestamp(state_attr('sensor.backup_state', 'last_backup'), 0) | timestamp_custom('%d.%m.%Y %H:%M', true, 0) }}
+               {% endif %}
+          icon: mdi:calendar-check-outline
+
+    - trigger:
+        - platform: state
+          entity_id: sensor.backup_state
+          attribute:
+            - backups_in_home_assistant
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      sensor:
+        - name: snapshots_in_hassio_train
+          state: "{{ state_attr('sensor.backup_state', 'backups_in_home_assistant') }}"
+          icon: mdi:home-assistant
+
+    - trigger:
+        - platform: state
+          entity_id: sensor.backup_state
+          attribute:
+            - backups_in_google_drive
+        - platform: homeassistant
+          event: start
+        - platform: event
+          event_type: event_template_reloaded
+      sensor:
+        - name: snapshots_in_google_drive_train
+          state: "{{ state_attr('sensor.backup_state', 'backups_in_google_drive') }}"
+          icon: mdi:folder-google-drive

@@ -81,7 +81,7 @@ remote_receiver:
     mode: INPUT_PULLUP
     inverted: true
   dump: all
-  tolerance: 55
+  tolerance: 55%
   id: "receiver_petra01_kitchen"
 
 remote_transmitter:

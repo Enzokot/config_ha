@@ -1,5 +1,0 @@
-    
-    - sensor:
-        - name: zigbee2mqtt_coordinator_ver
-          icon: mdi:chip
-          state: "{{ state_attr('sensor.zigbee2mqtt_coordinator_version', 'type') }}  rev.{{ state_attr('sensor.zigbee2mqtt_coordinator_version', 'revision')}}"

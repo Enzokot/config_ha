@@ -746,6 +746,8 @@
       #id: update available or installed notification
       initial_state: true
       mode: queued
+      trigger_variables:
+        not_has_state: "{{ ['unknown', 'unavailable', 'none', None, null, ''] }}"
       trigger:
         - platform: event
           event_type: state_changed
@@ -755,24 +757,22 @@
         - or:
             - condition: template
               value_template: >
-                {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
                 {{ 
                   trigger.event.data.new_state.state == 'on' and
                   ((is_state_attr(trigger.event.data.entity_id, 'device_class', 'firmware')
                   and version(trigger.event.data.new_state.attributes.latest_version) != version(trigger.event.data.old_state.attributes.latest_version))
                   or version(trigger.event.data.new_state.attributes.latest_version) > version(trigger.event.data.old_state.attributes.latest_version)) and
-                  trigger.event.data.new_state.attributes.latest_version not in ignore and
+                  trigger.event.data.new_state.attributes.latest_version not in not_has_state and
                   trigger.event.data.new_state.attributes.latest_version is not none
                 }}
             - condition: template
               value_template: >
-                {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
                 {{ 
                   trigger.event.data.old_state.state == 'on' and trigger.event.data.new_state.state == 'off' and
                   ((is_state_attr(trigger.event.data.entity_id, 'device_class', 'firmware')
                   and version(trigger.event.data.new_state.attributes.installed_version) != version(trigger.event.data.old_state.attributes.installed_version))
                   or version(trigger.event.data.new_state.attributes.installed_version) > version(trigger.event.data.old_state.attributes.installed_version)) and
-                  trigger.event.data.new_state.attributes.installed_version not in ignore and
+                  trigger.event.data.new_state.attributes.installed_version not in not_has_state and
                   trigger.event.data.new_state.attributes.installed_version is not none
                 }}
       action:
@@ -837,6 +837,8 @@
       id: update HACS addons available notification
       initial_state: true
       mode: queued
+      trigger_variables:
+        not_has_state: "{{ ['unknown', 'unavailable', 'none'] }}"
       trigger:
         - platform: state
           entity_id: sensor.hacs
@@ -844,9 +846,8 @@
       condition:
         - condition: template
           value_template: >
-            {% set ignore = ['unknown', 'unavailable', 'none'] %}
-            {{ trigger.from_state.state not in ignore and
-               trigger.to_state.state not in ignore and
+            {{ trigger.from_state.state not in not_has_state and
+               trigger.to_state.state not in not_has_state and
                states('sensor.hacs') | int(0) > 0
             }}
       action:
@@ -940,6 +941,7 @@
                 - sensor.0x60a423fffef8d41a_power
                 - sensor.shelly_plug_s_2_power
                 - sensor.shelly_plug_s_nvr_power
+                - sensor.shelly_plug_s_keenetic_hw_power
             above: 3000
       action:
         - service: telegram_bot.send_message
@@ -1098,16 +1100,19 @@
     - alias: notifications backup instance info
       id: notifications backup instance info
       mode: queued
+      trigger_variables:
+        not_has_state: "{{ ['unknown', 'unavailable', 'none', None, null, ''] }}"
       trigger:
         - platform: state
           entity_id: sensor.last_google_backup_train
       condition:
         - condition: template
           value_template: >- 
-            {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
             {{
-               trigger.from_state.state not in ignore
-               and trigger.to_state.state not in ignore
+               trigger.from_state.state is defined and
+               trigger.to_state.state is defined and
+               trigger.from_state.state not in not_has_state
+               and trigger.to_state.state not in not_has_state
                and state_attr('sensor.backup_state', 'backups') | count > 0
             }}
       action:
@@ -1183,9 +1188,9 @@
       action:
         - variables:
             long_start_integrations_name: >-
-              {% if states.sensor.start_time.attributes is defined %}
+              {% if states.sensor.start_time.attributes is defined and states.sensor.start_time.attributes.setup_time is defined %}
                 {% set separator = joiner(', ') %}
-                {% set attrs = states.sensor.start_time.attributes %}
+                {% set attrs = states.sensor.start_time.attributes.setup_time %}
                 {% for attr in attrs if attrs[attr] | float(0.0) >= 9 %}
                     {{- separator() + attr | replace('_', '-') -}}
                 {% endfor %}
@@ -1262,6 +1267,8 @@
       initial_state: true
       mode: queued
       max: 70
+      trigger_variables:
+        not_has_state: "{{ ['unknown', 'unavailable'] }}"
       trigger:
         - platform: event
           event_type: state_changed
@@ -1269,7 +1276,7 @@
         - condition: state
           entity_id: input_boolean.instances_stoping
           state: 'off'
-        - "{{ not has_value(trigger.event.data.entity_id) }}"
+        - "{{ trigger.event.data.new_state.state in not_has_state }}"
         - "{{ trigger.event.data.entity_id in expand('group.important_devices_unavailable') | map(attribute='entity_id') | list }}"
         - "{{ trigger.event.data.new_state.state != trigger.event.data.old_state.state }}"
       action:
@@ -1290,6 +1297,8 @@
       id: notifications on off water heater
       mode: parallel
       initial_state: true
+      trigger_variables:
+        not_has_state: "{{ ['unknown', 'unavailable', 'none', None, null, ''] }}"
       trigger:
         - platform: state
           entity_id: sensor.0x842e14fffe13a854_power
@@ -1299,9 +1308,8 @@
           state: 'on'
         - condition: template
           value_template: >
-            {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
-            {{ trigger.from_state.state not in ignore and
-               trigger.to_state.state not in ignore and
+            {{ trigger.from_state.state not in not_has_state and
+               trigger.to_state.state not in not_has_state and
                trigger.to_state.state != trigger.from_state.state
             }}
         - condition: template
@@ -1454,6 +1462,8 @@
       id: notifications sms unread or full storage
       initial_state: true
       max_exceeded: silent
+      trigger_variables:
+        not_has_state: "{{ ['unknown', 'unavailable', 'none', None, null, ''] }}"
       trigger:
         - platform: state
           entity_id: sensor.huawei_e3372h_320_sms_unread
@@ -1465,9 +1475,8 @@
       condition:
         - condition: template
           value_template: >
-            {% set ignore = ['unknown', 'unavailable', 'none', None, null, ''] %}
             {{ trigger.id == 'full_storage' or
-               trigger.to_state.state not in ignore and
+               trigger.to_state.state not in not_has_state and
                trigger.to_state.state | int(0) > trigger.from_state.state | int(0)
             }}
       action:

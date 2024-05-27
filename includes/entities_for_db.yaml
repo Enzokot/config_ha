@@ -21,7 +21,7 @@
       #Климат
       - sensor.158d000542ceaf_pressure
       - sensor.0x00158d0004561de9_humidity
-      - sensor.0x158d000542ceaf_humidity
+      - sensor.0x00158d000542ceaf_humidity
       - sensor.esp_xiaomi_kitchen_humidity
       - sensor.0x158d0006b860cf_humidity
       - sensor.0x00158d0008386b56_humidity
@@ -32,7 +32,7 @@
       - sensor.esp_xiaomi_living_room_temperature
       - sensor.esp_xiaomi_childrens_room_temperature
       - sensor.0x00158d0004561de9_temperature
-      - sensor.0x158d000542ceaf_temperature
+      - sensor.0x00158d000542ceaf_temperature
       - sensor.0x158d0006b860cf_temperature
       - sensor.0x00158d0008386b56_temperature
       - sensor.0x00158d0006c5f21e_temperature
@@ -42,6 +42,8 @@
       - sensor.zhimi_humidifier_ca4_temperature
       - sensor.esp_xiaomi_bed_room_temperature
       - sensor.esp_xiaomi_bed_room_humidity
+      - sensor.shelly_1pm_fan_nvr_box_temperature
+      - sensor.temperature_humidity_sensor_500d_temperature
       #Счетчики розеток/реле
       - sensor.total_heater_socket_cable_daily_electicity
       - sensor.total_heater_socket_cable_monthly_electicity
@@ -66,6 +68,8 @@
       - sensor.total_shelly_plug_s_nvr_cable_monthly_electicity
       - sensor.total_shelly_1pm_fan_nvr_box_cable_daily_electicity
       - sensor.total_shelly_1pm_fan_nvr_box_cable_monthly_electicity
+      - sensor.total_shelly_plug_s_keenetic_hw_cable_daily_electicity
+      - sensor.total_shelly_plug_s_keenetic_hw_cable_monthly_electicity
       #Датчик освещенности улица
       - sensor.0x54ef4410000ebba0_illuminance_lux
       #Положение штока термоголовок
@@ -106,7 +110,7 @@
       - sensor.0x54ef441000691265_energy
       - sensor.shelly_plug_s_nvr_energy
       - sensor.shelly_1pm_fan_nvr_box_energy
-      - sensor.shelly_1pm_fan_nvr_box_temperature
+      - sensor.shelly_plug_s_keenetic_hw_energy
       #Мойка полов в тамбуре
       - binary_sensor.0x00158d000913dbf1_contact
       #NVR

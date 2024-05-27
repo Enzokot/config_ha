@@ -1,20 +1,4 @@
 
-#Обновление сенсоров каждые 30сек
-- alias: entity_update_every_30_seconds
-  id: entity_update_every_30_seconds
-  max_exceeded: silent
-  trigger:
-    - platform: time_pattern
-      seconds: "/30"
-    - platform: homeassistant
-      event: start
-  action:
-    - service: homeassistant.update_entity
-      data: 
-        entity_id: 
-          - binary_sensor.n550jk_availability
-          - binary_sensor.local_network_availability
-
 #Обновление сенсоров каждые 2мин
 - alias: entity_update_every_2_minutes
   id: entity_update_every_2_minutes

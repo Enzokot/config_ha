@@ -23,8 +23,7 @@
     - trigger:
         - platform: state
           entity_id: sensor.backup_state
-          attribute:
-            - backups_in_home_assistant
+          attribute: backups_in_home_assistant
         - platform: homeassistant
           event: start
         - platform: event
@@ -37,8 +36,7 @@
     - trigger:
         - platform: state
           entity_id: sensor.backup_state
-          attribute:
-            - backups_in_google_drive
+          attribute: backups_in_google_drive
         - platform: homeassistant
           event: start
         - platform: event

@@ -5,8 +5,8 @@
     - "Timeout fetching Увлажнитель спальня data"
     - "Error fetching Увлажнитель спальня data: Unable to discover the device*"
     - "Timeout fetching Xiaomi Vacuum cleaner data"
-    - "Unexpected error fetching Увлажнитель спальня data(.|\n)*TypeError: byte indices must be integers or slices, not str"
-    - "Unexpected error fetching Увлажнитель детская data(.|\n)*TypeError: byte indices must be integers or slices, not str"
+    - "Unexpected error fetching Увлажнитель спальня data*"
+    - "Unexpected error fetching Увлажнитель детская data*"
   homeassistant.helpers.entity:
     - "Update of media_player.lg_smart_tv is taking over*"
     - "Update of media_player.tv_kotletochka_tv_sam is taking over*"

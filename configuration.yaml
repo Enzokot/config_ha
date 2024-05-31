@@ -53,8 +53,7 @@ logbook:
 recorder: !include includes/recorder.yaml
 influxdb: !include includes/influxdb.yaml
 logger:
-  default: info
-#  default: warn
+  default: warn
   filters: !include includes/logger_filters.yaml
 #   logs:
 #     homeassistant.bootstrap: debug

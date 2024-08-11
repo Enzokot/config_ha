@@ -33,6 +33,7 @@
       - cover.0x54ef44100055ff04
       - cover.cover_group_living_room
       - light.yeelight_lessons_lamp
+      - fan.dmaker_p45_5007_fan
 
   entity_config:
     switch.0x54ef441000691265:
@@ -255,14 +256,6 @@
             service: switch.turn_off
             entity_id: switch.r4s01_kettle_mute
         oscillation:
-          state_entity_id: switch.r4s01_kettle_backlight
-          turn_on:
-            service: switch.turn_on
-            entity_id: switch.r4s01_kettle_backlight
-          turn_off:
-            service: switch.turn_off
-            entity_id: switch.r4s01_kettle_backlight
-        backlight:
           state_entity_id: light.r4s01_kettle_light
           turn_on:
             service: light.turn_on
@@ -270,6 +263,14 @@
           turn_off:
             service: light.turn_off
             entity_id: light.r4s01_kettle_light
+        backlight:
+          state_entity_id: switch.r4s01_kettle_backlight
+          turn_on:
+            service: switch.turn_on
+            entity_id: switch.r4s01_kettle_backlight
+          turn_off:
+            service: switch.turn_off
+            entity_id: switch.r4s01_kettle_backlight
         keep_warm:
           state_entity_id: switch.r4s01_kettle_heat
           turn_on:
@@ -452,3 +453,48 @@
       properties:
         - type: battery_level
           entity: sensor.0x54ef44100055ff04_battery
+
+    fan.dmaker_p45_5007_fan:
+      modes:
+        fan_speed:
+          one: ['1']
+          two: ['35']
+          three: ['70']
+          four: ['100']
+        program:
+          normal: ['Straight Wind']
+          supply_air: ['Natural Wind']
+          quiet: ['Sleep']
+      custom_toggles:
+        mute:
+          state_entity_id: switch.dmaker_p45_5007_alarm
+          turn_on:
+            service: switch.turn_on
+            entity_id: switch.dmaker_p45_5007_alarm
+          turn_off:
+            service: switch.turn_off
+            entity_id: switch.dmaker_p45_5007_alarm
+        controls_locked:
+          state_entity_id: switch.dmaker_p45_5007_physical_control_locked
+          turn_on:
+            service: switch.turn_on
+            entity_id: switch.dmaker_p45_5007_physical_control_locked
+          turn_off:
+            service: switch.turn_off
+            entity_id: switch.dmaker_p45_5007_physical_control_locked
+        oscillation:
+          state_entity_id: switch.dmaker_p45_5007_horizontal_swing
+          turn_on:
+            service: switch.turn_on
+            entity_id: switch.dmaker_p45_5007_horizontal_swing
+          turn_off:
+            service: switch.turn_off
+            entity_id: switch.dmaker_p45_5007_horizontal_swing
+        backlight:
+          state_entity_id: light.dmaker_p45_5007_indicator_light
+          turn_on:
+            service: light.turn_on
+            entity_id: light.dmaker_p45_5007_indicator_light
+          turn_off:
+            service: light.turn_off
+            entity_id: light.dmaker_p45_5007_indicator_light

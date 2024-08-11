@@ -13,15 +13,15 @@
           state: 'docked'
       action:
            - parallel:
-               - service: vacuum.start
+               - action: vacuum.start
                  entity_id: vacuum.xiaomi_vacuum_cleaner
-               - service: telegram_bot.send_message
+               - action: telegram_bot.send_message
                  data:
                     target: "{{ states('input_text.var_chat_id_vacuum_later_start') }}"
                     title: >-
                              {{ '\U0001f680' }} *Степа*
                     message: 'Начал полную уборку'
-               - service: input_text.set_value
+               - action: input_text.set_value
                  data:
                     entity_id: input_text.var_chat_id_vacuum_later_start
                     value: !secret telegram_chita_chat_id
@@ -42,13 +42,13 @@
               state: 'docked'
       action:
            - parallel:
-               - service: telegram_bot.send_message
+               - action: telegram_bot.send_message
                  data:
                     target: "{{ states('input_text.var_chat_id_vacuum_later_start') }}"
                     title: >-
                              ⚠️ *Степа*
                     message: 'Не смог начать полную уборку, потому что нахожусь не на базе'
-               - service: input_text.set_value
+               - action: input_text.set_value
                  data:
                     entity_id: input_text.var_chat_id_vacuum_later_start
                     value: !secret telegram_chita_chat_id
@@ -77,11 +77,11 @@
           then:
             - delay:
                 seconds: 45
-            - service: homeassistant.update_entity
+            - action: homeassistant.update_entity
               data:
                 entity_id: camera.roborock_vacuum_map
-            - service: camera.turn_off
+            - action: camera.turn_off
               entity_id: camera.roborock_vacuum_map
           else:
-            - service: camera.turn_on
+            - action: camera.turn_on
               entity_id: camera.roborock_vacuum_map

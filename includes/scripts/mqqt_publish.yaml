@@ -8,7 +8,7 @@
     #         description: 'FRIENDLY_NAME из z2m датчика дыма'
     #         example: 'Smoke detector kitchen'
     #     sequence:
-    #         - service: mqtt.publish
+    #         - action: mqtt.publish
     #           data:
     #             topic: "zigbee2mqtt/ {{- namesmokedetector -}} /set"
     #             payload: "{\"selftest\":\"\"}"
@@ -26,7 +26,7 @@
     #         description: 'Чувствительность датчика дыма'
     #         example: 'low, medium, high'
     #     sequence:
-    #         - service: mqtt.publish
+    #         - action: mqtt.publish
     #           data:
     #             topic: "zigbee2mqtt/ {{- namesmokedetector -}} /set"
     #             payload: "{\"sensitivity\":\"{{- sensitivity -}}\"}"
@@ -36,7 +36,7 @@
         alias: Ур. сигнала устройств
         icon: mdi:access-point-check
         sequence:
-          - service: script.turn_on
+          - action: script.turn_on
             data:
               entity_id: >
                 {%- set list_sensors = expand('group.dynamic_group_sensor_linkquality') | selectattr('state', 'ne', None) | selectattr('state', 'ne', 'None') -%}
@@ -58,7 +58,7 @@
     zigbee2mqtt_link_level_low:
         alias: zigbee2mqtt низкий уровень сигнала
         sequence:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             title: >- 
                      ⚠️ *Контроль устройств Zigbee*
@@ -85,7 +85,7 @@
     zigbee2mqtt_link_level_ok:
         alias: zigbee2mqtt нормальный уровень сигнала
         sequence:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             title: >-
                      {{ '\U00002705' }} *Контроль устройств Zigbee*
@@ -129,7 +129,7 @@
                 and states(objectsensortemperature) not in ['unavailable', 'unknown', ''] 
                 and state_attr(objectvalve, 'local_temperature') not in ['unavailable', 'unknown', ''] 
              }}
-        - service: mqtt.publish
+        - action: mqtt.publish
           data:
             topic: "zigbee2mqtt/{{- namevalve -}}/set/local_temperature_calibration"
             payload: '{{ calibration_local }}'

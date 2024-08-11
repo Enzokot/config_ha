@@ -13,7 +13,7 @@
             entity_id: input_boolean.water_heater_season
             state: 'on'
       action:
-          - service: >
+          - action: >
                 {% if trigger.now.hour == 22 %}
                     switch.turn_off
                 {% else %}
@@ -34,10 +34,10 @@
             entity_id: input_boolean.heater_night_mode
             state: 'on'      
       action:
-          - service: switch.turn_on
+          - action: switch.turn_on
             data:
               entity_id: switch.0x842e14fffe5047f5
-          - service: timer.start
+          - action: timer.start
             data:
               entity_id: timer.turn_off_heater_night_mode
 
@@ -52,13 +52,13 @@
             entity_id: input_boolean.heater_night_mode
             state: 'on'
       action:
-          - service: timer.cancel
+          - action: timer.cancel
             data:
               entity_id: timer.turn_on_heater_night_mode
-          - service: timer.cancel
+          - action: timer.cancel
             data:
               entity_id: timer.turn_off_heater_night_mode
-          - service: switch.turn_off
+          - action: switch.turn_off
             data:
               entity_id: switch.0x842e14fffe5047f5
 
@@ -78,10 +78,10 @@
             after: '22:00:00'
             before: '07:00:00'
       action:
-          - service: switch.turn_off
+          - action: switch.turn_off
             data:
               entity_id: switch.0x842e14fffe5047f5
-          - service: timer.start
+          - action: timer.start
             data:
               entity_id: timer.turn_on_heater_night_mode
 
@@ -101,10 +101,10 @@
             after: '22:00:00'
             before: '07:00:00'
       action:
-          - service: switch.turn_on
+          - action: switch.turn_on
             data:
               entity_id: switch.0x842e14fffe5047f5
-          - service: timer.start
+          - action: timer.start
             data:
               entity_id: timer.turn_off_heater_night_mode
               
@@ -125,7 +125,7 @@
                   entity_id: input_boolean.heater_night_mode
                   state: 'off'
               sequence:
-                - service: automation.trigger
+                - action: automation.trigger
                   data:
                     entity_id: automation.night_mode_off_heater
             - conditions:
@@ -133,7 +133,7 @@
                   entity_id: input_boolean.heater_night_mode
                   state: 'on'
               sequence:
-                - service: automation.trigger
+                - action: automation.trigger
                   data:
                     entity_id: automation.night_mode_on_heater
 
@@ -156,7 +156,7 @@
             - sensor.shelly_plug_s_keenetic_hw_power
         above: 3000
       action:
-          - service: switch.turn_off
+          - action: switch.turn_off
             data:
               entity_id: >-
                     {{ trigger.entity_id | replace('sensor', 'switch') | replace('_power', '') }}
@@ -182,7 +182,7 @@
                   entity_id: switch.0x842e14fffe5047f5
                   state: 'off'
               sequence:
-                - service: automation.trigger
+                - action: automation.trigger
                   data:
                     entity_id: automation.night_mode_timer_heater_on
             - conditions:
@@ -190,7 +190,7 @@
                   entity_id: switch.0x842e14fffe5047f5
                   state: 'on'
               sequence:
-                - service: automation.trigger
+                - action: automation.trigger
                   data:
                     entity_id: automation.night_mode_timer_heater_off      
 
@@ -245,7 +245,7 @@
         - variables:
             entity_id: >-
               {{ entity_dict[trigger.entity_id] }}
-        - service: input_number.set_value
+        - action: input_number.set_value
           data:
             entity_id: "{{ entity_id }}"
             value: "{{ trigger.to_state.state }}"
@@ -274,10 +274,10 @@
                   entity_id: switch.0x842e14fffe5047f5
                   state: 'off'
               sequence:
-                  - service: switch.turn_on
+                  - action: switch.turn_on
                     data:
                       entity_id: switch.0x842e14fffe5047f5
-        - service: timer.start
+        - action: timer.start
           data:
             entity_id: timer.turn_off_garland_childrens_room
             duration: 300
@@ -295,6 +295,6 @@
           entity_id: switch.0x842e14fffe5047f5
           state: 'on'
       action:
-          - service: switch.turn_off
+          - action: switch.turn_off
             data:
               entity_id: switch.0x842e14fffe5047f5

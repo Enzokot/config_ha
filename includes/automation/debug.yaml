@@ -10,7 +10,7 @@
     #         as_local(this.attributes.last_triggered) <= now() - timedelta(minutes=1, seconds = 30) 
     #     }}
     #   action:
-    #     - service: telegram_bot.send_message
+    #     - action: telegram_bot.send_message
     #       data:
     #         target: !secret telegram_enzokot_chat_id
     #         parse_mode: 'html'
@@ -33,7 +33,7 @@
                trigger.to_state.state != states('sensor.myip')
             }}
       action:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             title: >-
@@ -51,7 +51,7 @@
     #       event_type: homeassistant_started
     #       id: 'started'
     #   action:
-    #     - service: system_log.write
+    #     - action: system_log.write
     #       data:
     #         message: "Event: {{ trigger.id }}"
     #         logger: mycomponent.testevents
@@ -65,7 +65,7 @@
     #         user_id:
     #           - "2486a9ed5----------------aad4be88"
     #   action:
-    #     - service: telegram_bot.send_message
+    #     - action: telegram_bot.send_message
     #       data:
     #         target: !secret telegram_enzokot_chat_id
     #         parse_mode: 'html'
@@ -82,7 +82,7 @@
     #       allowed_methods:
     #         - POST
     #   action:
-    #     - service: telegram_bot.send_message
+    #     - action: telegram_bot.send_message
     #       data:
     #         target: !secret telegram_enzokot_chat_id
     #         parse_mode: 'html'
@@ -97,7 +97,7 @@
     #     - platform: event
     #       event_type: repairs_issue_registry_updated
     #   action:
-    #     - service: telegram_bot.send_message
+    #     - action: telegram_bot.send_message
     #       data:
     #         target: !secret telegram_enzokot_chat_id
     #         parse_mode: 'html'
@@ -114,7 +114,7 @@
     #       allowed_methods:
     #         - PUT
     #   action:
-    #     - service: telegram_bot.send_message
+    #     - action: telegram_bot.send_message
     #       data:
     #         target: !secret telegram_enzokot_chat_id
     #         parse_mode: 'html'

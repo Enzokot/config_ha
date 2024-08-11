@@ -15,7 +15,7 @@
         description: 'имя команды'
         example: 'send_key'
     sequence:
-      - service: media_player.play_media
+      - action: media_player.play_media
         data:
           entity_id: "{{ entity }}"
           media_content_id: "{{ content_id }}"

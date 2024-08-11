@@ -66,7 +66,7 @@ binary_sensor.0x158d0003d05782_contact:
   friendly_name: Центр. окно гостиная
   device_class: window
 
-binary_sensor.0x158d0003975d8b_contact:
+binary_sensor.0x00158d0003975d8b_contact:
   friendly_name: Прав. окно гостиная
   device_class: window
 

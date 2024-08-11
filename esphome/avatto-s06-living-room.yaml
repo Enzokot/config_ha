@@ -33,7 +33,7 @@ wifi:
   #Основная точка
   - ssid: Kotletochka
     password: !secret wifi_password
-    bssid: "50:ff:20:3c:2b:74"
+    bssid: "50:ff:20:9e:1d:1e"
     priority: 2
   
 #  - ssid: Kotletochka_Yi
@@ -53,6 +53,7 @@ wifi:
 captive_portal:
 
 http_request:
+  verify_ssl: false
 
 logger:
   #baud_rate: 0
@@ -85,13 +86,17 @@ api:
             code: !lambda 'return data;'
 
 ota:
-  password: !secret ota_password
+  - platform: esphome
+    password: !secret ota_password
 
 time:
   - platform: sntp
     id: sntp_time
-    servers: 'kotletochka.local'
-    timezone: 'Europe/Moscow'
+    servers: 
+      - 192.168.217.1
+      - ntp2.vniiftri.ru
+      - pool.ntp.org
+    timezone: Europe/Moscow
 
 status_led:
   pin: GPIO4
@@ -133,8 +138,7 @@ binary_sensor:
                     - lambda: 'return id(uptime_sec).state > 60;'
                 then:
                   - http_request.post:
-                      url: "https://api.telegram.org/bot${telegram_api_token}/sendMessage"
-                      verify_ssl: false
+                      url: "https://api.telegram.org/bot${telegram_api_token}/sendMessage"                      
                       headers:
                         Content-Type: application/json
                       json:
@@ -148,8 +152,7 @@ binary_sensor:
                     - lambda: 'return id(uptime_sec).state > 60;'
                 then:
                   - http_request.post:
-                      url: "https://api.telegram.org/bot${telegram_api_token}/sendMessage"
-                      verify_ssl: false
+                      url: "https://api.telegram.org/bot${telegram_api_token}/sendMessage"                      
                       headers:
                         Content-Type: application/json
                       json:

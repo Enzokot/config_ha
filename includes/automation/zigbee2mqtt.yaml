@@ -10,7 +10,7 @@
         condition: template
         value_template: '{{trigger.payload_json.type == "device_interview" and trigger.payload_json.data.status == "successful" and trigger.payload_json.data.supported}}'
       action:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             title: >-
                      {{ '\U0001f41d' }} <b>Добавление устройств Zigbee</b>
@@ -54,7 +54,7 @@
             {%- endfor -%}
             {{ datanames.last_seen | length > 0 }}
       action:  
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             title: >-
                     {%- set time_limit = as_timestamp(now(), 0) - 3*60*60 -%}
@@ -124,7 +124,7 @@
                 {%- endfor -%}
                 {{ datanames.low_linkquality | length > 0 }}
       action:  
-        - service: script.zigbee2mqtt_linkuality_check
+        - action: script.zigbee2mqtt_linkuality_check
 
 #Атоматическая калибровка локальной температуры термоголовок
     - alias: auto_local_temperature_calibration_thermostats
@@ -134,25 +134,25 @@
           minutes: "/3"
       action:
         - parallel:
-            - service: script.auto_local_temperature_calibration_thermostats
+            - action: script.auto_local_temperature_calibration_thermostats
               data:
                 namevalve: 'Bedroom valve with thermostat'
                 objectvalve: 'climate.0x60a423fffe968719'
                 objectvalvewindow: 'switch.0x60a423fffe968719_window_detection'
                 objectsensortemperature: 'sensor.esp_xiaomi_bed_room_temperature'
-            - service: script.auto_local_temperature_calibration_thermostats
+            - action: script.auto_local_temperature_calibration_thermostats
               data:
                 namevalve: 'Living room valve with thermostat'
                 objectvalve: 'climate.0x5c0272fffec9db22'
                 objectvalvewindow: 'switch.0x5c0272fffec9db22_window_detection'
                 objectsensortemperature: 'sensor.esp_xiaomi_living_room_temperature'
-            - service: script.auto_local_temperature_calibration_thermostats
+            - action: script.auto_local_temperature_calibration_thermostats
               data:
                 namevalve: 'Childrens room valve with thermostat'
                 objectvalve: 'climate.0x5c0272fffec89454'
                 objectvalvewindow: 'switch.0x5c0272fffec89454_window_detection'
                 objectsensortemperature: 'sensor.esp_xiaomi_childrens_room_temperature'
-            - service: script.auto_local_temperature_calibration_thermostats
+            - action: script.auto_local_temperature_calibration_thermostats
               data:
                 namevalve: 'Kitchen valve with thermostat'
                 objectvalve: 'climate.0x5c0272fffe8de819'
@@ -182,7 +182,7 @@
                     #   entity_id: sensor.esp_xiaomi_bed_room_temperature
                     #   below: 25.7
                   sequence:      
-                    - service: climate.set_preset_mode
+                    - action: climate.set_preset_mode
                       data:
                         entity_id: climate.0x60a423fffe968719
                         preset_mode: 'boost'
@@ -198,7 +198,7 @@
                     #   entity_id: sensor.esp_xiaomi_childrens_room_temperature
                     #   below: 25.7
                   sequence:      
-                    - service: climate.set_preset_mode
+                    - action: climate.set_preset_mode
                       data:
                         entity_id: climate.0x5c0272fffec89454
                         preset_mode: 'boost'
@@ -228,7 +228,7 @@
                   - condition: template
                     value_template: "{{ trigger.platform == 'state' and trigger.to_state.domain == 'input_boolean' }}"
                 sequence:
-                    - service: >
+                    - action: >
                             {% if is_state('input_boolean.thermostat_bedroom_night_mode', 'off') and is_state('input_boolean.thermostat_childrensroom_night_mode', 'off') %}
                               automation.turn_off
                             {% else %}
@@ -239,7 +239,7 @@
                   - condition: template
                     value_template: "{{ trigger.platform == 'state' and trigger.to_state.domain == 'automation' }}"
                 sequence:
-                    - service: >
+                    - action: >
                             {% if is_state('automation.auto_boost_mode_thermostats_at_sleeping_time', 'off') %}
                               input_boolean.turn_off
                             {% else %}
@@ -265,7 +265,7 @@
             - climate.0x5c0272fffe8de819
           state: "heat"
       action:
-        - service: climate.set_hvac_mode
+        - action: climate.set_hvac_mode
           data:
             entity_id: 
               - climate.0x5c0272fffec89454
@@ -274,7 +274,7 @@
               - climate.0x5c0272fffe8de819
             hvac_mode: "off"
         - delay: "00:02:00"
-        - service: climate.set_hvac_mode
+        - action: climate.set_hvac_mode
           data:
             entity_id: 
               - climate.0x5c0272fffec89454
@@ -283,7 +283,7 @@
               - climate.0x5c0272fffe8de819
             hvac_mode: "heat"
         - delay: "00:01:00"
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
@@ -339,19 +339,19 @@
                     {% endif %}
                 {% endfor %}
                 {{ data.entities | unique | list }}
-        - service: input_select.set_options
+        - action: input_select.set_options
           data:
             entity_id: input_select.selected_router_for_permit_join_z2m
             options: "{{ old_options_with_new }}"
-        - service: input_select.select_option
+        - action: input_select.select_option
           data:
             entity_id: input_select.selected_router_for_permit_join_z2m
             option: "{{ new_options | first }}"
-        - service: input_select.set_options
+        - action: input_select.set_options
           data:
             entity_id: input_select.selected_router_for_permit_join_z2m
             options: "{{ new_options }}"
-        - service: input_select.select_first
+        - action: input_select.select_first
           data:
             entity_id: input_select.selected_router_for_permit_join_z2m
 
@@ -370,7 +370,7 @@
       condition:
         - "{{ states.person | selectattr('attributes.user_id', 'eq', trigger.event.context.user_id) | list | count > 0 }}"
       action:
-        - service: mqtt.publish
+        - action: mqtt.publish
           data:
             topic: "zigbee2mqtt/bridge/request/permit_join"
             payload: >
@@ -392,7 +392,7 @@
                 id: switch_permit_join
               - "{{ not is_state('input_select.select_option', 'Не выбрано') }}"
             then:
-              - service: input_select.select_option
+              - action: input_select.select_option
                 data:
                   entity_id: input_select.selected_router_for_permit_join_z2m
                   option: 'Не выбрано'

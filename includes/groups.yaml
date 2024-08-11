@@ -31,7 +31,7 @@
           - sensor.0x54ef4410000ebba0_battery
           - sensor.0x00158d000542ceaf_battery
           - sensor.0x158d00039a2f33_battery
-          - sensor.0x158d0003975d8b_battery
+          - sensor.0x00158d0003975d8b_battery
           - sensor.0x00124b00215bb163_linkquality
           - switch.shelly_plug_s_1
           - switch.shelly_plug_s_2
@@ -103,6 +103,7 @@
           - sensor.temperature_humidity_sensor_500d_temperature
           - sensor.temperature_humidity_sensor_500d_humidity
           - switch.014020518886002182_bsh_common_setting_powerstate
+          - fan.dmaker_p45_5007_fan
 
     temperature_summary_group_to_bot:
         entities:

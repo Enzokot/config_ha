@@ -22,18 +22,18 @@
             value_template: >
                 {{ trigger.to_state.state not in ['release', 'unavailable', 'unknown', '', 'None'] }}
       action:
-          - service: timer.start
+          - action: timer.start
             entity_id: timer.doorbell_timer_restart_automation
           - parallel:
               - sequence:
                   - variables:
                       string_now_time: "{{ now().strftime('%Y%m%d-%H%M%S') }}"
-                  - service: camera.snapshot
+                  - action: camera.snapshot
                     data:
                       entity_id: camera.hallway_1_fluent
                       filename: "/share/obmen/Doorbeel_Snapshots/snapshot_hallway_1_{{ string_now_time }}.jpg"
               
-                  - service: telegram_bot.send_photo
+                  - action: telegram_bot.send_photo
                     data:
                       file: "/share/obmen/Doorbeel_Snapshots/snapshot_hallway_1_{{ string_now_time }}.jpg"
                       caption: "{{ '\U0001f514' }} *Кто-то звонит в дверь*"
@@ -43,10 +43,10 @@
                       - condition: time
                         after: '8:00:00'
                         before: '21:30:00'
-                  - service: xiaomi_aqara.stop_ringtone
+                  - action: xiaomi_aqara.stop_ringtone
                     data:
                       gw_mac: !secret gateway1_mac
-                  - service: xiaomi_aqara.play_ringtone
+                  - action: xiaomi_aqara.play_ringtone
                     data:
                       gw_mac: !secret gateway1_mac
                       ringtone_id: 10001
@@ -57,7 +57,7 @@
                       entity_id: automation.light_gateway_toggle
                       attribute: current
                       state: 0
-                  - service: scene.create
+                  - action: scene.create
                     data:
                       scene_id: before_doorbell_light
                       snapshot_entities:
@@ -67,27 +67,27 @@
                           - condition: template
                             value_template: "{{ repeat.index <= 3 }}"
                        sequence:
-                          - service: light.turn_on
+                          - action: light.turn_on
                             entity_id: light.gateway_light_04cf8cabd77b
                             data:
                               rgb_color: [255,128,0]
                               brightness: 128
                           - delay:
                               milliseconds: 150
-                          - service: light.turn_off
+                          - action: light.turn_off
                             entity_id: light.gateway_light_04cf8cabd77b
                           - delay:
                               milliseconds: 50
-                          - service: light.turn_on
+                          - action: light.turn_on
                             entity_id: light.gateway_light_04cf8cabd77b
                             data:
                               rgb_color: [255,128,0]
                               brightness: 128
                           - delay:
                               milliseconds: 150
-                          - service: light.turn_off
+                          - action: light.turn_off
                             entity_id: light.gateway_light_04cf8cabd77b
-                  - service: scene.turn_on
+                  - action: scene.turn_on
                     entity_id: scene.before_doorbell_light
               - sequence:
                   - condition:
@@ -95,12 +95,12 @@
                       after: '8:00:00'
                       before: '21:30:00'
                   - parallel:
-                      - service: script.alice_custom_tts_volume
+                      - action: script.alice_custom_tts_volume
                         data:
                           entity: 'media_player.yandex_station_ff98f029b620413b35e5e278'
                           text: 'Кто то звонит в дверь'
                           vol_level: '0.65'
-                      - service: script.alice_custom_tts_volume
+                      - action: script.alice_custom_tts_volume
                         data:
                           entity: 'media_player.yandex_station_m00ka4300h99tr'
                           text: 'Кто то звонит в дверь'

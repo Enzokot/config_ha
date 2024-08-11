@@ -43,14 +43,21 @@ views:
              **Использование э/э**
 
         - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
           cards:
             - type: energy-date-selection
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
             - type: energy-usage-graph
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
 
       - type: vertical-stack
         cards:
@@ -134,9 +141,6 @@ views:
           hours_to_show: 24
           name: Speedtest.net
           points_per_hour: 1
-        #   tap_action:
-        #     action: call-service
-        #     service: speedtestdotnet.speedtest
 
       - type: vertical-stack
         cards:
@@ -152,13 +156,15 @@ views:
               secondary_info: entity-id
             - entity: sensor.maria_db_folder_size
               secondary_info: entity-id
-            - type: call-service
+            - type: button
               icon: mdi:database-minus
               name: База данных
               action_name: Сжать
-              service: automation.trigger
-              service_data:
-                entity_id: automation.db_purge_everyday
+              tap_action:
+                action: perform-action
+                perform_action: automation.trigger
+                data:
+                  entity_id: automation.db_purge_everyday
             - type: divider
             - entity: sensor.influxdb_db_folder_size
               secondary_info: entity-id
@@ -174,19 +180,14 @@ views:
               icon_height: 50px
               type: button
               tap_action:
-                action: call-service
-                service: switch.toggle
-                service_data:
+                action: perform-action
+                perform_action: switch.toggle
+                data:
                   entity_id: switch.shelly_plug_s_1
                 confirmation:
                   text: Вкл/выкл розетку?
 
-        - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
+        - type: vertical-stack
           cards:
             - type: entities
               show_header_toggle: false
@@ -205,11 +206,6 @@ views:
           content: >
              **Освещение детская** 
         - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
           title: 'Потолочный светильник'
           cards:
             - type: entities
@@ -226,26 +222,41 @@ views:
                 - type: light
                   entity: light.yeelight_ceiling_cr
                   name: Люстра
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
                 - type: light
                   entity: light.yeelight_ceiling_cr_nightlight
                   name: Ночник
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
                 - type: light
                   entity: light.yeelight_ceiling_cr_ambilight
                   name: Ambilight
-
-        - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
-          cards:
-            - type: entities
-              show_header_toggle: false
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
+            - type: divider
+            - type: glance
+              columns: 3
+              show_icon: false
               entities:
                   - entity: sensor.0x54ef441000096cbc_power
+                    name: 'Мощность'
                   - entity: sensor.total_yeelight_ceiling_relay_cable_daily_electicity
+                    name: 'День'
                   - entity: sensor.total_yeelight_ceiling_relay_cable_monthly_electicity
+                    name: 'Месяц'
 
       - type: vertical-stack
         cards:
@@ -254,11 +265,6 @@ views:
              **Освещение кухня**
 
         - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
           cards:
             - type: entities
               show_header_toggle: false
@@ -325,23 +331,24 @@ views:
              **Шлюз** 
 
         - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
           cards:
 
             - type: custom:vertical-stack-in-card
               card_mod:
                 style: |
                   ha-card {
+                    box-shadow: 0px 0px;
                     border: none;
                   }
               horizontal: true
               cards:
-
                 - type: tile
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
                   entity: alarm_control_panel.signalka_shliuza_alarm
                   name: 'Сигналка'
                   state_content:
@@ -354,6 +361,12 @@ views:
                         - disarmed
 
                 - type: button
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
                   show_name: false
                   entity: input_boolean.alarm_gateway_button
 
@@ -425,7 +438,7 @@ views:
             - entity: binary_sensor.0x158d0003d05782_contact
               show_last_changed: true
               name: Центр.
-            - entity: binary_sensor.0x158d0003975d8b_contact
+            - entity: binary_sensor.0x00158d0003975d8b_contact
               show_last_changed: true
               name: Прав.
 
@@ -553,7 +566,7 @@ views:
                   - sensor.0x158d0003975b4c_battery
                   - sensor.0x158d000396f197_battery
                   - sensor.0x158d0003d05782_battery
-                  - sensor.0x158d0003975d8b_battery
+                  - sensor.0x00158d0003975d8b_battery
                   - sensor.0x158d00039a2f33_battery
                   - sensor.0x00158d00093e4111_battery
               - name: 'Дыма (min: {min}%, кол-во: {count})'
@@ -684,7 +697,7 @@ views:
               tap_action: more-info
             - entity: sensor.0x158d000396f197_battery
               tap_action: more-info
-            - entity: sensor.0x158d0003975d8b_battery
+            - entity: sensor.0x00158d0003975d8b_battery
               tap_action: more-info
             - entity: sensor.0x158d00039a2f33_battery
               tap_action: more-info
@@ -713,23 +726,18 @@ views:
           content: >
              **Стик zigbee** 
 
-        #- type: custom:vertical-stack-in-card
-        #   card_mod:
-        #     style: |
-        #       ha-card {
-        #         border: none;
-        #       }
-        - type: vertical-stack
+        - type: custom:vertical-stack-in-card
+        #- type: vertical-stack
           cards:
             - type: custom:vertical-stack-in-card
               horizontal: true
               card_mod:
                 style: |
                   ha-card {
+                    box-shadow: 0px 0px;
                     border: none;
                   }
               cards:
-
                 - type: button
                   name: Поиск zigbee
                   show_state: false
@@ -763,13 +771,14 @@ views:
              **Входная э/э** 
 
         - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
           cards:
             - type: glance
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
               columns: 4
               show_icon: false
               entities:
@@ -787,11 +796,6 @@ views:
              **Розетка водонагревателя** 
 
         - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
           cards:
             - type: entities
               show_header_toggle: false
@@ -803,6 +807,12 @@ views:
                     state_color: true
             - type: divider
             - type: glance
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
               columns: 3
               show_icon: false
               entities:
@@ -818,11 +828,6 @@ views:
              **Розетка обогревателя Electrolux** 
 
         - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
           cards:
             - type: entities
               show_header_toggle: false
@@ -834,6 +839,12 @@ views:
                     state_color: true
             - type: divider
             - type: glance
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
               columns: 3
               show_icon: false
               entities:
@@ -849,11 +860,6 @@ views:
              **Розетка Data Storage** 
 
         - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
           cards:
             - type: entities
               show_header_toggle: false
@@ -863,6 +869,12 @@ views:
                     secondary_info: last-changed
             - type: divider
             - type: glance
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
               columns: 3
               show_icon: false
               entities:
@@ -878,11 +890,6 @@ views:
              **Розетка в кухне 1** 
 
         - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
           cards:
             - type: entities
               show_header_toggle: false
@@ -892,6 +899,12 @@ views:
                     secondary_info: last-changed
             - type: divider
             - type: glance
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
               columns: 3
               show_icon: false
               entities:
@@ -907,11 +920,6 @@ views:
              **Розетка в спальне 1** 
 
         - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
           cards:
             - type: entities
               show_header_toggle: false
@@ -921,6 +929,12 @@ views:
                     secondary_info: last-changed
             - type: divider
             - type: glance
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
               columns: 3
               show_icon: false
               entities:
@@ -936,11 +950,6 @@ views:
              **Розетка в спальне 2** 
 
         - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
           cards:
             - type: entities
               show_header_toggle: false
@@ -950,6 +959,12 @@ views:
                     secondary_info: last-changed
             - type: divider
             - type: glance
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
               columns: 3
               show_icon: false
               entities:
@@ -965,11 +980,6 @@ views:
              **Розетка NVR** 
 
         - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
           cards:
             - type: entities
               show_header_toggle: false
@@ -979,6 +989,12 @@ views:
                     secondary_info: last-changed
             - type: divider
             - type: glance
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
               columns: 3
               show_icon: false
               entities:
@@ -994,11 +1010,6 @@ views:
              **Кулер шкафа NVR** 
 
         - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
           cards:
             - type: entities
               show_header_toggle: false
@@ -1008,6 +1019,12 @@ views:
                     secondary_info: last-changed
             - type: divider
             - type: glance
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
               columns: 4
               show_icon: false
               entities:
@@ -1025,11 +1042,6 @@ views:
              **Розетка Keenetic HW** 
 
         - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
           cards:
             - type: entities
               show_header_toggle: false
@@ -1039,6 +1051,12 @@ views:
                     secondary_info: last-changed
             - type: divider
             - type: glance
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
               columns: 3
               show_icon: false
               entities:
@@ -1069,16 +1087,17 @@ views:
              **Увлажнитель детская** 
 
         - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
           cards:
 
             - type: horizontal-stack
               cards:
                 - type: 'custom:button-card'
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
                   entity: humidifier.zhimi_humidifier_ca4
                   icon: mdi:fan-auto
                   show_name: false
@@ -1108,16 +1127,22 @@ views:
                           if ((entity.state == 'off')
                               || (entity.attributes && entity.attributes.mode
                                   && (entity.attributes.mode != 'Auto')))
-                            return "call-service";
+                            return "perform-action";
                           return "none";
                         ]]]
-                    service: script.turn_on
-                    service_data:
+                    perform_action: script.turn_on
+                    data:
                       entity_id: script.turn_on_set_mode_humidifier_ca4
                       variables:
                         entity_id: "[[[ return entity.entity_id ]]]"
                         mode: 'Auto'
                 - type: 'custom:button-card'
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
                   entity: humidifier.zhimi_humidifier_ca4
                   icon: mdi:fan-speed-1
                   show_name: false
@@ -1147,16 +1172,22 @@ views:
                           if ((entity.state == 'off')
                               || (entity.attributes && entity.attributes.mode
                                   && (entity.attributes.mode != 'Low')))
-                            return "call-service";
+                            return "perform-action";
                           return "none";
                         ]]]
-                    service: script.turn_on
-                    service_data:
+                    perform_action: script.turn_on
+                    data:
                       entity_id: script.turn_on_set_mode_humidifier_ca4
                       variables:
                         entity_id: "[[[ return entity.entity_id ]]]"
                         mode: 'Low'
                 - type: 'custom:button-card'
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
                   entity: humidifier.zhimi_humidifier_ca4
                   icon: mdi:fan-speed-2
                   show_name: false
@@ -1186,16 +1217,22 @@ views:
                           if ((entity.state == 'off')
                               || (entity.attributes && entity.attributes.mode
                                   && (entity.attributes.mode != 'Mid')))
-                            return "call-service";
+                            return "perform-action";
                           return "none";
                         ]]]
-                    service: script.turn_on
-                    service_data:
+                    perform_action: script.turn_on
+                    data:
                       entity_id: script.turn_on_set_mode_humidifier_ca4
                       variables:
                         entity_id: "[[[ return entity.entity_id ]]]"
                         mode: 'Mid'
                 - type: 'custom:button-card'
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
                   entity: humidifier.zhimi_humidifier_ca4
                   icon: mdi:fan-speed-3
                   show_name: false
@@ -1225,16 +1262,22 @@ views:
                           if ((entity.state == 'off')
                               || (entity.attributes && entity.attributes.mode
                                   && (entity.attributes.mode != 'High')))
-                            return "call-service";
+                            return "perform-action";
                           return "none";
                         ]]]
-                    service: script.turn_on
-                    service_data:
+                    perform_action: script.turn_on
+                    data:
                       entity_id: script.turn_on_set_mode_humidifier_ca4
                       variables:
                         entity_id: "[[[ return entity.entity_id ]]]"
                         mode: 'High'
                 - type: 'custom:button-card'
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
                   entity: humidifier.zhimi_humidifier_ca4
                   show_name: false
                   styles:
@@ -1266,21 +1309,33 @@ views:
                     action: >
                         [[[
                           if (entity.state == 'on')
-                            return "call-service";
+                            return "perform-action";
                           return "none";
                         ]]]
-                    service: 'humidifier.turn_off'
-                    service_data:
+                    perform_action: 'humidifier.turn_off'
+                    data:
                       entity_id: entity
 
             - type: horizontal-stack
               cards:
                   - type: entities
+                    card_mod:
+                      style: |
+                        ha-card {
+                          box-shadow: 0px 0px;
+                          border: none;
+                        }
                     show_header_toggle: false
                     entities:
                         - entity: sensor.zhimi_humidifier_ca4_water_level
                           name: 'Вода'
                   - type: entities
+                    card_mod:
+                      style: |
+                        ha-card {
+                          box-shadow: 0px 0px;
+                          border: none;
+                        }
                     show_header_toggle: false
                     entities:
                         - entity: sensor.zhimi_humidifier_ca4_actual_speed
@@ -1311,16 +1366,16 @@ views:
              **Увлажнитель спальня** 
 
         - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
           cards:
-
             - type: horizontal-stack
               cards:
                 - type: 'custom:button-card'
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
                   entity: humidifier.zhimi_humidifier_cb1
                   icon: mdi:fan-auto
                   show_name: false
@@ -1350,16 +1405,22 @@ views:
                           if ((entity.state == 'off')
                               || (entity.attributes  && entity.attributes.mode
                                   && (entity.attributes.mode != 'Auto')))
-                            return "call-service";
+                            return "perform-action";
                           return "none";
                         ]]]
-                    service: script.turn_on
-                    service_data:
+                    perform_action: script.turn_on
+                    data:
                       entity_id: script.turn_on_set_mode_humidifier_cb1
                       variables:
                         entity_id: "[[[ return entity.entity_id ]]]"
                         mode: 'Auto'
                 - type: 'custom:button-card'
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
                   entity: humidifier.zhimi_humidifier_cb1
                   icon: mdi:fan-speed-1
                   show_name: false
@@ -1389,16 +1450,22 @@ views:
                           if ((entity.state == 'off')
                               || (entity.attributes  && entity.attributes.mode
                                   && (entity.attributes.mode != 'Silent')))
-                            return "call-service";
+                            return "perform-action";
                           return "none";
                         ]]]
-                    service: script.turn_on
-                    service_data:
+                    perform_action: script.turn_on
+                    data:
                       entity_id: script.turn_on_set_mode_humidifier_cb1
                       variables:
                         entity_id: "[[[ return entity.entity_id ]]]"
                         mode: 'Silent'
                 - type: 'custom:button-card'
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
                   entity: humidifier.zhimi_humidifier_cb1
                   icon: mdi:fan-speed-2
                   show_name: false
@@ -1428,16 +1495,22 @@ views:
                           if ((entity.state == 'off')
                               || (entity.attributes  && entity.attributes.mode
                                   && (entity.attributes.mode != 'Medium')))
-                            return "call-service";
+                            return "perform-action";
                           return "none";
                         ]]]
-                    service: script.turn_on
-                    service_data:
+                    perform_action: script.turn_on
+                    data:
                       entity_id: script.turn_on_set_mode_humidifier_cb1
                       variables:
                         entity_id: "[[[ return entity.entity_id ]]]"
                         mode: 'Medium'
                 - type: 'custom:button-card'
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
                   entity: humidifier.zhimi_humidifier_cb1
                   icon: mdi:fan-speed-3
                   show_name: false
@@ -1467,16 +1540,22 @@ views:
                           if ((entity.state == 'off')
                               || (entity.attributes  && entity.attributes.mode
                                   && (entity.attributes.mode != 'High')))
-                            return "call-service";
+                            return "perform-action";
                           return "none";
                         ]]]
-                    service: script.turn_on
-                    service_data:
+                    perform_action: script.turn_on
+                    data:
                       entity_id: script.turn_on_set_mode_humidifier_cb1
                       variables:
                         entity_id: "[[[ return entity.entity_id ]]]"
                         mode: 'High'
                 - type: 'custom:button-card'
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
                   entity: humidifier.zhimi_humidifier_cb1
                   show_name: false
                   styles:
@@ -1508,21 +1587,33 @@ views:
                     action: >
                         [[[
                           if (entity.state == 'on')
-                            return "call-service";
+                            return "perform-action";
                           return "none";
                         ]]]
-                    service: 'humidifier.turn_off'
-                    service_data:
+                    perform_action: 'humidifier.turn_off'
+                    data:
                       entity_id: entity
 
             - type: horizontal-stack
               cards:
                   - type: entities
+                    card_mod:
+                      style: |
+                        ha-card {
+                          box-shadow: 0px 0px;
+                          border: none;
+                        }
                     show_header_toggle: false
                     entities:
                         - entity: sensor.zhimi_humidifier_cb1_water_level
                           name: 'Вода'
                   - type: entities
+                    card_mod:
+                      style: |
+                        ha-card {
+                          box-shadow: 0px 0px;
+                          border: none;
+                        }
                     show_header_toggle: false
                     entities:
                         - entity: sensor.zhimi_humidifier_cb1_motor_speed
@@ -1559,10 +1650,18 @@ views:
           card_mod:
             style: |
               ha-card {
+                box-shadow: 0px 0px;
                 border: none;
               }
           cards:
-            - type: horizontal-stack
+            - type: custom:vertical-stack-in-card
+              horizontal: true
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
               cards:
                   - type: entities
                     show_header_toggle: false
@@ -1576,7 +1675,14 @@ views:
               show_header_toggle: false
               entities:
                   - entity: sensor.158d000542ceaf_pressure
-            - type: horizontal-stack
+            - type: custom:vertical-stack-in-card
+              horizontal: true
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
               cards:
                   - type: entities
                     show_header_toggle: false
@@ -1586,7 +1692,14 @@ views:
                     show_header_toggle: false
                     entities:
                         - entity: sensor.esp_xiaomi_childrens_room_humidity
-            - type: horizontal-stack
+            - type: custom:vertical-stack-in-card
+              horizontal: true
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
               cards:
                   - type: entities
                     show_header_toggle: false
@@ -1598,7 +1711,14 @@ views:
                     entities:
                         - entity: sensor.zhimi_humidifier_ca4_humidity
                           name: RH увлаж.
-            - type: horizontal-stack
+            - type: custom:vertical-stack-in-card
+              horizontal: true
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
               cards:
                   - type: entities
                     show_header_toggle: false
@@ -1608,7 +1728,14 @@ views:
                     show_header_toggle: false
                     entities:
                         - entity: sensor.esp_xiaomi_bed_room_humidity
-            - type: horizontal-stack
+            - type: custom:vertical-stack-in-card
+              horizontal: true
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
               cards:
                   - type: entities
                     show_header_toggle: false
@@ -1620,7 +1747,14 @@ views:
                     entities:
                         - entity: sensor.zhimi_humidifier_cb1_humidity
                           name: RH увлаж.
-            - type: horizontal-stack
+            - type: custom:vertical-stack-in-card
+              horizontal: true
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
               cards:
                   - type: entities
                     show_header_toggle: false
@@ -1630,7 +1764,14 @@ views:
                     show_header_toggle: false
                     entities:
                         - entity: sensor.0x00158d0004561de9_humidity
-            - type: horizontal-stack
+            - type: custom:vertical-stack-in-card
+              horizontal: true
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
               cards:
                   - type: entities
                     show_header_toggle: false
@@ -1640,7 +1781,14 @@ views:
                     show_header_toggle: false
                     entities:
                         - entity: sensor.esp_xiaomi_kitchen_humidity
-            - type: horizontal-stack
+            - type: custom:vertical-stack-in-card
+              horizontal: true
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
               cards:
                   - type: entities
                     show_header_toggle: false
@@ -1662,11 +1810,6 @@ views:
           content: >
              **Теплый пол** 
         - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
           cards:
             - type: tile
               entity: climate.devireg_k
@@ -1676,8 +1819,8 @@ views:
                 - current_temperature
                 - last-changed
               icon_tap_action:
-                action: call-service
-                service: script.turn_on
+                action: perform-action
+                perform-action: script.turn_on
                 data:
                   entity_id: script.toggle_climate_from_ui
                   variables:
@@ -1692,14 +1835,34 @@ views:
                 - current_temperature
                 - last-changed
               icon_tap_action:
-                action: call-service
-                service: script.turn_on
+                action: perform-action
+                perform-action: script.turn_on
                 data:
                   entity_id: script.toggle_climate_from_ui
                   variables:
                     entityid: climate.devireg_hw
               features:
                 - type: "target-temperature"
+
+        - type: markdown
+          content: >
+             **Вентиляторы** 
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: 'custom:mushroom-fan-card'
+              entity: fan.dmaker_p45_5007_fan
+              name: Кухня
+              icon_animation: true
+              show_percentage_control: true
+              show_oscillate_control: true
+              collapsible_controls: true
+              hold_action:
+                action: perform-action
+                perform-action: script.turn_on
+                data:
+                  entity_id: script.switch_fan_preset_mode
+                  variables:
+                    entityid: fan.dmaker_p45_5007_fan
 
       - type: vertical-stack
         cards:
@@ -1708,23 +1871,31 @@ views:
           content: >
              **Термоголовка детская** 
         - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
           cards:
             - type: custom:vertical-stack-in-card
               card_mod:
                 style: |
                   ha-card {
+                    box-shadow: 0px 0px;
                     border: none;
                   }
               horizontal: true
               cards:
                 - type: gauge
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
                   entity: sensor.thermostat_childrens_room_valve_position
                 - type: thermostat
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
                   entity: climate.0x5c0272fffec89454
                   name: " "
     
@@ -1733,45 +1904,71 @@ views:
               state_color: true
               columns: 3
               entities:
-                    - type: entity
-                      name: Блок. кнопок
-                      entity: switch.0x5c0272fffec89454_child_lock_switch
-                      tap_action:
-                        action: toggle
-    
-                    - type: button
-                      show_name: false
-                      entity: input_boolean.thermostat_childrensroom_night_mode
-                      tap_action:
-                        action: toggle
-    
-                    - type: entity
-                      name: Низкий заряд
-                      entity: binary_sensor.debounce_trv_childrens_room_low_battery
+                - type: entity
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
+                  name: Блок. кнопок
+                  entity: switch.0x5c0272fffec89454_child_lock_switch
+                  tap_action:
+                    action: toggle
+
+                - type: button
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
+                  show_name: false
+                  entity: input_boolean.thermostat_childrensroom_night_mode
+                  tap_action:
+                    action: toggle
+
+                - type: entity
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
+                  name: Низкий заряд
+                  entity: binary_sensor.debounce_trv_childrens_room_low_battery
 
         - type: markdown
           content: >
              **Термоголовка спальня** 
         - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
           cards:
             - type: custom:vertical-stack-in-card
               card_mod:
                 style: |
                   ha-card {
+                    box-shadow: 0px 0px;
                     border: none;
                   }
               horizontal: true
               cards:
 
                 - type: gauge
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
                   entity: sensor.thermostat_bedroom_valve_position
     
                 - type: thermostat
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
                   entity: climate.0x60a423fffe968719
                   name: " "
     
@@ -1782,43 +1979,69 @@ views:
               columns: 3
               entities:
 
-                    - type: entity
-                      name: Блок. кнопок
-                      entity: switch.0x60a423fffe968719_child_lock_switch
-                      tap_action:
-                        action: toggle
+                - type: entity
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
+                  name: Блок. кнопок
+                  entity: switch.0x60a423fffe968719_child_lock_switch
+                  tap_action:
+                    action: toggle
 
-                    - type: button
-                      show_name: false
-                      entity: input_boolean.thermostat_bedroom_night_mode
-                      tap_action:
-                        action: toggle
-                      
-                    - type: entity
-                      name: Низкий заряд
-                      entity: binary_sensor.debounce_trv_bedroom_low_battery
+                - type: button
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
+                  show_name: false
+                  entity: input_boolean.thermostat_bedroom_night_mode
+                  tap_action:
+                    action: toggle
+                  
+                - type: entity
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
+                  name: Низкий заряд
+                  entity: binary_sensor.debounce_trv_bedroom_low_battery
 
         - type: markdown
           content: >
              **Термоголовка гостиная** 
         - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
           cards:
             - type: custom:vertical-stack-in-card
               card_mod:
                 style: |
                   ha-card {
+                    box-shadow: 0px 0px;
                     border: none;
                   }
               horizontal: true
               cards:
                 - type: gauge
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
                   entity: sensor.thermostat_living_room_valve_position
                 - type: thermostat
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
                   entity: climate.0x5c0272fffec9db22
                   name: " "
     
@@ -1827,37 +2050,57 @@ views:
               state_color: true
               columns: 2
               entities:
-                    - type: entity
-                      name: Блок. кнопок
-                      entity: switch.0x5c0272fffec9db22_child_lock_switch
-                      tap_action:
-                        action: toggle
-                    
-                    - type: entity
-                      name: Низкий заряд
-                      entity: binary_sensor.debounce_trv_living_room_low_battery
+                - type: entity
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
+                  name: Блок. кнопок
+                  entity: switch.0x5c0272fffec9db22_child_lock_switch
+                  tap_action:
+                    action: toggle
+                
+                - type: entity
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
+                  name: Низкий заряд
+                  entity: binary_sensor.debounce_trv_living_room_low_battery
 
         - type: markdown
           content: >
              **Термоголовка кухня** 
         - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
           cards:
             - type: custom:vertical-stack-in-card
               card_mod:
                 style: |
                   ha-card {
+                    box-shadow: 0px 0px;
                     border: none;
                   }
               horizontal: true
               cards:
                 - type: gauge
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
                   entity: sensor.thermostat_kitchen_valve_position
                 - type: thermostat
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
                   entity: climate.0x5c0272fffe8de819
                   name: " "
     
@@ -1866,15 +2109,27 @@ views:
               state_color: true
               columns: 2
               entities:
-                    - type: entity
-                      name: Блок. кнопок
-                      entity: switch.0x5c0272fffe8de819_child_lock_switch
-                      tap_action:
-                        action: toggle
-                      
-                    - type: entity
-                      name: Низкий заряд
-                      entity: binary_sensor.debounce_trv_kitchen_low_battery
+                - type: entity
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
+                  name: Блок. кнопок
+                  entity: switch.0x5c0272fffe8de819_child_lock_switch
+                  tap_action:
+                    action: toggle
+                  
+                - type: entity
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
+                  name: Низкий заряд
+                  entity: binary_sensor.debounce_trv_kitchen_low_battery
 
   - title: Шторы
     icon: mdi:roller-shade
@@ -1888,11 +2143,6 @@ views:
              **Шторы кухня**
 
         - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
           cards:
             - type: 'custom:mushroom-cover-card'
               entity: cover.cover_group_kitchen
@@ -1917,11 +2167,6 @@ views:
              **Шторы гостиная**
 
         - type: custom:vertical-stack-in-card
-          card_mod:
-            style: |
-              ha-card {
-                border: none;
-              }
           cards:
             - type: 'custom:mushroom-cover-card'
               entity: cover.cover_group_living_room
@@ -2089,9 +2334,9 @@ views:
             precision: 0
             unit: 'ч'
             double_tap_action:
-              action: call-service
-              service: vacuum.send_command
-              service_data:
+              action: perform-action
+              perform_action: vacuum.send_command
+              data:
                 entity_id: vacuum.xiaomi_vacuum_cleaner
                 command: reset_consumable
                 params: ['sensor_dirty_time']
@@ -2102,9 +2347,9 @@ views:
             icon: mdi:air-filter
             unit: 'ч'
             double_tap_action:
-              action: call-service
-              service: vacuum.send_command
-              service_data:
+              action: perform-action
+              perform_action: vacuum.send_command
+              data:
                 entity_id: vacuum.xiaomi_vacuum_cleaner
                 command: reset_consumable
                 params: ['filter_work_time']
@@ -2115,9 +2360,9 @@ views:
             icon: mdi:cross-bolnisi
             unit: 'ч'
             double_tap_action:
-              action: call-service
-              service: vacuum.send_command
-              service_data:
+              action: perform-action
+              perform_action: vacuum.send_command
+              data:
                 entity_id: vacuum.xiaomi_vacuum_cleaner
                 command: reset_consumable
                 params: ['side_brush_work_time']
@@ -2128,9 +2373,9 @@ views:
             icon: mdi:robot-vacuum-variant
             unit: 'ч'
             double_tap_action:
-              action: call-service
-              service: vacuum.send_command
-              service_data:
+              action: perform-action
+              perform_action: vacuum.send_command
+              data:
                 entity_id: vacuum.xiaomi_vacuum_cleaner
                 command: reset_consumable
                 params: ['main_brush_work_time']

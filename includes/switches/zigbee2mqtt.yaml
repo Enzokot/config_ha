@@ -7,11 +7,11 @@
         friendly_name: "Защита от детей"
         value_template: "{{ is_state('lock.0x60a423fffe968719_child_lock', 'locked') }}"
         turn_on:
-            service: lock.lock
+            action: lock.lock
             data:
               entity_id: lock.0x60a423fffe968719_child_lock
         turn_off:
-            service: lock.unlock
+            action: lock.unlock
             data:
               entity_id: lock.0x60a423fffe968719_child_lock
         icon_template: "mdi:human-female-girl"
@@ -21,11 +21,11 @@
         friendly_name: "Защита от детей"
         value_template: "{{ is_state('lock.0x5c0272fffec9db22_child_lock', 'locked') }}"
         turn_on:
-            service: lock.lock
+            action: lock.lock
             data:
               entity_id: lock.0x5c0272fffec9db22_child_lock
         turn_off:
-            service: lock.unlock
+            action: lock.unlock
             data:
               entity_id: lock.0x5c0272fffec9db22_child_lock
         icon_template: "mdi:human-female-girl"
@@ -35,11 +35,11 @@
         friendly_name: "Защита от детей"
         value_template: "{{ is_state('lock.0x5c0272fffec89454_child_lock', 'locked') }}"
         turn_on:
-            service: lock.lock
+            action: lock.lock
             data:
               entity_id: lock.0x5c0272fffec89454_child_lock
         turn_off:
-            service: lock.unlock
+            action: lock.unlock
             data:
               entity_id: lock.0x5c0272fffec89454_child_lock
         icon_template: "mdi:human-female-girl"
@@ -49,11 +49,11 @@
         friendly_name: "Защита от детей"
         value_template: "{{ is_state('lock.0x5c0272fffe8de819_child_lock', 'locked') }}"
         turn_on:
-            service: lock.lock
+            action: lock.lock
             data:
               entity_id: lock.0x5c0272fffe8de819_child_lock
         turn_off:
-            service: lock.unlock
+            action: lock.unlock
             data:
               entity_id: lock.0x5c0272fffe8de819_child_lock
         icon_template: "mdi:human-female-girl"

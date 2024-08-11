@@ -48,7 +48,7 @@ condition:
   value_template: '{{ trigger.from_state.state not in [''unavailable'', ''unknown'',
     ''''] }}'
 action:
-- service: telegram_bot.send_message
+- action: telegram_bot.send_message
   data:
     target: !input 'telegram_chat_id'
     title: '{{ ''⚠'' }} *Контроль напряжения*'

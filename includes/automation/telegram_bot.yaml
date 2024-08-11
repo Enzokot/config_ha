@@ -11,31 +11,31 @@
           command: '/ping'
       action:
         - parallel:
-            - service: notify.notify
+            - action: notify.notify
               data:
                 title: "ℹ️ Check notification's"
                 message: pong
-            - service: telegram_bot.delete_message
+            - action: telegram_bot.delete_message
               data:
                 chat_id: '{{ trigger.event.data.chat_id }}'
                 message_id: '{{ trigger.event.data.id }}'
-            - service: telegram_bot.send_message
+            - action: telegram_bot.send_message
               data:
                 target: '{{ trigger.event.data.chat_id }}'
                 message: >-
                           ℹ️ pong
-            - service: notify.huawei_lte
+            - action: notify.huawei_lte
               data:
                 message: >-
                          ℹ️ pong
                 target: !secret sms_phone_enzokot
                 data:
                   url: 'http://192.168.8.1/'
-            - service: notify.html5_notifier
+            - action: notify.html5_notifier
               data:
                 title: "ℹ️ Check notification's"
                 message: pong
-            - service: notify.email_enzokot_ha
+            - action: notify.email_enzokot_ha
               data:
                 title: "ℹ️ Check notification's"
                 message: pong
@@ -52,11 +52,11 @@
           command: '/tuctuc'
       action:
         - parallel:
-            - service: telegram_bot.delete_message
+            - action: telegram_bot.delete_message
               data:
                 chat_id: '{{ trigger.event.data.chat_id }}'
                 message_id: '{{ trigger.event.data.id }}'
-            - service: telegram_bot.send_message
+            - action: telegram_bot.send_message
               data:
                 target: '{{ trigger.event.data.chat_id }}'
                 message: >-
@@ -76,11 +76,11 @@
         event_data:
           command: '/home_alarm'
       action:
-        - service: telegram_bot.delete_message
+        - action: telegram_bot.delete_message
           data:
             chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.id }}'
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: '{{ trigger.event.data.chat_id }}'
             message: >-
@@ -113,11 +113,11 @@
             data: 
               '/alarm_home_arm'
       action:
-        - service: telegram_bot.delete_message
+        - action: telegram_bot.delete_message
           data:
             chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
-        - service: >-
+        - action: >-
                      {% if trigger.event.data.command == '/alarm_home_disarm' -%}
                         alarm_control_panel.alarm_disarm
                      {%- else -%}
@@ -125,7 +125,7 @@
                      {%- endif %}
           data:
             entity_id: alarm_control_panel.signalka_shliuza_alarm
-        - service: telegram_bot.answer_callback_query
+        - action: telegram_bot.answer_callback_query
           data:
             callback_query_id: '{{ trigger.event.data.id }}'
             message: >-
@@ -155,11 +155,11 @@
             data: '/maxlevelsound'
       action:
         - parallel:
-            - service: telegram_bot.delete_message
+            - action: telegram_bot.delete_message
               data:
                 chat_id: '{{ trigger.event.data.chat_id }}'
                 message_id: '{{ trigger.event.data.message.message_id }}'
-            - service: xiaomi_aqara.play_ringtone
+            - action: xiaomi_aqara.play_ringtone
               data:
                 gw_mac: !secret gateway1_mac
                 ringtone_id: 11
@@ -171,7 +171,7 @@
                     {%- else -%}
                       3
                     {%- endif -%}
-        - service: telegram_bot.answer_callback_query
+        - action: telegram_bot.answer_callback_query
           data:
             callback_query_id: '{{ trigger.event.data.id }}'
             message: 'Постучали шлюзом'
@@ -195,7 +195,7 @@
           event_data:
             data: '/ignoringchangelight'
       action:
-        - service: telegram_bot.delete_message
+        - action: telegram_bot.delete_message
           data:
             chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
@@ -211,9 +211,9 @@
           event_data:
             data: '/nochangelight'
       action:
-        - service: automation.turn_on
+        - action: automation.turn_on
           entity_id: automation.sync_yeelight_ceiling_to_switch
-        - service: telegram_bot.answer_callback_query
+        - action: telegram_bot.answer_callback_query
           data:
             callback_query_id: '{{ trigger.event.data.id }}'
             message: 'Проверим состояние позже'
@@ -229,7 +229,7 @@
           event_data:
             data: '/ignoringchangelight'
       action:
-        - service: telegram_bot.answer_callback_query
+        - action: telegram_bot.answer_callback_query
           data:
             callback_query_id: '{{ trigger.event.data.id }}'
             message: 'Отключили проверку'
@@ -265,11 +265,11 @@
                   state: 'on'
       action:
         - parallel:
-            - service: light.toggle
+            - action: light.toggle
               entity_id: light.yeelight_ceiling_cr
-            - service: automation.turn_on
+            - action: automation.turn_on
               entity_id: automation.sync_yeelight_ceiling_to_switch
-        - service: telegram_bot.answer_callback_query
+        - action: telegram_bot.answer_callback_query
           data:
             callback_query_id: '{{ trigger.event.data.id }}'
             message: 'Изменили состояние'
@@ -286,13 +286,13 @@
           event_data:
             data: '/findvacuum'
       action:
-        - service: vacuum.locate
+        - action: vacuum.locate
           entity_id: vacuum.xiaomi_vacuum_cleaner
-        - service: telegram_bot.delete_message
+        - action: telegram_bot.delete_message
           data:
             chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
-        - service: telegram_bot.answer_callback_query
+        - action: telegram_bot.answer_callback_query
           data:
             callback_query_id: '{{ trigger.event.data.id }}'
             message: 'Включили поиск Степы'
@@ -308,11 +308,11 @@
         event_data:
           command: '/vacuum'
       action:
-        - service: telegram_bot.delete_message
+        - action: telegram_bot.delete_message
           data:
             chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.id }}'
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: '{{ trigger.event.data.chat_id }}'
             message: >-
@@ -332,13 +332,13 @@
           event_data:
             data: '/vacuumnow'
       action:
-        - service: vacuum.start
+        - action: vacuum.start
           entity_id: vacuum.xiaomi_vacuum_cleaner
-        - service: telegram_bot.delete_message
+        - action: telegram_bot.delete_message
           data:
             chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
-        - service: telegram_bot.answer_callback_query
+        - action: telegram_bot.answer_callback_query
           data:
             callback_query_id: '{{ trigger.event.data.id }}'
             message: 'Пылесос отправили на уборку'
@@ -358,19 +358,19 @@
           event_data:
             data: '/vacuum20'
       action:
-        - service: telegram_bot.delete_message
+        - action: telegram_bot.delete_message
           data:
             chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
-        - service: timer.start
+        - action: timer.start
           data:
             entity_id: timer.vacumm_ten_minutes
             duration: "{{ iif(trigger.event.data.data == '/vacuum10', 600, 1200, 1200) }}"
-        - service: telegram_bot.answer_callback_query
+        - action: telegram_bot.answer_callback_query
           data:
             callback_query_id: '{{ trigger.event.data.id }}'
             message: "{{ 'Будет отправлен на уборку через ' + iif(trigger.event.data.data == '/vacuum10', '10 мин.', '20 мин.', '20 мин.') }}"
-        - service: input_text.set_value
+        - action: input_text.set_value
           data:
               entity_id: input_text.var_chat_id_vacuum_later_start
               value: '{{ trigger.event.data.chat_id }}'
@@ -386,23 +386,23 @@
           event_data:
             data: '/vacuumcancel'
       action:
-        - service: telegram_bot.delete_message
+        - action: telegram_bot.delete_message
           data:
             chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
-        - service: timer.cancel
+        - action: timer.cancel
           entity_id: timer.vacumm_ten_minutes
-        - service: vacuum.pause
+        - action: vacuum.pause
           entity_id: vacuum.xiaomi_vacuum_cleaner
         - delay:
             seconds: 3
-        - service: vacuum.return_to_base
+        - action: vacuum.return_to_base
           entity_id: vacuum.xiaomi_vacuum_cleaner
-        - service: telegram_bot.answer_callback_query
+        - action: telegram_bot.answer_callback_query
           data:
             callback_query_id: '{{ trigger.event.data.id }}'
             message: "Отменили таймеры, отправили на базу"
-        - service: input_text.set_value
+        - action: input_text.set_value
           data:
               entity_id: input_text.var_chat_id_vacuum_later_start
               value: !secret telegram_chita_chat_id
@@ -418,11 +418,11 @@
           event_data:
             data: '/sendmap'
       action:
-        - service: telegram_bot.delete_message
+        - action: telegram_bot.delete_message
           data:
             chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
-        - service: telegram_bot.send_photo
+        - action: telegram_bot.send_photo
           data:
             target: '{{ trigger.event.data.chat_id }}'
             url: "{{- 'http://homeassistant.local.hass.io:8123' + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
@@ -441,11 +441,11 @@
         event_data:
           command: '/climate_summary'
       action:
-        - service: telegram_bot.delete_message
+        - action: telegram_bot.delete_message
           data:
             chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.id }}'
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: '{{ trigger.event.data.chat_id }}'
             title: "{{ '\U0001F321' }} *Климатические сенсоры*"
@@ -474,17 +474,17 @@
         - choose:
             - conditions: "{{ is_state(entity, 'on') and is_state_attr(entity, 'in_progress', false) }}"
               sequence:
-                - service: telegram_bot.answer_callback_query
+                - action: telegram_bot.answer_callback_query
                   data:
                     callback_query_id: '{{ trigger.event.data.id }}'
                     message: >-
                         Обновление на версию {{ state_attr(entity, 'latest_version') }} {{ friendlyname }} запущено.
-                - service: update.install
+                - action: update.install
                   data:
                     entity_id: "{{- entity -}}"
                     backup: "{{ state_attr(entity, 'supported_features') | int(0) >= 8 }}"
           default:
-            - service: telegram_bot.answer_callback_query
+            - action: telegram_bot.answer_callback_query
               data:
                 callback_query_id: '{{ trigger.event.data.id }}'
                 message: >-

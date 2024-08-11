@@ -10,7 +10,7 @@
     - platform: state
       entity_id: input_number.zhimi_humidifier_cb1_target_humidity
   action:
-    - service: humidifier.set_humidity
+    - action: humidifier.set_humidity
       data:
         entity_id: humidifier.zhimi_humidifier_cb1
         humidity: '{{ states("input_number.zhimi_humidifier_cb1_target_humidity") | int(0) }}'
@@ -33,7 +33,7 @@
           trigger.to_state.state != trigger.from_state.state
         }}
   action:
-    - service: input_number.set_value
+    - action: input_number.set_value
       entity_id: input_number.zhimi_humidifier_cb1_target_humidity
       data:
         value: >-
@@ -52,7 +52,7 @@
     - platform: state
       entity_id: input_number.zhimi_humidifier_ca4_target_humidity
   action:
-    - service: humidifier.set_humidity
+    - action: humidifier.set_humidity
       data:
         entity_id: humidifier.zhimi_humidifier_ca4
         humidity: '{{ states("input_number.zhimi_humidifier_ca4_target_humidity") | int(0) }}'
@@ -75,7 +75,7 @@
           trigger.to_state.state != trigger.from_state.state
         }}
   action:
-    - service: input_number.set_value
+    - action: input_number.set_value
       entity_id: input_number.zhimi_humidifier_ca4_target_humidity
       data:
         value: >-
@@ -104,7 +104,7 @@
                       entity_id: humidifier.zhimi_humidifier_cb1
                       state: 'on'    
                 sequence:
-                    - service: humidifier.set_mode
+                    - action: humidifier.set_mode
                       data:
                         entity_id: humidifier.zhimi_humidifier_cb1
                         speed: >-
@@ -119,7 +119,7 @@
                       entity_id: humidifier.zhimi_humidifier_ca4
                       state: 'on'    
                 sequence:
-                    - service: humidifier.set_mode
+                    - action: humidifier.set_mode
                       data:
                         entity_id: humidifier.zhimi_humidifier_ca4
                         speed: >-
@@ -176,7 +176,7 @@
                             and is_state('input_boolean.auto_triggered_fan_window_childrens_room', 'on')
                           }}
                   sequence:
-                      - service: >
+                      - action: >
                                   {% if trigger.to_state.state == 'on' -%}
                                     humidifier.turn_off
                                   {%- else -%}
@@ -184,7 +184,7 @@
                                   {%- endif %}
                         data:
                           entity_id: humidifier.zhimi_humidifier_ca4
-                      - service: input_boolean.toggle
+                      - action: input_boolean.toggle
                         entity_id: input_boolean.auto_triggered_fan_window_childrens_room
                 - conditions:
                       - condition: template
@@ -194,7 +194,7 @@
                             and is_state('input_boolean.auto_triggered_fan_window_childrens_room', 'on')
                           }}
                   sequence:
-                      - service: input_boolean.turn_off
+                      - action: input_boolean.turn_off
                         entity_id: input_boolean.auto_triggered_fan_window_childrens_room
           - choose:
               - conditions:
@@ -206,7 +206,7 @@
                            and is_state('input_boolean.auto_triggered_valve_window_childrens_room', 'on')
                         }}
                 sequence:
-                    - service: climate.set_hvac_mode
+                    - action: climate.set_hvac_mode
                       data:
                         entity_id: climate.0x5c0272fffec89454
                         hvac_mode: >
@@ -215,14 +215,14 @@
                                 {%- else -%}
                                   auto
                                 {%- endif %}
-                    - service: >
+                    - action: >
                                 {% if trigger.to_state.state == 'off' -%}
                                   input_boolean.turn_off
                                 {%- else -%}
                                   input_boolean.turn_on
                                 {%- endif %}
                       entity_id: input_boolean.auto_triggered_valve_window_childrens_room
-                    - service: climate.set_preset_mode
+                    - action: climate.set_preset_mode
                       data:
                         entity_id: climate.0x5c0272fffec89454
                         preset_mode: manual
@@ -234,7 +234,7 @@
                            and is_state('input_boolean.auto_triggered_valve_window_childrens_room', 'on')
                         }}
                 sequence:
-                    - service: input_boolean.turn_off
+                    - action: input_boolean.turn_off
                       entity_id: input_boolean.auto_triggered_valve_window_childrens_room
 
 - alias: turn on off climate devices bed room window open close
@@ -283,7 +283,7 @@
                             and is_state('input_boolean.auto_triggered_fan_window_bed_room', 'on')
                           }}
                   sequence:
-                      - service: >
+                      - action: >
                                   {% if trigger.to_state.state == 'on' -%}
                                     humidifier.turn_off
                                   {%- else -%}
@@ -291,7 +291,7 @@
                                   {%- endif %}
                         data:
                           entity_id: humidifier.zhimi_humidifier_cb1
-                      - service: >
+                      - action: >
                                   {% if trigger.to_state.state == 'off' -%}
                                     input_boolean.turn_off
                                   {%- else -%}
@@ -306,7 +306,7 @@
                             and is_state('input_boolean.auto_triggered_fan_window_bed_room', 'on')
                           }}
                   sequence:
-                      - service: input_boolean.turn_off
+                      - action: input_boolean.turn_off
                         entity_id: input_boolean.auto_triggered_fan_window_bed_room
           - choose:
               - conditions:
@@ -318,7 +318,7 @@
                            and is_state('input_boolean.auto_triggered_valve_window_bed_room', 'on')
                         }}
                 sequence:
-                    - service: climate.set_hvac_mode
+                    - action: climate.set_hvac_mode
                       data:
                         entity_id: climate.0x60a423fffe968719
                         hvac_mode: >
@@ -327,14 +327,14 @@
                                 {%- else -%}
                                   auto
                                 {%- endif %}
-                    - service: >
+                    - action: >
                                 {% if trigger.to_state.state == 'off' -%}
                                   input_boolean.turn_off
                                 {%- else -%}
                                   input_boolean.turn_on
                                 {%- endif %}
                       entity_id: input_boolean.auto_triggered_valve_window_bed_room
-                    - service: climate.set_preset_mode
+                    - action: climate.set_preset_mode
                       data:
                         entity_id: climate.0x60a423fffe968719
                         preset_mode: manual
@@ -346,7 +346,7 @@
                            and is_state('input_boolean.auto_triggered_valve_window_bed_room', 'on')
                         }}
                 sequence:
-                    - service: input_boolean.turn_off
+                    - action: input_boolean.turn_off
                       entity_id: input_boolean.auto_triggered_valve_window_bed_room
 
 - alias: turn on off climate devices kitchen window open close
@@ -382,7 +382,7 @@
                            and is_state('input_boolean.auto_triggered_valve_window_kitchen', 'on')
                         }}
                 sequence:
-                    - service: climate.set_hvac_mode
+                    - action: climate.set_hvac_mode
                       data:
                         entity_id: climate.0x5c0272fffe8de819
                         hvac_mode: >
@@ -391,14 +391,14 @@
                                 {%- else -%}
                                   auto
                                 {%- endif %}
-                    - service: >
+                    - action: >
                                 {% if trigger.to_state.state == 'off' -%}
                                   input_boolean.turn_off
                                 {%- else -%}
                                   input_boolean.turn_on
                                 {%- endif %}
                       entity_id: input_boolean.auto_triggered_valve_window_kitchen
-                    - service: climate.set_preset_mode
+                    - action: climate.set_preset_mode
                       data:
                         entity_id: climate.0x5c0272fffe8de819
                         preset_mode: manual
@@ -410,7 +410,7 @@
                            and is_state('input_boolean.auto_triggered_valve_window_kitchen', 'on')
                         }}
                 sequence:
-                    - service: input_boolean.turn_off
+                    - action: input_boolean.turn_off
                       entity_id: input_boolean.auto_triggered_valve_window_kitchen
           - choose:
               - conditions:  
@@ -422,11 +422,11 @@
                            and is_state('input_boolean.auto_triggered_heating_floor_window_kitchen', 'on')
                         }}
                 sequence:
-                    - service: climate.set_hvac_mode
+                    - action: climate.set_hvac_mode
                       data:
                         entity_id: climate.devireg_k
                         hvac_mode: "{{ iif(trigger.to_state.state == 'on', 'off', 'heat') }}"
-                    - service: "{{ iif(trigger.to_state.state == 'off', 'input_boolean.turn_off' , 'input_boolean.turn_on') }}"
+                    - action: "{{ iif(trigger.to_state.state == 'off', 'input_boolean.turn_off' , 'input_boolean.turn_on') }}"
                       entity_id: input_boolean.auto_triggered_heating_floor_window_kitchen
               - conditions:  
                     - condition: template
@@ -436,7 +436,7 @@
                            and is_state('input_boolean.auto_triggered_heating_floor_window_kitchen', 'on')
                         }}
                 sequence:
-                    - service: input_boolean.turn_off
+                    - action: input_boolean.turn_off
                       entity_id: input_boolean.auto_triggered_heating_floor_window_kitchen
 
 - alias: turn on off climate devices living room window open close
@@ -471,7 +471,7 @@
                        and is_state('input_boolean.auto_triggered_ac_window_living_room', 'on')
                     }}
             sequence:
-                - service: climate.set_hvac_mode
+                - action: climate.set_hvac_mode
                   data:
                     entity_id: climate.avatto_living_room_ac
                     hvac_mode: >
@@ -480,7 +480,7 @@
                             {%- else -%}
                               cool
                             {%- endif %}
-                - service: >
+                - action: >
                             {% if trigger.to_state.state == 'off' -%}
                               input_boolean.turn_off
                             {%- else -%}
@@ -495,7 +495,7 @@
                        and is_state('input_boolean.auto_triggered_ac_window_living_room', 'on')
                     }}
             sequence:
-                - service: input_boolean.turn_off
+                - action: input_boolean.turn_off
                   entity_id: input_boolean.auto_triggered_ac_window_living_room
 
       - choose:
@@ -508,7 +508,7 @@
                        and is_state('input_boolean.auto_triggered_valve_window_living_room', 'on')
                     }}
             sequence:
-                - service: climate.set_hvac_mode
+                - action: climate.set_hvac_mode
                   data:
                     entity_id: climate.0x5c0272fffec9db22
                     hvac_mode: >
@@ -517,14 +517,14 @@
                             {%- else -%}
                               auto
                             {%- endif %}
-                - service: >
+                - action: >
                             {% if trigger.to_state.state == 'off' -%}
                               input_boolean.turn_off
                             {%- else -%}
                               input_boolean.turn_on
                             {%- endif %}
                   entity_id: input_boolean.auto_triggered_valve_window_living_room
-                - service: climate.set_preset_mode
+                - action: climate.set_preset_mode
                   data:
                     entity_id: climate.0x5c0272fffec9db22
                     preset_mode: manual
@@ -536,7 +536,7 @@
                        and is_state('input_boolean.auto_triggered_valve_window_living_room', 'on')
                     }}
             sequence:
-                - service: input_boolean.turn_off
+                - action: input_boolean.turn_off
                   entity_id: input_boolean.auto_triggered_valve_window_living_room
 
 #Перезапуск розетки для увлажнителя в спальне
@@ -565,11 +565,11 @@
     - choose:
         - conditions: "{{ wait.completed == false and is_state('binary_sensor.local_network_availability', 'on') }}"
           sequence:
-              - service: switch.turn_off
+              - action: switch.turn_off
                 data:
                   entity_id: switch.0x60a423fffef8d41a
               - delay:
                   seconds: 5
-              - service: switch.turn_on
+              - action: switch.turn_on
                 data:
                   entity_id: switch.0x60a423fffef8d41a

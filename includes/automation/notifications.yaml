@@ -12,7 +12,7 @@
           minutes: 2
       action:
         - parallel:
-            - service: notify.telegram_enzokot_to_bot
+            - action: notify.telegram_enzokot_to_bot
               data:
                 title: >-
                        ⚠️ *Датчик открытия/закрытия*
@@ -28,7 +28,7 @@
                       entity_id: media_player.lg_smart_tv
                       state: 'on'
                   sequence:
-                    - service: notify.kotletochka_tv
+                    - action: notify.kotletochka_tv
                       data:
                         message: 'Входная дверь: открыта более 2 минут'
 
@@ -47,7 +47,7 @@
           from: 'on'
           to: 'off'
       action:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_all_chat_id
             disable_notification: true
@@ -82,17 +82,17 @@
                 after: '16:30:00'
                 before: '21:00:00'
       action:
-          - service: timer.start
+          - action: timer.start
             entity_id: timer.front_door_ringtone
           - parallel:
-              - service: script.turn_on
+              - action: script.turn_on
                 data:
                   entity_id: script.alice_custom_tts_volume
                   variables:
                     entity: 'media_player.yandex_station_ff98f029b620413b35e5e278'
                     text: 'Внимание! Входная дверь открыта!!!'
                     vol_level: '0.65'
-              - service: xiaomi_aqara.play_ringtone
+              - action: xiaomi_aqara.play_ringtone
                 data:
                   gw_mac: !secret gateway1_mac
                   ringtone_id: 10004
@@ -111,15 +111,15 @@
             entity_id: binary_sensor.0x158d000359304c_contact
             state: 'on'
       action:
-          - service: timer.start
+          - action: timer.start
             entity_id: timer.front_door_ringtone
           - parallel:
-              - service: script.alice_custom_tts_volume
+              - action: script.alice_custom_tts_volume
                 data:
                   entity: 'media_player.yandex_station_ff98f029b620413b35e5e278'
                   text: 'Внимание! Входная дверь открыта!!!'
                   vol_level: '0.65'
-              - service: xiaomi_aqara.play_ringtone
+              - action: xiaomi_aqara.play_ringtone
                 data:
                   gw_mac: !secret gateway1_mac
                   ringtone_id: 10004
@@ -143,12 +143,12 @@
             entity_id: timer.front_door_ringtone
             state: 'active'
       action:
-          - service: timer.cancel
+          - action: timer.cancel
             entity_id: timer.front_door_ringtone
           - choose:
               - conditions: "{{ trigger.id == 'binary_sensor_trigger' }}"
                 sequence:            
-                  - service: xiaomi_aqara.stop_ringtone
+                  - action: xiaomi_aqara.stop_ringtone
                     data:
                       gw_mac: !secret gateway1_mac
 
@@ -169,7 +169,7 @@
         - variables:
             text_for_message: "{{ iif(trigger.to_state.state == 'on', 'открыта', 'закрыта') }}"
         - parallel:
-            - service: telegram_bot.send_message
+            - action: telegram_bot.send_message
               data:
                   title: "{{ iif(trigger.to_state.state == 'on', '\U0001F6AA', '\U0001f510') }} *Датчик открытия/закрытия*"
                   message: "Входная дверь: {{ text_for_message }}"
@@ -181,7 +181,7 @@
                       entity_id: media_player.lg_smart_tv
                       state: 'on'
                   sequence:
-                    - service: notify.kotletochka_tv
+                    - action: notify.kotletochka_tv
                       data:
                         message: "Входная дверь: {{ text_for_message }}"
 
@@ -202,7 +202,7 @@
         - choose:
             - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
               sequence:
-                - service: notify.mobile_app_sm_g973f
+                - action: notify.mobile_app_sm_g973f
                   data:
                     message: 'command_dnd'
                     data:
@@ -217,13 +217,13 @@
         - choose:
             - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
               sequence:
-                - service: notify.notify
+                - action: notify.notify
                   data:
                     message: 'command_ringer_mode'
                     data:
                       command: 'normal'
         - parallel:
-            - service: telegram_bot.send_message
+            - action: telegram_bot.send_message
               data:
                 title: >-
                        {{ '\U0001f6a8' }} *Сигнализация*
@@ -232,7 +232,7 @@
                 target: !secret telegram_all_chat_id
                 inline_keyboard:
                   - 'Выключить сирену:/stop_alarm'
-            - service: notify.notify
+            - action: notify.notify
               data:
                 title: "{{ '\U0001f6a8' }} Сигнализация"
                 message: >-
@@ -244,7 +244,7 @@
                   actions:
                     - action: "stop_alarm"
                       title: "Выключить сирену"
-            - service: notify.huawei_lte
+            - action: notify.huawei_lte
               data:
                 message: >-
                          🚨 Обнаружено вскрытие {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
@@ -254,7 +254,7 @@
         - choose:
             - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
               sequence:
-                - service: notify.mobile_app_sm_g973f
+                - action: notify.mobile_app_sm_g973f
                   data:
                     message: 'command_ringer_mode'
                     data:
@@ -262,7 +262,7 @@
         - choose:
             - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
               sequence:
-                - service: notify.mobile_app_sm_g973f
+                - action: notify.mobile_app_sm_g973f
                   data:
                     message: 'command_dnd'
                     data:
@@ -289,7 +289,7 @@
         - choose:
             - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
               sequence:
-                - service: notify.mobile_app_sm_g973f
+                - action: notify.mobile_app_sm_g973f
                   data:
                     message: 'command_dnd'
                     data:
@@ -304,13 +304,13 @@
         - choose:
             - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
               sequence:
-                - service: notify.notify
+                - action: notify.notify
                   data:
                     message: 'command_ringer_mode'
                     data:
                       command: 'normal'
         - parallel:
-            - service: telegram_bot.send_message
+            - action: telegram_bot.send_message
               data:
                 title: >-
                        {{ '\U0001f6a8' }} *Сигнализация*
@@ -319,7 +319,7 @@
                 target: !secret telegram_all_chat_id
                 inline_keyboard:
                   - 'Выключить сирену:/stop_alarm'
-            - service: notify.notify
+            - action: notify.notify
               data:
                 title: "{{ '\U0001f6a8' }} Сигнализация"
                 message: >-
@@ -331,7 +331,7 @@
                   actions:
                     - action: "stop_alarm"
                       title: "Выключить сирену"
-            - service: notify.huawei_lte
+            - action: notify.huawei_lte
               data:
                 message: >-
                          🚨 Обнаружено движение {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
@@ -341,7 +341,7 @@
         - choose:
             - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
               sequence:
-                - service: notify.mobile_app_sm_g973f
+                - action: notify.mobile_app_sm_g973f
                   data:
                     message: 'command_ringer_mode'
                     data:
@@ -349,7 +349,7 @@
         - choose:
             - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
               sequence:
-                - service: notify.mobile_app_sm_g973f
+                - action: notify.mobile_app_sm_g973f
                   data:
                     message: 'command_dnd'
                     data:
@@ -377,7 +377,7 @@
         - choose:
             - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
               sequence:
-                - service: notify.mobile_app_sm_g973f
+                - action: notify.mobile_app_sm_g973f
                   data:
                     message: 'command_dnd'
                     data:
@@ -392,13 +392,13 @@
         - choose:
             - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
               sequence:
-                - service: notify.notify
+                - action: notify.notify
                   data:
                     message: 'command_ringer_mode'
                     data:
                       command: 'normal'
         - parallel:
-            - service: telegram_bot.send_message
+            - action: telegram_bot.send_message
               data:
                 title: >-
                        {{ '\U0001f6a8' }} *Сигнализация*
@@ -407,7 +407,7 @@
                 inline_keyboard:
                   - 'Выключить сирену:/stop_alarm'
                 target: !secret telegram_all_chat_id
-            - service: notify.notify
+            - action: notify.notify
               data:
                 title: "{{ '\U0001f6a8' }} Сигнализация"
                 message: >-
@@ -419,7 +419,7 @@
                   actions:
                     - action: "stop_alarm"
                       title: "Выключить сирену"
-            - service: notify.huawei_lte
+            - action: notify.huawei_lte
               data:
                 message: >-
                          🚨 Обнаружено вскрытие окна {{ trigger.to_state.attributes.friendly_name }} при включенной сигнализации
@@ -429,7 +429,7 @@
         - choose:
             - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
               sequence:
-                - service: notify.mobile_app_sm_g973f
+                - action: notify.mobile_app_sm_g973f
                   data:
                     message: 'command_ringer_mode'
                     data:
@@ -437,7 +437,7 @@
         - choose:
             - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
               sequence:
-                - service: notify.mobile_app_sm_g973f
+                - action: notify.mobile_app_sm_g973f
                   data:
                     message: 'command_dnd'
                     data:
@@ -467,7 +467,7 @@
         - choose:
             - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
               sequence:
-                - service: notify.mobile_app_sm_g973f
+                - action: notify.mobile_app_sm_g973f
                   data:
                     message: 'command_dnd'
                     data:
@@ -482,13 +482,13 @@
         - choose:
             - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
               sequence:
-                - service: notify.notify
+                - action: notify.notify
                   data:
                     message: 'command_ringer_mode'
                     data:
                       command: 'normal'
         - parallel:
-            - service: telegram_bot.send_message
+            - action: telegram_bot.send_message
               data:
                 title: >-
                        {{ '\U0001f6a8' }} *Сигнализация*
@@ -497,7 +497,7 @@
                 inline_keyboard:
                   - 'Выключить сирену:/stop_alarm'
                 target: !secret telegram_all_chat_id
-            - service: notify.notify
+            - action: notify.notify
               data:
                 title: "{{ '\U0001f6a8' }} Сигнализация"
                 message: >-
@@ -509,7 +509,7 @@
                   actions:
                     - action: "stop_alarm"
                       title: "Выключить сирену"
-            - service: notify.huawei_lte
+            - action: notify.huawei_lte
               data:
                 message: >-
                          🚨 Обнаружено срабатывание шлюза {{ trigger.to_state.attributes.friendly_name }}
@@ -519,7 +519,7 @@
         - choose:
             - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
               sequence:
-                - service: notify.mobile_app_sm_g973f
+                - action: notify.mobile_app_sm_g973f
                   data:
                     message: 'command_ringer_mode'
                     data:
@@ -527,7 +527,7 @@
         - choose:
             - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
               sequence:
-                - service: notify.mobile_app_sm_g973f
+                - action: notify.mobile_app_sm_g973f
                   data:
                     message: 'command_dnd'
                     data:
@@ -547,7 +547,7 @@
            - 'Charging Error'
       action:
         - parallel:
-            - service: telegram_bot.send_photo
+            - action: telegram_bot.send_photo
               data:
                 target: !secret telegram_all_chat_id
                 url: "{{- 'http://homeassistant.local.hass.io:8123' + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
@@ -561,7 +561,7 @@
                       entity_id: media_player.lg_smart_tv
                       state: 'on'
                   sequence:
-                    - service: notify.kotletochka_tv
+                    - action: notify.kotletochka_tv
                       data:
                         message: 'Степа: мне нужна помощь'
 
@@ -605,13 +605,13 @@
                    {%- endif -%}
                  {% endif %}
         - parallel:
-            - service: telegram_bot.send_photo
+            - action: telegram_bot.send_photo
               data:
                 target: !secret telegram_chita_chat_id
                 url: "{{- 'http://homeassistant.local.hass.io:8123' + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
                 caption: >-
                        {{ '\U0001f4af' }} *Степа* {{- '\n' -}} Вернулся на базу (длительность: {{- current_clean_duration -}}, площадь: {{- current_clean_area -}}), нужно снять бак с водой и заглянуть в контейнер пылесборника
-            - service: input_number.set_value
+            - action: input_number.set_value
               data:
                 entity_id: input_number.total_cleaned_area_saved
                 value: >-
@@ -622,7 +622,7 @@
                       entity_id: media_player.lg_smart_tv
                       state: 'on'
                   sequence:
-                    - service: notify.kotletochka_tv
+                    - action: notify.kotletochka_tv
                       data:
                         message: 'Степа: вернулся на базу'
 
@@ -645,7 +645,7 @@
         - choose:
             - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
               sequence:
-                - service: notify.mobile_app_sm_g973f
+                - action: notify.mobile_app_sm_g973f
                   data:
                     message: 'command_dnd'
                     data:
@@ -661,13 +661,13 @@
         - choose:
             - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
               sequence:
-                - service: notify.notify
+                - action: notify.notify
                   data:
                     message: 'command_ringer_mode'
                     data:
                       command: 'normal'
         - parallel:
-            - service: telegram_bot.send_message
+            - action: telegram_bot.send_message
               data:
                 target: !secret telegram_all_chat_id
                 title: >-
@@ -678,7 +678,7 @@
                             _{{- areas_list -}}_
                 inline_keyboard:
                   - 'Выключить сирену:/stop_alarm'
-            - service: notify.notify
+            - action: notify.notify
               data:
                 data:
                   ttl: 0
@@ -692,7 +692,7 @@
                             Сработали датчики:
                             {{- '\n' -}}
                             {{- areas_list -}}
-            - service: notify.huawei_lte
+            - action: notify.huawei_lte
               data:
                 message: |-
                             {{ '\U0001F525' }} Сработали датчики дыма:
@@ -704,7 +704,7 @@
         - choose:
             - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
               sequence:
-                - service: notify.mobile_app_sm_g973f
+                - action: notify.mobile_app_sm_g973f
                   data:
                     message: 'command_ringer_mode'
                     data:
@@ -712,7 +712,7 @@
         - choose:
             - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
               sequence:
-                - service: notify.mobile_app_sm_g973f
+                - action: notify.mobile_app_sm_g973f
                   data:
                     message: 'command_dnd'
                     data:
@@ -732,7 +732,7 @@
           from: 'off'
           to: 'on'
       action:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             title: >-
@@ -800,7 +800,7 @@
               sequence:
                 - variables:
                     old_installed_version: "{{ trigger.event.data.old_state.attributes.installed_version }}"
-                - service: telegram_bot.send_message
+                - action: telegram_bot.send_message
                   data:
                     target: !secret telegram_enzokot_chat_id
                     title: "{{ '\U0001F38A' }} *Системное обновление*"
@@ -809,7 +809,7 @@
                     disable_web_page_preview: true
           default:
             - parallel:
-                - service: telegram_bot.send_message
+                - action: telegram_bot.send_message
                   data:
                     target: !secret telegram_enzokot_chat_id
                     title: "{{ '\U0001F389' }} *Системное обновление*"
@@ -820,7 +820,7 @@
                       {{ iif(state_attr(trigger.event.data.entity_id, 'supported_features') | int(0) > 0, ['Установить:/installupdate ' + trigger.event.data.entity_id], []) }}
                 - sequence:
                   - condition: "{{ not is_state_attr(trigger.event.data.entity_id, 'device_class', 'firmware') }}"
-                  - service: notify.html5_notifier
+                  - action: notify.html5_notifier
                     data:
                       title: "{{ '\U0001f389' }} *Системное обновление*"
                       message: "Доступна {{ latest_version }} версия {{ friendlyname }} для установки, текущая {{ installed_version }}"
@@ -852,12 +852,12 @@
             }}
       action:
         - parallel:
-            - service: telegram_bot.send_message
+            - action: telegram_bot.send_message
               data:
                 target: !secret telegram_enzokot_chat_id
                 title: "{{ '\U0001f389' }} *Системное обновление*"
                 message: "Addon's HACS - доступно для обновления *{{ states('sensor.hacs') | int(0) }}*. Список: {% for repo in state_attr('sensor.hacs', 'repositories') %}*{{ repo.display_name }}* (_{{ repo.installed_version }}_ -> _{{ repo.available_version }}_){%if not loop.last %}, {%endif%}{% endfor %}"
-            - service: notify.html5_notifier_n550jk
+            - action: notify.html5_notifier_n550jk
               data:
                 title: "{{ '\U0001f389' }} *Системное обновление*"
                 message: "Addon's HACS - доступно для обновления {{ states('sensor.hacs') | int(0) }}. Список: {% for repo in state_attr('sensor.hacs', 'repositories') %}{{ repo.display_name }} ({{ repo.installed_version }} -> {{ repo.available_version }}){%if not loop.last %}, {%endif%}{% endfor %}"
@@ -884,7 +884,7 @@
                     {%- endfor %}
                     {{ datanames.entity_name | list | count > 0 }}
       action:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             title: >-
@@ -918,7 +918,7 @@
           entity_id: switch.0x842e14fffe5047f5
           state: 'on'
       action:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             title: >-
@@ -944,7 +944,7 @@
                 - sensor.shelly_plug_s_keenetic_hw_power
             above: 3000
       action:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             title: >-
@@ -964,7 +964,7 @@
             entity_id: sensor.myip
       action:
         - parallel:
-            - service: telegram_bot.send_message
+            - action: telegram_bot.send_message
               data:
                 target: !secret telegram_enzokot_chat_id
                 title: >-
@@ -975,7 +975,7 @@
                         {%- else -%}
                             Внешний IP-адрес изменен с `{{ trigger.from_state.state }}` на `{{ trigger.to_state.state }}`
                         {%- endif -%}
-            - service: notify.notify
+            - action: notify.notify
               data:
                 title: >-
                          {{ '\U0001f4f6' }} Трекинг устройств
@@ -991,7 +991,7 @@
                       entity_id: media_player.lg_smart_tv
                       state: 'on'
                   sequence:
-                    - service: notify.kotletochka_tv
+                    - action: notify.kotletochka_tv
                       data:
                         message: 'Интернет: возможно переключились на LTE'
 
@@ -1012,7 +1012,7 @@
         - "{{ states(trigger.entity_id | replace('binary_sensor.', 'sensor.') | replace('_low', '')) | int(0) > 0 }}"
       action:
         - parallel:
-            - service: telegram_bot.send_message
+            - action: telegram_bot.send_message
               data:
                 target: !secret telegram_all_chat_id
                 title: >-
@@ -1025,7 +1025,7 @@
                       entity_id: media_player.lg_smart_tv
                       state: 'on'
                   sequence:
-                    - service: notify.kotletochka_tv
+                    - action: notify.kotletochka_tv
                       data:
                         message: >-
                             Нет воды: {{- trigger.to_state.name -}}
@@ -1045,7 +1045,7 @@
           from: 'off'
           to: 'on'
       action:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_all_chat_id
             title: >-
@@ -1082,7 +1082,7 @@
                         and trigger.to_state.state | float(-1.0) >= 0
                     }}
       action:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             title: >-
@@ -1116,14 +1116,14 @@
                and state_attr('sensor.backup_state', 'backups') | count > 0
             }}
       action:
-        - service: homeassistant.update_entity
+        - action: homeassistant.update_entity
           entity_id: sensor.disk_use_percent
         - wait_for_trigger:
             - platform: state
               entity_id: sensor.disk_use_percent
           timeout: 
               seconds: 10
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             title: >-
@@ -1151,7 +1151,7 @@
           notification_id: ip-ban
       action:
         - parallel:
-            - service: telegram_bot.send_message
+            - action: telegram_bot.send_message
               data:
                 target: !secret telegram_enzokot_chat_id
                 title: >-
@@ -1170,7 +1170,7 @@
                         Заблокирован IP адрес [{{ ipadress }}](https://whatismyipaddress.com/ip/{{- ipadress }}), 5 попыток входа
                     {%- endif %}, [логи]({{- states('sensor.instance_external_url_config') -}}/config/logs)
                 disable_web_page_preview: true
-            - service: persistent_notification.dismiss
+            - action: persistent_notification.dismiss
               data:
                 notification_id: "{{ trigger.id }}"
 
@@ -1201,12 +1201,12 @@
             - condition: trigger
               id: homeassistant_start
           then:
-            - service: homeassistant.update_entity
+            - action: homeassistant.update_entity
               data:
                 entity_id: 
                   - sensor.errors_in_system_log_command_line
                   - sensor.warnings_in_system_log_command_line
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
@@ -1252,7 +1252,7 @@
               trigger.event.data.message | length < 4000
             }}
       action:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             parse_mode: 'html'
@@ -1283,7 +1283,7 @@
         - choose:
             - conditions: "{{ is_state('input_boolean.instances_stoping', 'off') }}"
               sequence:
-                - service: telegram_bot.send_message
+                - action: telegram_bot.send_message
                   data:
                     target: !secret telegram_enzokot_chat_id
                     disable_notification: true
@@ -1320,7 +1320,7 @@
                (trigger.to_state.state | int(0) < 30 and trigger.from_state.state | int(0) > 850)
             }}
       action:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
@@ -1340,7 +1340,7 @@
           from: 'off'
           to: 'on'
       action:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             disable_web_page_preview: true
@@ -1361,14 +1361,14 @@
           notification_id: config_entry_discovery
       action:
         - parallel:
-            - service: telegram_bot.send_message
+            - action: telegram_bot.send_message
               data:
                 target: !secret telegram_enzokot_chat_id
                 disable_notification: true
                 title: "{{ '\U0001F4DF' }} *Устройства*"
                 message: >
                     Найдено новое устройство в сети, [просмотреть]({{- states('sensor.instance_external_url_config') -}}/config/integrations)
-            - service: persistent_notification.dismiss
+            - action: persistent_notification.dismiss
               data:
                 notification_id: 'config_entry_discovery'
 
@@ -1398,7 +1398,7 @@
               {%- else -%}
                 ''
               {%- endif %}
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
@@ -1425,7 +1425,7 @@
         - condition: template
           value_template: '{{ "Already running" in (trigger.event.data.message | string) }}'
       action:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
@@ -1448,7 +1448,7 @@
           event_data:
             level: CRITICAL
       action:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             parse_mode: 'html'
@@ -1480,7 +1480,7 @@
                trigger.to_state.state | int(0) > trigger.from_state.state | int(0)
             }}
       action:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
@@ -1511,14 +1511,14 @@
           above: 0
       action:
         - parallel:
-            - service: notify.huawei_lte
+            - action: notify.huawei_lte
               data:
                 message: >-
                          {{ '\U0000203C' }} {{ states('sensor.check_keenetic_link_down') }} Keenetic link is down
                 target: !secret sms_phone_enzokot
                 data:
                   url: 'http://192.168.8.1/'
-            - service: counter.reset
+            - action: counter.reset
               entity_id: counter.counter_keenetic_link_down
 
 #Уведомление о новых записях в RSS ленте
@@ -1537,7 +1537,7 @@
             all_chat_id: !secret telegram_all_chat_id
             enzokot_chat_id: !secret telegram_enzokot_chat_id
             stormy_notification: "{{ trigger.event.data.feed_url is search('shtormovye-i-ekstrennye-preduprezhdeniya', ignorecase=True) }}"
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: >
                 {% if stormy_notification %}
@@ -1573,7 +1573,7 @@
           after: '8:30:00'
           before: '23:00:00'
       action:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
@@ -1605,7 +1605,7 @@
                 after: '8:00:00'
                 before: '23:00:00'
               sequence:
-                - service: notify.huawei_lte
+                - action: notify.huawei_lte
                   data:
                     message: >-
                              {{ '\U0000203C' }} Telegram API недоступно
@@ -1613,7 +1613,7 @@
                     data:
                       url: 'http://192.168.8.1/'
           default:
-            - service: notify.email_enzokot_ha
+            - action: notify.email_enzokot_ha
               data:
                 title: "⚠️ Трекинг устройств"
                 message: "Telegram API недоступно"
@@ -1640,7 +1640,7 @@
           from: 'on'
           to: 'off'
       action:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
@@ -1675,7 +1675,7 @@
             minutes: 5
       action:
         - parallel:
-            - service: telegram_bot.send_message
+            - action: telegram_bot.send_message
               data:
                 target: !secret telegram_all_chat_id
                 title: >-
@@ -1685,7 +1685,7 @@
             - choose:
               - conditions: "{{ trigger.id == 'below' and trigger.entity_id == 'sensor.0x00158d0006c5f21e_temperature' }}"
                 sequence:
-                  - service: notify.huawei_lte
+                  - action: notify.huawei_lte
                     data:
                       message: >-
                                {{ '\U0000203C' }} Остывает горячая труба {{ area_name(trigger.entity_id) }}.
@@ -1710,7 +1710,7 @@
             status_from: >- 
               {{ iif(trigger.json.heartbeat is not none and trigger.json.heartbeat.status | int(0) == 1, 'online', 'offline', 'offline') }}
         - parallel:
-            - service: telegram_bot.send_message
+            - action: telegram_bot.send_message
               data:
                 target: !secret telegram_enzokot_chat_id
                 parse_mode: 'html'
@@ -1721,7 +1721,7 @@
             - choose:
                 - conditions: "{{ 'tsymbal' in trigger.json.monitor.name | lower and is_state('binary_sensor.internet_availability_ping', 'on') }}"
                   sequence:
-                    - service: notify.huawei_lte
+                    - action: notify.huawei_lte
                       data:
                         message: >-
                                  {{ iif(status_from == 'online', '\U00002705', '\U000026d4', '\U000026d4') }} Link from Enzokot is {{ iif(status_from == 'online', 'up', 'down', 'down') }}
@@ -1744,7 +1744,7 @@
             - "armed_away"
             - "disarmed"
       action:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             message: "{{ iif(is_state('alarm_control_panel.signalka_shliuza_alarm', 'disarmed'), '\U0001f507 Сигнализация *выключена*', '\U0001f509 Сигнализация *включена*') }}"
@@ -1769,7 +1769,7 @@
             - "{{ trigger.id == 'homeassistant_start' }}"
           then:
             - delay: 2
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             parse_mode: 'html'
@@ -1797,7 +1797,7 @@
             - "unknown"
             - "unavailable"
       action:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             parse_mode: 'html'
@@ -1825,7 +1825,7 @@
             first_name_father: !secret first_name_father
             first_name_mother: !secret first_name_mother
             first_name_daughter: !secret first_name_daughter
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_all_chat_id
             disable_notification: true
@@ -1853,7 +1853,7 @@
           entity_id: binary_sensor.kernel_ext4_warning
           state: 'on'
       action:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
@@ -1881,12 +1881,12 @@
             - mon
       action:
         - parallel:
-            - service: telegram_bot.send_message
+            - action: telegram_bot.send_message
               data:
                 target: !secret telegram_enzokot_chat_id
                 title: "{{ '\U0001F9F9' }} *Влажная уборка*"
                 message: "Обнаружена уборка в общем коридоре"
-            - service: notify.huawei_lte
+            - action: notify.huawei_lte
               data:
                 message: "Обнаружена уборка в общем коридоре"
                 target: !secret sms_phone_users56_59
@@ -1909,12 +1909,12 @@
             seconds: 10
       action:
         - parallel:
-            - service: telegram_bot.send_message
+            - action: telegram_bot.send_message
               data:
                 target: !secret telegram_enzokot_chat_id
                 title: "{{ '\U0001F4A7' }} *Датчики протечки*"
                 message: "Обнаружена протечка возле NVR/Камер: *{{ state_attr(trigger.entity_id, 'friendly_name') }}*"
-            - service: notify.huawei_lte
+            - action: notify.huawei_lte
               data:
                 message: "Обнаружена протечка возле NVR/Камер: {{ state_attr(trigger.entity_id, 'friendly_name') }}"
                 target: !secret sms_phone_users59_60
@@ -1926,7 +1926,7 @@
                 - choose:
                     - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
                       sequence:
-                        - service: notify.mobile_app_sm_g973f
+                        - action: notify.mobile_app_sm_g973f
                           data:
                             message: 'command_dnd'
                             data:
@@ -1941,12 +1941,12 @@
                 - choose:
                     - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
                       sequence:
-                        - service: notify.notify
+                        - action: notify.notify
                           data:
                             message: 'command_ringer_mode'
                             data:
                               command: 'normal'
-                - service: notify.notify
+                - action: notify.notify
                   data:
                     title: "{{ '\U0001F4A7' }} Датчики протечки"
                     message: "Обнаружена протечка возле NVR: {{ state_attr(trigger.entity_id, 'friendly_name') }}"
@@ -1957,7 +1957,7 @@
                 - choose:
                     - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
                       sequence:
-                        - service: notify.mobile_app_sm_g973f
+                        - action: notify.mobile_app_sm_g973f
                           data:
                             message: 'command_ringer_mode'
                             data:
@@ -1965,7 +1965,7 @@
                 - choose:
                     - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
                       sequence:
-                        - service: notify.mobile_app_sm_g973f
+                        - action: notify.mobile_app_sm_g973f
                           data:
                             message: 'command_dnd'
                             data:
@@ -1985,12 +1985,12 @@
             seconds: 5
       action:
         - parallel:
-            - service: telegram_bot.send_message
+            - action: telegram_bot.send_message
               data:
                 target: !secret telegram_enzokot_chat_id
                 title: "{{ '\U0001F511' }} *Датчик открытия/закрытия*"
                 message: "Обнаружено *открытие* дверцы шкафа с NVR"
-            - service: notify.huawei_lte
+            - action: notify.huawei_lte
               data:
                 message: "Обнаружено открытие дверцы шкафа с NVR"
                 target: !secret sms_phone_enzokot
@@ -2002,7 +2002,7 @@
                 - choose:
                     - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
                       sequence:
-                        - service: notify.mobile_app_sm_g973f
+                        - action: notify.mobile_app_sm_g973f
                           data:
                             message: 'command_dnd'
                             data:
@@ -2017,12 +2017,12 @@
                 - choose:
                     - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
                       sequence:
-                        - service: notify.notify
+                        - action: notify.notify
                           data:
                             message: 'command_ringer_mode'
                             data:
                               command: 'normal'
-                - service: notify.notify
+                - action: notify.notify
                   data:
                     title: "{{ '\U0001F511' }} Датчик открытия/закрытия"
                     message: "Обнаружено открытие дверцы шкафа с NVR"
@@ -2033,7 +2033,7 @@
                 - choose:
                     - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
                       sequence:
-                        - service: notify.mobile_app_sm_g973f
+                        - action: notify.mobile_app_sm_g973f
                           data:
                             message: 'command_ringer_mode'
                             data:
@@ -2041,7 +2041,7 @@
                 - choose:
                     - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
                       sequence:
-                        - service: notify.mobile_app_sm_g973f
+                        - action: notify.mobile_app_sm_g973f
                           data:
                             message: 'command_dnd'
                             data:
@@ -2066,7 +2066,7 @@
           for:
             seconds: 5
       action:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0001F321' }} *Реле кулера шкафа NVR*"
@@ -2097,12 +2097,12 @@
           below: 15
       action:
         - parallel:
-            - service: telegram_bot.send_message
+            - action: telegram_bot.send_message
               data:
                 target: !secret telegram_enzokot_chat_id
                 title: "{{ '\U0001F4FC' }} *Состояние NVR*"
                 message: "Обнаружено *отключение* NVR"
-            - service: notify.huawei_lte
+            - action: notify.huawei_lte
               data:
                 message: "Обнаружено отключение NVR"
                 target: !secret sms_phone_enzokot
@@ -2114,7 +2114,7 @@
                 - choose:
                     - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
                       sequence:
-                        - service: notify.mobile_app_sm_g973f
+                        - action: notify.mobile_app_sm_g973f
                           data:
                             message: 'command_dnd'
                             data:
@@ -2129,12 +2129,12 @@
                 - choose:
                     - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
                       sequence:
-                        - service: notify.notify
+                        - action: notify.notify
                           data:
                             message: 'command_ringer_mode'
                             data:
                               command: 'normal'
-                - service: notify.notify
+                - action: notify.notify
                   data:
                     title: "{{ '\U0001F4FC' }} Состояние NVR"
                     message: "Обнаружено отключение NVR"
@@ -2145,7 +2145,7 @@
                 - choose:
                     - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
                       sequence:
-                        - service: notify.mobile_app_sm_g973f
+                        - action: notify.mobile_app_sm_g973f
                           data:
                             message: 'command_ringer_mode'
                             data:
@@ -2153,7 +2153,7 @@
                 - choose:
                     - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
                       sequence:
-                        - service: notify.mobile_app_sm_g973f
+                        - action: notify.mobile_app_sm_g973f
                           data:
                             message: 'command_dnd'
                             data:
@@ -2173,7 +2173,7 @@
           entity_id: binary_sensor.sm_g973f_is_charging
           state: "on"
       action:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0001F50B' }} *Состояние телефона*"
@@ -2197,7 +2197,7 @@
           allowed_methods:
             - PUT
       action:
-        - service: telegram_bot.send_message
+        - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
             title: "⚠️ *Трекинг устройств*"

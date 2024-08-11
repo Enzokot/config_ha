@@ -13,7 +13,7 @@
             seconds: 7
       action:
         - parallel:
-            - service: switch.turn_off
+            - action: switch.turn_off
               data:
                 entity_id: switch.shelly_plug_s_nvr
             - if:
@@ -22,7 +22,7 @@
                   entity_id: switch.shelly_1pm_fan_nvr_box
                   state: 'on'
               then:
-                - service: switch.turn_off
+                - action: switch.turn_off
                   data:
                     entity_id: switch.shelly_1pm_fan_nvr_box
 
@@ -55,7 +55,7 @@
                 or trigger.id != 'time_trigger' and (time_now >= today_at('21:00:00') or time_now < today_at('9:00:00')) 
             }}
       action:
-        - service: switch.turn_on
+        - action: switch.turn_on
           data:
             entity_id: switch.shelly_1pm_fan_nvr_box
 
@@ -76,6 +76,6 @@
           entity_id: switch.shelly_1pm_fan_nvr_box
           state: 'on'
       action:
-        - service: switch.turn_off
+        - action: switch.turn_off
           data:
             entity_id: switch.shelly_1pm_fan_nvr_box

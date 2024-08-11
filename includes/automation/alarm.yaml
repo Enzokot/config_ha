@@ -7,22 +7,22 @@
         entity_id: input_boolean.alarm_gateway_button
         to: 'on'
       action:
-      - service: scene.create
+      - action: scene.create
         data:
           scene_id: before_alarm_on
           snapshot_entities:
             - light.gateway_light_04cf8cabd77b
       - parallel:
-          - service: script.turn_on
+          - action: script.turn_on
             data:
               entity_id: script.alarm_gateway_light
-          - service: script.turn_on
+          - action: script.turn_on
             data:
               entity_id: script.alarm_gateway_sound
-          - service: script.turn_on
+          - action: script.turn_on
             data:
               entity_id: script.alarm_tts_yandex_stations
-      - service: timer.start
+      - action: timer.start
         data:
           entity_id: timer.alarm_gateway_sound
           duration: 1800
@@ -36,21 +36,21 @@
         to: 'off'
       action:
       - parallel:
-          - service: script.turn_off
+          - action: script.turn_off
             data:
               entity_id: script.alarm_gateway_light
-          - service: script.turn_off
+          - action: script.turn_off
             data:
               entity_id: script.alarm_gateway_sound
-          - service: script.turn_off
+          - action: script.turn_off
             data:
               entity_id: script.alarm_tts_yandex_stations
-          - service: light.turn_off
+          - action: light.turn_off
             entity_id: light.gateway_light_04cf8cabd77b
-          - service: xiaomi_aqara.stop_ringtone
+          - action: xiaomi_aqara.stop_ringtone
             data:
               gw_mac: !secret gateway1_mac
-          - service: timer.cancel
+          - action: timer.cancel
             data:
               entity_id: timer.alarm_gateway_sound
           - choose:
@@ -59,13 +59,13 @@
                 sequence:
                   - variables:
                       entities: "{{ expand('group.dynamic_group_gateway_alarm_last_state_disarmed') | map(attribute = 'entity_id') | list | join(', ') }}"
-                  - service: alarm_control_panel.alarm_arm_away
+                  - action: alarm_control_panel.alarm_arm_away
                     data:
                       entity_id: "{{ entities }}"
-                  - service: alarm_control_panel.alarm_disarm
+                  - action: alarm_control_panel.alarm_disarm
                     data:
                       entity_id: "{{ entities }}"
-                  - service: group.remove
+                  - action: group.remove
                     data:
                       object_id: dynamic_group_gateway_alarm_last_state_disarmed
           - choose:
@@ -74,16 +74,16 @@
                 sequence:
                   - variables:
                       entities: "{{ expand('group.dynamic_group_gateway_alarm_last_state_armed_away') | map(attribute = 'entity_id') | list | join(', ') }}"
-                  - service: alarm_control_panel.alarm_disarm
+                  - action: alarm_control_panel.alarm_disarm
                     data:
                       entity_id: "{{ entities }}"
-                  - service: alarm_control_panel.alarm_arm_away
+                  - action: alarm_control_panel.alarm_arm_away
                     data:
                       entity_id: "{{ entities }}"
-                  - service: group.remove
+                  - action: group.remove
                     data:
                       object_id: dynamic_group_gateway_alarm_last_state_armed_away
-      - service: scene.turn_on
+      - action: scene.turn_on
         entity_id: scene.before_alarm_on
 
 #Выключение звука сигнализации по таймеру
@@ -101,13 +101,13 @@
          state: 'on'
       action:
       - parallel:
-          - service: script.turn_off
+          - action: script.turn_off
             data:
               entity_id: script.alarm_gateway_sound
-          - service: script.turn_off
+          - action: script.turn_off
             data:
               entity_id: script.alarm_tts_yandex_stations
-          - service: xiaomi_aqara.stop_ringtone
+          - action: xiaomi_aqara.stop_ringtone
             data:
               gw_mac: !secret gateway1_mac
 
@@ -129,7 +129,7 @@
          entity_id: input_boolean.alarm_gateway_button
          state: 'off'
       action:
-          - service: input_boolean.turn_on
+          - action: input_boolean.turn_on
             data:
               entity_id: input_boolean.alarm_gateway_button
 
@@ -166,7 +166,7 @@
          entity_id: input_boolean.alarm_gateway_button
          state: 'on'
       action:
-          - service: input_boolean.turn_off
+          - action: input_boolean.turn_off
             data:
               entity_id: input_boolean.alarm_gateway_button
 
@@ -199,7 +199,7 @@
          entity_id: input_boolean.alarm_gateway_button
          state: 'off'
       action:
-          - service: input_boolean.turn_on
+          - action: input_boolean.turn_on
             data:
               entity_id: input_boolean.alarm_gateway_button
 
@@ -219,7 +219,7 @@
          entity_id: input_boolean.alarm_gateway_button
          state: 'on'
       action:
-          - service: input_boolean.turn_off
+          - action: input_boolean.turn_off
             data:
               entity_id: input_boolean.alarm_gateway_button
 
@@ -241,7 +241,7 @@
           - choose:
               - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
                 sequence:
-                  - service: notify.mobile_app_sm_g973f
+                  - action: notify.mobile_app_sm_g973f
                     data:
                       message: 'command_dnd'
                       data:
@@ -256,22 +256,22 @@
           - choose:
               - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
                 sequence:
-                  - service: notify.notify
+                  - action: notify.notify
                     data:
                       message: 'command_ringer_mode'
                       data:
                         command: 'normal'
           - parallel:
-              - service: input_boolean.turn_on
+              - action: input_boolean.turn_on
                 data:
                   entity_id: input_boolean.alarm_gateway_button
-              - service: telegram_bot.send_message
+              - action: telegram_bot.send_message
                 data:
                   title: >-
                            {{ '\U0001f6a8' }} *Сигнализация*
                   message: 'Нажатие тревожной кнопки в *детской*'
                   target: !secret telegram_all_chat_id
-              - service: notify.notify
+              - action: notify.notify
                 data:
                   title: "{{ '\U0001f6a8' }} Сигнализация"
                   message: 'Нажатие тревожной кнопки в детской'
@@ -282,7 +282,7 @@
                       actions:
                         - action: "stop_alarm"
                           title: "Выключить сирену"
-              - service: notify.huawei_lte
+              - action: notify.huawei_lte
                 data:
                   message: "🚨 Нажатие тревожной кнопки в детской"
                   target: !secret sms_phone_all
@@ -291,7 +291,7 @@
           - choose:
               - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
                 sequence:
-                  - service: notify.mobile_app_sm_g973f
+                  - action: notify.mobile_app_sm_g973f
                     data:
                       message: 'command_ringer_mode'
                       data:
@@ -299,7 +299,7 @@
           - choose:
               - conditions: "{{ sm_g973f_rezhim_ne_bespokoit != 'off' }}"
                 sequence:
-                  - service: notify.mobile_app_sm_g973f
+                  - action: notify.mobile_app_sm_g973f
                     data:
                       message: 'command_dnd'
                       data:
@@ -323,17 +323,17 @@
           - choose:
               - conditions: "{{ is_state('input_boolean.alarm_gateway_button', 'on') }}"
                 sequence:
-                    - service: input_boolean.turn_off
+                    - action: input_boolean.turn_off
                       data:
                         entity_id: input_boolean.alarm_gateway_button
           - choose:
               - conditions: "{{ trigger.id == 'telegram_callback_stop_alarm' }}"
                 sequence:
-                    - service: telegram_bot.delete_message
+                    - action: telegram_bot.delete_message
                       data:
                         chat_id: '{{ trigger.event.data.chat_id }}'
                         message_id: '{{ trigger.event.data.message.message_id }}'
-                    - service: telegram_bot.answer_callback_query
+                    - action: telegram_bot.answer_callback_query
                       data:
                         callback_query_id: '{{ trigger.event.data.id }}'
                         message: 'Выключили сигнализацию'
@@ -351,7 +351,7 @@
          entity_id: alarm_control_panel.signalka_shliuza_alarm
          to: "disarmed"
       action:
-          - service: >-
+          - action: >-
                 {{ iif(trigger.id == 'armed', 'alarm_control_panel.alarm_arm_away', 'alarm_control_panel.alarm_disarm') }}
             data: 
               entity_id:
@@ -373,7 +373,7 @@
             - binary_sensor.0x00158d00045cd551_smoke
          to: 'on'
       action:
-          - service: homeassistant.turn_off
+          - action: homeassistant.turn_off
             data:
               entity_id: "{{ expand('group.entity_ids_for_turn_off_by_smoke_detector') | map(attribute = 'entity_id') | join(', ') }}"
 
@@ -402,16 +402,16 @@
                   - if:
                      - "{{ wait.trigger != None }}"
                     then:
-                      - service: telegram_bot.send_message
+                      - action: telegram_bot.send_message
                         data:
                           target: !secret telegram_enzokot_chat_id
                           message: "{{ '\U0001f507 Отменено включение сигнализации' }}"
                     else:
-                      - service: alarm_control_panel.alarm_arm_away
+                      - action: alarm_control_panel.alarm_arm_away
                         data: 
                           entity_id: alarm_control_panel.signalka_shliuza_alarm
             default:
-              - service: alarm_control_panel.alarm_disarm
+              - action: alarm_control_panel.alarm_disarm
                 data: 
                   entity_id: alarm_control_panel.signalka_shliuza_alarm
 
@@ -441,7 +441,7 @@
               - conditions: 
                 - "{{ entities | from_json | count > 0 }}"
                 sequence:
-                  - service: alarm_control_panel.alarm_trigger
+                  - action: alarm_control_panel.alarm_trigger
                     data: 
                       entity_id: "{{ entities | from_json | join(', ') }}"
           - choose:
@@ -450,6 +450,6 @@
                   entity_id: input_boolean.alarm_gateway_button
                   state: "off"
                 sequence:
-                  - service: input_boolean.turn_on
+                  - action: input_boolean.turn_on
                     data:
                       entity_id: input_boolean.alarm_gateway_button

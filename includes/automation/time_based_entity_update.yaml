@@ -9,7 +9,7 @@
     - platform: homeassistant
       event: start
   action:
-    - service: homeassistant.update_entity
+    - action: homeassistant.update_entity
       data: 
         entity_id:
           - binary_sensor.internet_availability_nic_ping

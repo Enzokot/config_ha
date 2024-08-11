@@ -47,7 +47,7 @@ condition:
     \ ''] \n    and (trigger.from_state.state | float >= trigger.below\n    or trigger.from_state.state\
     \ | float <= trigger.above)\n}}\n"
 action:
-- service: telegram_bot.send_message
+- action: telegram_bot.send_message
   data:
     target: !input 'telegram_chat_id'
     title: '{{ ''✅'' }} *Контроль напряжения*'

@@ -11,14 +11,14 @@
                   value_template: >
                         {{ true }}
              sequence:
-                - service: light.turn_on
+                - action: light.turn_on
                   entity_id: light.gateway_light_04cf8cabd77b
                   data:
                     rgb_color: [255,0,0]
                     brightness: 255
                 - delay:
                     seconds: 1
-                - service: light.turn_off
+                - action: light.turn_off
                   entity_id: light.gateway_light_04cf8cabd77b
                 - delay:
                     milliseconds: 500
@@ -35,14 +35,14 @@
                   value_template: >
                         {{ true }}
              sequence:
-                - service: xiaomi_aqara.play_ringtone
+                - action: xiaomi_aqara.play_ringtone
                   data:
                     gw_mac: !secret gateway1_mac
                     ringtone_id: 0
                     ringtone_vol: 75
                 - delay:
                     seconds: 12
-                - service: xiaomi_aqara.stop_ringtone
+                - action: xiaomi_aqara.stop_ringtone
                   data:
                     gw_mac: !secret gateway1_mac
 
@@ -58,7 +58,7 @@
                   value_template: >
                         {{ true }}
              sequence:
-                - service: script.alice_custom_tts_volume
+                - action: script.alice_custom_tts_volume
                   data:
                     entity: 'media_player.yandex_station_ff98f029b620413b35e5e278'
                     text: 'Внимание! Сработала домашняя сигнализация!!!'

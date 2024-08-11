@@ -16,13 +16,13 @@
             time_to_on: >
                 {% set time_now = now() %}
                 {{ today_at('8:00') <= time_now < today_at('21:29:59') }}
-        - service: media_player.play_media
+        - action: media_player.play_media
           entity_id: media_player.yandex_station_ff98f029b620413b35e5e278
           data:
            media_content_id: "{{- 'без лишних слов: ' + iif(time_to_on, 'нет', 'да') -}}"
            media_content_type: settings
         - delay: 2
-        - service: media_player.play_media
+        - action: media_player.play_media
           entity_id: media_player.yandex_station_ff98f029b620413b35e5e278
           data:
            media_content_id: "{{- 'звук активации: ' + iif(time_to_on, 'да', 'нет') -}}"
@@ -43,7 +43,7 @@
           event_data:
             text: теперь ты яндекс
       action:
-        - service: media_player.play_media
+        - action: media_player.play_media
           entity_id: media_player.yandex_station_ff98f029b620413b35e5e278
           data:
            media_content_id: "имя: {{ trigger.event.data.text | replace('теперь ты ', '') | replace('у', 'а') }}"
@@ -96,7 +96,7 @@
             instance: phrase_action
             value: "уборка кухни"
       action:
-        - service: vacuum.send_command
+        - action: vacuum.send_command
           data:
             entity_id: vacuum.xiaomi_vacuum_cleaner
             command: app_segment_clean
@@ -125,7 +125,7 @@
             instance: text_action
             value: "Сделай громче на 0-"
       action:
-        - service: media_player.play_media
+        - action: media_player.play_media
           data:
             entity_id: "{{ trigger.event.data.entity_id }}"
             media_content_type: text
@@ -145,7 +145,7 @@
           event_data:
             text: отправь карту уборки
       action:
-        - service: telegram_bot.send_photo
+        - action: telegram_bot.send_photo
           data:
             target: !secret telegram_all_chat_id
             url: "{{- 'http://homeassistant.local.hass.io:8123' + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"

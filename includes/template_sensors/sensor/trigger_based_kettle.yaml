@@ -3,7 +3,7 @@
   - trigger:
       - platform: state
         entity_id: water_heater.r4s01_kettle_wh_temp
-        attribute: temperature
+        attribute: current_temperature
       - platform: homeassistant
         event: start
       - platform: event
@@ -13,8 +13,8 @@
         device_class: temperature
         unit_of_measurement: '°C'
         state: >
-            {% if state_attr('water_heater.r4s01_kettle_wh_temp', 'temperature') | int(40) == 0 %}
+            {% if state_attr('water_heater.r4s01_kettle_wh_temp', 'current_temperature') | int(40) == 0 %}
                 40
             {% else %}
-                {{ state_attr('water_heater.r4s01_kettle_wh_temp', 'temperature') | int(40) }}
+                {{ state_attr('water_heater.r4s01_kettle_wh_temp', 'current_temperature') | int(40) }}
             {% endif %}

@@ -16,7 +16,7 @@
     #       state: 'on' 
       action:
         - parallel:
-            - service: mqtt.publish
+            - action: mqtt.publish
               data: 
                 topic: homeassistant/sensor/mqtt_broker_uptime/config
                 retain: true 
@@ -34,7 +34,7 @@
                       "device":{"identifiers":["mosquito_broker"],"manufacturer":"Eclipse","model":"Mosquitto","name":"Eclipse Mosquitto","sw_version":"{{ state_attr('sensor.mqtt_broker_uptime','version') }}","configuration_url":"https://mosquitto.org/"} 
                     }
 
-            - service: mqtt.publish
+            - action: mqtt.publish
               data: 
                 topic: homeassistant/switch/permit_join_switch_z2m/config
                 retain: true 
@@ -53,7 +53,7 @@
                     "device":{"identifiers":["z2m_info"],"manufacturer":"Enzokot","model":"Local polling","name":"Zigbee2MQTT add-on"}
                   }
 
-            - service: mqtt.publish
+            - action: mqtt.publish
               data: 
                 topic: homeassistant/sensor/permit_join_timeout_z2m/config
                 retain: true 
@@ -69,7 +69,7 @@
                     "device":{"identifiers":["z2m_info"],"manufacturer":"Enzokot","model":"Local polling","name":"Zigbee2MQTT add-on"}
                   }
 
-            - service: mqtt.publish
+            - action: mqtt.publish
               data: 
                 topic: homeassistant/sensor/router_devices_z2m/config
                 retain: true 
@@ -86,7 +86,7 @@
                   }
 
             #На хосте "du -s /usr/share/hassio/addons/data/core_mariadb/databases/homeassistant/"
-            - service: mqtt.publish
+            - action: mqtt.publish
               data: 
                 topic: homeassistant/sensor/maria_db_folder_size/config
                 retain: true 
@@ -102,7 +102,7 @@
                   }
 
             #На хосте "du -s /usr/share/hassio/addons/data/a0d7b954_influxdb/influxdb/data/homeassistant/"
-            - service: mqtt.publish
+            - action: mqtt.publish
               data: 
                 topic: homeassistant/sensor/influxdb_db_folder_size/config
                 retain: true 
@@ -117,7 +117,7 @@
                     "device":{"identifiers":["disk_info"],"manufacturer":"Enzokot","model":"Local polling","name":"Disk info"}
                   }
 
-            - service: mqtt.publish
+            - action: mqtt.publish
               data: 
                 topic: homeassistant/sensor/check_keenetic_link_down/config
                 retain: true 
@@ -130,7 +130,7 @@
                     "device":{"identifiers":["network_info"],"manufacturer":"Enzokot","model":"Local polling","name":"Network info"}
                   }
 
-            - service: mqtt.publish
+            - action: mqtt.publish
               data: 
                 topic: homeassistant/sensor/sostoianie_mosta/config
                 retain: true 
@@ -143,7 +143,7 @@
                     "device":{"identifiers":["z2m_info"],"manufacturer":"Enzokot","model":"Local polling","name":"Zigbee2MQTT add-on"}
                   }
 
-            - service: mqtt.publish
+            - action: mqtt.publish
               data: 
                 topic: homeassistant/sensor/zigbee2mqtt_bridge_uptime/config
                 retain: true 
@@ -158,7 +158,7 @@
                     "device":{"identifiers":["z2m_info"],"manufacturer":"Enzokot","model":"Local polling","name":"Zigbee2MQTT add-on"}
                   }
 
-            - service: mqtt.publish
+            - action: mqtt.publish
               data: 
                 topic: homeassistant/sensor/zigbee2mqtt_coordinator_version/config
                 retain: true 
@@ -174,7 +174,7 @@
                     "device":{"identifiers":["z2m_info"],"manufacturer":"Enzokot","model":"Local polling","name":"Zigbee2MQTT add-on"}
                   }
 
-            - service: mqtt.publish
+            - action: mqtt.publish
               data: 
                 topic: homeassistant/sensor/0x5c0272fffec89454/local_temperature/config
                 retain: true 
@@ -190,7 +190,7 @@
                     "device":{"identifiers":["zigbee2mqtt_0x5c0272fffec89454"],"manufacturer":"TuYa","model":"Radiator valve with thermostat (TS0601_thermostat)","name":"Childrens room valve with thermostat"} 
                   }
 
-            - service: mqtt.publish
+            - action: mqtt.publish
               data: 
                 topic: homeassistant/sensor/0x5c0272fffec89454/local_temperature_calibration/config
                 retain: true 
@@ -206,7 +206,7 @@
                     "device":{"identifiers":["zigbee2mqtt_0x5c0272fffec89454"],"manufacturer":"TuYa","model":"Radiator valve with thermostat (TS0601_thermostat)","name":"Childrens room valve with thermostat"} 
                   }
 
-            - service: mqtt.publish
+            - action: mqtt.publish
               data: 
                 topic: homeassistant/sensor/0x60a423fffe968719/local_temperature/config
                 retain: true 
@@ -222,7 +222,7 @@
                     "device":{"identifiers":["zigbee2mqtt_0x60a423fffe968719"],"manufacturer":"TuYa","model":"Radiator valve with thermostat (TS0601_thermostat)","name":"Bedroom valve with thermostat"} 
                   }
 
-            - service: mqtt.publish
+            - action: mqtt.publish
               data: 
                 topic: homeassistant/sensor/0x60a423fffe968719/local_temperature_calibration/config
                 retain: true 
@@ -238,7 +238,7 @@
                     "device":{"identifiers":["zigbee2mqtt_0x60a423fffe968719"],"manufacturer":"TuYa","model":"Radiator valve with thermostat (TS0601_thermostat)","name":"Bedroom valve with thermostat"} 
                   }
 
-            - service: mqtt.publish
+            - action: mqtt.publish
               data: 
                 topic: homeassistant/sensor/0x5c0272fffec9db22/local_temperature/config
                 retain: true 
@@ -254,7 +254,7 @@
                     "device":{"identifiers":["zigbee2mqtt_0x5c0272fffec9db22"],"manufacturer":"TuYa","model":"Radiator valve with thermostat (TS0601_thermostat)","name":"Living room valve with thermostat"} 
                   }
 
-            - service: mqtt.publish
+            - action: mqtt.publish
               data: 
                 topic: homeassistant/sensor/0x5c0272fffec9db22/local_temperature_calibration/config
                 retain: true 
@@ -270,7 +270,7 @@
                     "device":{"identifiers":["zigbee2mqtt_0x5c0272fffec9db22"],"manufacturer":"TuYa","model":"Radiator valve with thermostat (TS0601_thermostat)","name":"Living room valve with thermostat"} 
                   }
 
-            - service: mqtt.publish
+            - action: mqtt.publish
               data: 
                 topic: homeassistant/sensor/0x5c0272fffe8de819/local_temperature/config
                 retain: true 
@@ -286,7 +286,7 @@
                     "device":{"identifiers":["zigbee2mqtt_0x5c0272fffe8de819"],"manufacturer":"TuYa","model":"Radiator valve with thermostat (TS0601_thermostat)","name":"Kitchen valve with thermostat"} 
                   }
 
-            - service: mqtt.publish
+            - action: mqtt.publish
               data: 
                 topic: homeassistant/sensor/0x5c0272fffe8de819/local_temperature_calibration/config
                 retain: true 
@@ -303,7 +303,7 @@
                   }
 
             #На хосте /etc/login_ssh.sh
-            - service: mqtt.publish
+            - action: mqtt.publish
               data: 
                 topic: homeassistant/sensor/login_ssh_kotletochka_dell_srv/config
                 retain: true 
@@ -321,7 +321,7 @@
                     "device":{"identifiers":["login_ssh"],"manufacturer":"Enzokot","model":"Local push","name":"Login's ssh info"}
                   }
 
-            - service: mqtt.publish
+            - action: mqtt.publish
               data: 
                 topic: homeassistant/binary_sensor/dmesg_ext4_warning/config
                 retain: true 

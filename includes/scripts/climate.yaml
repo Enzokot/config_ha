@@ -8,6 +8,28 @@
             description: 'Имя сущности climate'
             example: 'climate.devireg_hw'
         sequence:
-          - service: "climate.{{- iif(is_state(entityid, 'off'), 'turn_on', 'turn_off') }}"
+          - action: "climate.{{- iif(is_state(entityid, 'off'), 'turn_on', 'turn_off') }}"
             data:
               entity_id: "{{ entityid }}"
+
+#Переключение режимов вентилятора для UI
+    switch_fan_preset_mode:
+        alias: Смена режима вентилятора
+        icon: mdi:fan-auto
+        mode: parallel
+        fields:
+          entityid:
+            description: 'Имя сущности fan'
+            example: 'fan.dmaker_p45_5007_fan'
+        sequence:
+          - condition: "{{ is_state(entityid, 'on') }}"
+          - action: fan.set_preset_mode
+            data:
+              entity_id: "{{ entityid }}"
+              preset_mode: >-
+                {%
+                  set preset_mode_dict = {"Straight Wind": "Natural Wind",
+                                          "Natural Wind": "Sleep",
+                                          "Sleep": "Straight Wind"}
+                %}
+                {{ preset_mode_dict[state_attr(entityid, 'preset_mode')] }}

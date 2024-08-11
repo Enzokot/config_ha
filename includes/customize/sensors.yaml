@@ -196,7 +196,7 @@ sensor.0x158d000396f197_battery:
 sensor.0x158d0003d05782_battery:
   friendly_name: Центр. окно гостиная
 
-sensor.0x158d0003975d8b_battery:
+sensor.0x00158d0003975d8b_battery:
   friendly_name: Прав. окно гостиная
 
 sensor.0x158d0003975b4c_battery:

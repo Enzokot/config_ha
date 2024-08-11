@@ -6,7 +6,7 @@
     - platform: time
       at: '01:00:00'
   action:
-    - service: recorder.purge
+    - action: recorder.purge
       data:
           keep_days: 30
           repack: true
@@ -33,10 +33,10 @@
                states('sensor.speedtest_upload') in not_has_state
             }}
   action:
-    - service: homeassistant.reload_config_entry
+    - action: homeassistant.reload_config_entry
       data:
         entry_id: "{{ config_entry_id('sensor.speedtest_ping') }}"
-    # - service: rest_command.reload_integration_speedtest
+    # - action: rest_command.reload_integration_speedtest
     #   data: {}
 
 - alias: speedtest_integration_restart_on_event
@@ -80,7 +80,7 @@
           sequence:
             - delay:
                 seconds: 30
-            - service: homeassistant.reload_config_entry
+            - action: homeassistant.reload_config_entry
               data:
                 entry_id: "{{ config_entry_id('sensor.speedtest_ping') }}"
 
@@ -101,7 +101,7 @@
     #   event_type: shutdown
   action:
     - parallel:
-        - service: >
+        - action: >
             {% if trigger.id == 'homeassistant_start' -%}
                 input_boolean.turn_off
             {% else -%}
@@ -109,7 +109,7 @@
             {% endif %}
           data:
             entity_id: input_boolean.instances_stoping
-        - service: >
+        - action: >
             {% if trigger.id == 'homeassistant_start' -%}
                 automation.turn_on
             {% else -%}
@@ -137,7 +137,7 @@
            trigger.to_state.state != trigger.from_state.state
         }}
   action:
-    - service: counter.increment
+    - action: counter.increment
       entity_id: counter.counter_keenetic_link_down
 
 #Счетчики числа событий warning и error в syslog HA
@@ -162,7 +162,7 @@
     - condition: template
       value_template: "{{ not this_name in (trigger.event.data.message | string) }}"
   action:
-    - service: counter.increment
+    - action: counter.increment
       data:
         entity_id: >- 
             {{ 'counter.system_log_' + trigger.event.data.level | lower + '_counter' }}
@@ -179,7 +179,7 @@
         domain: system_log
         service: clear
   action:
-    - service: counter.reset
+    - action: counter.reset
       data:
         entity_id:
           - counter.system_log_error_counter
@@ -208,7 +208,7 @@
     - choose:
         - conditions: "{{ not wait.completed and is_state('binary_sensor.local_network_availability', 'on') }}"
           sequence:
-              - service: button.press
+              - action: button.press
                 data:
                   entity_id: button.e3372h_320_restart
 
@@ -222,7 +222,7 @@
     - platform: event
       event_type: "event_telegram_reloaded"
   action:
-    - service: input_text.set_value
+    - action: input_text.set_value
       data:
         entity_id: input_text.var_telegram_bot_api_token
         value: !secret telegram_api
@@ -250,7 +250,7 @@
     - choose:
         - conditions: "{{ not wait.completed and is_state('binary_sensor.local_network_availability', 'on') }}"
           sequence:
-            - service: homeassistant.reload_config_entry
+            - action: homeassistant.reload_config_entry
               data:
                 entry_id: "{{ config_entry_id('sensor.cert_expiry_timestamp_asuscomm') }}"
 
@@ -284,7 +284,7 @@
     - choose:
         - conditions: "{{ not wait.completed and is_state('binary_sensor.local_network_availability', 'on') }}"
           sequence:
-            - service: homeassistant.reload_config_entry
+            - action: homeassistant.reload_config_entry
               data:
                 entry_id: "{{ config_entry_id('switch.kholodilnik_eco_friendly') }}"
 
@@ -300,6 +300,6 @@
     - platform: homeassistant
       event: start
   action:
-    - service: homeassistant.update_entity
+    - action: homeassistant.update_entity
       data: 
         entity_id: sensor.repairs_state

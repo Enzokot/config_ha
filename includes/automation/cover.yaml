@@ -27,7 +27,7 @@
         - "{{ is_state_attr('sun.sun', 'rising', true) }}"
         - "{{ expand('cover.cover_group_kitchen') | selectattr('state', 'eq', 'open') | map(attribute='entity_id') | list | length == 0 }}"
       action:
-        - service: script.auto_cover_open_close_kitchen
+        - action: script.auto_cover_open_close_kitchen
           data:
             servicename: 'cover.open_cover'
             groupname: 'cover.cover_group_kitchen'
@@ -60,7 +60,7 @@
         #   below: 7
         - "{{ expand('cover.cover_group_kitchen') | selectattr('state', 'eq', 'closed') | map(attribute='entity_id') | list | length == 0 }}"
       action:
-        - service: script.auto_cover_open_close_kitchen
+        - action: script.auto_cover_open_close_kitchen
           data:
             servicename: 'cover.close_cover'
             groupname: 'cover.cover_group_kitchen'
@@ -79,7 +79,7 @@
         - "{{ is_state_attr('sun.sun', 'rising', false) }}"
         - "{{ expand('cover.cover_group_kitchen') | selectattr('state', 'eq', 'closed') | map(attribute='entity_id') | list | length == 0 }}"
       action:
-        - service: script.auto_cover_open_close_kitchen
+        - action: script.auto_cover_open_close_kitchen
           data:
             servicename: 'cover.close_cover'
             groupname: 'cover.cover_group_kitchen'
@@ -113,7 +113,7 @@
         - "{{ is_state_attr('sun.sun', 'rising', true) }}"
         - "{{ expand('cover.cover_group_living_room') | selectattr('state', 'eq', 'open') | map(attribute='entity_id') | list | length == 0 }}"
       action:
-        - service: script.auto_cover_open_close_living_room
+        - action: script.auto_cover_open_close_living_room
           data:
             servicename: 'cover.open_cover'
             groupname: 'cover.cover_group_living_room'
@@ -142,7 +142,7 @@
         - "{{ is_state_attr('sun.sun', 'rising', false) }}"
         - "{{ expand('cover.cover_group_living_room') | selectattr('state', 'eq', 'closed') | map(attribute='entity_id') | list | length == 0 }}"
       action:
-        - service: script.auto_cover_open_close_living_room
+        - action: script.auto_cover_open_close_living_room
           data:
             servicename: 'cover.close_cover'
             groupname: 'cover.cover_group_living_room'
@@ -161,7 +161,7 @@
         - "{{ is_state_attr('sun.sun', 'rising', false) }}"
         - "{{ expand('cover.cover_group_living_room') | selectattr('state', 'eq', 'closed') | map(attribute='entity_id') | list | length == 0 }}"
       action:
-        - service: script.auto_cover_open_close_living_room
+        - action: script.auto_cover_open_close_living_room
           data:
             servicename: 'cover.close_cover'
             groupname: 'cover.cover_group_living_room'

@@ -17,7 +17,7 @@
         - if:
             - "{{ is_state(entity, 'on') and is_state_attr(entity, 'in_progress', false) }}"
           then:
-            - service: update.install
+            - action: update.install
               data:
                 entity_id: "{{- entity -}}"
                 backup: "{{ state_attr(entity, 'supported_features') | int(0) >= 8 }}"

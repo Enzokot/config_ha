@@ -9,7 +9,7 @@
       condition:
         - "{{ states('media_player.lg_smart_tv') in ['off', 'unknown', 'unavailable'] }}"
       action:
-        - service: remote.send_command
+        - action: remote.send_command
           data:
             entity_id: remote.broadlink_ir_rm4_mini
             command: 'b64:JgBYAAABI5URFBEUEjgRFBEUERQRFREUETgSOBEUETkROBE5ETgSOBEUERQRFBI4ERQRFBEUEhQROBI4ETgRFRA5ETkROBI4EQAFJwABJkwRAAxeAAElSxIADQU='
@@ -24,6 +24,6 @@
       condition:
         - "{{ states('media_player.tv_kotletochka_tv_sam') in ['off', 'unknown', 'unavailable'] }}"
       action:
-        - service: esphome.perenio_petra01_kitchen_send_samsung_command
+        - action: esphome.perenio_petra01_kitchen_send_samsung_command
           data:
             data: '0xE0E040BF'

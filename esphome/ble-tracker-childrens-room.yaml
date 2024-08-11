@@ -1,6 +1,8 @@
 substitutions:
   devicename: ble_tracker_childrens_room
   nodename: ble-tracker-childrens-room
+  time_service_uuid: ebe0ccb0-7a0a-4b0c-8a1a-6ff2997da3a6
+  time_characteristic_uuid: EBE0CCB7-7A0A-4B0C-8A1A-6FF2997DA3A6
 
 external_components:
   - source: github://TheStaticTurtle/esphome_syslog
@@ -42,7 +44,7 @@ wifi:
   #Основная точка
   - ssid: Kotletochka
     password: !secret wifi_password
-    bssid: "50:ff:20:3c:2b:74"
+    bssid: "50:ff:20:9e:1d:1e"
     priority: 2
     
   ap:
@@ -64,13 +66,30 @@ api:
   reboot_timeout: 0s
 
 ota:
-  password: !secret ota_password
+  - platform: esphome
+    password: !secret ota_password
 
 time:
   - platform: sntp
     id: sntp_time
-    servers: 'kotletochka.local'
-    timezone: 'Europe/Moscow'
+    servers: 
+      - 192.168.217.1
+      - ntp2.vniiftri.ru
+      - pool.ntp.org
+    timezone: Europe/Moscow
+    on_time:
+      - seconds: 0
+        minutes: 0
+        hours: 11
+        days_of_week: SAT
+        then:
+          - logger.log: "Starting room clock synchronization"          
+          - if:
+              condition:
+                not:
+                  - script.is_running: time_sync_ble_clocks
+              then:
+                - script.execute: time_sync_ble_clocks
 
 text_sensor:
   - platform: wifi_info
@@ -84,6 +103,48 @@ esp32_ble_tracker:
     #window: 48ms
     #interval: 512ms
     active: false
+
+ble_client:
+  - mac_address: !secret clock_bt_childrens_room_mac
+    id: lywsd02_clock_childrens_room
+    auto_connect: false
+    on_connect:
+      then:
+        - lambda: |-
+            ESP_LOGD("ble_client_lambda", "Connected to lywsd02_clock_childrens_room!");
+    on_disconnect:
+      then:
+        - lambda: |-
+            ESP_LOGD("ble_client_lambda", "Disconnected from lywsd02_clock_childrens_room!");
+
+script:
+  - id: time_sync_ble_clocks
+    mode: queued
+    then:
+      - esp32_ble_tracker.stop_scan:
+      - ble_client.connect: lywsd02_clock_childrens_room
+      - lambda: |-
+          id(sntp_time).update();
+      - delay: 10s
+      - ble_client.ble_write:
+          id: lywsd02_clock_childrens_room
+          service_uuid: ${time_service_uuid}
+          characteristic_uuid: ${time_characteristic_uuid}
+          value: !lambda |-
+              auto time = id(sntp_time).now();
+              auto timezone = time.timezone_offset() / 3600;
+              if (timezone < 0) {
+                timezone += 256;
+              }
+              uint8_t time_byte1 =  time.timestamp & 0x000000ff;
+              uint8_t time_byte2 = (time.timestamp & 0x0000ff00) >> 8;
+              uint8_t time_byte3 = (time.timestamp & 0x00ff0000) >> 16;
+              uint8_t time_byte4 = (time.timestamp & 0xff000000) >> 24;
+              uint8_t timezone_byte = timezone;
+              return {time_byte1, time_byte2, time_byte3, time_byte4, timezone_byte};
+      - delay: 5s
+      - ble_client.disconnect: lywsd02_clock_childrens_room
+      - esp32_ble_tracker.start_scan:
 
 sensor:
   - platform: xiaomi_lywsd02

@@ -9,7 +9,7 @@
           - platform: homeassistant
             event: start
       action:
-        - service: group.set
+        - action: group.set
           data:
             name: dynamic group sensor battery
             object_id: dynamic_group_sensor_battery
@@ -44,7 +44,7 @@
       condition:
         - "{{ states.sensor | map(attribute='entity_id') | list | regex_findall(find='(_linkquality|_zigbee)', ignorecase=True) | length > 0 }}"
       action:
-        - service: group.set
+        - action: group.set
           data:
             name: dynamic group sensor linkquality
             object_id: dynamic_group_sensor_linkquality
@@ -69,7 +69,7 @@
       condition:
         - "{{ states.sensor | map(attribute='entity_id') | list | regex_findall(find='(_last_seen|_zigbee)', ignorecase=True) | length > 0 }}"
       action:
-        - service: group.set
+        - action: group.set
           data:
             name: dynamic group sensor last seen
             object_id: dynamic_group_sensor_last_seen
@@ -112,7 +112,7 @@
                      | rejectattr('entity_id', 'eq', 'alarm_control_panel.signalka_shliuza_alarm') 
                      | list | count > 0 }}
                 sequence:
-                    - service: group.set
+                    - action: group.set
                       data:
                         name: dynamic group gateway alarm last state armed away
                         object_id: dynamic_group_gateway_alarm_last_state_armed_away
@@ -141,7 +141,7 @@
                       | rejectattr('entity_id', 'eq', 'alarm_control_panel.signalka_shliuza_alarm') 
                       | list | count > 0 }}
                 sequence:
-                    - service: group.set
+                    - action: group.set
                       data:
                         name: dynamic group gateway alarm last state disarmed
                         object_id: dynamic_group_gateway_alarm_last_state_disarmed

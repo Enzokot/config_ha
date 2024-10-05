@@ -21,13 +21,13 @@ wifi:
   #Точка в спальне
 #  - ssid: Kotletochka
 #    password: !secret wifi_password
-#    bssid: "50:ff:20:4b:10:73"
+#    bssid: "50:ff:20:c5:72:2d"
 #    priority: 1
 
   #Точка на кухне
 #  - ssid: Kotletochka
 #    password: !secret wifi_password
-#    bssid: "50:ff:20:4a:bf:cd"
+#    bssid: "50:ff:20:c5:8a:b1"
 #    priority: 1
 
   #Основная точка

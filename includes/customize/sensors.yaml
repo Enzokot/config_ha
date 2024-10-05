@@ -177,7 +177,7 @@ sensor.0x54ef4410000ebba0_illuminance_lux:
 sensor.0x54ef4410000ebba0_battery:
   friendly_name: Улица освещенность
 
-sensor.0x158d000396f1f9_battery:
+sensor.0x00158d000396f1f9_battery:
   device_class: battery
   friendly_name: Окно детская
 
@@ -193,7 +193,7 @@ sensor.0x158d00039677d9_battery:
 sensor.0x158d000396f197_battery:
   friendly_name: Лев. окно гостиная
 
-sensor.0x158d0003d05782_battery:
+sensor.0x00158d0003d05782_battery:
   friendly_name: Центр. окно гостиная
 
 sensor.0x00158d0003975d8b_battery:
@@ -284,9 +284,6 @@ sensor.total_yeelight_ceiling_relay_cable_monthly_electicity:
 
 sensor.0x54ef441000096cbc_power:
   friendly_name: Тек. мощность
-
-sensor.hacs:
-  icon: mdi:github
 
 sensor.total_shelly_em_cable_daily_electicity:
   friendly_name: Общее потреб. день

@@ -3,12 +3,12 @@
 - alias: entity_update_every_2_minutes
   id: entity_update_every_2_minutes
   max_exceeded: silent
-  trigger:
-    - platform: time_pattern
+  triggers:
+    - trigger: time_pattern
       minutes: "/2"
-    - platform: homeassistant
+    - trigger: homeassistant
       event: start
-  action:
+  actions:
     - action: homeassistant.update_entity
       data: 
         entity_id:

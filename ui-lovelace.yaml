@@ -163,7 +163,7 @@ views:
               tap_action:
                 action: perform-action
                 perform_action: automation.trigger
-                data:
+                target:
                   entity_id: automation.db_purge_everyday
             - type: divider
             - entity: sensor.influxdb_db_folder_size
@@ -182,7 +182,7 @@ views:
               tap_action:
                 action: perform-action
                 perform_action: switch.toggle
-                data:
+                target:
                   entity_id: switch.shelly_plug_s_1
                 confirmation:
                   text: Вкл/выкл розетку?
@@ -398,7 +398,7 @@ views:
               show_last_changed: true
               icon: mdi:ceiling-light
               name: Свет
-            - entity: binary_sensor.0x158d000396f1f9_contact
+            - entity: binary_sensor.0x00158d000396f1f9_contact
               show_last_changed: true
               name: Окно
             - entity: binary_sensor.0x158d00039677d9_contact
@@ -435,7 +435,7 @@ views:
             - entity: binary_sensor.0x158d000396f197_contact
               show_last_changed: true
               name: Лев.
-            - entity: binary_sensor.0x158d0003d05782_contact
+            - entity: binary_sensor.0x00158d0003d05782_contact
               show_last_changed: true
               name: Центр.
             - entity: binary_sensor.0x00158d0003975d8b_contact
@@ -562,10 +562,10 @@ views:
                   - sensor.0x158d00039677d9_battery
                   - sensor.0x00158d0003981f6d_battery
                   - sensor.0x00158d0003fa6b60_battery
-                  - sensor.0x158d000396f1f9_battery
+                  - sensor.0x00158d000396f1f9_battery
                   - sensor.0x158d0003975b4c_battery
                   - sensor.0x158d000396f197_battery
-                  - sensor.0x158d0003d05782_battery
+                  - sensor.0x00158d0003d05782_battery
                   - sensor.0x00158d0003975d8b_battery
                   - sensor.0x158d00039a2f33_battery
                   - sensor.0x00158d00093e4111_battery
@@ -683,7 +683,7 @@ views:
             - entity: sensor.esp_xiaomi_childrens_room_battery_level
               tap_action: more-info
               name: 'Часы детская'
-            - entity: sensor.0x158d000396f1f9_battery
+            - entity: sensor.0x00158d000396f1f9_battery
               tap_action: more-info
             - entity: sensor.0x00158d0003fa6b60_battery
               tap_action: more-info
@@ -691,7 +691,7 @@ views:
               tap_action: more-info
             - entity: sensor.0x158d00039677d9_battery
               tap_action: more-info
-            - entity: sensor.0x158d0003d05782_battery
+            - entity: sensor.0x00158d0003d05782_battery
               tap_action: more-info
             - entity: sensor.0x158d0003975b4c_battery
               tap_action: more-info
@@ -1131,8 +1131,9 @@ views:
                           return "none";
                         ]]]
                     perform_action: script.turn_on
-                    data:
+                    target:
                       entity_id: script.turn_on_set_mode_humidifier_ca4
+                    data:
                       variables:
                         entity_id: "[[[ return entity.entity_id ]]]"
                         mode: 'Auto'
@@ -1176,8 +1177,9 @@ views:
                           return "none";
                         ]]]
                     perform_action: script.turn_on
-                    data:
+                    target:
                       entity_id: script.turn_on_set_mode_humidifier_ca4
+                    data:
                       variables:
                         entity_id: "[[[ return entity.entity_id ]]]"
                         mode: 'Low'
@@ -1221,8 +1223,9 @@ views:
                           return "none";
                         ]]]
                     perform_action: script.turn_on
-                    data:
+                    target:
                       entity_id: script.turn_on_set_mode_humidifier_ca4
+                    data:
                       variables:
                         entity_id: "[[[ return entity.entity_id ]]]"
                         mode: 'Mid'
@@ -1266,8 +1269,9 @@ views:
                           return "none";
                         ]]]
                     perform_action: script.turn_on
-                    data:
+                    target:
                       entity_id: script.turn_on_set_mode_humidifier_ca4
+                    data:
                       variables:
                         entity_id: "[[[ return entity.entity_id ]]]"
                         mode: 'High'
@@ -1312,9 +1316,9 @@ views:
                             return "perform-action";
                           return "none";
                         ]]]
-                    perform_action: 'humidifier.turn_off'
-                    data:
-                      entity_id: entity
+                    perform_action: humidifier.turn_off
+                    target:
+                      entity_id: "[[[ return entity.entity_id ]]]"
 
             - type: horizontal-stack
               cards:
@@ -1409,8 +1413,9 @@ views:
                           return "none";
                         ]]]
                     perform_action: script.turn_on
-                    data:
+                    target:
                       entity_id: script.turn_on_set_mode_humidifier_cb1
+                    data:
                       variables:
                         entity_id: "[[[ return entity.entity_id ]]]"
                         mode: 'Auto'
@@ -1454,8 +1459,9 @@ views:
                           return "none";
                         ]]]
                     perform_action: script.turn_on
-                    data:
+                    target:
                       entity_id: script.turn_on_set_mode_humidifier_cb1
+                    data:
                       variables:
                         entity_id: "[[[ return entity.entity_id ]]]"
                         mode: 'Silent'
@@ -1499,8 +1505,9 @@ views:
                           return "none";
                         ]]]
                     perform_action: script.turn_on
-                    data:
+                    target:
                       entity_id: script.turn_on_set_mode_humidifier_cb1
+                    data:
                       variables:
                         entity_id: "[[[ return entity.entity_id ]]]"
                         mode: 'Medium'
@@ -1544,8 +1551,9 @@ views:
                           return "none";
                         ]]]
                     perform_action: script.turn_on
-                    data:
+                    target:
                       entity_id: script.turn_on_set_mode_humidifier_cb1
+                    data:
                       variables:
                         entity_id: "[[[ return entity.entity_id ]]]"
                         mode: 'High'
@@ -1590,9 +1598,9 @@ views:
                             return "perform-action";
                           return "none";
                         ]]]
-                    perform_action: 'humidifier.turn_off'
-                    data:
-                      entity_id: entity
+                    perform_action: humidifier.turn_off
+                    target:
+                      entity_id: "[[[ return entity.entity_id ]]]"
 
             - type: horizontal-stack
               cards:
@@ -1820,9 +1828,10 @@ views:
                 - last-changed
               icon_tap_action:
                 action: perform-action
-                perform-action: script.turn_on
-                data:
+                perform_action: script.turn_on
+                target:
                   entity_id: script.toggle_climate_from_ui
+                data:
                   variables:
                     entityid: climate.devireg_k
               features:
@@ -1836,9 +1845,10 @@ views:
                 - last-changed
               icon_tap_action:
                 action: perform-action
-                perform-action: script.turn_on
-                data:
+                perform_action: script.turn_on
+                target:
                   entity_id: script.toggle_climate_from_ui
+                data:
                   variables:
                     entityid: climate.devireg_hw
               features:
@@ -1858,9 +1868,10 @@ views:
               collapsible_controls: true
               hold_action:
                 action: perform-action
-                perform-action: script.turn_on
-                data:
+                perform_action: script.turn_on
+                target:
                   entity_id: script.switch_fan_preset_mode
+                data:
                   variables:
                     entityid: fan.dmaker_p45_5007_fan
 
@@ -2334,12 +2345,19 @@ views:
             precision: 0
             unit: 'ч'
             double_tap_action:
-              action: perform-action
-              perform_action: vacuum.send_command
-              data:
+              action: call-service
+              service: vacuum.send_command
+              service_data:
                 entity_id: vacuum.xiaomi_vacuum_cleaner
                 command: reset_consumable
                 params: ['sensor_dirty_time']
+            #   action: perform-action
+            #   perform_action: vacuum.send_command
+            #   target:
+            #     entity_id: vacuum.xiaomi_vacuum_cleaner
+            #   data:
+            #     command: reset_consumable
+            #     params: ['sensor_dirty_time']
           - label: 'Фильтр'
             entity: sensor.xiaomi_vacuum_cleaner_filter_left
             multiplier: 0.00027777777
@@ -2347,12 +2365,19 @@ views:
             icon: mdi:air-filter
             unit: 'ч'
             double_tap_action:
-              action: perform-action
-              perform_action: vacuum.send_command
-              data:
+              action: call-service
+              service: vacuum.send_command
+              service_data:
                 entity_id: vacuum.xiaomi_vacuum_cleaner
                 command: reset_consumable
                 params: ['filter_work_time']
+            #   action: perform-action
+            #   perform_action: vacuum.send_command
+            #   target:
+            #     entity_id: vacuum.xiaomi_vacuum_cleaner
+            #   data:
+            #     command: reset_consumable
+            #     params: ['filter_work_time']
           - label: 'Боковая'
             entity: sensor.xiaomi_vacuum_cleaner_side_brush_left
             multiplier: 0.00027777777
@@ -2360,12 +2385,19 @@ views:
             icon: mdi:cross-bolnisi
             unit: 'ч'
             double_tap_action:
-              action: perform-action
-              perform_action: vacuum.send_command
-              data:
+              action: call-service
+              service: vacuum.send_command
+              service_data:
                 entity_id: vacuum.xiaomi_vacuum_cleaner
                 command: reset_consumable
                 params: ['side_brush_work_time']
+            #   action: perform-action
+            #   perform_action: vacuum.send_command
+            #   target:
+            #     entity_id: vacuum.xiaomi_vacuum_cleaner
+            #   data:
+            #     command: reset_consumable
+            #     params: ['side_brush_work_time']
           - label: 'Основная'
             entity: sensor.xiaomi_vacuum_cleaner_main_brush_left
             multiplier: 0.00027777777
@@ -2373,12 +2405,19 @@ views:
             icon: mdi:robot-vacuum-variant
             unit: 'ч'
             double_tap_action:
-              action: perform-action
-              perform_action: vacuum.send_command
-              data:
+              action: call-service
+              service: vacuum.send_command
+              service_data:
                 entity_id: vacuum.xiaomi_vacuum_cleaner
                 command: reset_consumable
                 params: ['main_brush_work_time']
+            #   action: perform-action
+            #   perform_action: vacuum.send_command
+            #   target:
+            #     entity_id: vacuum.xiaomi_vacuum_cleaner
+            #   data:
+            #     command: reset_consumable
+            #     params: ['main_brush_work_time']
 
   - title: Сводная таблица GW3
     path: gw3

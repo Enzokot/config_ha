@@ -4,101 +4,105 @@
       id: change mute on off alice activation sounds
       initial_state: true
       max_exceeded: silent
-      trigger:
-        - platform: homeassistant
+      triggers:
+        - trigger: homeassistant
           event: start
-        - platform: time
+        - trigger: time
           at:
             - "8:00:00"
             - "21:30:00"
-      action:
+      actions:
         - variables:
             time_to_on: >
                 {% set time_now = now() %}
                 {{ today_at('8:00') <= time_now < today_at('21:29:59') }}
         - action: media_player.play_media
-          entity_id: media_player.yandex_station_ff98f029b620413b35e5e278
+          target:
+            entity_id: media_player.yandex_station_ff98f029b620413b35e5e278
           data:
-           media_content_id: "{{- 'без лишних слов: ' + iif(time_to_on, 'нет', 'да') -}}"
-           media_content_type: settings
+            media_content_id: "{{- 'без лишних слов: ' + iif(time_to_on, 'нет', 'да') -}}"
+            media_content_type: settings
         - delay: 2
         - action: media_player.play_media
-          entity_id: media_player.yandex_station_ff98f029b620413b35e5e278
+          target:
+            entity_id: media_player.yandex_station_ff98f029b620413b35e5e278
           data:
-           media_content_id: "{{- 'звук активации: ' + iif(time_to_on, 'да', 'нет') -}}"
-           media_content_type: settings
+            media_content_id: "{{- 'звук активации: ' + iif(time_to_on, 'да', 'нет') -}}"
+            media_content_type: settings
 
 #Изменение имени управляющей команды Алиса/Яндекс
     - alias: change name activation for voice assistant
       id: change name activation for voice assistant
       initial_state: true
       max_exceeded: silent
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: yandex_intent
           event_data:
             text: теперь ты алиса
-        - platform: event
+        - trigger: event
           event_type: yandex_intent
           event_data:
             text: теперь ты яндекс
-      action:
+      actions:
         - action: media_player.play_media
-          entity_id: media_player.yandex_station_ff98f029b620413b35e5e278
+          target:
+            entity_id: media_player.yandex_station_ff98f029b620413b35e5e278
           data:
-           media_content_id: "имя: {{ trigger.event.data.text | replace('теперь ты ', '') | replace('у', 'а') }}"
-           media_content_type: settings
+            media_content_id: "имя: {{ trigger.event.data.text | replace('теперь ты ', '') | replace('у', 'а') }}"
+            media_content_type: settings
 
 #Уборка конкретных комнат
     - alias: clean one room by comand from voice assistant
       id: clean one room by comand from voice assistant
       initial_state: true
       max_exceeded: silent
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: yandex_speaker
           event_data:
             instance: phrase_action
             value: "уборка спальни"
-        - platform: event
+        - trigger: event
           event_type: yandex_speaker
           event_data:
             instance: phrase_action
             value: "уборка детской"
-        - platform: event
+        - trigger: event
           event_type: yandex_speaker
           event_data:
             instance: phrase_action
             value: "уборка гостиной"
-        - platform: event
+        - trigger: event
           event_type: yandex_speaker
           event_data:
             instance: phrase_action
             value: "уборка ванной"
-        - platform: event
+        - trigger: event
           event_type: yandex_speaker
           event_data:
             instance: phrase_action
             value: "уборка гардероба"
-        - platform: event
+        - trigger: event
           event_type: yandex_speaker
           event_data:
             instance: phrase_action
             value: "уборка туалета"
-        - platform: event
+        - trigger: event
           event_type: yandex_speaker
           event_data:
             instance: phrase_action
             value: "уборка коридора"
-        - platform: event
+        - trigger: event
           event_type: yandex_speaker
           event_data:
             instance: phrase_action
             value: "уборка кухни"
-      action:
+      actions:
         - action: vacuum.send_command
-          data:
+          target:
             entity_id: vacuum.xiaomi_vacuum_cleaner
+          data:
             command: app_segment_clean
             params: >
                 {{ trigger.event.data.value | replace('уборка ', '') 
@@ -118,16 +122,17 @@
       id: outdoor climate by comand from voice assistant
       initial_state: true
       max_exceeded: silent
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: yandex_speaker
           event_data:
             instance: text_action
             value: "Сделай громче на 0-"
-      action:
+      actions:
         - action: media_player.play_media
-          data:
+          target:
             entity_id: "{{ trigger.event.data.entity_id }}"
+          data:
             media_content_type: text
             media_content_id: > 
                 Температура {{ states('sensor.0x00158d000542ceaf_temperature') | round(0, 'ceil', 0) | format(morph='градус', as_text=false) }} цельсия. 
@@ -139,15 +144,55 @@
       id: vacuum send map from alice command
       initial_state: true
       max_exceeded: silent
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: yandex_intent
           event_data:
             text: отправь карту уборки
-      action:
+      actions:
         - action: telegram_bot.send_photo
           data:
             target: !secret telegram_all_chat_id
             url: "{{- 'http://homeassistant.local.hass.io:8123' + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
             caption: >-
                    {{ '\U0001F5FA' }} *Степа* {{- '\n' -}} Текущая карта уборки
+
+#Отправка оставшегося времени мойки посуды
+    - alias: dishwasher remaining programme running time
+      id: dishwasher remaining programme running time
+      initial_state: true
+      max_exceeded: silent
+      triggers:
+        - trigger: event
+          event_type: yandex_speaker
+          event_data:
+            instance: text_action
+            value: "Сделай громче на 0?"
+      actions:
+        - action: media_player.play_media
+          target:
+            entity_id: "{{ trigger.event.data.entity_id }}"
+          data:
+            media_content_type: text
+            media_content_id: > 
+              {% if is_state('sensor.014020518886002182_bsh_common_status_operationstate', 'BSH.Common.EnumType.OperationState.Run') %}
+                {% set time_delta = as_timestamp(states('sensor.014020518886002182_bsh_common_option_remainingprogramtime'), 0) - as_timestamp(now(), 0) | int(0) %}
+                {% set minutes = (( time_delta % 3600) / 60) | int(0) %}
+                {% set hours = ((time_delta % 86400) / 3600) | int(0) %}
+                До окончания: {{- ' ' -}}
+                   {% if time_delta < 1 -%}
+                     меньше минуты
+                   {% else -%}
+                     {% if hours > 0 %}
+                       {{- hours | format(morph='час') -}}
+                     {% endif %}
+                     {%- if minutes > 0 -%}
+                       {% if hours > 0 %}
+                         {{- ' ' -}}
+                       {% endif %}
+                       {{- minutes | format(morph='минута') }}
+                     {% endif %}
+                   {% endif %}
+              {%- else %}
+                Сейчас программа не запущена
+              {% endif %}

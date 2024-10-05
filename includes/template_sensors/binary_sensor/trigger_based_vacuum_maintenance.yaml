@@ -1,13 +1,13 @@
 
 #Сенсоры обслуживания пылика
     - trigger:
-        - platform: state
+        - trigger: state
           entity_id: 
             - sensor.xiaomi_vacuum_cleaner_main_brush_left
             - vacuum.xiaomi_vacuum_cleaner
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
       binary_sensor:
         - name: vacuum_cleaner_main_brush_maintenance
@@ -19,13 +19,13 @@
             minutes: 1
 
     - trigger:
-        - platform: state
+        - trigger: state
           entity_id: 
             - sensor.xiaomi_vacuum_cleaner_side_brush_left
             - vacuum.xiaomi_vacuum_cleaner
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
       binary_sensor:
         - name: vacuum_cleaner_side_brush_maintenance
@@ -37,13 +37,13 @@
             minutes: 1
 
     - trigger:
-        - platform: state
+        - trigger: state
           entity_id: 
             - sensor.xiaomi_vacuum_cleaner_filter_left
             - vacuum.xiaomi_vacuum_cleaner
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
       binary_sensor:
         - name: vacuum_cleaner_filter_maintenance
@@ -55,13 +55,13 @@
             minutes: 1
         
     - trigger:
-        - platform: state
+        - trigger: state
           entity_id: 
             - sensor.xiaomi_vacuum_cleaner_sensor_dirty_left
             - vacuum.xiaomi_vacuum_cleaner
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
       binary_sensor:
         - name: vacuum_cleaner_sensor_dirty_maintenance

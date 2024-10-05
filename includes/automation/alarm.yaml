@@ -2,110 +2,113 @@
     - alias: turn_on_alarm
       id: turn_on_alarm
       initial_state: true
-      trigger:
-        platform: state
-        entity_id: input_boolean.alarm_gateway_button
-        to: 'on'
-      action:
-      - action: scene.create
-        data:
-          scene_id: before_alarm_on
-          snapshot_entities:
-            - light.gateway_light_04cf8cabd77b
-      - parallel:
-          - action: script.turn_on
+      triggers:
+          - trigger: state
+            entity_id: input_boolean.alarm_gateway_button
+            to: 'on'
+      actions:
+          - action: scene.create
             data:
-              entity_id: script.alarm_gateway_light
-          - action: script.turn_on
+              scene_id: before_alarm_on
+              snapshot_entities:
+                - light.gateway_light_04cf8cabd77b
+          - parallel:
+              - action: script.turn_on
+                target:
+                  entity_id: script.alarm_gateway_light
+              - action: script.turn_on
+                target:
+                  entity_id: script.alarm_gateway_sound
+              - action: script.turn_on
+                target:
+                  entity_id: script.alarm_tts_yandex_stations
+          - action: timer.start
+            target:
+              entity_id: timer.alarm_gateway_sound
             data:
-              entity_id: script.alarm_gateway_sound
-          - action: script.turn_on
-            data:
-              entity_id: script.alarm_tts_yandex_stations
-      - action: timer.start
-        data:
-          entity_id: timer.alarm_gateway_sound
-          duration: 1800
+              duration: 1800
         
     - alias: turn_off_alarm
       id: turn_off_alarm
       initial_state: true
-      trigger:
-      - entity_id: input_boolean.alarm_gateway_button
-        platform: state
-        to: 'off'
-      action:
-      - parallel:
-          - action: script.turn_off
-            data:
-              entity_id: script.alarm_gateway_light
-          - action: script.turn_off
-            data:
-              entity_id: script.alarm_gateway_sound
-          - action: script.turn_off
-            data:
-              entity_id: script.alarm_tts_yandex_stations
-          - action: light.turn_off
-            entity_id: light.gateway_light_04cf8cabd77b
-          - action: xiaomi_aqara.stop_ringtone
-            data:
-              gw_mac: !secret gateway1_mac
-          - action: timer.cancel
-            data:
-              entity_id: timer.alarm_gateway_sound
-          - choose:
-              - conditions: 
-                - "{{ states.group.dynamic_group_gateway_alarm_last_state_disarmed is not none }}"
-                sequence:
-                  - variables:
-                      entities: "{{ expand('group.dynamic_group_gateway_alarm_last_state_disarmed') | map(attribute = 'entity_id') | list | join(', ') }}"
-                  - action: alarm_control_panel.alarm_arm_away
-                    data:
-                      entity_id: "{{ entities }}"
-                  - action: alarm_control_panel.alarm_disarm
-                    data:
-                      entity_id: "{{ entities }}"
-                  - action: group.remove
-                    data:
-                      object_id: dynamic_group_gateway_alarm_last_state_disarmed
-          - choose:
-              - conditions: 
-                - "{{ states.group.dynamic_group_gateway_alarm_last_state_armed_away is not none }}"
-                sequence:
-                  - variables:
-                      entities: "{{ expand('group.dynamic_group_gateway_alarm_last_state_armed_away') | map(attribute = 'entity_id') | list | join(', ') }}"
-                  - action: alarm_control_panel.alarm_disarm
-                    data:
-                      entity_id: "{{ entities }}"
-                  - action: alarm_control_panel.alarm_arm_away
-                    data:
-                      entity_id: "{{ entities }}"
-                  - action: group.remove
-                    data:
-                      object_id: dynamic_group_gateway_alarm_last_state_armed_away
-      - action: scene.turn_on
-        entity_id: scene.before_alarm_on
+      triggers:
+          - trigger: state
+            entity_id: input_boolean.alarm_gateway_button
+            to: 'off'
+      actions:
+          - parallel:
+              - action: script.turn_off
+                target:
+                  entity_id: script.alarm_gateway_light
+              - action: script.turn_off
+                target:
+                  entity_id: script.alarm_gateway_sound
+              - action: script.turn_off
+                target:
+                  entity_id: script.alarm_tts_yandex_stations
+              - action: light.turn_off
+                target:
+                  entity_id: light.gateway_light_04cf8cabd77b
+              - action: xiaomi_aqara.stop_ringtone
+                data:
+                  gw_mac: !secret gateway1_mac
+              - action: timer.cancel
+                target:
+                  entity_id: timer.alarm_gateway_sound
+              - choose:
+                  - conditions: 
+                    - "{{ states.group.dynamic_group_gateway_alarm_last_state_disarmed is not none }}"
+                    sequence:
+                      - variables:
+                          entities: "{{ expand('group.dynamic_group_gateway_alarm_last_state_disarmed') | map(attribute = 'entity_id') | list | join(', ') }}"
+                      - action: alarm_control_panel.alarm_arm_away
+                        target:
+                          entity_id: "{{ entities }}"
+                      - action: alarm_control_panel.alarm_disarm
+                        target:
+                          entity_id: "{{ entities }}"
+                      - action: group.remove
+                        data:
+                          object_id: dynamic_group_gateway_alarm_last_state_disarmed
+              - choose:
+                  - conditions: 
+                    - "{{ states.group.dynamic_group_gateway_alarm_last_state_armed_away is not none }}"
+                    sequence:
+                      - variables:
+                          entities: "{{ expand('group.dynamic_group_gateway_alarm_last_state_armed_away') | map(attribute = 'entity_id') | list | join(', ') }}"
+                      - action: alarm_control_panel.alarm_disarm
+                        target:
+                          entity_id: "{{ entities }}"
+                      - action: alarm_control_panel.alarm_arm_away
+                        target:
+                          entity_id: "{{ entities }}"
+                      - action: group.remove
+                        data:
+                          object_id: dynamic_group_gateway_alarm_last_state_armed_away
+          - action: scene.turn_on
+            target:
+              entity_id: scene.before_alarm_on
 
 #Выключение звука сигнализации по таймеру
     - alias: alarm_gateway_stop_ringtone_timer
       id: alarm_gateway_stop_ringtone_timer
       initial_state: true
-      trigger:
-      - platform: event
+      triggers:
+      - trigger: event
         event_type: timer.finished
         event_data:
           entity_id: timer.alarm_gateway_sound
-      condition:
+      conditions:
        - condition: state
          entity_id: input_boolean.alarm_gateway_button
          state: 'on'
-      action:
+      actions:
       - parallel:
           - action: script.turn_off
-            data:
+            target:
               entity_id: script.alarm_gateway_sound
           - action: script.turn_off
-            data:
+            target:
               entity_id: script.alarm_tts_yandex_stations
           - action: xiaomi_aqara.stop_ringtone
             data:
@@ -115,8 +118,8 @@
     - alias: smoke detector alarm to gateway
       id: smoke detector alarm to gateway
       initial_state: true
-      trigger:
-       - platform: state
+      triggers:
+       - trigger: state
          entity_id: 
            - binary_sensor.0x158d0003943639_smoke
            - binary_sensor.0x158d00039a8358_smoke
@@ -124,20 +127,20 @@
            - binary_sensor.0x158d00045ca483_smoke
            - binary_sensor.0x00158d00045cd551_smoke
          to: 'on'
-      condition:
+      conditions:
        - condition: state
          entity_id: input_boolean.alarm_gateway_button
          state: 'off'
-      action:
+      actions:
           - action: input_boolean.turn_on
-            data:
+            target:
               entity_id: input_boolean.alarm_gateway_button
 
     - alias: smoke detector stop alarm to gateway
       id: smoke detector stop alarm to gateway
       initial_state: true
-      trigger:
-       - platform: state
+      triggers:
+       - trigger: state
          entity_id: 
            - binary_sensor.0x158d0003943639_smoke
            - binary_sensor.0x158d00039a8358_smoke
@@ -146,7 +149,7 @@
            - binary_sensor.0x00158d00045cd551_smoke
          from: 'on'
          to: 'off'
-      condition:
+      conditions:
        - condition: state
          entity_id: binary_sensor.0x158d0003943639_smoke
          state: 'off'
@@ -165,9 +168,9 @@
        - condition: state
          entity_id: input_boolean.alarm_gateway_button
          state: 'on'
-      action:
+      actions:
           - action: input_boolean.turn_off
-            data:
+            target:
               entity_id: input_boolean.alarm_gateway_button
 
 #Включение сигнализации по датчикам открытия и движения
@@ -175,8 +178,8 @@
       id: door and motion alarm to gateway
       max_exceeded: silent
       initial_state: true
-      trigger:
-       - platform: state
+      triggers:
+       - trigger: state
          entity_id: 
             - binary_sensor.0x158d00054b8d72_motion
             - binary_sensor.0x158d000566bde7_motion
@@ -187,55 +190,55 @@
             - binary_sensor.window_kitchen_group
             - binary_sensor.window_living_room_group
          to: 'on'
-       - platform: state
+       - trigger: state
          entity_id: 
             - sensor.0x158d00054b8d72_illuminance
             - sensor.0x158d000566bde7_illuminance
-      condition:
+      conditions:
        - condition: state
          entity_id: alarm_control_panel.signalka_shliuza_alarm
          state: 'armed_away'
        - condition: state
          entity_id: input_boolean.alarm_gateway_button
          state: 'off'
-      action:
+      actions:
           - action: input_boolean.turn_on
-            data:
+            target:
               entity_id: input_boolean.alarm_gateway_button
 
 #Выключение сигнализации по отключению режима охраны/по долгому нажатию кнопки в детской
     - alias: turn_off_alarm_disarmed_control_panel
       id: turn_off_alarm_disarmed_control_panel
       initial_state: true
-      trigger:
-      - entity_id: alarm_control_panel.signalka_shliuza_alarm
-        platform: state
+      triggers:
+      - trigger: state
+        entity_id: alarm_control_panel.signalka_shliuza_alarm
         to: 'disarmed'
-      - entity_id: sensor.0x158d0003a360b6_action
-        platform: state
+      - trigger: state
+        entity_id: sensor.0x158d0003a360b6_action
         to: 'hold'
-      condition:
+      conditions:
        - condition: state
          entity_id: input_boolean.alarm_gateway_button
          state: 'on'
-      action:
+      actions:
           - action: input_boolean.turn_off
-            data:
+            target:
               entity_id: input_boolean.alarm_gateway_button
 
 #Включение сигнализации по многократному нажатию кнопки в детской
     - alias: wireless switch many tap alarm to gateway
       id: wireless switch many tap alarm to gateway
       initial_state: true
-      trigger:
-       - platform: state
+      triggers:
+       - trigger: state
          entity_id: sensor.0x158d0003a360b6_action
          to: 'many'
-      condition:
+      conditions:
        - condition: state
          entity_id: input_boolean.alarm_gateway_button
          state: 'off'
-      action:
+      actions:
           - variables:
               sm_g973f_rezhim_ne_bespokoit: "{{ states('sensor.sm_g973f_do_not_disturb_sensor') }}"
           - choose:
@@ -247,7 +250,7 @@
                       data:
                         command: 'off'
                   - wait_for_trigger:
-                      - platform: state
+                      - trigger: state
                         entity_id: sensor.sm_g973f_do_not_disturb_sensor
                     timeout:
                       seconds: 5
@@ -263,7 +266,7 @@
                         command: 'normal'
           - parallel:
               - action: input_boolean.turn_on
-                data:
+                target:
                   entity_id: input_boolean.alarm_gateway_button
               - action: telegram_bot.send_message
                 data:
@@ -309,22 +312,22 @@
     - alias: mobile app telegram notification action turn off alarm
       id: mobile app telegram notification action turn off alarm
       initial_state: true
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: mobile_app_notification_action
           event_data:
             action: stop_alarm
-        - platform: event
+        - trigger: event
           id: 'telegram_callback_stop_alarm'
           event_type: telegram_callback
           event_data:
             data: '/stop_alarm'
-      action:
+      actions:
           - choose:
               - conditions: "{{ is_state('input_boolean.alarm_gateway_button', 'on') }}"
                 sequence:
                     - action: input_boolean.turn_off
-                      data:
+                      target:
                         entity_id: input_boolean.alarm_gateway_button
           - choose:
               - conditions: "{{ trigger.id == 'telegram_callback_stop_alarm' }}"
@@ -342,18 +345,18 @@
     - alias: main gateway arm dissarm to others gw
       id: main gateway arm dissarm to others gw
       initial_state: true
-      trigger:
-       - platform: state
+      triggers:
+       - trigger: state
          id: "armed"
          entity_id: alarm_control_panel.signalka_shliuza_alarm
          to: "armed_away"
-       - platform: state
+       - trigger: state
          entity_id: alarm_control_panel.signalka_shliuza_alarm
          to: "disarmed"
-      action:
+      actions:
           - action: >-
                 {{ iif(trigger.id == 'armed', 'alarm_control_panel.alarm_arm_away', 'alarm_control_panel.alarm_disarm') }}
-            data: 
+            target: 
               entity_id:
                 - alarm_control_panel.54ef44315770_alarm
                 - alarm_control_panel.54ef44cb80fd_alarm
@@ -363,8 +366,8 @@
     - alias: smoke detector alarm to turn off all
       id: smoke detector alarm to turn off all
       initial_state: true
-      trigger:
-       - platform: state
+      triggers:
+       - trigger: state
          entity_id: 
             - binary_sensor.0x158d0003943639_smoke
             - binary_sensor.0x158d00039a8358_smoke
@@ -372,30 +375,30 @@
             - binary_sensor.0x158d00045ca483_smoke
             - binary_sensor.0x00158d00045cd551_smoke
          to: 'on'
-      action:
+      actions:
           - action: homeassistant.turn_off
-            data:
+            target:
               entity_id: "{{ expand('group.entity_ids_for_turn_off_by_smoke_detector') | map(attribute = 'entity_id') | join(', ') }}"
 
 #Вкл/выкл сигнализации по nfc метки в коридоре
     - alias: main gateway arm dissarm from nfc tag hallway
       id: main gateway arm dissarm from nfc tag hallway
       initial_state: true
-      trigger:
-        - platform: tag
+      triggers:
+        - trigger: tag
           tag_id:
             - "73aef2e2-722b-418d-b20a-24e84eda330e"
           device_id:
             - f4de6186902849d0845c4e2552d3531d
-      condition:
+      conditions:
           - "{{ state_attr(this.entity_id, 'current') | int(0) == 0 }}"
-      action:
+      actions:
           - choose:
               - conditions: 
                 - "{{ is_state('alarm_control_panel.signalka_shliuza_alarm', 'disarmed') }}"
                 sequence:
                   - wait_for_trigger:
-                    - platform: tag
+                    - trigger: tag
                       tag_id:
                         - "73aef2e2-722b-418d-b20a-24e84eda330e"
                     timeout: 15
@@ -408,11 +411,11 @@
                           message: "{{ '\U0001f507 Отменено включение сигнализации' }}"
                     else:
                       - action: alarm_control_panel.alarm_arm_away
-                        data: 
+                        target: 
                           entity_id: alarm_control_panel.signalka_shliuza_alarm
             default:
               - action: alarm_control_panel.alarm_disarm
-                data: 
+                target: 
                   entity_id: alarm_control_panel.signalka_shliuza_alarm
 
 #Включение сигнализации на всех шлюзах, которые в режиме охраны
@@ -420,19 +423,19 @@
       id: gateway alarm to turn on to all gateways
       max_exceeded: silent
       initial_state: true
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: 
              - alarm_control_panel.54ef44315770_alarm
              - alarm_control_panel.54ef44cb80fd_alarm
              - alarm_control_panel.54ef443127b2_alarm
           to: 'triggered'
-        - platform: state
+        - trigger: state
           entity_id: input_boolean.alarm_gateway_button
           to: 'on'
-      condition:
+      conditions:
         - "{{ now() - state_attr(this.entity_id, 'last_triggered') > timedelta(seconds = 5) }}"
-      action:
+      actions:
         - variables:
             entities: >-
               {{ states.alarm_control_panel | selectattr('state', 'in', ['armed_away', 'disarmed']) | rejectattr('entity_id', 'eq', 'alarm_control_panel.signalka_shliuza_alarm') | map(attribute = 'entity_id') | list | to_json }}
@@ -442,7 +445,7 @@
                 - "{{ entities | from_json | count > 0 }}"
                 sequence:
                   - action: alarm_control_panel.alarm_trigger
-                    data: 
+                    target: 
                       entity_id: "{{ entities | from_json | join(', ') }}"
           - choose:
               - conditions: 
@@ -451,5 +454,5 @@
                   state: "off"
                 sequence:
                   - action: input_boolean.turn_on
-                    data:
+                    target:
                       entity_id: input_boolean.alarm_gateway_button

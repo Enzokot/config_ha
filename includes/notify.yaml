@@ -1,10 +1,4 @@
 
-  - platform: html5
-    name: html5_notifier
-    vapid_pub_key: !secret vapid_pub_key
-    vapid_prv_key: !secret vapid_prv_key
-    vapid_email: !secret vapid_email
-
   - name: telegram_enzokot_to_bot
     platform: telegram
     chat_id: !secret telegram_enzokot_chat_id

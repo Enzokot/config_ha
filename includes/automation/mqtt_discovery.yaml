@@ -2,19 +2,19 @@
     - alias: mqtt_sensors_discovery
       id: mqtt_sensors_discovery
       initial_state: true 
-      trigger: 
-    #     - platform: state 
+      triggers: 
+    #     - trigger: state 
     #       entity_id: binary_sensor.mqtt_broker_hp
     #       to: 'on' 
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start 
-        - platform: event
+        - trigger: event
           event_type: automation_reloaded
-    #   condition: 
+    #   conditions: 
     #     - condition: state 
     #       entity_id: binary_sensor.mqtt_broker_hp
     #       state: 'on' 
-      action:
+      actions:
         - parallel:
             - action: mqtt.publish
               data: 

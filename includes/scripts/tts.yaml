@@ -23,8 +23,9 @@
     #       options:
     #         volume_level: '{{ vol_level }}'
        - action: media_player.play_media
-         data:
+         target:
            entity_id: '{{ entity }}'
+         data:
            media_content_id: '{{ text }}'
            media_content_type: text  # поддерживается text и dialog
            extra:

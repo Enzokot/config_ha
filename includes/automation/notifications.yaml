@@ -3,14 +3,14 @@
     - alias: notification front door open long time
       id: notification front door open long time
       initial_state: true
-      trigger:
-        platform: state
+      triggers:
+        trigger: state
         entity_id: binary_sensor.0x158d000359304c_contact
         from: 'off'
         to: 'on'
         for:
           minutes: 2
-      action:
+      actions:
         - parallel:
             - action: notify.telegram_enzokot_to_bot
               data:
@@ -35,18 +35,18 @@
     - alias: notification lobby door open long time
       id: notification lobby door open long time
       initial_state: true
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           id: 'door_open'
           entity_id: binary_sensor.lobby_door_open_long_time
           from: 'off'
           to: 'on'
-        - platform: state
+        - trigger: state
           id: 'door_close'
           entity_id: binary_sensor.lobby_door_open_long_time
           from: 'on'
           to: 'off'
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_all_chat_id
@@ -59,14 +59,14 @@
     - alias: notification sound front door open long time
       id: notification sound front door open long time
       initial_state: true
-      trigger:
-        platform: state
-        entity_id: binary_sensor.0x158d000359304c_contact
-        from: 'off'
-        to: 'on'
-        for:
-          minutes: 2
-      condition:
+      triggers:
+        - trigger: state
+          entity_id: binary_sensor.0x158d000359304c_contact
+          from: 'off'
+          to: 'on'
+          for:
+            minutes: 2
+      conditions:
           - condition: state
             entity_id: input_boolean.alarm_gateway_button
             state: 'off'
@@ -81,7 +81,7 @@
               - condition: time
                 after: '16:30:00'
                 before: '21:00:00'
-      action:
+      actions:
           - action: timer.start
             entity_id: timer.front_door_ringtone
           - parallel:
@@ -101,16 +101,16 @@
     - alias: notification sound front door open long time repeat
       id: notification sound front door open long time repeat
       initial_state: true
-      trigger:
-           - platform: event
+      triggers:
+           - trigger: event
              event_type: timer.finished
              event_data:
                entity_id: timer.front_door_ringtone
-      condition:
+      conditions:
           - condition: state
             entity_id: binary_sensor.0x158d000359304c_contact
             state: 'on'
-      action:
+      actions:
           - action: timer.start
             entity_id: timer.front_door_ringtone
           - parallel:
@@ -128,21 +128,21 @@
     - alias: notification sound front door open long time cancel
       id: notification sound front door open long time cancel
       initial_state: true
-      trigger:
-           - platform: time
+      triggers:
+           - trigger: time
              at: "13:30:00"
-           - platform: time
+           - trigger: time
              at: "21:00:00"
-           - platform: state
+           - trigger: state
              id: "binary_sensor_trigger"
              entity_id: binary_sensor.0x158d000359304c_contact
              from: 'on'
              to: 'off'
-      condition:
+      conditions:
             condition: state
             entity_id: timer.front_door_ringtone
             state: 'active'
-      action:
+      actions:
           - action: timer.cancel
             entity_id: timer.front_door_ringtone
           - choose:
@@ -156,8 +156,8 @@
       id: notification front door open close
       mode: queued
       initial_state: true
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: binary_sensor.0x158d000359304c_contact
           from: 
             - 'off'
@@ -165,7 +165,7 @@
           to: 
             - 'on'
             - 'off'
-      action:
+      actions:
         - variables:
             text_for_message: "{{ iif(trigger.to_state.state == 'on', 'открыта', 'закрыта') }}"
         - parallel:
@@ -188,15 +188,15 @@
     - alias: notification front door open armed
       id: notification front door open armed
       initial_state: true
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: binary_sensor.0x158d000359304c_contact
           to: 'on'
-      condition:
+      conditions:
         - condition: state
           entity_id: alarm_control_panel.signalka_shliuza_alarm
           state: 'armed_away'
-      action:
+      actions:
         - variables:
             sm_g973f_rezhim_ne_bespokoit: "{{ states('sensor.sm_g973f_do_not_disturb_sensor') }}"
         - choose:
@@ -208,7 +208,7 @@
                     data:
                       command: 'off'
                 - wait_for_trigger:
-                    - platform: state
+                    - trigger: state
                       entity_id: sensor.sm_g973f_do_not_disturb_sensor
                   timeout:
                     seconds: 5
@@ -272,18 +272,18 @@
       id: notification motion detected armed
       initial_state: true
       mode: queued
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: 
              - binary_sensor.0x158d00054b8d72_motion
              - binary_sensor.0x158d000566bde7_motion
              - binary_sensor.0x158d0003953ee9_motion
           to: 'on'
-      condition:
+      conditions:
         - condition: state
           entity_id: alarm_control_panel.signalka_shliuza_alarm
           state: 'armed_away'
-      action:
+      actions:
         - variables:
             sm_g973f_rezhim_ne_bespokoit: "{{ states('sensor.sm_g973f_do_not_disturb_sensor') }}"
         - choose:
@@ -295,7 +295,7 @@
                     data:
                       command: 'off'
                 - wait_for_trigger:
-                    - platform: state
+                    - trigger: state
                       entity_id: sensor.sm_g973f_do_not_disturb_sensor
                   timeout:
                     seconds: 5
@@ -359,19 +359,19 @@
       id: notification open window armed
       initial_state: true
       mode: queued
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: 
              - binary_sensor.window_bed_room_group
              - binary_sensor.window_childrens_room_group
              - binary_sensor.window_living_room_group
              - binary_sensor.window_kitchen_group
           to: 'on'
-      condition:
+      conditions:
         - condition: state
           entity_id: alarm_control_panel.signalka_shliuza_alarm
           state: 'armed_away'
-      action:
+      actions:
         - variables:
             sm_g973f_rezhim_ne_bespokoit: "{{ states('sensor.sm_g973f_do_not_disturb_sensor') }}"
         - choose:
@@ -383,7 +383,7 @@
                     data:
                       command: 'off'
                 - wait_for_trigger:
-                    - platform: state
+                    - trigger: state
                       entity_id: sensor.sm_g973f_do_not_disturb_sensor
                   timeout:
                     seconds: 5
@@ -447,21 +447,21 @@
       id: notification gateway alarm triggered normal mode
       mode: queued
       initial_state: true
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: 
              - alarm_control_panel.54ef44315770_alarm
              - alarm_control_panel.54ef44cb80fd_alarm
              - alarm_control_panel.54ef443127b2_alarm
           to: 'triggered'
-      condition:
+      conditions:
         - condition: state
           entity_id: input_boolean.alarm_gateway_button
           state: 'off'
         - condition: state
           entity_id: alarm_control_panel.signalka_shliuza_alarm
           state: 'disarmed'
-      action:
+      actions:
         - variables:
             sm_g973f_rezhim_ne_bespokoit: "{{ states('sensor.sm_g973f_do_not_disturb_sensor') }}"
         - choose:
@@ -473,7 +473,7 @@
                     data:
                       command: 'off'
                 - wait_for_trigger:
-                    - platform: state
+                    - trigger: state
                       entity_id: sensor.sm_g973f_do_not_disturb_sensor
                   timeout:
                     seconds: 5
@@ -537,15 +537,15 @@
     - alias: vacuum cleaner error to all
       id: vacuum cleaner error to all
       initial_state: true
-      trigger:
-       - platform: state
+      triggers:
+       - trigger: state
          entity_id: vacuum.xiaomi_vacuum_cleaner
          attribute: status
          to: 
            - 'Error'
            - 'In Error'
            - 'Charging Error'
-      action:
+      actions:
         - parallel:
             - action: telegram_bot.send_photo
               data:
@@ -568,15 +568,15 @@
     - alias: vacuum cleaner after cleaning chita
       id: vacuum cleaner after cleaning chita
       initial_state: true
-      trigger:
-       - platform: state
+      triggers:
+       - trigger: state
          entity_id: vacuum.xiaomi_vacuum_cleaner
          from: 'returning'
          to: 'docked'
-      condition:
+      conditions:
           condition: template
           value_template: "{{ (states('sensor.xiaomi_vacuum_cleaner_total_clean_area') | int(0) ) > (states('input_number.total_cleaned_area_saved') | int(0) ) + 30 }}"
-      action:
+      actions:
         - variables:
             current_clean_area: >-
                 {{ states('sensor.xiaomi_vacuum_cleaner_current_clean_area') | round(0, 'ceil', 0) | string + state_attr('sensor.xiaomi_vacuum_cleaner_current_clean_area', 'unit_of_measurement') }}
@@ -630,8 +630,8 @@
     - alias: smoke detector alarm
       id: smoke detector alarm
       initial_state: true
-      trigger:
-       - platform: state
+      triggers:
+       - trigger: state
          entity_id: 
            - binary_sensor.0x158d0003943639_smoke
            - binary_sensor.0x158d00039a8358_smoke
@@ -639,7 +639,7 @@
            - binary_sensor.0x158d00045ca483_smoke
            - binary_sensor.0x00158d00045cd551_smoke
          to: 'on'
-      action:
+      actions:
         - variables:
             sm_g973f_rezhim_ne_bespokoit: "{{ states('sensor.sm_g973f_do_not_disturb_sensor') }}"
         - choose:
@@ -651,7 +651,7 @@
                     data:
                       command: 'off'
                 - wait_for_trigger:
-                    - platform: state
+                    - trigger: state
                       entity_id: sensor.sm_g973f_do_not_disturb_sensor
                   timeout:
                     seconds: 5
@@ -722,16 +722,16 @@
     - alias: notification cert expired
       id: notification cert expired
       initial_state: true
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: binary_sensor.cert_expired_keenetic_domain
           from: 'off'
           to: 'on'
-        - platform: state
+        - trigger: state
           entity_id: binary_sensor.cert_expired_asuscomm_domain_klg
           from: 'off'
           to: 'on'
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -748,10 +748,10 @@
       mode: queued
       trigger_variables:
         not_has_state: "{{ ['unknown', 'unavailable', 'none', None, null, ''] }}"
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: state_changed
-      condition:
+      conditions:
         - "{{ trigger.event.data.entity_id.startswith('update.') }}"
         - "{{ trigger.event.data.old_state is not none and trigger.event.data.new_state is not none }}"
         - or:
@@ -775,7 +775,7 @@
                   trigger.event.data.new_state.attributes.installed_version not in not_has_state and
                   trigger.event.data.new_state.attributes.installed_version is not none
                 }}
-      action:
+      actions:
         - variables:
             release_url: >- 
                 {% if trigger.event.data.entity_id == 'update.home_assistant_core_update' -%}
@@ -832,47 +832,14 @@
                         tag: >
                           update_available_notify_ {{- trigger.event.data.entity_id | replace('update.', '') }}
 
-#Доступны для обновления аддоны HACS
-    - alias: update HACS addons available notification
-      id: update HACS addons available notification
-      initial_state: true
-      mode: queued
-      trigger_variables:
-        not_has_state: "{{ ['unknown', 'unavailable', 'none'] }}"
-      trigger:
-        - platform: state
-          entity_id: sensor.hacs
-          attribute: repositories
-      condition:
-        - condition: template
-          value_template: >
-            {{ trigger.from_state.state not in not_has_state and
-               trigger.to_state.state not in not_has_state and
-               states('sensor.hacs') | int(0) > 0
-            }}
-      action:
-        - parallel:
-            - action: telegram_bot.send_message
-              data:
-                target: !secret telegram_enzokot_chat_id
-                title: "{{ '\U0001f389' }} *Системное обновление*"
-                message: "Addon's HACS - доступно для обновления *{{ states('sensor.hacs') | int(0) }}*. Список: {% for repo in state_attr('sensor.hacs', 'repositories') %}*{{ repo.display_name }}* (_{{ repo.installed_version }}_ -> _{{ repo.available_version }}_){%if not loop.last %}, {%endif%}{% endfor %}"
-            - action: notify.html5_notifier_n550jk
-              data:
-                title: "{{ '\U0001f389' }} *Системное обновление*"
-                message: "Addon's HACS - доступно для обновления {{ states('sensor.hacs') | int(0) }}. Список: {% for repo in state_attr('sensor.hacs', 'repositories') %}{{ repo.display_name }} ({{ repo.installed_version }} -> {{ repo.available_version }}){%if not loop.last %}, {%endif%}{% endfor %}"
-                data:
-                  url: "{{- states('sensor.instance_internal_url_config') -}}/hacs/entry"
-                  tag: notify_update_hacs_addons
-
 #Низкий заряд батарей
     - alias: notification low battery zigbee
       id: notification low battery zigbee
       initial_state: true
-      trigger:
-        platform: time
-        at: "20:00:00"
-      condition: >
+      triggers:
+        - trigger: time
+          at: "20:00:00"
+      conditions: >
                     {%- set entities = expand('group.dynamic_group_sensor_battery') -%}
                     {%- set datanames = namespace(entity_name=[]) -%}
                     {% for x in entities -%}
@@ -883,7 +850,7 @@
                       {% endif %}
                     {%- endfor %}
                     {{ datanames.entity_name | list | count > 0 }}
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -910,14 +877,14 @@
     - alias: notification safety sockets on restart
       id: notification safety sockets on restart
       initial_state: true
-      trigger:
-        - platform: homeassistant
+      triggers:
+        - trigger: homeassistant
           event: start
-      condition:
+      conditions:
         - condition: state
           entity_id: switch.0x842e14fffe5047f5
           state: 'on'
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -930,8 +897,8 @@
     - alias: notification safety sockets off
       id: notification safety sockets off
       initial_state: true
-      trigger:
-          - platform: numeric_state
+      triggers:
+          - trigger: numeric_state
             entity_id: 
                 - sensor.0x842e14fffe5047f5_power
                 - sensor.0x842e14fffe13a854_power
@@ -943,7 +910,7 @@
                 - sensor.shelly_plug_s_nvr_power
                 - sensor.shelly_plug_s_keenetic_hw_power
             above: 3000
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -959,10 +926,10 @@
       id: notification public ip changed
       initial_state: true
       mode: queued
-      trigger:
-          - platform: state
+      triggers:
+          - trigger: state
             entity_id: sensor.myip
-      action:
+      actions:
         - parallel:
             - action: telegram_bot.send_message
               data:
@@ -999,18 +966,18 @@
     - alias: notification low level water
       id: notification low level water
       initial_state: true
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: binary_sensor.zhimi_humidifier_cb1_low_water_level
           from: 'off'
           to: 'on'
-        - platform: state
+        - trigger: state
           entity_id: binary_sensor.zhimi_humidifier_ca4_low_water_level
           from: 'off'
           to: 'on'
-      condition:
+      conditions:
         - "{{ states(trigger.entity_id | replace('binary_sensor.', 'sensor.') | replace('_low', '')) | int(0) > 0 }}"
-      action:
+      actions:
         - parallel:
             - action: telegram_bot.send_message
               data:
@@ -1035,8 +1002,8 @@
       id: notification vacuum maintenance
       initial_state: true
       mode: queued
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: 
             - binary_sensor.vacuum_cleaner_main_brush_maintenance
             - binary_sensor.vacuum_cleaner_side_brush_maintenance
@@ -1044,7 +1011,7 @@
             - binary_sensor.vacuum_cleaner_sensor_dirty_maintenance
           from: 'off'
           to: 'on'
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_all_chat_id
@@ -1058,18 +1025,18 @@
       id: notifications control voltage
       initial_state: true
       mode: queued
-      trigger:
-        - platform: numeric_state
+      triggers:
+        - trigger: numeric_state
           entity_id: sensor.shelly_em_voltage
           above: 250
-        - platform: numeric_state
+        - trigger: numeric_state
           entity_id: sensor.shelly_em_voltage
           below: 180
-        - platform: numeric_state
+        - trigger: numeric_state
           entity_id: sensor.shelly_em_voltage
           above: 179.9
           below: 250.1
-      condition:
+      conditions:
         - condition: template
           value_template: >- 
                     {{ trigger.from_state.state not in ['unavailable', 'unknown', ''] and
@@ -1081,7 +1048,7 @@
                         and trigger.from_state.state | float(-1.0) >= 0
                         and trigger.to_state.state | float(-1.0) >= 0
                     }}
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -1102,10 +1069,10 @@
       mode: queued
       trigger_variables:
         not_has_state: "{{ ['unknown', 'unavailable', 'none', None, null, ''] }}"
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: sensor.last_google_backup_train
-      condition:
+      conditions:
         - condition: template
           value_template: >- 
             {{
@@ -1115,11 +1082,11 @@
                and trigger.to_state.state not in not_has_state
                and state_attr('sensor.backup_state', 'backups') | count > 0
             }}
-      action:
+      actions:
         - action: homeassistant.update_entity
           entity_id: sensor.disk_use_percent
         - wait_for_trigger:
-            - platform: state
+            - trigger: state
               entity_id: sensor.disk_use_percent
           timeout: 
               seconds: 10
@@ -1136,20 +1103,20 @@
       id: notifications failed login or block IP
       mode: parallel
       initial_state: true
-      trigger:
-        - platform: persistent_notification
+      triggers:
+        - trigger: persistent_notification
           id: 'http-login'
           update_type:
            - added
            - updated
           notification_id: http-login
-        - platform: persistent_notification
+        - trigger: persistent_notification
           id: 'ip-ban'
           update_type:
            - added
            - updated
           notification_id: ip-ban
-      action:
+      actions:
         - parallel:
             - action: telegram_bot.send_message
               data:
@@ -1179,13 +1146,13 @@
       id: notification start or stop home assistant
       mode: parallel
       initial_state: true
-      trigger:
-        - platform: homeassistant
+      triggers:
+        - trigger: homeassistant
           id: 'homeassistant_start'
           event: start
-        - platform: homeassistant
+        - trigger: homeassistant
           event: shutdown
-      action:
+      actions:
         - variables:
             long_start_integrations_name: >-
               {% if states.sensor.start_time.attributes is defined and states.sensor.start_time.attributes.setup_time is defined %}
@@ -1230,12 +1197,12 @@
     - alias: notifications errors in automations or scripts
       id: notifications errors in automations or scripts
       mode: queued
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: system_log_event
           event_data:
             level: ERROR
-      condition:
+      conditions:
         - condition: state
           entity_id: binary_sensor.local_network_availability
           state: 'on'
@@ -1251,7 +1218,7 @@
             {{ 
               trigger.event.data.message | length < 4000
             }}
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -1269,17 +1236,17 @@
       max: 70
       trigger_variables:
         not_has_state: "{{ ['unknown', 'unavailable'] }}"
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: state_changed
-      condition:
+      conditions:
         - condition: state
           entity_id: input_boolean.instances_stoping
           state: 'off'
         - "{{ trigger.event.data.new_state.state in not_has_state }}"
         - "{{ trigger.event.data.entity_id in expand('group.important_devices_unavailable') | map(attribute='entity_id') | list }}"
         - "{{ trigger.event.data.new_state.state != trigger.event.data.old_state.state }}"
-      action:
+      actions:
         - choose:
             - conditions: "{{ is_state('input_boolean.instances_stoping', 'off') }}"
               sequence:
@@ -1299,10 +1266,10 @@
       initial_state: true
       trigger_variables:
         not_has_state: "{{ ['unknown', 'unavailable', 'none', None, null, ''] }}"
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: sensor.0x842e14fffe13a854_power
-      condition:
+      conditions:
         - condition: state
           entity_id: input_boolean.water_heater_season
           state: 'on'
@@ -1319,7 +1286,7 @@
                or
                (trigger.to_state.state | int(0) < 30 and trigger.from_state.state | int(0) > 850)
             }}
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -1334,12 +1301,12 @@
       id: notifications stale google drive backup
       max_exceeded: silent
       initial_state: true
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: binary_sensor.backups_stale
           from: 'off'
           to: 'on'
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -1353,13 +1320,13 @@
       id: notifications entry discovery integrations
       mode: queued
       initial_state: true
-      trigger:
-        - platform: persistent_notification
+      triggers:
+        - trigger: persistent_notification
           update_type:
            - added
            - updated
           notification_id: config_entry_discovery
-      action:
+      actions:
         - parallel:
             - action: telegram_bot.send_message
               data:
@@ -1379,13 +1346,13 @@
       max: 99
       max_exceeded: silent
       initial_state: true
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: entity_registry_updated
-        - platform: event
+        - trigger: event
           id: 'device_registry'
           event_type: device_registry_updated
-      action:
+      actions:
         - variables:
             name_for_send: >-
               {% if trigger.id == 'device_registry' -%}
@@ -1416,15 +1383,15 @@
       id: notifications automation already running
       initial_state: true
       mode: queued
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: system_log_event
           event_data:
             level: WARNING
-      condition:
+      conditions:
         - condition: template
           value_template: '{{ "Already running" in (trigger.event.data.message | string) }}'
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -1438,16 +1405,16 @@
       id: system log critical error notify
       initial_state: true
       mode: queued
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: system_log_event
           event_data:
             level: FATAL
-        - platform: event
+        - trigger: event
           event_type: system_log_event
           event_data:
             level: CRITICAL
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -1464,22 +1431,22 @@
       max_exceeded: silent
       trigger_variables:
         not_has_state: "{{ ['unknown', 'unavailable', 'none', None, null, ''] }}"
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: sensor.huawei_e3372h_320_sms_unread
-        - platform: state
+        - trigger: state
           id: 'full_storage'
           entity_id: binary_sensor.huawei_e3372h_320_sms_storage_full
           from: 'off'
           to: 'on'
-      condition:
+      conditions:
         - condition: template
           value_template: >
             {{ trigger.id == 'full_storage' or
                trigger.to_state.state not in not_has_state and
                trigger.to_state.state | int(0) > trigger.from_state.state | int(0)
             }}
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -1494,22 +1461,22 @@
       id: notifications link down keenetic
       initial_state: true
       max_exceeded: silent
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: binary_sensor.check_keenetic_link_down
           to: 'off'
-        - platform: state
+        - trigger: state
           entity_id: binary_sensor.check_keenetic_link_down
           to: 'on'
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
-      condition:
+      conditions:
         - condition: numeric_state
           entity_id: counter.counter_keenetic_link_down
           above: 0
-      action:
+      actions:
         - parallel:
             - action: notify.huawei_lte
               data:
@@ -1525,14 +1492,14 @@
     - alias: notifications new rss posts
       id: notifications new rss posts
       mode: queued
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: feedreader
-      condition:
+      conditions:
         - condition: state
           entity_id: input_boolean.instances_stoping
           state: 'off'
-      action:
+      actions:
         - variables:
             all_chat_id: !secret telegram_all_chat_id
             enzokot_chat_id: !secret telegram_enzokot_chat_id
@@ -1557,22 +1524,22 @@
       id: notifications warnings or errors in syslog
       initial_state: true
       max_exceeded: silent
-      trigger:
-        - platform: time_pattern
+      triggers:
+        - trigger: time_pattern
           hours: "/1"
           minutes: 30
-        - platform: numeric_state
+        - trigger: numeric_state
           entity_id: counter.system_log_warning_counter
           above: 10
-        - platform: numeric_state
+        - trigger: numeric_state
           entity_id: counter.system_log_error_counter
           above: 5
-      condition:
+      conditions:
         - "{{ states('counter.system_log_error_counter') | int(0) > 0 or states('counter.system_log_warning_counter') | int(0) > 0 }}"
         - condition: time
           after: '8:30:00'
           before: '23:00:00'
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -1591,14 +1558,14 @@
     - alias: telegram is offline for instance notification
       id: telegram is offline for instance notification
       initial_state: true
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: 
             - sensor.telegram_status
           from: 'online'
           to: 'offline'
           for: '00:01:20'
-      action:
+      actions:
         - choose:
             - conditions:
               - condition: time
@@ -1623,8 +1590,8 @@
       id: yandex station to or from local mode notification
       mode: queued
       initial_state: true
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           id: 'non_local'
           entity_id: 
             - binary_sensor.yandex_station_ff98f029b620413b35e5e278_assumed_state
@@ -1632,14 +1599,14 @@
             - binary_sensor.yandex_station_m00ka4300h99tr_assumed_state
           from: 'off'
           to: 'on'
-        - platform: state
+        - trigger: state
           entity_id: 
             - binary_sensor.yandex_station_ff98f029b620413b35e5e278_assumed_state
             - binary_sensor.yandex_station_lr0000000000000252130000de5d13d0_assumed_state
             - binary_sensor.yandex_station_m00ka4300h99tr_assumed_state
           from: 'on'
           to: 'off'
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -1655,8 +1622,8 @@
       id: hot pipe low or up temperature notification
       mode: queued
       initial_state: true
-      trigger:
-        - platform: numeric_state
+      triggers:
+        - trigger: numeric_state
           id: 'below'
           entity_id:
             - sensor.0x00158d0006c5f21e_temperature
@@ -1665,7 +1632,7 @@
           below: 40
           for:
             minutes: 5
-        - platform: numeric_state
+        - trigger: numeric_state
           entity_id:
             - sensor.0x00158d0006c5f21e_temperature
             - sensor.0x158d0006b860cf_temperature
@@ -1673,7 +1640,7 @@
           above: 40
           for:
             minutes: 5
-      action:
+      actions:
         - parallel:
             - action: telegram_bot.send_message
               data:
@@ -1697,15 +1664,15 @@
     - alias: system down uptime kuma notifications
       id: system down uptime kuma notifications
       mode: queued
-      trigger:
-        - platform: webhook
+      triggers:
+        - trigger: webhook
           webhook_id: !secret webhook_id_system_down_uptime_kuma
           local_only: true
           allowed_methods:
             - POST
-      condition:
+      conditions:
         - "{{ trigger.json.monitor is not none }}"
-      action:
+      actions:
         - variables:
             status_from: >- 
               {{ iif(trigger.json.heartbeat is not none and trigger.json.heartbeat.status | int(0) == 1, 'online', 'offline', 'offline') }}
@@ -1733,8 +1700,8 @@
     - alias: gw2 alarm turn on off notification
       id: gw2 alarm turn on off notification
       initial_state: true
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: alarm_control_panel.signalka_shliuza_alarm
           not_from:
             - "unknown"
@@ -1743,7 +1710,7 @@
           to: 
             - "armed_away"
             - "disarmed"
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -1753,18 +1720,18 @@
     - alias: repairs issue registry
       id: repairs issue registry
       mode: queued
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: sensor.repairs_state
           not_from:
             - "unknown"
             - "unavailable"
-        - platform: homeassistant
+        - trigger: homeassistant
           id: 'homeassistant_start'
           event: start
-      condition:
+      conditions:
         - "{{ trigger.id == 'homeassistant_start' and states('sensor.repairs_state') | int(0) > 0 or trigger.id != 'homeassistant_start' and trigger.from_state.state | int(0) < trigger.to_state.state | int(0) }}"
-      action:
+      actions:
         - if:
             - "{{ trigger.id == 'homeassistant_start' }}"
           then:
@@ -1787,8 +1754,8 @@
     - alias: login ssh from servers
       id: login ssh from servers
       mode: queued
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: sensor.login_ssh_kotletochka_dell_srv
           not_from:
             - "unknown"
@@ -1796,7 +1763,7 @@
           not_to:
             - "unknown"
             - "unavailable"
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -1811,8 +1778,8 @@
     - alias: xiaomi mi scale new weight
       id: xiaomi mi scale new weight
       mode: queued
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: sensor.esp_xiaomi_mi_scale_weight
           not_from:
             - "unknown"
@@ -1820,7 +1787,7 @@
           not_to:
             - "unknown"
             - "unavailable"
-      action:
+      actions:
         - variables:
             first_name_father: !secret first_name_father
             first_name_mother: !secret first_name_mother
@@ -1841,18 +1808,18 @@
     - alias: host kernel ext4 warning
       id: host kernel ext4 warning
       max_exceeded: silent
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: binary_sensor.kernel_ext4_warning
           from: 'off'
           to: 'on'
-        - platform: time
+        - trigger: time
           at: "10:30:00"
-      condition:
+      conditions:
         - condition: state
           entity_id: binary_sensor.kernel_ext4_warning
           state: 'on'
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -1866,20 +1833,20 @@
       id: notification wet entrance floor
       initial_state: true
       max_exceeded: silent
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: binary_sensor.0x00158d000913dbf1_contact
           from: 'off'
           to: 'on'
           for: 
             seconds: 5
-      condition:
+      conditions:
         - condition: time
           after: "06:00:00"
           before: "16:00:00"
           weekday:
             - mon
-      action:
+      actions:
         - parallel:
             - action: telegram_bot.send_message
               data:
@@ -1898,8 +1865,8 @@
       id: notification water leak near nvr
       initial_state: true
       mode: queued
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id:
             - binary_sensor.0x00158d0009ea0949_water_leak
             - binary_sensor.0x00158d0009ea1c0e_water_leak
@@ -1907,7 +1874,7 @@
           to: 'on'
           for: 
             seconds: 10
-      action:
+      actions:
         - parallel:
             - action: telegram_bot.send_message
               data:
@@ -1932,7 +1899,7 @@
                             data:
                               command: 'off'
                         - wait_for_trigger:
-                            - platform: state
+                            - trigger: state
                               entity_id: sensor.sm_g973f_do_not_disturb_sensor
                           timeout:
                             seconds: 5
@@ -1976,14 +1943,14 @@
       id: notification open door nvr box
       initial_state: true
       mode: queued
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: binary_sensor.0x00158d00093e4111_contact
           from: 'off'
           to: 'on'
           for: 
             seconds: 5
-      action:
+      actions:
         - parallel:
             - action: telegram_bot.send_message
               data:
@@ -2008,7 +1975,7 @@
                             data:
                               command: 'off'
                         - wait_for_trigger:
-                            - platform: state
+                            - trigger: state
                               entity_id: sensor.sm_g973f_do_not_disturb_sensor
                           timeout:
                             seconds: 5
@@ -2052,20 +2019,20 @@
       id: notification overheating 1pm fan nvr box
       initial_state: true
       mode: queued
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           id: 'overheating'
           entity_id: binary_sensor.shelly_1pm_fan_nvr_box_overheating
           from: 'off'
           to: 'on'
           for: 
             seconds: 5
-        - platform: numeric_state
+        - trigger: numeric_state
           entity_id: sensor.shelly_1pm_fan_nvr_box_temperature
           above: 35
           for:
             seconds: 5
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -2082,20 +2049,20 @@
       id: notification nvr in unavailable status
       initial_state: true
       mode: queued
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: button.kotletochka_nvr_hw_restart
           to:
           for: 
             seconds: 10
-      condition:
+      conditions:
         - condition: state
           entity_id: input_boolean.instances_stoping
           state: 'off'
         - condition: numeric_state
           entity_id: sensor.shelly_plug_s_nvr_power
           below: 15
-      action:
+      actions:
         - parallel:
             - action: telegram_bot.send_message
               data:
@@ -2120,7 +2087,7 @@
                             data:
                               command: 'off'
                         - wait_for_trigger:
-                            - platform: state
+                            - trigger: state
                               entity_id: sensor.sm_g973f_do_not_disturb_sensor
                           timeout:
                             seconds: 5
@@ -2164,15 +2131,15 @@
       id: notification full battery level sm g973f
       initial_state: true
       max_exceeded: silent
-      trigger:
-        - platform: numeric_state
+      triggers:
+        - trigger: numeric_state
           entity_id: sensor.sm_g973f_battery_level
           above: 99
-      condition:
+      conditions:
         - condition: state
           entity_id: binary_sensor.sm_g973f_is_charging
           state: "on"
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -2184,19 +2151,19 @@
       id: notification tapo c100 cr or hw disconnected
       initial_state: true
       mode: parallel
-      trigger:
-        - platform: webhook
+      triggers:
+        - trigger: webhook
           id: 'cr'
           webhook_id: !secret webhook_id_cctv_cr_off
           local_only: true
           allowed_methods:
             - PUT
-        - platform: webhook
+        - trigger: webhook
           webhook_id: !secret webhook_id_cctv_hw_off
           local_only: true
           allowed_methods:
             - PUT
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id

@@ -2,14 +2,14 @@
     # - alias: debug this for automations
     #   #id: debug this for automations
     #   initial_state: true
-    #   trigger:
-    #     - platform: time_pattern
+    #   triggers:
+    #     - trigger: time_pattern
     #       minutes: "/10"
-    #   condition: >
+    #   conditions: >
     #     {{ 
     #         as_local(this.attributes.last_triggered) <= now() - timedelta(minutes=1, seconds = 30) 
     #     }}
-    #   action:
+    #   actions:
     #     - action: telegram_bot.send_message
     #       data:
     #         target: !secret telegram_enzokot_chat_id
@@ -23,16 +23,16 @@
       id: notification public ip compare debug
       trigger_variables:
         not_has_state: "{{ ['unknown', 'unavailable', 'none', None, null, ''] }}"
-      trigger:
-          - platform: state
+      triggers:
+          - trigger: state
             entity_id: sensor.myip_keenetic
-      condition: >
+      conditions: >
             {{ trigger.from_state.state not in not_has_state and
                trigger.to_state.state not in not_has_state and
                trigger.from_state.state != trigger.to_state.state and
                trigger.to_state.state != states('sensor.myip')
             }}
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -43,14 +43,14 @@
 
     # - alias: homeassistant start debug
     #   mode: parallel
-    #   trigger:
-    #     - platform: homeassistant
+    #   triggers:
+    #     - trigger: homeassistant
     #       event: start
     #       id: 'start'
-    #     - platform: event
+    #     - trigger: event
     #       event_type: homeassistant_started
     #       id: 'started'
-    #   action:
+    #   actions:
     #     - action: system_log.write
     #       data:
     #         message: "Event: {{ trigger.id }}"
@@ -58,13 +58,13 @@
     #         level: warning
 
     # - alias: debug user id in event
-    #   trigger:
-    #     - platform: event
+    #   triggers:
+    #     - trigger: event
     #       event_type: state_changed
     #       context:
     #         user_id:
     #           - "2486a9ed5----------------aad4be88"
-    #   action:
+    #   actions:
     #     - action: telegram_bot.send_message
     #       data:
     #         target: !secret telegram_enzokot_chat_id
@@ -75,13 +75,13 @@
     #                 {{ trigger.event.context.user_id }}
 
     # - alias: debug webhook notifications
-    #   trigger:
-    #     - platform: webhook
+    #   triggers:
+    #     - trigger: webhook
     #       webhook_id: !secret webhook_id_system_down_uptime_kuma
     #       local_only: true
     #       allowed_methods:
     #         - POST
-    #   action:
+    #   actions:
     #     - action: telegram_bot.send_message
     #       data:
     #         target: !secret telegram_enzokot_chat_id
@@ -93,10 +93,10 @@
 
     # - alias: debug event repairs issue registry updated
     #   id: debug event repairs issue registry updated
-    #   trigger:
-    #     - platform: event
+    #   triggers:
+    #     - trigger: event
     #       event_type: repairs_issue_registry_updated
-    #   action:
+    #   actions:
     #     - action: telegram_bot.send_message
     #       data:
     #         target: !secret telegram_enzokot_chat_id
@@ -107,13 +107,13 @@
     #                 repairs_issue_registry_updated: {{ trigger.event.data | e }}
 
     # - alias: debug webhook notifications
-    #   trigger:
-    #     - platform: webhook
+    #   triggers:
+    #     - trigger: webhook
     #       webhook_id: !secret webhook_id_cctv_cr_off
     #       local_only: true
     #       allowed_methods:
     #         - PUT
-    #   action:
+    #   actions:
     #     - action: telegram_bot.send_message
     #       data:
     #         target: !secret telegram_enzokot_chat_id

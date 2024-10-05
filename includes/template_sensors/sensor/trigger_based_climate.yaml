@@ -1,10 +1,10 @@
 
     - trigger:
-        - platform: state
+        - trigger: state
           entity_id: sensor.0x00158d000542ceaf_pressure
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
       sensor:
         - name: 158d000542ceaf_pressure
@@ -13,11 +13,11 @@
           availability: "{{ (states('sensor.0x00158d000542ceaf_pressure') | int(-1)) > -1 }}"
 
     - trigger:
-        - platform: state
+        - trigger: state
           entity_id: sensor.0x60a423fffe968719_position
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
       sensor:
         - name: thermostat_bedroom_valve_position
@@ -26,11 +26,11 @@
           availability: "{{ (states('sensor.0x60a423fffe968719_position') | int(-1)) > -1 }}"
 
     - trigger:
-        - platform: state
+        - trigger: state
           entity_id: sensor.0x5c0272fffec89454_position
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
       sensor:
         - name: thermostat_childrens_room_valve_position
@@ -39,11 +39,11 @@
           availability: "{{ (states('sensor.0x5c0272fffec89454_position') | int(-1)) > -1 }}"
 
     - trigger:
-        - platform: state
+        - trigger: state
           entity_id: sensor.0x5c0272fffec9db22_position
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
       sensor:
         - name: thermostat_living_room_valve_position
@@ -52,11 +52,11 @@
           availability: "{{ (states('sensor.0x5c0272fffec9db22_position') | int(-1)) > -1 }}"
 
     - trigger:
-        - platform: state
+        - trigger: state
           entity_id: sensor.0x5c0272fffe8de819_position
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
       sensor:
         - name: thermostat_kitchen_valve_position
@@ -65,12 +65,12 @@
           availability: "{{ (states('sensor.0x5c0272fffe8de819_position') | int(-1)) > -1 }}"
 
     - trigger:
-        - platform: state
+        - trigger: state
           entity_id: humidifier.zhimi_humidifier_cb1
           attribute: humidity
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
       sensor:
         - name: zhimi_humidifier_cb1_target_humidity
@@ -80,12 +80,12 @@
           availability: "{{ state_attr('humidifier.zhimi_humidifier_cb1', 'humidity') is not none }}"
 
     - trigger:
-        - platform: state
+        - trigger: state
           entity_id: humidifier.zhimi_humidifier_ca4
           attribute: humidity
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
       sensor:
         - name: zhimi_humidifier_ca4_target_humidity

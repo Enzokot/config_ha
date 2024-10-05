@@ -1,13 +1,13 @@
 
 #Сенсоры низкого уровня воды в увлажнителях
     - trigger:
-        - platform: state
+        - trigger: state
           entity_id: 
             - sensor.zhimi_humidifier_ca4_water_level
             - binary_sensor.zhimi_humidifier_ca4_water_tank
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
       binary_sensor:
         - name: zhimi_humidifier_ca4_low_water_level
@@ -20,13 +20,13 @@
             minutes: 5
         
     - trigger:
-        - platform: state
+        - trigger: state
           entity_id: 
             - sensor.zhimi_humidifier_cb1_water_level
             - binary_sensor.zhimi_humidifier_cb1_water_tank
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
       binary_sensor:
         - name: zhimi_humidifier_cb1_low_water_level
@@ -40,22 +40,22 @@
 
 #Сенсор текущего режима увлажнителей для карточки conditional в UI
     - trigger:
-        - platform: state
+        - trigger: state
           entity_id: humidifier.zhimi_humidifier_ca4
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
       binary_sensor:
         - name: zhimi_humidifier_ca4_current_mode
           state: "{{ is_state('humidifier.zhimi_humidifier_ca4', 'on') and is_state_attr('humidifier.zhimi_humidifier_ca4', 'mode', 'Auto') }}"
 
     - trigger:
-        - platform: state
+        - trigger: state
           entity_id: humidifier.zhimi_humidifier_cb1
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
       binary_sensor:
         - name: zhimi_humidifier_cb1_current_mode

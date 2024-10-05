@@ -16,12 +16,13 @@
               - "{{ is_state(entity_id, 'off') }}"
             then:
               - action: humidifier.turn_on
-                data:
+                target:
                   entity_id: "{{ entity_id }}"
               - delay: 2
           - action: humidifier.set_mode
-            data:
+            target:
               entity_id: "{{ entity_id }}"
+            data:
               mode: "{{ mode }}"
 
     turn_on_set_mode_humidifier_ca4:
@@ -41,10 +42,11 @@
               - "{{ is_state(entity_id, 'off') }}"
             then:
               - action: humidifier.turn_on
-                data:
+                target:
                   entity_id: "{{ entity_id }}"
               - delay: 2
           - action: humidifier.set_mode
-            data:
+            target:
               entity_id: "{{ entity_id }}"
+            data:
               mode: "{{ mode }}"

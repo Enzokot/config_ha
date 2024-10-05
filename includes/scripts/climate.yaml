@@ -9,7 +9,7 @@
             example: 'climate.devireg_hw'
         sequence:
           - action: "climate.{{- iif(is_state(entityid, 'off'), 'turn_on', 'turn_off') }}"
-            data:
+            target:
               entity_id: "{{ entityid }}"
 
 #Переключение режимов вентилятора для UI
@@ -24,8 +24,9 @@
         sequence:
           - condition: "{{ is_state(entityid, 'on') }}"
           - action: fan.set_preset_mode
-            data:
+            target:
               entity_id: "{{ entityid }}"
+            data:
               preset_mode: >-
                 {%
                   set preset_mode_dict = {"Straight Wind": "Natural Wind",

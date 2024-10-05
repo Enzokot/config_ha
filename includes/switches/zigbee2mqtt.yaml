@@ -8,11 +8,11 @@
         value_template: "{{ is_state('lock.0x60a423fffe968719_child_lock', 'locked') }}"
         turn_on:
             action: lock.lock
-            data:
+            target:
               entity_id: lock.0x60a423fffe968719_child_lock
         turn_off:
             action: lock.unlock
-            data:
+            target:
               entity_id: lock.0x60a423fffe968719_child_lock
         icon_template: "mdi:human-female-girl"
 
@@ -22,11 +22,11 @@
         value_template: "{{ is_state('lock.0x5c0272fffec9db22_child_lock', 'locked') }}"
         turn_on:
             action: lock.lock
-            data:
+            target:
               entity_id: lock.0x5c0272fffec9db22_child_lock
         turn_off:
             action: lock.unlock
-            data:
+            target:
               entity_id: lock.0x5c0272fffec9db22_child_lock
         icon_template: "mdi:human-female-girl"
 
@@ -36,11 +36,11 @@
         value_template: "{{ is_state('lock.0x5c0272fffec89454_child_lock', 'locked') }}"
         turn_on:
             action: lock.lock
-            data:
+            target:
               entity_id: lock.0x5c0272fffec89454_child_lock
         turn_off:
             action: lock.unlock
-            data:
+            target:
               entity_id: lock.0x5c0272fffec89454_child_lock
         icon_template: "mdi:human-female-girl"
 
@@ -50,10 +50,10 @@
         value_template: "{{ is_state('lock.0x5c0272fffe8de819_child_lock', 'locked') }}"
         turn_on:
             action: lock.lock
-            data:
+            target:
               entity_id: lock.0x5c0272fffe8de819_child_lock
         turn_off:
             action: lock.unlock
-            data:
+            target:
               entity_id: lock.0x5c0272fffe8de819_child_lock
         icon_template: "mdi:human-female-girl"

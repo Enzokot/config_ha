@@ -1,14 +1,14 @@
 
     - trigger:
-        - platform: state
+        - trigger: state
           entity_id: sensor.zigbee2mqtt_coordinator_version
           attribute: type
-        - platform: state
+        - trigger: state
           entity_id: sensor.zigbee2mqtt_coordinator_version
           attribute: revision
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
       sensor:
         - name: zigbee2mqtt_coordinator_ver

@@ -5,18 +5,18 @@
       mode: restart
       trigger_variables:
         not_has_state: "{{ ['unknown', 'unavailable', 'none', ''] }}"
-      trigger:
-      - platform: numeric_state
+      triggers:
+      - trigger: numeric_state
         entity_id: sensor.0x54ef4410000ebba0_illuminance_lux
         above: 250
         for:
           minutes: 10
-      - platform: numeric_state
+      - trigger: numeric_state
         id: 'sun'
         entity_id: sun.sun
         attribute: elevation
         above: 4
-      condition:
+      conditions:
         - condition: template
           value_template: >-
             {{ 
@@ -26,7 +26,7 @@
             }}
         - "{{ is_state_attr('sun.sun', 'rising', true) }}"
         - "{{ expand('cover.cover_group_kitchen') | selectattr('state', 'eq', 'open') | map(attribute='entity_id') | list | length == 0 }}"
-      action:
+      actions:
         - action: script.auto_cover_open_close_kitchen
           data:
             servicename: 'cover.open_cover'
@@ -39,13 +39,13 @@
       mode: restart
       trigger_variables:
         not_has_state: "{{ ['unknown', 'unavailable', 'none', ''] }}"
-      trigger:
-      - platform: numeric_state
+      triggers:
+      - trigger: numeric_state
         entity_id: sensor.0x54ef4410000ebba0_illuminance_lux
         below: 150
         for:
           minutes: 10
-      condition:
+      conditions:
         - condition: template
           value_template: >-
             {{ 
@@ -59,7 +59,7 @@
         #   attribute: elevation
         #   below: 7
         - "{{ expand('cover.cover_group_kitchen') | selectattr('state', 'eq', 'closed') | map(attribute='entity_id') | list | length == 0 }}"
-      action:
+      actions:
         - action: script.auto_cover_open_close_kitchen
           data:
             servicename: 'cover.close_cover'
@@ -69,16 +69,16 @@
     - alias: close shades kitchen on sun and min outside lux
       id: close shades kitchen on sun and min outside lux
       mode: restart
-      trigger:
-      - platform: numeric_state
+      triggers:
+      - trigger: numeric_state
         entity_id: sun.sun
         attribute: elevation
         below: 2
-      condition:
+      conditions:
         - "{{ states('sensor.0x54ef4410000ebba0_illuminance_lux') | int(0) <= 250 }}"
         - "{{ is_state_attr('sun.sun', 'rising', false) }}"
         - "{{ expand('cover.cover_group_kitchen') | selectattr('state', 'eq', 'closed') | map(attribute='entity_id') | list | length == 0 }}"
-      action:
+      actions:
         - action: script.auto_cover_open_close_kitchen
           data:
             servicename: 'cover.close_cover'
@@ -91,18 +91,18 @@
       mode: restart
       trigger_variables:
         not_has_state: "{{ ['unknown', 'unavailable', 'none', ''] }}"
-      trigger:
-      - platform: numeric_state
+      triggers:
+      - trigger: numeric_state
         entity_id: sensor.0x54ef4410000ebba0_illuminance_lux
         above: 250
         for:
           minutes: 10
-      - platform: numeric_state
+      - trigger: numeric_state
         id: 'sun'
         entity_id: sun.sun
         attribute: elevation
         above: 4
-      condition:
+      conditions:
         - condition: template
           value_template: >-
             {{ 
@@ -112,7 +112,7 @@
             }}
         - "{{ is_state_attr('sun.sun', 'rising', true) }}"
         - "{{ expand('cover.cover_group_living_room') | selectattr('state', 'eq', 'open') | map(attribute='entity_id') | list | length == 0 }}"
-      action:
+      actions:
         - action: script.auto_cover_open_close_living_room
           data:
             servicename: 'cover.open_cover'
@@ -125,13 +125,13 @@
       mode: restart
       trigger_variables:
         not_has_state: "{{ ['unknown', 'unavailable', 'none', ''] }}"
-      trigger:
-      - platform: numeric_state
+      triggers:
+      - trigger: numeric_state
         entity_id: sensor.0x54ef4410000ebba0_illuminance_lux
         below: 150
         for:
           minutes: 10
-      condition:
+      conditions:
         - condition: template
           value_template: >-
             {{ 
@@ -141,7 +141,7 @@
         - "{{ state_attr('sun.sun', 'elevation') | float(0.0) <= iif(states('weather.kotletochka_home') in ['rainy', 'pouring', 'cloudy', 'lightning', 'lightning-rainy', 'partlycloudy'], 15, 7, 7) }}"
         - "{{ is_state_attr('sun.sun', 'rising', false) }}"
         - "{{ expand('cover.cover_group_living_room') | selectattr('state', 'eq', 'closed') | map(attribute='entity_id') | list | length == 0 }}"
-      action:
+      actions:
         - action: script.auto_cover_open_close_living_room
           data:
             servicename: 'cover.close_cover'
@@ -151,16 +151,16 @@
     - alias: close shades living room on sun and min outside lux
       id: close shades living room on sun and min outside lux
       mode: restart
-      trigger:
-      - platform: numeric_state
+      triggers:
+      - trigger: numeric_state
         entity_id: sun.sun
         attribute: elevation
         below: 2
-      condition:
+      conditions:
         - "{{ states('sensor.0x54ef4410000ebba0_illuminance_lux') | int(0) <= 250 }}"
         - "{{ is_state_attr('sun.sun', 'rising', false) }}"
         - "{{ expand('cover.cover_group_living_room') | selectattr('state', 'eq', 'closed') | map(attribute='entity_id') | list | length == 0 }}"
-      action:
+      actions:
         - action: script.auto_cover_open_close_living_room
           data:
             servicename: 'cover.close_cover'

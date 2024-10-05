@@ -4,14 +4,14 @@
       initial_state: true
       mode: single
       max_exceeded: silent
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: binary_sensor.0x158d0003f37a0f_contact
           from: 'on'
           to: 'off'
-      action:
+      actions:
         - action: light.turn_off
-          data:
+          target:
               entity_id: 
                 - light.yeelight_ceiling_cr
                 - light.yeelight_ceiling_cr_ambilight
@@ -22,15 +22,16 @@
       initial_state: true
       mode: single
       max_exceeded: silent
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: binary_sensor.0x158d0003f37a0f_contact
           from: 'off'
           to: 'on'
-      action:
+      actions:
         - action: light.turn_on
-          data:
+          target:
               entity_id: light.yeelight_ceiling_cr
+          data:
               color_temp: 280
               brightness: 255
         # - delay:
@@ -63,18 +64,19 @@
       initial_state: true
       mode: single
       max_exceeded: silent
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: sensor.0x158d0003a360b6_action
           to: 'single'
-      condition:
+      conditions:
           - condition: state
             entity_id: light.yeelight_ceiling_cr
             state: "off"
-      action:
+      actions:
           - action: light.turn_on
-            data:
+            target:
                 entity_id: light.yeelight_ceiling_cr_ambilight
+            data:
                 brightness: 1
                 rgb_color: [0, 0, 255]
                 #rgb_color: [255, 167, 88]
@@ -84,30 +86,30 @@
       initial_state: true
       mode: single
       max_exceeded: silent
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: sensor.0x158d0003a360b6_action
           to: 'single'
-      condition:
+      conditions:
           - condition: state
             entity_id: light.yeelight_ceiling_cr_ambilight
             state: "on"
           - condition: state
             entity_id: light.yeelight_ceiling_cr
             state: "off"
-      action:
+      actions:
           - action: light.turn_off
-            data:
+            target:
                 entity_id: light.yeelight_ceiling_cr_ambilight
 
 #Синхронизация светильника и выключателя каждые 3 минуты
     - alias: sync yeelight ceiling cr to switch
       id: sync yeelight ceiling cr to switch
       initial_state: true
-      trigger:
-        platform: time_pattern
-        minutes: "/3"
-      condition:
+      triggers:
+        - trigger: time_pattern
+          minutes: "/3"
+      conditions:
           - "{{ (state_attr('automation.yeelight_ceiling_on', 'current') | int(0)) == 0 }}"
           - "{{ (state_attr('automation.yeelight_ceiling_off', 'current') | int(0)) == 0 }}"
           - condition: or
@@ -134,7 +136,7 @@
                   - condition: state
                     entity_id: light.yeelight_ceiling_cr
                     state: 'on'
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id
@@ -143,7 +145,8 @@
             inline_keyboard:
               - 'Да:/changelight, Нет:/nochangelight, Игнорировать:/ignoringchangelight'
         - action: automation.turn_off
-          entity_id: automation.sync_yeelight_ceiling_cr_to_switch
+          target:
+            entity_id: automation.sync_yeelight_ceiling_cr_to_switch
 
 #Подсветка шлюза при открытии входной двери
     - alias: light gateway toggle
@@ -151,12 +154,12 @@
       initial_state: true
       mode: single
       max_exceeded: silent
-      trigger:
-        platform: state
-        entity_id: binary_sensor.0x158d000359304c_contact
-        from: 'off'
-        to: 'on'
-      condition:
+      triggers:
+         - trigger: state
+           entity_id: binary_sensor.0x158d000359304c_contact
+           from: 'off'
+           to: 'on'
+      conditions:
         - condition: state
           entity_id: automation.turn_on_doorbell
           attribute: current
@@ -164,42 +167,47 @@
         - condition: state
           entity_id: input_boolean.alarm_gateway_button
           state: 'off'
-      action:
+      actions:
         - action: scene.create
           data:
             scene_id: before_light_door_open
             snapshot_entities:
               - light.gateway_light_04cf8cabd77b
         - action: light.turn_on
-          entity_id: light.gateway_light_04cf8cabd77b
+          target:
+            entity_id: light.gateway_light_04cf8cabd77b
           data:
             rgb_color: [255,0,0]
             brightness: 255
         - delay:
             milliseconds: 150
         - action: light.turn_off
-          entity_id: light.gateway_light_04cf8cabd77b
+          target:
+            entity_id: light.gateway_light_04cf8cabd77b
         - delay:
             milliseconds: 50
         - action: light.turn_on
-          entity_id: light.gateway_light_04cf8cabd77b
+          target:
+            entity_id: light.gateway_light_04cf8cabd77b
           data:
             rgb_color: [255,0,0]
             brightness: 255
         - delay:
             milliseconds: 150
         - action: light.turn_off
-          entity_id: light.gateway_light_04cf8cabd77b
+          target:
+            entity_id: light.gateway_light_04cf8cabd77b
         - action: scene.turn_on
-          entity_id: scene.before_light_door_open
+          target:
+            entity_id: scene.before_light_door_open
 
 #Подсветка шлюза утром
     - alias: light gateway go to work on
       id: light gateway go to work on
-      trigger:
-        platform: time
-        at: "07:00:00"
-      condition:
+      triggers:
+        - trigger: time
+          at: "07:00:00"
+      conditions:
         - condition: state
           entity_id: input_boolean.alarm_gateway_button
           state: 'off'
@@ -210,24 +218,25 @@
             - wed
             - thu
             - fri
-      action:
+      actions:
         - action: scene.create
           data:
             scene_id: before_on_go_to_work
             snapshot_entities:
               - light.gateway_light_04cf8cabd77b
         - action: light.turn_on
-          entity_id: light.gateway_light_04cf8cabd77b
+          target:
+            entity_id: light.gateway_light_04cf8cabd77b
           data:
             rgb_color: [230,255,0]
             brightness: 5
 
     - alias: light gateway go to work off
       id: light gateway go to work off
-      trigger:
-        platform: time
-        at: "07:20:00"
-      condition:
+      triggers:
+        - trigger: time
+          at: "07:20:00"
+      conditions:
         - condition: state
           entity_id: input_boolean.alarm_gateway_button
           state: 'off'
@@ -238,11 +247,13 @@
             - wed
             - thu
             - fri
-      action:
+      actions:
         - action: light.turn_off
-          entity_id: light.gateway_light_04cf8cabd77b
+          target:
+            entity_id: light.gateway_light_04cf8cabd77b
         - action: scene.turn_on
-          entity_id: scene.before_on_go_to_work
+          target:
+            entity_id: scene.before_on_go_to_work
 
 #Перезапуск интеграции и реле для yeelight ceiling детская
     - alias: restart integration relay yeelight ceiling unavailable
@@ -250,32 +261,32 @@
       initial_state: true
       mode: single
       max_exceeded: silent
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: light.yeelight_ceiling_cr
           to:
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-      condition:
+      conditions:
         - condition: state
           entity_id: input_boolean.instances_stoping
           state: 'off'
         - "{{ as_timestamp(now()) - as_timestamp(state_attr(this.entity_id, 'last_triggered')) > 60 }}"
         - "{{ not has_value('light.yeelight_ceiling_cr') }}"
         - "{{ has_value('switch.0x54ef441000096cbc') }}"
-      action:
+      actions:
         - wait_template: "{{ has_value('light.yeelight_ceiling_cr') or is_state('input_boolean.instances_stoping', 'on') }}"
           timeout: "00:02:00"
         - choose:
             - conditions: "{{ not wait.completed and is_state('binary_sensor.local_network_availability', 'on') }}"
               sequence:
                   - action: switch.turn_off
-                    data:
+                    target:
                       entity_id: switch.0x54ef441000096cbc
                   - delay:
                       seconds: 5
                   - action: switch.turn_on
-                    data:
+                    target:
                       entity_id: switch.0x54ef441000096cbc
                   - delay:
                       seconds: 30

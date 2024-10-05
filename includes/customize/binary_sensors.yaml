@@ -54,7 +54,7 @@ binary_sensor.0x00158d0003fa6b60_contact:
   friendly_name: Окно спальня
   device_class: window
 
-binary_sensor.0x158d000396f1f9_contact:
+binary_sensor.0x00158d000396f1f9_contact:
   friendly_name: Окно детская
   device_class: window
 
@@ -62,7 +62,7 @@ binary_sensor.0x158d000396f197_contact:
   friendly_name: Лев. окно гостиная
   device_class: window
 
-binary_sensor.0x158d0003d05782_contact:
+binary_sensor.0x00158d0003d05782_contact:
   friendly_name: Центр. окно гостиная
   device_class: window
 

@@ -1,7 +1,7 @@
 
 #Сенсор наличия движения по камере в детской
   - trigger:
-      - platform: webhook
+      - trigger: webhook
         webhook_id: !secret webhook_id_cctv_cr_motion
         allowed_methods:
           - PUT
@@ -16,7 +16,7 @@
 
 #Сенсор наличия движения по камере в коридоре
   - trigger:
-      - platform: webhook
+      - trigger: webhook
         webhook_id: !secret webhook_id_cctv_hw_motion
         allowed_methods:
           - PUT

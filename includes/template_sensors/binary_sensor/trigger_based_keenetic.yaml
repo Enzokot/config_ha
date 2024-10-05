@@ -1,15 +1,15 @@
 
 #Сенсор наличия записей link down в логе Keenetic
   - trigger:
-      - platform: state
+      - trigger: state
         entity_id: binary_sensor.check_keenetic_link_down
         to: "on"
-      - platform: numeric_state
+      - trigger: numeric_state
         entity_id: counter.counter_keenetic_link_down
         above: 0
-      - platform: homeassistant
+      - trigger: homeassistant
         event: start
-      - platform: event
+      - trigger: event
         event_type: event_template_reloaded
     binary_sensor:
       - name: check_keenetic_link_down

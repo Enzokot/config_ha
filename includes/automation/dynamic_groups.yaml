@@ -3,12 +3,12 @@
       id: dynamic group sensor battery
       initial_state: true
       mode: restart
-      trigger:
-          - platform: event
+      triggers:
+          - trigger: event
             event_type: entity_registry_updated
-          - platform: homeassistant
+          - trigger: homeassistant
             event: start
-      action:
+      actions:
         - action: group.set
           data:
             name: dynamic group sensor battery
@@ -36,14 +36,14 @@
       id: dynamic group sensor linkquality
       initial_state: true
       mode: restart
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: entity_registry_updated
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-      condition:
+      conditions:
         - "{{ states.sensor | map(attribute='entity_id') | list | regex_findall(find='(_linkquality|_zigbee)', ignorecase=True) | length > 0 }}"
-      action:
+      actions:
         - action: group.set
           data:
             name: dynamic group sensor linkquality
@@ -61,14 +61,14 @@
       id: dynamic group sensor last seen
       initial_state: true
       mode: restart
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: entity_registry_updated
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-      condition:
+      conditions:
         - "{{ states.sensor | map(attribute='entity_id') | list | regex_findall(find='(_last_seen|_zigbee)', ignorecase=True) | length > 0 }}"
-      action:
+      actions:
         - action: group.set
           data:
             name: dynamic group sensor last seen
@@ -86,22 +86,22 @@
       id: dynamic group gateway alarm last state
       initial_state: true
       mode: queued
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: 
              - alarm_control_panel.54ef44315770_alarm
              - alarm_control_panel.54ef44cb80fd_alarm
              - alarm_control_panel.54ef443127b2_alarm
           to: 'triggered'
-        - platform: state
+        - trigger: state
           entity_id: input_boolean.alarm_gateway_button
           to: 'on'
-      condition:
+      conditions:
         - condition: or
           conditions:
             - "{{ states.alarm_control_panel | selectattr('state', 'in', ['armed_away', 'disarmed']) | rejectattr('entity_id', 'eq', 'alarm_control_panel.signalka_shliuza_alarm') | list | count > 0 }}"
             - "{{ trigger.from_state.state in ['armed_away', 'disarmed'] }}"
-      action:
+      actions:
         - parallel:
             - choose:
               - conditions: 

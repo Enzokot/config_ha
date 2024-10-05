@@ -4,12 +4,12 @@
       initial_state: true
       mode: single
       max_exceeded: silent  
-      trigger:
-        platform: event
-        event_type: telegram_command
-        event_data:
-          command: '/ping'
-      action:
+      triggers:
+        - trigger: event
+          event_type: telegram_command
+          event_data:
+            command: '/ping'
+      actions:
         - parallel:
             - action: notify.notify
               data:
@@ -45,12 +45,12 @@
       initial_state: true
       mode: single
       max_exceeded: silent  
-      trigger:
-        platform: event
-        event_type: telegram_command
-        event_data:
-          command: '/tuctuc'
-      action:
+      triggers:
+        - trigger: event
+          event_type: telegram_command
+          event_data:
+            command: '/tuctuc'
+      actions:
         - parallel:
             - action: telegram_bot.delete_message
               data:
@@ -70,12 +70,12 @@
       initial_state: true
       mode: single
       max_exceeded: silent
-      trigger:
-        platform: event
-        event_type: telegram_command
-        event_data:
-          command: '/home_alarm'
-      action:
+      triggers:
+        - trigger: event
+          event_type: telegram_command
+          event_data:
+            command: '/home_alarm'
+      actions:
         - action: telegram_bot.delete_message
           data:
             chat_id: '{{ trigger.event.data.chat_id }}'
@@ -101,18 +101,18 @@
       initial_state: true
       mode: single
       max_exceeded: silent  
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: telegram_callback
           event_data:
             data: 
               '/alarm_home_disarm'
-        - platform: event
+        - trigger: event
           event_type: telegram_callback
           event_data:
             data: 
               '/alarm_home_arm'
-      action:
+      actions:
         - action: telegram_bot.delete_message
           data:
             chat_id: '{{ trigger.event.data.chat_id }}'
@@ -123,7 +123,7 @@
                      {%- else -%}
                         alarm_control_panel.alarm_arm_away
                      {%- endif %}
-          data:
+          target:
             entity_id: alarm_control_panel.signalka_shliuza_alarm
         - action: telegram_bot.answer_callback_query
           data:
@@ -140,20 +140,20 @@
       initial_state: true
       mode: single
       max_exceeded: silent
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: telegram_callback
           event_data:
             data: '/minlevelsound'
-        - platform: event
+        - trigger: event
           event_type: telegram_callback
           event_data:
             data: '/avrlevelsound'
-        - platform: event
+        - trigger: event
           event_type: telegram_callback
           event_data:
             data: '/maxlevelsound'
-      action:
+      actions:
         - parallel:
             - action: telegram_bot.delete_message
               data:
@@ -181,20 +181,20 @@
       initial_state: true
       mode: single
       max_exceeded: silent  
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: telegram_callback
           event_data:
             data: '/changelight'
-        - platform: event
+        - trigger: event
           event_type: telegram_callback
           event_data:
             data: '/nochangelight'
-        - platform: event
+        - trigger: event
           event_type: telegram_callback
           event_data:
             data: '/ignoringchangelight'
-      action:
+      actions:
         - action: telegram_bot.delete_message
           data:
             chat_id: '{{ trigger.event.data.chat_id }}'
@@ -205,14 +205,15 @@
       initial_state: true
       mode: single
       max_exceeded: silent  
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: telegram_callback
           event_data:
             data: '/nochangelight'
-      action:
+      actions:
         - action: automation.turn_on
-          entity_id: automation.sync_yeelight_ceiling_to_switch
+          target:
+            entity_id: automation.sync_yeelight_ceiling_to_switch
         - action: telegram_bot.answer_callback_query
           data:
             callback_query_id: '{{ trigger.event.data.id }}'
@@ -223,12 +224,12 @@
       mode: single
       max_exceeded: silent  
       initial_state: true
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: telegram_callback
           event_data:
             data: '/ignoringchangelight'
-      action:
+      actions:
         - action: telegram_bot.answer_callback_query
           data:
             callback_query_id: '{{ trigger.event.data.id }}'
@@ -239,13 +240,13 @@
       mode: single
       max_exceeded: silent  
       initial_state: true
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: telegram_callback
           event_data:
             data: '/changelight'
-      condition:
-          condition: or
+      conditions:
+        - condition: or
           conditions:
             - condition: and
               conditions:
@@ -263,12 +264,14 @@
                 - condition: state
                   entity_id: light.yeelight_ceiling_cr
                   state: 'on'
-      action:
+      actions:
         - parallel:
             - action: light.toggle
-              entity_id: light.yeelight_ceiling_cr
+              target:
+                entity_id: light.yeelight_ceiling_cr
             - action: automation.turn_on
-              entity_id: automation.sync_yeelight_ceiling_to_switch
+              target:
+                entity_id: automation.sync_yeelight_ceiling_to_switch
         - action: telegram_bot.answer_callback_query
           data:
             callback_query_id: '{{ trigger.event.data.id }}'
@@ -280,14 +283,15 @@
       mode: single
       max_exceeded: silent  
       initial_state: true
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: telegram_callback
           event_data:
             data: '/findvacuum'
-      action:
+      actions:
         - action: vacuum.locate
-          entity_id: vacuum.xiaomi_vacuum_cleaner
+          target:
+            entity_id: vacuum.xiaomi_vacuum_cleaner
         - action: telegram_bot.delete_message
           data:
             chat_id: '{{ trigger.event.data.chat_id }}'
@@ -302,12 +306,12 @@
       mode: single
       max_exceeded: silent  
       initial_state: true
-      trigger:
-        platform: event
-        event_type: telegram_command
-        event_data:
-          command: '/vacuum'
-      action:
+      triggers:
+        - trigger: event
+          event_type: telegram_command
+          event_data:
+            command: '/vacuum'
+      actions:
         - action: telegram_bot.delete_message
           data:
             chat_id: '{{ trigger.event.data.chat_id }}'
@@ -326,14 +330,15 @@
       initial_state: true
       mode: single
       max_exceeded: silent  
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: telegram_callback
           event_data:
             data: '/vacuumnow'
-      action:
+      actions:
         - action: vacuum.start
-          entity_id: vacuum.xiaomi_vacuum_cleaner
+          target:
+            entity_id: vacuum.xiaomi_vacuum_cleaner
         - action: telegram_bot.delete_message
           data:
             chat_id: '{{ trigger.event.data.chat_id }}'
@@ -348,31 +353,33 @@
       initial_state: true
       mode: single
       max_exceeded: silent  
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: telegram_callback
           event_data:
             data: '/vacuum10'
-        - platform: event
+        - trigger: event
           event_type: telegram_callback
           event_data:
             data: '/vacuum20'
-      action:
+      actions:
         - action: telegram_bot.delete_message
           data:
             chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
         - action: timer.start
-          data:
+          target:
             entity_id: timer.vacumm_ten_minutes
+          data:
             duration: "{{ iif(trigger.event.data.data == '/vacuum10', 600, 1200, 1200) }}"
         - action: telegram_bot.answer_callback_query
           data:
             callback_query_id: '{{ trigger.event.data.id }}'
             message: "{{ 'Будет отправлен на уборку через ' + iif(trigger.event.data.data == '/vacuum10', '10 мин.', '20 мин.', '20 мин.') }}"
         - action: input_text.set_value
-          data:
+          target:
               entity_id: input_text.var_chat_id_vacuum_later_start
+          data:
               value: '{{ trigger.event.data.chat_id }}'
 
     - alias: vacuum cancel cleaning
@@ -380,31 +387,35 @@
       initial_state: true
       mode: single
       max_exceeded: silent  
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: telegram_callback
           event_data:
             data: '/vacuumcancel'
-      action:
+      actions:
         - action: telegram_bot.delete_message
           data:
             chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
         - action: timer.cancel
-          entity_id: timer.vacumm_ten_minutes
+          target:
+            entity_id: timer.vacumm_ten_minutes
         - action: vacuum.pause
-          entity_id: vacuum.xiaomi_vacuum_cleaner
+          target:
+            entity_id: vacuum.xiaomi_vacuum_cleaner
         - delay:
             seconds: 3
         - action: vacuum.return_to_base
-          entity_id: vacuum.xiaomi_vacuum_cleaner
+          target:
+            entity_id: vacuum.xiaomi_vacuum_cleaner
         - action: telegram_bot.answer_callback_query
           data:
             callback_query_id: '{{ trigger.event.data.id }}'
             message: "Отменили таймеры, отправили на базу"
         - action: input_text.set_value
-          data:
+          target:
               entity_id: input_text.var_chat_id_vacuum_later_start
+          data:
               value: !secret telegram_chita_chat_id
 
     - alias: vacuum send map
@@ -412,12 +423,12 @@
       initial_state: true
       mode: single
       max_exceeded: silent  
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: telegram_callback
           event_data:
             data: '/sendmap'
-      action:
+      actions:
         - action: telegram_bot.delete_message
           data:
             chat_id: '{{ trigger.event.data.chat_id }}'
@@ -435,12 +446,12 @@
       initial_state: true
       mode: single
       max_exceeded: silent  
-      trigger:
-        platform: event
-        event_type: telegram_command
-        event_data:
-          command: '/climate_summary'
-      action:
+      triggers:
+        - trigger: event
+          event_type: telegram_command
+          event_data:
+            command: '/climate_summary'
+      actions:
         - action: telegram_bot.delete_message
           data:
             chat_id: '{{ trigger.event.data.chat_id }}'
@@ -460,14 +471,14 @@
       id: install update telegram bot
       initial_state: true
       mode: parallel
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: telegram_callback
           event_data:
             command: '/installupdate'
-      condition:
+      conditions:
         - "{{ trigger.event.data['args'] | count > 0 }}"
-      action:
+      actions:
         - variables:
             entity: "{{- trigger.event.data['args'][0] -}}"
             friendlyname: "{{- state_attr(trigger.event.data['args'][0], 'friendly_name') | replace(' Update', '') -}}"
@@ -480,9 +491,10 @@
                     message: >-
                         Обновление на версию {{ state_attr(entity, 'latest_version') }} {{ friendlyname }} запущено.
                 - action: update.install
-                  data:
+                  target:
                     entity_id: "{{- entity -}}"
-                    backup: "{{ state_attr(entity, 'supported_features') | int(0) >= 8 }}"
+                  data:
+                    backup: "{{ '{:0=64b}'.format(state_attr(entity, 'supported_features'))[-4] == '1' }}"
           default:
             - action: telegram_bot.answer_callback_query
               data:

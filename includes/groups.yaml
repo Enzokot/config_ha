@@ -14,7 +14,7 @@
           - sensor.0x158d000566bde7_battery
           - sensor.0x158d0003953ee9_batt
           - remote.broadlink_ir_rm4_mini
-          - sensor.0x158d0003d05782_battery
+          - sensor.0x00158d0003d05782_battery
           - sensor.0x5c0272fffec89454_linkquality
           - sensor.ble_tracker_livingroom_wifi_rssi
           - sensor.0x158d000359304c_battery
@@ -47,7 +47,7 @@
           - sensor.0x842e14fffe13a854_linkquality
           - sensor.0x086bd7fffe5b7c7f_linkquality
           - sensor.0x00158d0003fa6b60_battery
-          - sensor.0x158d000396f1f9_battery
+          - sensor.0x00158d000396f1f9_battery
           - alarm_control_panel.54ef44cb80fd_alarm
           - alarm_control_panel.54ef44315770_alarm
           - alarm_control_panel.54ef443127b2_alarm
@@ -104,6 +104,8 @@
           - sensor.temperature_humidity_sensor_500d_humidity
           - switch.014020518886002182_bsh_common_setting_powerstate
           - fan.dmaker_p45_5007_fan
+          - sensor.kotletochka_nvr_hw_hdd_0_storage
+          - sensor.kotletochka_nvr_hw_hdd_1_storage
 
     temperature_summary_group_to_bot:
         entities:

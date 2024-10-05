@@ -6,13 +6,14 @@
   initial_state: true
   mode: queued
   max: 25
-  trigger:
-    - platform: state
+  triggers:
+    - trigger: state
       entity_id: input_number.zhimi_humidifier_cb1_target_humidity
-  action:
+  actions:
     - action: humidifier.set_humidity
-      data:
+      target:
         entity_id: humidifier.zhimi_humidifier_cb1
+      data:
         humidity: '{{ states("input_number.zhimi_humidifier_cb1_target_humidity") | int(0) }}'
 
 - alias: sensor target humidity cb1 changed state
@@ -22,19 +23,20 @@
   max_exceeded: silent
   trigger_variables:
     not_has_state: "{{ ['unknown', 'unavailable', 'none', none, null] }}"
-  trigger:
-    - platform: state
+  triggers:
+    - trigger: state
       entity_id: sensor.zhimi_humidifier_cb1_target_humidity
-  condition:
+  conditions:
     - condition: template
       value_template: >
         {{ trigger.to_state.state is defined and
           trigger.to_state.state not in not_has_state and 
           trigger.to_state.state != trigger.from_state.state
         }}
-  action:
+  actions:
     - action: input_number.set_value
-      entity_id: input_number.zhimi_humidifier_cb1_target_humidity
+      target:
+        entity_id: input_number.zhimi_humidifier_cb1_target_humidity
       data:
         value: >-
                 {% if trigger.to_state.state | int(0) != 0 -%}
@@ -48,13 +50,14 @@
   initial_state: true
   mode: queued
   max: 25
-  trigger:
-    - platform: state
+  triggers:
+    - trigger: state
       entity_id: input_number.zhimi_humidifier_ca4_target_humidity
-  action:
+  actions:
     - action: humidifier.set_humidity
-      data:
+      target:
         entity_id: humidifier.zhimi_humidifier_ca4
+      data:
         humidity: '{{ states("input_number.zhimi_humidifier_ca4_target_humidity") | int(0) }}'
 
 - alias: sensor target humidity ca4 changed state
@@ -64,19 +67,20 @@
   max_exceeded: silent
   trigger_variables:
     not_has_state: "{{ ['unknown', 'unavailable', 'none', none, null] }}"
-  trigger:
-    - platform: state
+  triggers:
+    - trigger: state
       entity_id: sensor.zhimi_humidifier_ca4_target_humidity
-  condition:
+  conditions:
     - condition: template
       value_template: >
         {{ trigger.to_state.state is defined and
           trigger.to_state.state not in not_has_state and 
           trigger.to_state.state != trigger.from_state.state
         }}
-  action:
+  actions:
     - action: input_number.set_value
-      entity_id: input_number.zhimi_humidifier_ca4_target_humidity
+      target:
+        entity_id: input_number.zhimi_humidifier_ca4_target_humidity
       data:
         value: >-
                 {% if trigger.to_state.state | int(0) != 0 -%}
@@ -91,12 +95,12 @@
   #initial_state: true
   mode: queued
   max: 25
-  trigger:
-    - platform: time
+  triggers:
+    - trigger: time
       at: "22:00:00"
-    - platform: time
+    - trigger: time
       at: "08:00:00"
-  action:
+  actions:
       - parallel:
           - choose:
               - conditions:  
@@ -105,8 +109,9 @@
                       state: 'on'    
                 sequence:
                     - action: humidifier.set_mode
-                      data:
+                      target:
                         entity_id: humidifier.zhimi_humidifier_cb1
+                      data:
                         speed: >-
                               {% if '08:00:00' <= as_timestamp(trigger.now, 0) | timestamp_custom('%H:%M:%S', true, 0)  < '22:00:00' %}
                                 Auto
@@ -120,8 +125,9 @@
                       state: 'on'    
                 sequence:
                     - action: humidifier.set_mode
-                      data:
+                      target:
                         entity_id: humidifier.zhimi_humidifier_ca4
+                      data:
                         speed: >-
                               {% if '08:00:00' <= as_timestamp(trigger.now, 0) | timestamp_custom('%H:%M:%S', true, 0)  < '22:00:00' %}
                                 Auto
@@ -136,31 +142,31 @@
   max_exceeded: silent
   trigger_variables:
     not_has_state: "{{ ['unknown', 'unavailable'] }}"
-  trigger:
-    - platform: state
+  triggers:
+    - trigger: state
       entity_id: binary_sensor.window_childrens_room_group
       from: "off"
       to: "on"
       for: "00:05:00"
-    - platform: state
+    - trigger: state
       entity_id: binary_sensor.window_childrens_room_group
       from: "on"
       to: "off"
       for: "00:01:15"
-  condition: >
+  conditions: >
               {{ 
                  trigger.to_state.state == 'on' or 
                  is_state('input_boolean.auto_triggered_fan_window_childrens_room', 'on') or 
                  is_state('input_boolean.auto_triggered_valve_window_childrens_room', 'on')
               }}
-  action:
+  actions:
       - parallel:
           - sequence:
             - if:
                 - "{{ states('humidifier.zhimi_humidifier_ca4') in not_has_state }}"
               then:
                 - wait_for_trigger:
-                    - platform: state
+                    - trigger: state
                       entity_id: humidifier.zhimi_humidifier_ca4
                       from: 
                         - "unknown"
@@ -182,10 +188,11 @@
                                   {%- else -%}
                                     humidifier.turn_on
                                   {%- endif %}
-                        data:
+                        target:
                           entity_id: humidifier.zhimi_humidifier_ca4
                       - action: input_boolean.toggle
-                        entity_id: input_boolean.auto_triggered_fan_window_childrens_room
+                        target:
+                          entity_id: input_boolean.auto_triggered_fan_window_childrens_room
                 - conditions:
                       - condition: template
                         value_template: >
@@ -195,7 +202,8 @@
                           }}
                   sequence:
                       - action: input_boolean.turn_off
-                        entity_id: input_boolean.auto_triggered_fan_window_childrens_room
+                        target:
+                          entity_id: input_boolean.auto_triggered_fan_window_childrens_room
           - choose:
               - conditions:
                     - condition: template
@@ -207,8 +215,9 @@
                         }}
                 sequence:
                     - action: climate.set_hvac_mode
-                      data:
+                      target:
                         entity_id: climate.0x5c0272fffec89454
+                      data:
                         hvac_mode: >
                                 {% if trigger.to_state.state == 'on' -%}
                                   off
@@ -221,10 +230,12 @@
                                 {%- else -%}
                                   input_boolean.turn_on
                                 {%- endif %}
-                      entity_id: input_boolean.auto_triggered_valve_window_childrens_room
+                      target:
+                        entity_id: input_boolean.auto_triggered_valve_window_childrens_room
                     - action: climate.set_preset_mode
-                      data:
+                      target:
                         entity_id: climate.0x5c0272fffec89454
+                      data:
                         preset_mode: manual
               - conditions:
                     - condition: template
@@ -235,7 +246,8 @@
                         }}
                 sequence:
                     - action: input_boolean.turn_off
-                      entity_id: input_boolean.auto_triggered_valve_window_childrens_room
+                      target:
+                        entity_id: input_boolean.auto_triggered_valve_window_childrens_room
 
 - alias: turn on off climate devices bed room window open close
   id: turn on off climate devices bed room window open close
@@ -243,31 +255,31 @@
   max_exceeded: silent
   trigger_variables:
     not_has_state: "{{ ['unknown', 'unavailable'] }}"
-  trigger:
-    - platform: state
+  triggers:
+    - trigger: state
       entity_id: binary_sensor.window_bed_room_group
       from: "off"
       to: "on"
       for: "00:05:00"
-    - platform: state
+    - trigger: state
       entity_id: binary_sensor.window_bed_room_group
       from: "on"
       to: "off"
       for: "00:01:15"
-  condition: >
+  conditions: >
               {{ 
                  trigger.to_state.state == 'on' or 
                  is_state('input_boolean.auto_triggered_fan_window_bed_room', 'on') or 
                  is_state('input_boolean.auto_triggered_valve_window_bed_room', 'on')
               }}
-  action:
+  actions:
       - parallel:
           - sequence:
             - if:
                 - "{{ states('humidifier.zhimi_humidifier_cb1') in not_has_state }}"
               then:
                 - wait_for_trigger:
-                    - platform: state
+                    - trigger: state
                       entity_id: humidifier.zhimi_humidifier_cb1
                       from: 
                         - "unknown"
@@ -289,7 +301,7 @@
                                   {%- else -%}
                                     humidifier.turn_on
                                   {%- endif %}
-                        data:
+                        target:
                           entity_id: humidifier.zhimi_humidifier_cb1
                       - action: >
                                   {% if trigger.to_state.state == 'off' -%}
@@ -297,7 +309,8 @@
                                   {%- else -%}
                                     input_boolean.turn_on
                                   {%- endif %}
-                        entity_id: input_boolean.auto_triggered_fan_window_bed_room
+                        target:
+                          entity_id: input_boolean.auto_triggered_fan_window_bed_room
                 - conditions:
                       - condition: template
                         value_template: >
@@ -307,7 +320,8 @@
                           }}
                   sequence:
                       - action: input_boolean.turn_off
-                        entity_id: input_boolean.auto_triggered_fan_window_bed_room
+                        target:
+                          entity_id: input_boolean.auto_triggered_fan_window_bed_room
           - choose:
               - conditions:
                     - condition: template
@@ -319,8 +333,9 @@
                         }}
                 sequence:
                     - action: climate.set_hvac_mode
-                      data:
+                      target:
                         entity_id: climate.0x60a423fffe968719
+                      data:
                         hvac_mode: >
                                 {% if trigger.to_state.state == 'on' -%}
                                   off
@@ -333,10 +348,12 @@
                                 {%- else -%}
                                   input_boolean.turn_on
                                 {%- endif %}
-                      entity_id: input_boolean.auto_triggered_valve_window_bed_room
+                      target:
+                        entity_id: input_boolean.auto_triggered_valve_window_bed_room
                     - action: climate.set_preset_mode
-                      data:
+                      target:
                         entity_id: climate.0x60a423fffe968719
+                      data:
                         preset_mode: manual
               - conditions:
                     - condition: template
@@ -347,30 +364,31 @@
                         }}
                 sequence:
                     - action: input_boolean.turn_off
-                      entity_id: input_boolean.auto_triggered_valve_window_bed_room
+                      target:
+                        entity_id: input_boolean.auto_triggered_valve_window_bed_room
 
 - alias: turn on off climate devices kitchen window open close
   id: turn on off climate devices kitchen window open close
   mode: single
   max_exceeded: silent
-  trigger:
-    - platform: state
+  triggers:
+    - trigger: state
       entity_id: binary_sensor.window_kitchen_group
       from: "off"
       to: "on"
       for: "00:05:00"
-    - platform: state
+    - trigger: state
       entity_id: binary_sensor.window_kitchen_group
       from: "on"
       to: "off"
       for: "00:01:15"
-  condition: >
+  conditions: >
               {{ 
                  trigger.to_state.state == 'on' or 
                  is_state('input_boolean.auto_triggered_valve_window_kitchen', 'on') or
                  is_state('input_boolean.auto_triggered_heating_floor_window_kitchen', 'on')
               }}
-  action:
+  actions:
       - parallel:
           - choose:
               - conditions:  
@@ -383,8 +401,9 @@
                         }}
                 sequence:
                     - action: climate.set_hvac_mode
-                      data:
+                      target:
                         entity_id: climate.0x5c0272fffe8de819
+                      data:
                         hvac_mode: >
                                 {% if trigger.to_state.state == 'on' -%}
                                   off
@@ -397,10 +416,12 @@
                                 {%- else -%}
                                   input_boolean.turn_on
                                 {%- endif %}
-                      entity_id: input_boolean.auto_triggered_valve_window_kitchen
+                      target:
+                        entity_id: input_boolean.auto_triggered_valve_window_kitchen
                     - action: climate.set_preset_mode
-                      data:
+                      target:
                         entity_id: climate.0x5c0272fffe8de819
+                      data:
                         preset_mode: manual
               - conditions:  
                     - condition: template
@@ -411,7 +432,8 @@
                         }}
                 sequence:
                     - action: input_boolean.turn_off
-                      entity_id: input_boolean.auto_triggered_valve_window_kitchen
+                      target:
+                        entity_id: input_boolean.auto_triggered_valve_window_kitchen
           - choose:
               - conditions:  
                     - condition: template
@@ -423,11 +445,13 @@
                         }}
                 sequence:
                     - action: climate.set_hvac_mode
-                      data:
+                      target:
                         entity_id: climate.devireg_k
+                      data:
                         hvac_mode: "{{ iif(trigger.to_state.state == 'on', 'off', 'heat') }}"
                     - action: "{{ iif(trigger.to_state.state == 'off', 'input_boolean.turn_off' , 'input_boolean.turn_on') }}"
-                      entity_id: input_boolean.auto_triggered_heating_floor_window_kitchen
+                      target:
+                        entity_id: input_boolean.auto_triggered_heating_floor_window_kitchen
               - conditions:  
                     - condition: template
                       value_template: >
@@ -437,30 +461,31 @@
                         }}
                 sequence:
                     - action: input_boolean.turn_off
-                      entity_id: input_boolean.auto_triggered_heating_floor_window_kitchen
+                      target:
+                        entity_id: input_boolean.auto_triggered_heating_floor_window_kitchen
 
 - alias: turn on off climate devices living room window open close
   id: turn on off climate devices living room window open close
   mode: single
   max_exceeded: silent
-  trigger:
-    - platform: state
+  triggers:
+    - trigger: state
       entity_id: binary_sensor.window_living_room_group
       from: "off"
       to: "on"
       for: "00:05:00"
-    - platform: state
+    - trigger: state
       entity_id: binary_sensor.window_living_room_group
       from: "on"
       to: "off"
       for: "00:01:15"
-  condition: >
+  conditions: >
               {{ 
                  trigger.to_state.state == 'on' or
                  is_state('input_boolean.auto_triggered_ac_window_living_room', 'on') or 
                  is_state('input_boolean.auto_triggered_valve_window_living_room', 'on')
               }}
-  action:
+  actions:
       - choose:
           - conditions:
                 - condition: template
@@ -472,8 +497,9 @@
                     }}
             sequence:
                 - action: climate.set_hvac_mode
-                  data:
+                  target:
                     entity_id: climate.avatto_living_room_ac
+                  data:
                     hvac_mode: >
                             {% if trigger.to_state.state == 'on' -%}
                               off
@@ -486,7 +512,8 @@
                             {%- else -%}
                               input_boolean.turn_on
                             {%- endif %}
-                  entity_id: input_boolean.auto_triggered_ac_window_living_room
+                  target:
+                    entity_id: input_boolean.auto_triggered_ac_window_living_room
           - conditions:  
                 - condition: template
                   value_template: >
@@ -496,7 +523,8 @@
                     }}
             sequence:
                 - action: input_boolean.turn_off
-                  entity_id: input_boolean.auto_triggered_ac_window_living_room
+                  target:
+                    entity_id: input_boolean.auto_triggered_ac_window_living_room
 
       - choose:
           - conditions:  
@@ -509,8 +537,9 @@
                     }}
             sequence:
                 - action: climate.set_hvac_mode
-                  data:
+                  target:
                     entity_id: climate.0x5c0272fffec9db22
+                  data:
                     hvac_mode: >
                             {% if trigger.to_state.state == 'on' -%}
                               off
@@ -523,10 +552,12 @@
                             {%- else -%}
                               input_boolean.turn_on
                             {%- endif %}
-                  entity_id: input_boolean.auto_triggered_valve_window_living_room
+                  target:
+                    entity_id: input_boolean.auto_triggered_valve_window_living_room
                 - action: climate.set_preset_mode
-                  data:
+                  target:
                     entity_id: climate.0x5c0272fffec9db22
+                  data:
                     preset_mode: manual
           - conditions:  
                 - condition: template
@@ -537,7 +568,8 @@
                     }}
             sequence:
                 - action: input_boolean.turn_off
-                  entity_id: input_boolean.auto_triggered_valve_window_living_room
+                  target:
+                    entity_id: input_boolean.auto_triggered_valve_window_living_room
 
 #Перезапуск розетки для увлажнителя в спальне
 - alias: restart socket 2 for bedroom air humidifier unavailable
@@ -545,13 +577,13 @@
   initial_state: true
   mode: single
   max_exceeded: silent
-  trigger:
-    - platform: state
+  triggers:
+    - trigger: state
       entity_id: humidifier.zhimi_humidifier_cb1
       to:
-    - platform: homeassistant
+    - trigger: homeassistant
       event: start
-  condition:
+  conditions:
     - condition: state
       entity_id: input_boolean.instances_stoping
       state: 'off'
@@ -559,17 +591,17 @@
     - condition: state
       entity_id: switch.0x60a423fffef8d41a
       state: 'on'
-  action:
+  actions:
     - wait_template: "{{ has_value('humidifier.zhimi_humidifier_cb1') }}"
       timeout: "00:05:00"
     - choose:
         - conditions: "{{ wait.completed == false and is_state('binary_sensor.local_network_availability', 'on') }}"
           sequence:
               - action: switch.turn_off
-                data:
+                target:
                   entity_id: switch.0x60a423fffef8d41a
               - delay:
                   seconds: 5
               - action: switch.turn_on
-                data:
+                target:
                   entity_id: switch.0x60a423fffef8d41a

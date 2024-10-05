@@ -2,10 +2,10 @@
 - alias: DB purge everyday
   id: DB purge everyday
   initial_state: true
-  trigger:
-    - platform: time
+  triggers:
+    - trigger: time
       at: '01:00:00'
-  action:
+  actions:
     - action: recorder.purge
       data:
           keep_days: 30
@@ -16,10 +16,10 @@
   id: speedtest_integration_restart
   trigger_variables:
     not_has_state: "{{ ['unknown', 'unavailable', 'none'] }}"
-  trigger:
-    - platform: time_pattern
+  triggers:
+    - trigger: time_pattern
       minutes: "/45"
-  condition:
+  conditions:
     - condition: state
       entity_id: input_boolean.instances_stoping
       state: 'off'
@@ -32,7 +32,7 @@
                states('sensor.speedtest_download') in not_has_state and
                states('sensor.speedtest_upload') in not_has_state
             }}
-  action:
+  actions:
     - action: homeassistant.reload_config_entry
       data:
         entry_id: "{{ config_entry_id('sensor.speedtest_ping') }}"
@@ -45,20 +45,20 @@
   max_exceeded: silent
   trigger_variables:
     not_has_state: "{{ ['unknown', 'unavailable', 'none'] }}"
-  trigger:
-    - platform: event
+  triggers:
+    - trigger: event
       event_type: state_changed
       event_data:
         entity_id: 'sensor.speedtest_ping'
-    - platform: event
+    - trigger: event
       event_type: state_changed
       event_data:
         entity_id: 'sensor.speedtest_download'
-    - platform: event
+    - trigger: event
       event_type: state_changed
       event_data:
         entity_id: 'sensor.speedtest_upload'
-  condition:
+  conditions:
     - condition: state
       entity_id: input_boolean.instances_stoping
       state: 'off'
@@ -71,7 +71,7 @@
         {{ trigger.event.data.new_state.state != trigger.event.data.old_state.state 
             and trigger.event.data.new_state.state in not_has_state
         }}
-  action:
+  actions:
     - choose:
         - conditions: 
             - condition: state
@@ -88,18 +88,18 @@
 - alias: system_event_instances_starting_stoping_set
   id: system_event_instances_starting_stoping_set
   initial_state: true
-  trigger:
-    - platform: homeassistant
+  triggers:
+    - trigger: homeassistant
       event: start
       id: 'homeassistant_start'
-    # - platform: event
+    # - trigger: event
     #   event_type: homeassistant_started
     #   id: 'homeassistant_start'
-    - platform: homeassistant
+    - trigger: homeassistant
       event: shutdown
-    # - platform: event
+    # - trigger: event
     #   event_type: shutdown
-  action:
+  actions:
     - parallel:
         - action: >
             {% if trigger.id == 'homeassistant_start' -%}
@@ -107,7 +107,7 @@
             {% else -%}
                 input_boolean.turn_on
             {% endif %}
-          data:
+          target:
             entity_id: input_boolean.instances_stoping
         - action: >
             {% if trigger.id == 'homeassistant_start' -%}
@@ -115,7 +115,7 @@
             {% else -%}
                 automation.turn_off
             {% endif %}
-          data:
+          target:
             entity_id: automation.notifications_objects_in_unavailable_status
 
 #Счетчик числа событий link down для лога Keenetic
@@ -126,19 +126,20 @@
   max_exceeded: silent
   trigger_variables:
     not_has_state: "{{ ['unknown', 'unavailable', 'none', None, null, '', 'null'] }}"
-  trigger:
-    - platform: state
+  triggers:
+    - trigger: state
       entity_id: sensor.check_keenetic_link_down
-  condition:
+  conditions:
     - condition: template
       value_template: >
         {{ 
            trigger.to_state.state not in not_has_state and trigger.from_state.state != '' and
            trigger.to_state.state != trigger.from_state.state
         }}
-  action:
+  actions:
     - action: counter.increment
-      entity_id: counter.counter_keenetic_link_down
+      target:
+        entity_id: counter.counter_keenetic_link_down
 
 #Счетчики числа событий warning и error в syslog HA
 - alias: system log home assistant warning and error counter
@@ -149,21 +150,21 @@
   max_exceeded: silent
   trigger_variables:
     this_name: '{{ this.attributes.friendly_name | string }}'
-  trigger:
-    - platform: event
+  triggers:
+    - trigger: event
       event_type: system_log_event
       event_data:
         level: ERROR
-    - platform: event
+    - trigger: event
       event_type: system_log_event
       event_data:
         level: WARNING
-  condition:
+  conditions:
     - condition: template
       value_template: "{{ not this_name in (trigger.event.data.message | string) }}"
-  action:
+  actions:
     - action: counter.increment
-      data:
+      target:
         entity_id: >- 
             {{ 'counter.system_log_' + trigger.event.data.level | lower + '_counter' }}
 
@@ -172,15 +173,15 @@
   initial_state: true
   mode: queued
   max_exceeded: silent
-  trigger:
-    - platform: event
+  triggers:
+    - trigger: event
       event_type: call_service
       event_data:
         domain: system_log
         service: clear
-  action:
+  actions:
     - action: counter.reset
-      data:
+      target:
         entity_id:
           - counter.system_log_error_counter
           - counter.system_log_warning_counter
@@ -191,25 +192,25 @@
   initial_state: true
   mode: single
   max_exceeded: silent
-  trigger:
-    - platform: state
+  triggers:
+    - trigger: state
       entity_id: sensor.huawei_e3372h_320_sinr
       to:
-    - platform: homeassistant
+    - trigger: homeassistant
       event: start
-  condition:
+  conditions:
     - condition: state
       entity_id: input_boolean.instances_stoping
       state: 'off'
     - "{{ not has_value('sensor.huawei_e3372h_320_sinr') }}"
-  action:
+  actions:
     - wait_template: "{{ has_value('sensor.huawei_e3372h_320_sinr') or is_state('input_boolean.instances_stoping', 'on') }}"
       timeout: "00:05:00"
     - choose:
         - conditions: "{{ not wait.completed and is_state('binary_sensor.local_network_availability', 'on') }}"
           sequence:
               - action: button.press
-                data:
+                target:
                   entity_id: button.e3372h_320_restart
 
 #Обновление Telegram bot API token в input text
@@ -218,13 +219,14 @@
   initial_state: true
   mode: queued
   max_exceeded: silent
-  trigger:
-    - platform: event
+  triggers:
+    - trigger: event
       event_type: "event_telegram_reloaded"
-  action:
+  actions:
     - action: input_text.set_value
-      data:
+      target:
         entity_id: input_text.var_telegram_bot_api_token
+      data:
         value: !secret telegram_api
 
 #Перезапуск интеграции проверки длительности сертификата для asuscomm по недоступности сенсоров
@@ -232,19 +234,19 @@
   id: cert_expiry_timestamp_asuscomm_unavailable
   mode: single
   max_exceeded: silent
-  trigger:
-    - platform: state
+  triggers:
+    - trigger: state
       entity_id: sensor.cert_expiry_timestamp_asuscomm
       to:
-    - platform: homeassistant
+    - trigger: homeassistant
       event: start
-  condition:
+  conditions:
     - condition: state
       entity_id: input_boolean.instances_stoping
       state: 'off'
     - "{{ as_timestamp(now()) - as_timestamp(state_attr(this.entity_id, 'last_triggered')) > 60 }}"
     - "{{ not has_value('sensor.cert_expiry_timestamp_asuscomm') }}"
-  action:
+  actions:
     - wait_template: "{{ has_value('sensor.cert_expiry_timestamp_asuscomm') or is_state('input_boolean.instances_stoping', 'on') }}"
       timeout: "00:01:00"
     - choose:
@@ -259,23 +261,23 @@
   id: lg_devices_sensors_unavailable
   mode: single
   max_exceeded: silent
-  trigger:
-    - platform: homeassistant
+  triggers:
+    - trigger: homeassistant
       event: start
-    - platform: state
+    - trigger: state
       entity_id: switch.kholodilnik_eco_friendly
       to:
-    - platform: state
+    - trigger: state
       entity_id: climate.kholodilnik_freezer
       attribute: current_temperature
       to:
-  condition:
+  conditions:
     - condition: state
       entity_id: input_boolean.instances_stoping
       state: 'off'
     - "{{ as_timestamp(now()) - as_timestamp(state_attr(this.entity_id, 'last_triggered')) > 60 }}"
     - "{{ not has_value('switch.kholodilnik_eco_friendly') or state_attr('climate.kholodilnik_freezer', 'current_temperature') is none }}"
-  action:
+  actions:
     - wait_template: >
         {{ has_value('switch.kholodilnik_eco_friendly') and state_attr('climate.kholodilnik_freezer', 'current_temperature') is not none 
            or is_state('input_boolean.instances_stoping', 'on')
@@ -292,14 +294,14 @@
 - alias: repairs issue registry sensor update
   id: repairs issue registry sensor update
   mode: restart
-  trigger:
-    - platform: event
+  triggers:
+    - trigger: event
       event_type: repairs_issue_registry_updated
       event_data:
         action: create
-    - platform: homeassistant
+    - trigger: homeassistant
       event: start
-  action:
+  actions:
     - action: homeassistant.update_entity
       data: 
         entity_id: sensor.repairs_state

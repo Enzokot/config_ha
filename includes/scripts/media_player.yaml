@@ -16,7 +16,8 @@
         example: 'send_key'
     sequence:
       - action: media_player.play_media
-        data:
+        target:
           entity_id: "{{ entity }}"
+        data:
           media_content_id: "{{ content_id }}"
           media_content_type: "{{ content_type }}"

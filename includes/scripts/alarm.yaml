@@ -12,14 +12,16 @@
                         {{ true }}
              sequence:
                 - action: light.turn_on
-                  entity_id: light.gateway_light_04cf8cabd77b
+                  target:
+                    entity_id: light.gateway_light_04cf8cabd77b
                   data:
                     rgb_color: [255,0,0]
                     brightness: 255
                 - delay:
                     seconds: 1
                 - action: light.turn_off
-                  entity_id: light.gateway_light_04cf8cabd77b
+                  target:
+                    entity_id: light.gateway_light_04cf8cabd77b
                 - delay:
                     milliseconds: 500
 

@@ -4,20 +4,21 @@
       id: install update html5 push notifications
       initial_state: true
       mode: parallel
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: html5_notification.clicked
           event_data:
             action: install_update
-      condition:
+      conditions:
         - "{{ trigger.event.data['tag'] | length > 0 }}"
-      action:
+      actions:
         - variables:
             entity: "{{- trigger.event.data['tag'] | replace('update_available_notify_', 'update.') -}}"
         - if:
             - "{{ is_state(entity, 'on') and is_state_attr(entity, 'in_progress', false) }}"
           then:
             - action: update.install
-              data:
+              target:
                 entity_id: "{{- entity -}}"
-                backup: "{{ state_attr(entity, 'supported_features') | int(0) >= 8 }}"
+              data:
+                backup: "{{ '{:0=64b}'.format(state_attr(entity, 'supported_features'))[-4] == '1' }}"

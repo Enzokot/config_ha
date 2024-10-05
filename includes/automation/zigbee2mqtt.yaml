@@ -3,13 +3,13 @@
     - alias: zigbee_device_joined_notification
       id: zigbee_device_joined_notification
       mode: queued
-      trigger:
-        platform: mqtt
-        topic: 'zigbee2mqtt/bridge/event'
-      condition:
+      triggers:
+        - trigger: mqtt
+          topic: 'zigbee2mqtt/bridge/event'
+      conditions:
         condition: template
         value_template: '{{trigger.payload_json.type == "device_interview" and trigger.payload_json.data.status == "successful" and trigger.payload_json.data.supported}}'
-      action:
+      actions:
         - action: telegram_bot.send_message
           data:
             title: >-
@@ -31,10 +31,10 @@
 #Проверка засыпания и отключения устройств zigbee
     - alias: zigbee2mqtt_devices_last_seen
       id: zigbee2mqtt_devices_last_seen
-      trigger:
-        - platform: time_pattern
+      triggers:
+        - trigger: time_pattern
           hours: "/1"
-      condition:
+      conditions:
         - condition: template
           value_template: >
             {%- set time_limit = as_timestamp(now(), 0) - 3*60*60 -%}
@@ -53,7 +53,7 @@
             {%- endif -%}
             {%- endfor -%}
             {{ datanames.last_seen | length > 0 }}
-      action:  
+      actions:  
         - action: telegram_bot.send_message
           data:
             title: >-
@@ -108,10 +108,10 @@
 #Проверка качества связи устройств zigbee
     - alias: zigbee2mqtt_devices_link_check
       id: zigbee2mqtt_devices_link_check
-      trigger:
-        - platform: time_pattern
+      triggers:
+        - trigger: time_pattern
           hours: "/1"
-      condition:
+      conditions:
         - condition: template
           value_template: >
                 {%- set list_sensors = expand('group.dynamic_group_sensor_linkquality') | selectattr('state', 'ne', None) | selectattr('state', 'ne', 'None') -%}
@@ -123,16 +123,16 @@
                 {%- endif -%}
                 {%- endfor -%}
                 {{ datanames.low_linkquality | length > 0 }}
-      action:  
+      actions:
         - action: script.zigbee2mqtt_linkuality_check
 
 #Атоматическая калибровка локальной температуры термоголовок
     - alias: auto_local_temperature_calibration_thermostats
       id: auto_local_temperature_calibration_thermostats
-      trigger:
-        - platform: time_pattern
+      triggers:
+        - trigger: time_pattern
           minutes: "/3"
-      action:
+      actions:
         - parallel:
             - action: script.auto_local_temperature_calibration_thermostats
               data:
@@ -162,13 +162,13 @@
 #Автоматическая установка boost режима во время сна
     - alias: auto_boost_mode_thermostats_at_sleeping_time
       id: auto_boost_mode_thermostats_at_sleeping_time
-      trigger:
-        - platform: time
+      triggers:
+        - trigger: time
           at:
             - "02:30:00"
             - "05:30:00"
             - "23:30:00"
-      action:
+      actions:
         - parallel:
             - choose:
                 - conditions:
@@ -183,8 +183,9 @@
                     #   below: 25.7
                   sequence:      
                     - action: climate.set_preset_mode
-                      data:
+                      target:
                         entity_id: climate.0x60a423fffe968719
+                      data:
                         preset_mode: 'boost'
             - choose:
                 - conditions:
@@ -199,20 +200,21 @@
                     #   below: 25.7
                   sequence:      
                     - action: climate.set_preset_mode
-                      data:
+                      target:
                         entity_id: climate.0x5c0272fffec89454
+                      data:
                         preset_mode: 'boost'
 
     - alias: switching_thermostat_night_mode
       id: switching_thermostat_night_mode
       initial_state: 'true'
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: 
              - input_boolean.thermostat_bedroom_night_mode
              - input_boolean.thermostat_childrensroom_night_mode
              - automation.auto_boost_mode_thermostats_at_sleeping_time
-      condition:
+      conditions:
         - condition: template
           value_template: >
              {{ 
@@ -222,7 +224,7 @@
                 ((is_state('input_boolean.thermostat_bedroom_night_mode', 'on') or is_state('input_boolean.thermostat_childrensroom_night_mode', 'on')) 
                 and is_state('automation.auto_boost_mode_thermostats_at_sleeping_time', 'off'))
              }}
-      action:
+      actions:
           - choose:
               - conditions:
                   - condition: template
@@ -234,7 +236,8 @@
                             {% else %}
                               automation.turn_on
                             {% endif %}
-                      entity_id: automation.auto_boost_mode_thermostats_at_sleeping_time
+                      target:
+                        entity_id: automation.auto_boost_mode_thermostats_at_sleeping_time
               - conditions:
                   - condition: template
                     value_template: "{{ trigger.platform == 'state' and trigger.to_state.domain == 'automation' }}"
@@ -245,17 +248,18 @@
                             {% else %}
                               input_boolean.turn_on
                             {% endif %}
-                      entity_id: 
-                        - input_boolean.thermostat_bedroom_night_mode
-                        - input_boolean.thermostat_childrensroom_night_mode
+                      target:
+                        entity_id: 
+                          - input_boolean.thermostat_bedroom_night_mode
+                          - input_boolean.thermostat_childrensroom_night_mode
 
 #Автоматическое проворачивание TRV два раза в месяц
     - alias: auto_scrolling_thermostats_at_month
       id: auto_scrolling_thermostats_at_month
-      trigger:
-        - platform: time
+      triggers:
+        - trigger: time
           at: "10:00:00"
-      condition:
+      conditions:
         - "{{ now().timestamp() | timestamp_custom('%d') | int(0) in [1, 15] }}"
         - condition: state
           entity_id:
@@ -264,23 +268,25 @@
             - climate.0x5c0272fffec9db22
             - climate.0x5c0272fffe8de819
           state: "heat"
-      action:
+      actions:
         - action: climate.set_hvac_mode
-          data:
+          target:
             entity_id: 
               - climate.0x5c0272fffec89454
               - climate.0x60a423fffe968719
               - climate.0x5c0272fffec9db22
               - climate.0x5c0272fffe8de819
+          data:
             hvac_mode: "off"
         - delay: "00:02:00"
         - action: climate.set_hvac_mode
-          data:
+          target:
             entity_id: 
               - climate.0x5c0272fffec89454
               - climate.0x60a423fffe968719
               - climate.0x5c0272fffec9db22
               - climate.0x5c0272fffe8de819
+          data:
             hvac_mode: "heat"
         - delay: "00:01:00"
         - action: telegram_bot.send_message
@@ -294,27 +300,27 @@
     - alias: set_options_for_selected_router_for_permit_join_z2m
       id: set_options_for_selected_router_for_permit_join_z2m
       mode: queued
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: sensor.router_devices_z2m
           not_from:
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: automation_reloaded
-        - platform: event
+        - trigger: event
           id: 'input_select_reload'
           event_type: call_service
           event_data:
             domain: input_select
             service: reload
-      action:
+      actions:
         - if:
             - condition: trigger
               id: input_select_reload
           then:
             - wait_for_trigger:
-                - platform: state
+                - trigger: state
                   entity_id: input_select.selected_router_for_permit_join_z2m
                   to:
               timeout:
@@ -340,36 +346,39 @@
                 {% endfor %}
                 {{ data.entities | unique | list }}
         - action: input_select.set_options
-          data:
+          target:
             entity_id: input_select.selected_router_for_permit_join_z2m
+          data:
             options: "{{ old_options_with_new }}"
         - action: input_select.select_option
-          data:
+          target:
             entity_id: input_select.selected_router_for_permit_join_z2m
+          data:
             option: "{{ new_options | first }}"
         - action: input_select.set_options
-          data:
+          target:
             entity_id: input_select.selected_router_for_permit_join_z2m
+          data:
             options: "{{ new_options }}"
         - action: input_select.select_first
-          data:
+          target:
             entity_id: input_select.selected_router_for_permit_join_z2m
 
 #Запуск добавления устройств через роутер
     - alias: start_selected_router_permit_join_z2m
       id: start_selected_router_permit_join_z2m
       mode: restart
-      trigger:
-        - platform: event
+      triggers:
+        - trigger: event
           event_type: call_service
           event_data:
             domain: input_select
             service: select_option
             service_data:
               entity_id: input_select.selected_router_for_permit_join_z2m
-      condition:
+      conditions:
         - "{{ states.person | selectattr('attributes.user_id', 'eq', trigger.event.context.user_id) | list | count > 0 }}"
-      action:
+      actions:
         - action: mqtt.publish
           data:
             topic: "zigbee2mqtt/bridge/request/permit_join"
@@ -380,12 +389,12 @@
     - alias: set_option_for_selected_router_from_info_topic_z2m
       id: set_option_for_selected_router_from_info_topic_z2m
       mode: restart
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           id: 'switch_permit_join'
           entity_id: switch.permit_join_switch_z2m
           to: 'off'
-      action:
+      actions:
         - parallel:
           - if:
               - condition: trigger
@@ -393,6 +402,7 @@
               - "{{ not is_state('input_select.select_option', 'Не выбрано') }}"
             then:
               - action: input_select.select_option
-                data:
+                target:
                   entity_id: input_select.selected_router_for_permit_join_z2m
+                data:
                   option: 'Не выбрано'

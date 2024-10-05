@@ -5,10 +5,10 @@
       initial_state: true
       mode: single
       max_exceeded: silent
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: sensor.0x158d00045a78af_action
-      condition:
+      conditions:
           - condition: state
             entity_id: timer.doorbell_timer_restart_automation
             state: 'idle'
@@ -21,16 +21,18 @@
           - condition: template
             value_template: >
                 {{ trigger.to_state.state not in ['release', 'unavailable', 'unknown', '', 'None'] }}
-      action:
+      actions:
           - action: timer.start
-            entity_id: timer.doorbell_timer_restart_automation
+            target:
+              entity_id: timer.doorbell_timer_restart_automation
           - parallel:
               - sequence:
                   - variables:
                       string_now_time: "{{ now().strftime('%Y%m%d-%H%M%S') }}"
                   - action: camera.snapshot
-                    data:
+                    target:
                       entity_id: camera.hallway_1_fluent
+                    data:
                       filename: "/share/obmen/Doorbeel_Snapshots/snapshot_hallway_1_{{ string_now_time }}.jpg"
               
                   - action: telegram_bot.send_photo
@@ -68,27 +70,32 @@
                             value_template: "{{ repeat.index <= 3 }}"
                        sequence:
                           - action: light.turn_on
-                            entity_id: light.gateway_light_04cf8cabd77b
+                            target:
+                              entity_id: light.gateway_light_04cf8cabd77b
                             data:
                               rgb_color: [255,128,0]
                               brightness: 128
                           - delay:
                               milliseconds: 150
                           - action: light.turn_off
-                            entity_id: light.gateway_light_04cf8cabd77b
+                            target:
+                              entity_id: light.gateway_light_04cf8cabd77b
                           - delay:
                               milliseconds: 50
                           - action: light.turn_on
-                            entity_id: light.gateway_light_04cf8cabd77b
+                            target:
+                              entity_id: light.gateway_light_04cf8cabd77b
                             data:
                               rgb_color: [255,128,0]
                               brightness: 128
                           - delay:
                               milliseconds: 150
                           - action: light.turn_off
-                            entity_id: light.gateway_light_04cf8cabd77b
+                            target:
+                              entity_id: light.gateway_light_04cf8cabd77b
                   - action: scene.turn_on
-                    entity_id: scene.before_doorbell_light
+                    target:
+                      entity_id: scene.before_doorbell_light
               - sequence:
                   - condition:
                     - condition: time

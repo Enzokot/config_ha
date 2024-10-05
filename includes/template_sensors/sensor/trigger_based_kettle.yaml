@@ -1,12 +1,12 @@
 
 #Сенсоры нужны для УДЯ
   - trigger:
-      - platform: state
+      - trigger: state
         entity_id: water_heater.r4s01_kettle_wh_temp
         attribute: current_temperature
-      - platform: homeassistant
+      - trigger: homeassistant
         event: start
-      - platform: event
+      - trigger: event
         event_type: event_template_reloaded
     sensor:
       - name: r4s01_kettle_temp_current_temp

@@ -2,76 +2,79 @@
     - alias: vacuum later start cleaning action
       id: vacuum later start cleaning action"
       initial_state: true
-      trigger:
-           - platform: event
-             event_type: timer.finished
-             event_data:
-               entity_id: timer.vacumm_ten_minutes
-      condition:
+      triggers:
+        - trigger: event
+          event_type: timer.finished
+          event_data:
+            entity_id: timer.vacumm_ten_minutes
+      conditions:
         - condition: state
           entity_id: vacuum.xiaomi_vacuum_cleaner
           state: 'docked'
-      action:
-           - parallel:
-               - action: vacuum.start
-                 entity_id: vacuum.xiaomi_vacuum_cleaner
-               - action: telegram_bot.send_message
-                 data:
-                    target: "{{ states('input_text.var_chat_id_vacuum_later_start') }}"
-                    title: >-
-                             {{ '\U0001f680' }} *Степа*
-                    message: 'Начал полную уборку'
-               - action: input_text.set_value
-                 data:
-                    entity_id: input_text.var_chat_id_vacuum_later_start
-                    value: !secret telegram_chita_chat_id
+      actions:
+        - parallel:
+            - action: vacuum.start
+              target:
+                entity_id: vacuum.xiaomi_vacuum_cleaner
+            - action: telegram_bot.send_message
+              data:
+                target: "{{ states('input_text.var_chat_id_vacuum_later_start') }}"
+                title: >-
+                     {{ '\U0001f680' }} *Степа*
+                message: 'Начал полную уборку'
+            - action: input_text.set_value
+              target:
+                entity_id: input_text.var_chat_id_vacuum_later_start
+              data:
+                value: !secret telegram_chita_chat_id
 
     - alias: vacuum later start cleaning not docked
       id: vacuum later start cleaning not docked
       initial_state: true
-      trigger:
-           - platform: event
-             event_type: timer.finished
-             event_data:
-               entity_id: timer.vacumm_ten_minutes
-      condition:
-          condition: not
+      triggers:
+        - trigger: event
+          event_type: timer.finished
+          event_data:
+            entity_id: timer.vacumm_ten_minutes
+      conditions:
+        - condition: not
           conditions:
             - condition: state
               entity_id: vacuum.xiaomi_vacuum_cleaner
               state: 'docked'
-      action:
-           - parallel:
-               - action: telegram_bot.send_message
-                 data:
-                    target: "{{ states('input_text.var_chat_id_vacuum_later_start') }}"
-                    title: >-
-                             ⚠️ *Степа*
-                    message: 'Не смог начать полную уборку, потому что нахожусь не на базе'
-               - action: input_text.set_value
-                 data:
-                    entity_id: input_text.var_chat_id_vacuum_later_start
-                    value: !secret telegram_chita_chat_id
+      actions:
+        - parallel:
+            - action: telegram_bot.send_message
+              data:
+                target: "{{ states('input_text.var_chat_id_vacuum_later_start') }}"
+                title: >-
+                        ⚠️ *Степа*
+                message: 'Не смог начать полную уборку, потому что нахожусь не на базе'
+            - action: input_text.set_value
+              target:
+                entity_id: input_text.var_chat_id_vacuum_later_start
+              data:
+                value: !secret telegram_chita_chat_id
 
     - alias: vacuum start stop camera map when docked cleaning
       id: vacuum start stop camera map when docked cleaning
       initial_state: true
       mode: queued
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: vacuum.xiaomi_vacuum_cleaner
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_xiaomi_cloud_map_extractor_reloaded
-      condition:
+      conditions:
         - condition: template
           value_template: >
                 {{ 
                     trigger.platform != 'state'
                     or trigger.to_state.state != trigger.from_state.state
                 }}
-      action:
+      actions:
         - if:
             - "{{ states('vacuum.xiaomi_vacuum_cleaner') in ['docked', 'unknown', 'unavailable', 'none', None, null, ''] }}"
           then:
@@ -81,7 +84,9 @@
               data:
                 entity_id: camera.roborock_vacuum_map
             - action: camera.turn_off
-              entity_id: camera.roborock_vacuum_map
+              target:
+                entity_id: camera.roborock_vacuum_map
           else:
             - action: camera.turn_on
-              entity_id: camera.roborock_vacuum_map
+              target:
+                entity_id: camera.roborock_vacuum_map

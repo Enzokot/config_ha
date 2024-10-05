@@ -3,122 +3,122 @@
     - alias: night on off water heater
       id: night off water heater
       initial_state: true
-      trigger:
-        - platform: time
+      triggers:
+        - trigger: time
           at: '22:30:00'
-        - platform: time
+        - trigger: time
           at: '06:15:00'
-      condition:
+      conditions:
           - condition: state
             entity_id: input_boolean.water_heater_season
             state: 'on'
-      action:
+      actions:
           - action: >
                 {% if trigger.now.hour == 22 %}
                     switch.turn_off
                 {% else %}
                     switch.turn_on
                 {% endif %}
-            data:
+            target:
               entity_id: switch.0x842e14fffe13a854
 
 #Ночной режим обогревателя
     - alias: night mode on heater
       id: night mode on heater
       initial_state: true
-      trigger:
-        - platform: time
+      triggers:
+        - trigger: time
           at: '22:00:00'
-      condition:
+      conditions:
           - condition: state
             entity_id: input_boolean.heater_night_mode
             state: 'on'      
-      action:
+      actions:
           - action: switch.turn_on
-            data:
+            target:
               entity_id: switch.0x842e14fffe5047f5
           - action: timer.start
-            data:
+            target:
               entity_id: timer.turn_off_heater_night_mode
 
     - alias: night mode off heater
       id: night mode off heater
       initial_state: true
-      trigger:
-        - platform: time
+      triggers:
+        - trigger: time
           at: '07:00:00'
-      condition:
+      conditions:
           - condition: state
             entity_id: input_boolean.heater_night_mode
             state: 'on'
-      action:
+      actions:
           - action: timer.cancel
-            data:
+            target:
               entity_id: timer.turn_on_heater_night_mode
           - action: timer.cancel
-            data:
+            target:
               entity_id: timer.turn_off_heater_night_mode
           - action: switch.turn_off
-            data:
+            target:
               entity_id: switch.0x842e14fffe5047f5
 
     - alias: night mode timer heater off
       id: night mode timer heater off
       initial_state: true
-      trigger:
-          - platform: event
+      triggers:
+          - trigger: event
             event_type: timer.finished
             event_data:
               entity_id: timer.turn_off_heater_night_mode
-      condition:
+      conditions:
           - condition: state
             entity_id: input_boolean.heater_night_mode
             state: 'on'
           - condition: time
             after: '22:00:00'
             before: '07:00:00'
-      action:
+      actions:
           - action: switch.turn_off
-            data:
+            target:
               entity_id: switch.0x842e14fffe5047f5
           - action: timer.start
-            data:
+            target:
               entity_id: timer.turn_on_heater_night_mode
 
     - alias: night mode timer heater on
       id: night mode timer heater on
       initial_state: true
-      trigger:
-          - platform: event
+      triggers:
+          - trigger: event
             event_type: timer.finished
             event_data:
               entity_id: timer.turn_on_heater_night_mode
-      condition:
+      conditions:
           - condition: state
             entity_id: input_boolean.heater_night_mode
             state: 'on'
           - condition: time
             after: '22:00:00'
             before: '07:00:00'
-      action:
+      actions:
           - action: switch.turn_on
-            data:
+            target:
               entity_id: switch.0x842e14fffe5047f5
           - action: timer.start
-            data:
+            target:
               entity_id: timer.turn_off_heater_night_mode
               
     - alias: on off night mode heater at action time
       id: on off night mode heater at action time
       initial_state: true
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: input_boolean.heater_night_mode
-      condition:
+      conditions:
         - condition: time
           after: '22:00:00'
           before: '07:00:00'
-      action:
+      actions:
         - choose:
             - conditions:
                 - condition: state
@@ -126,7 +126,7 @@
                   state: 'off'
               sequence:
                 - action: automation.trigger
-                  data:
+                  target:
                     entity_id: automation.night_mode_off_heater
             - conditions:
                 - condition: state
@@ -134,15 +134,15 @@
                   state: 'on'
               sequence:
                 - action: automation.trigger
-                  data:
+                  target:
                     entity_id: automation.night_mode_on_heater
 
 #Отключение розеток при превышении 3кВт
     - alias: safety power socets off
       id: safety power socets off
       initial_state: true
-      trigger:
-      - platform: numeric_state
+      triggers:
+      - trigger: numeric_state
         entity_id: 
             - sensor.0x842e14fffe5047f5_power
             - sensor.0x842e14fffe13a854_power
@@ -155,9 +155,9 @@
             - sensor.shelly_1pm_fan_nvr_box_power
             - sensor.shelly_plug_s_keenetic_hw_power
         above: 3000
-      action:
+      actions:
           - action: switch.turn_off
-            data:
+            target:
               entity_id: >-
                     {{ trigger.entity_id | replace('sensor', 'switch') | replace('_power', '') }}
 
@@ -165,17 +165,17 @@
     - alias: restart night mode heater after reboot
       id: restart night mode heater after reboot
       initial_state: true
-      trigger:
-        - platform: homeassistant
+      triggers:
+        - trigger: homeassistant
           event: start
-      condition:
+      conditions:
         - condition: state
           entity_id: input_boolean.heater_night_mode
           state: 'on'
         - condition: time
           after: '22:00:00'
           before: '07:00:00'
-      action:
+      actions:
         - choose:
             - conditions:
                 - condition: state
@@ -183,7 +183,7 @@
                   state: 'off'
               sequence:
                 - action: automation.trigger
-                  data:
+                  target:
                     entity_id: automation.night_mode_timer_heater_on
             - conditions:
                 - condition: state
@@ -191,7 +191,7 @@
                   state: 'on'
               sequence:
                 - action: automation.trigger
-                  data:
+                  target:
                     entity_id: automation.night_mode_timer_heater_off      
 
 #Сохранение значений потребления при рестарте НА или z2m
@@ -218,8 +218,8 @@
                    "sensor.shelly_plug_s_keenetic_hw_energy": "input_number.total_shelly_plug_s_keenetic_hw_saved",
                    "sensor.shelly_plug_s_nvr_energy": "input_number.total_shelly_plug_s_nvr_saved"}
             }}
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: 
             - sensor.0x842e14fffe5047f5_energy
             - sensor.0x842e14fffe13a854_energy
@@ -234,40 +234,41 @@
             - sensor.shelly_plug_s_nvr_energy
             - sensor.shelly_1pm_fan_nvr_box_energy
             - sensor.shelly_plug_s_keenetic_hw_energy
-      condition:
+      conditions:
         - condition: template
           value_template: >- 
                 {{ trigger.to_state.state not in not_has_state and
                    trigger.from_state.state not in not_has_state and
                    trigger.to_state.state != trigger.from_state.state
                 }}
-      action:
+      actions:
         - variables:
             entity_id: >-
               {{ entity_dict[trigger.entity_id] }}
         - action: input_number.set_value
-          data:
+          target:
             entity_id: "{{ entity_id }}"
+          data:
             value: "{{ trigger.to_state.state }}"
 
 #Гирлянда в детской
     - alias: on move turn on garland childrens room
       id: on move turn on garland childrens room
-      trigger:
-        - platform: state
+      triggers:
+        - trigger: state
           entity_id: binary_sensor.0x158d00054b8d72_motion
           from: 'off'
           to: 'on'
-      condition:
-        condition: or
-        conditions:
+      conditions:
+        - condition: or
+          conditions:
             - condition: time
               after: '08:30:00'
               before: '12:30:00'
             - condition: time
               after: '16:30:00'
               before: '21:00:00'
-      action:
+      actions:
         - choose:
             - conditions:
                 - condition: state
@@ -275,26 +276,27 @@
                   state: 'off'
               sequence:
                   - action: switch.turn_on
-                    data:
+                    target:
                       entity_id: switch.0x842e14fffe5047f5
         - action: timer.start
-          data:
+          target:
             entity_id: timer.turn_off_garland_childrens_room
+          data:
             duration: 300
 
     - alias: on timer turn off garland childrens room
       id: on timer turn off garland childrens room
       initial_state: true
-      trigger:
-          - platform: event
+      triggers:
+          - trigger: event
             event_type: timer.finished
             event_data:
               entity_id: timer.turn_off_garland_childrens_room
-      condition:
+      conditions:
         - condition: state
           entity_id: switch.0x842e14fffe5047f5
           state: 'on'
-      action:
+      actions:
           - action: switch.turn_off
-            data:
+            target:
               entity_id: switch.0x842e14fffe5047f5

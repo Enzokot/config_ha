@@ -1,10 +1,10 @@
 
     - trigger:
-        - platform: state
+        - trigger: state
           entity_id: binary_sensor.0x158d0003cfa725_contact
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
       binary_sensor:
         - name: lobby_door_open_long_time
@@ -16,11 +16,11 @@
 
 #Для debounce бинарника батареейки TRV
     - trigger:
-        - platform: state
+        - trigger: state
           entity_id: binary_sensor.0x60a423fffe968719_battery_low
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
       binary_sensor:
         - name: debounce_trv_bedroom_low_battery
@@ -30,11 +30,11 @@
             hours: 12
 
     - trigger:
-        - platform: state
+        - trigger: state
           entity_id: binary_sensor.0x5c0272fffec89454_battery_low
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
       binary_sensor:
         - name: debounce_trv_childrens_room_low_battery
@@ -44,11 +44,11 @@
             hours: 12
 
     - trigger:
-        - platform: state
+        - trigger: state
           entity_id: binary_sensor.0x5c0272fffe8de819_battery_low
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
       binary_sensor:
         - name: debounce_trv_kitchen_low_battery
@@ -58,11 +58,11 @@
             hours: 12
 
     - trigger:
-        - platform: state
+        - trigger: state
           entity_id: binary_sensor.0x5c0272fffec9db22_battery_low
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
       binary_sensor:
         - name: debounce_trv_living_room_low_battery
@@ -73,11 +73,11 @@
 
 #Просроченные сертификаты ssl
     - trigger:
-        - platform: state
+        - trigger: state
           entity_id: sensor.cert_expiry_keenetic_domain
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
       binary_sensor:
         - name: cert_expired_keenetic_domain
@@ -89,11 +89,11 @@
             minutes: 1
 
     - trigger:
-        - platform: state
+        - trigger: state
           entity_id: sensor.cert_expiry_asuscomm_domain_klg
-        - platform: homeassistant
+        - trigger: homeassistant
           event: start
-        - platform: event
+        - trigger: event
           event_type: event_template_reloaded
       binary_sensor:
         - name: cert_expired_asuscomm_domain_klg

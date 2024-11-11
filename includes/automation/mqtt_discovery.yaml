@@ -138,6 +138,7 @@
                   { 
                     "name":"Состояние моста", 
                     "state_topic":"zigbee2mqtt/bridge/state",
+                    "value_template":"{{ '{{' }} value_json.state {{ '}}' }}",
                     "icon":"mdi:calendar-clock", 
                     "unique_id":"sostoianie_mosta",
                     "device":{"identifiers":["z2m_info"],"manufacturer":"Enzokot","model":"Local polling","name":"Zigbee2MQTT add-on"}
@@ -149,7 +150,7 @@
                 retain: true 
                 payload: >- 
                   { 
-                    "avty":[{"topic":"zigbee2mqtt/bridge/state"}],
+                    "avty":[{"topic":"zigbee2mqtt/bridge/state","value_template":"{{ '{{' }} value_json.state {{ '}}' }}"}],
                     "name":"Zigbee2mqtt Bridge Uptime", 
                     "state_topic":"host_data/zigbee2mqtt_start_at",
                     "icon":"mdi:av-timer",
@@ -180,7 +181,7 @@
                 retain: true 
                 payload: >- 
                   { 
-                    "avty":[{"topic":"zigbee2mqtt/bridge/state"},{"topic":"zigbee2mqtt/Childrens room valve with thermostat/availability"}],
+                    "avty":[{"topic":"zigbee2mqtt/bridge/state","value_template":"{{ '{{' }} value_json.state {{ '}}' }}"},{"topic":"zigbee2mqtt/Childrens room valve with thermostat/availability","value_template":"{{ '{{' }} value_json.state {{ '}}' }}"}],
                     "avty_mode":"all",
                     "name":"0x5c0272fffec89454_local_temperature",
                     "state_topic":"zigbee2mqtt/Childrens room valve with thermostat",
@@ -196,7 +197,7 @@
                 retain: true 
                 payload: >- 
                   { 
-                    "avty":[{"topic":"zigbee2mqtt/bridge/state"},{"topic":"zigbee2mqtt/Childrens room valve with thermostat/availability"}],
+                    "avty":[{"topic":"zigbee2mqtt/bridge/state","value_template":"{{ '{{' }} value_json.state {{ '}}' }}"},{"topic":"zigbee2mqtt/Childrens room valve with thermostat/availability","value_template":"{{ '{{' }} value_json.state {{ '}}' }}"}],
                     "avty_mode":"all",
                     "name":"0x5c0272fffec89454_local_temperature_calibration",
                     "state_topic":"zigbee2mqtt/Childrens room valve with thermostat",
@@ -212,7 +213,7 @@
                 retain: true 
                 payload: >- 
                   { 
-                    "avty":[{"topic":"zigbee2mqtt/bridge/state"},{"topic":"zigbee2mqtt/Bedroom valve with thermostat/availability"}],
+                    "avty":[{"topic":"zigbee2mqtt/bridge/state","value_template":"{{ '{{' }} value_json.state {{ '}}' }}"},{"topic":"zigbee2mqtt/Bedroom valve with thermostat/availability","value_template":"{{ '{{' }} value_json.state {{ '}}' }}"}],
                     "avty_mode":"all",
                     "name":"0x60a423fffe968719_local_temperature",
                     "state_topic":"zigbee2mqtt/Bedroom valve with thermostat",
@@ -228,7 +229,7 @@
                 retain: true 
                 payload: >- 
                   { 
-                    "avty":[{"topic":"zigbee2mqtt/bridge/state"},{"topic":"zigbee2mqtt/Bedroom valve with thermostat/availability"}],
+                    "avty":[{"topic":"zigbee2mqtt/bridge/state","value_template":"{{ '{{' }} value_json.state {{ '}}' }}"},{"topic":"zigbee2mqtt/Bedroom valve with thermostat/availability","value_template":"{{ '{{' }} value_json.state {{ '}}' }}"}],
                     "avty_mode":"all",
                     "name":"0x60a423fffe968719_local_temperature_calibration",
                     "state_topic":"zigbee2mqtt/Bedroom valve with thermostat",
@@ -244,7 +245,7 @@
                 retain: true 
                 payload: >- 
                   { 
-                    "avty":[{"topic":"zigbee2mqtt/bridge/state"},{"topic":"zigbee2mqtt/Living room valve with thermostat/availability"}],
+                    "avty":[{"topic":"zigbee2mqtt/bridge/state","value_template":"{{ '{{' }} value_json.state {{ '}}' }}"},{"topic":"zigbee2mqtt/Living room valve with thermostat/availability","value_template":"{{ '{{' }} value_json.state {{ '}}' }}"}],
                     "avty_mode":"all",
                     "name":"0x5c0272fffec9db22_local_temperature",
                     "state_topic":"zigbee2mqtt/Living room valve with thermostat",
@@ -260,7 +261,7 @@
                 retain: true 
                 payload: >- 
                   { 
-                    "avty":[{"topic":"zigbee2mqtt/bridge/state"},{"topic":"zigbee2mqtt/Living room valve with thermostat/availability"}],
+                    "avty":[{"topic":"zigbee2mqtt/bridge/state","value_template":"{{ '{{' }} value_json.state {{ '}}' }}"},{"topic":"zigbee2mqtt/Living room valve with thermostat/availability","value_template":"{{ '{{' }} value_json.state {{ '}}' }}"}],
                     "avty_mode":"all",
                     "name":"0x5c0272fffec9db22_local_temperature_calibration",
                     "state_topic":"zigbee2mqtt/Living room valve with thermostat",
@@ -276,7 +277,7 @@
                 retain: true 
                 payload: >- 
                   { 
-                    "avty":[{"topic":"zigbee2mqtt/bridge/state"},{"topic":"zigbee2mqtt/Kitchen valve with thermostat/availability"}],
+                    "avty":[{"topic":"zigbee2mqtt/bridge/state","value_template":"{{ '{{' }} value_json.state {{ '}}' }}"},{"topic":"zigbee2mqtt/Kitchen valve with thermostat/availability","value_template":"{{ '{{' }} value_json.state {{ '}}' }}"}],
                     "avty_mode":"all",
                     "name":"0x5c0272fffe8de819_local_temperature",
                     "state_topic":"zigbee2mqtt/Kitchen valve with thermostat",
@@ -292,7 +293,7 @@
                 retain: true 
                 payload: >- 
                   { 
-                    "avty":[{"topic":"zigbee2mqtt/bridge/state"},{"topic":"zigbee2mqtt/Kitchen valve with thermostat/availability"}],
+                    "avty":[{"topic":"zigbee2mqtt/bridge/state","value_template":"{{ '{{' }} value_json.state {{ '}}' }}"},{"topic":"zigbee2mqtt/Kitchen valve with thermostat/availability","value_template":"{{ '{{' }} value_json.state {{ '}}' }}"}],
                     "avty_mode":"all",
                     "name":"0x5c0272fffe8de819_local_temperature_calibration", 
                     "state_topic":"zigbee2mqtt/Kitchen valve with thermostat",

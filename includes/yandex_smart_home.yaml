@@ -62,7 +62,7 @@
       custom_modes:
         input_source:
           set_mode:
-            service: media_player.play_media
+            action: media_player.play_media
             target:
               entity_id: media_player.sony_bravia_tv
             data:
@@ -71,13 +71,13 @@
       custom_toggles:
         pause:
           turn_on:
-            service: remote.send_command
+            action: remote.send_command
             target:
               entity_id: remote.sony_bravia_tv
             data:
               command: "Pause"
           turn_off:
-            service: remote.send_command
+            action: remote.send_command
             target:
               entity_id: remote.sony_bravia_tv
             data:
@@ -86,7 +86,7 @@
     media_player.lg_smart_tv:
       type: devices.types.media_device.tv
       turn_off:
-        service: remote.send_command
+        action: remote.send_command
         target:
           entity_id: remote.broadlink_ir_rm4_mini
         data:
@@ -98,43 +98,43 @@
       custom_toggles:
         pause:
           turn_on:
-            service: webostv.button
+            action: webostv.button
             data:
               entity_id: media_player.lg_smart_tv
               button: 'PAUSE'
           turn_off:
-            service: webostv.button
+            action: webostv.button
             data:
               entity_id: media_player.lg_smart_tv
               button: 'PLAY'
         mute:
           state_attribute: is_volume_muted
           turn_on:
-            service: webostv.button
+            action: webostv.button
             data:
               entity_id: media_player.lg_smart_tv
               button: 'MUTE'
           turn_off:
-            service: webostv.button
+            action: webostv.button
             data:
               entity_id: media_player.lg_smart_tv
               button: 'MUTE'
       custom_ranges:
         channel:
           set_value:
-            service: media_player.play_media
+            action: media_player.play_media
             target:
               entity_id: media_player.lg_smart_tv
             data:
               media_content_id: "{{ value }}"
               media_content_type: "channel"
           increase_value:
-            service: webostv.button
+            action: webostv.button
             data:
               entity_id: media_player.lg_smart_tv
               button: 'CHANNELUP'
           decrease_value:
-            service: webostv.button
+            action: webostv.button
             data:
               entity_id: media_player.lg_smart_tv
               button: 'CHANNELDOWN'
@@ -145,23 +145,23 @@
     media_player.tv_kotletochka_tv_sam:
       type: devices.types.media_device.tv
       turn_on:
-        service: esphome.perenio_petra01_kitchen_send_samsung_command
+        action: esphome.perenio_petra01_kitchen_send_samsung_command
         data:
           data: '0xE0E040BF'
       turn_off:
-        service: esphome.perenio_petra01_kitchen_send_samsung_command
+        action: esphome.perenio_petra01_kitchen_send_samsung_command
         data:
           data: '0xE0E040BF'
       custom_toggles:
         pause:
           turn_on:
-            service: remote.send_command
+            action: remote.send_command
             target:
               entity_id: remote.tv_kotletochka_tv_sam
             data:
               command: 'KEY_PAUSE'
           turn_off:
-            service: remote.send_command
+            action: remote.send_command
             target:
               entity_id: remote.tv_kotletochka_tv_sam
             data:
@@ -170,7 +170,7 @@
         channel:
           set_value:
           #Для асинхронной смены абсолютного значения канала, т.к. интеграция выполняет данную команду с большой задержкой
-            service: script.turn_on
+            action: script.turn_on
             target:
               entity_id: script.media_player_play_media_content_type
             data:
@@ -179,13 +179,13 @@
                 content_id: "{{ value }}"
                 content_type: "channel"
           increase_value:
-            service: remote.send_command
+            action: remote.send_command
             target:
               entity_id: remote.tv_kotletochka_tv_sam
             data:
               command: "KEY_CHUP"
           decrease_value:
-            service: remote.send_command
+            action: remote.send_command
             target:
               entity_id: remote.tv_kotletochka_tv_sam
             data:
@@ -260,48 +260,48 @@
         mute:
           state_entity_id: switch.r4s01_kettle_mute
           turn_on:
-            service: switch.turn_on
+            action: switch.turn_on
             target:
               entity_id: switch.r4s01_kettle_mute
           turn_off:
-            service: switch.turn_off
+            action: switch.turn_off
             target:
               entity_id: switch.r4s01_kettle_mute
         oscillation:
           state_entity_id: light.r4s01_kettle_light
           turn_on:
-            service: light.turn_on
+            action: light.turn_on
             target:
               entity_id: light.r4s01_kettle_light
           turn_off:
-            service: light.turn_off
+            action: light.turn_off
             target:
               entity_id: light.r4s01_kettle_light
         backlight:
           state_entity_id: switch.r4s01_kettle_backlight
           turn_on:
-            service: switch.turn_on
+            action: switch.turn_on
             target:
               entity_id: switch.r4s01_kettle_backlight
           turn_off:
-            service: switch.turn_off
+            action: switch.turn_off
             target:
               entity_id: switch.r4s01_kettle_backlight
         keep_warm:
           state_entity_id: switch.r4s01_kettle_heat
           turn_on:
-            service: switch.turn_on
+            action: switch.turn_on
             target:
               entity_id: switch.r4s01_kettle_heat
           turn_off:
-            service: switch.turn_off
+            action: switch.turn_off
             target:
               entity_id: switch.r4s01_kettle_heat
       custom_ranges:
         temperature:
           state_entity_id: sensor.r4s01_kettle_temp_current_temp
           set_value:
-            service: water_heater.set_temperature
+            action: water_heater.set_temperature
             target:
               entity_id: water_heater.r4s01_kettle_wh_temp
             data:
@@ -323,7 +323,7 @@
         heat:
           state_entity_id: select.zhimi_humidifier_ca4_led_brightness
           set_mode:
-            service: select.select_option
+            action: select.select_option
             target:
               entity_id: select.zhimi_humidifier_ca4_led_brightness
             data:
@@ -341,31 +341,31 @@
         mute:
           state_entity_id: switch.zhimi_humidifier_ca4_buzzer
           turn_on:
-            service: switch.turn_on
+            action: switch.turn_on
             target:
               entity_id: switch.zhimi_humidifier_ca4_buzzer
           turn_off:
-            service: switch.turn_off
+            action: switch.turn_off
             target:
               entity_id: switch.zhimi_humidifier_ca4_buzzer
         controls_locked:
           state_entity_id: switch.zhimi_humidifier_ca4_child_lock
           turn_on:
-            service: switch.turn_on
+            action: switch.turn_on
             target:
               entity_id: switch.zhimi_humidifier_ca4_child_lock
           turn_off:
-            service: switch.turn_off
+            action: switch.turn_off
             target:
               entity_id: switch.zhimi_humidifier_ca4_child_lock
         ionization:
           state_entity_id: switch.zhimi_humidifier_ca4_dry_mode
           turn_on:
-            service: switch.turn_on
+            action: switch.turn_on
             target:
               entity_id: switch.zhimi_humidifier_ca4_dry_mode
           turn_off:
-            service: switch.turn_off
+            action: switch.turn_off
             target:
               entity_id: switch.zhimi_humidifier_ca4_dry_mode
 
@@ -381,7 +381,7 @@
         heat:
           state_entity_id: select.zhimi_humidifier_cb1_led_brightness
           set_mode:
-            service: select.select_option
+            action: select.select_option
             target:
               entity_id: select.zhimi_humidifier_cb1_led_brightness
             data:
@@ -399,38 +399,38 @@
         mute:
           state_entity_id: switch.zhimi_humidifier_cb1_buzzer
           turn_on:
-            service: switch.turn_on
+            action: switch.turn_on
             target:
               entity_id: switch.zhimi_humidifier_cb1_buzzer
           turn_off:
-            service: switch.turn_off
+            action: switch.turn_off
             target:
               entity_id: switch.zhimi_humidifier_cb1_buzzer
         controls_locked:
           state_entity_id: switch.zhimi_humidifier_cb1_child_lock
           turn_on:
-            service: switch.turn_on
+            action: switch.turn_on
             target:
               entity_id: switch.zhimi_humidifier_cb1_child_lock
           turn_off:
-            service: switch.turn_off
+            action: switch.turn_off
             target:
               entity_id: switch.zhimi_humidifier_cb1_child_lock
         ionization:
           state_entity_id: switch.zhimi_humidifier_cb1_dry_mode
           turn_on:
-            service: switch.turn_on
+            action: switch.turn_on
             target:
               entity_id: switch.zhimi_humidifier_cb1_dry_mode
           turn_off:
-            service: switch.turn_off
+            action: switch.turn_off
             target:
               entity_id: switch.zhimi_humidifier_cb1_dry_mode
 
     cover.cover_group_kitchen:
       type: devices.types.openable.curtain
       turn_on:
-        service: script.turn_on
+        action: script.turn_on
         target:
           entity_id: script.auto_cover_open_close_kitchen
         data:
@@ -439,7 +439,7 @@
             groupname: 'cover.cover_group_kitchen'
             statename: 'open'
       turn_off:
-        service: script.turn_on
+        action: script.turn_on
         target:
           entity_id: script.auto_cover_open_close_kitchen        
         data:
@@ -451,7 +451,7 @@
     cover.cover_group_living_room:
       type: devices.types.openable.curtain
       turn_on:
-        service: script.turn_on
+        action: script.turn_on
         target:
           entity_id: script.auto_cover_open_close_living_room
         data:
@@ -460,7 +460,7 @@
             groupname: 'cover.cover_group_living_room'
             statename: 'open'
       turn_off:
-        service: script.turn_on
+        action: script.turn_on
         target:
           entity_id: script.auto_cover_open_close_living_room
         data:
@@ -506,40 +506,40 @@
         mute:
           state_entity_id: switch.dmaker_p45_5007_alarm
           turn_on:
-            service: switch.turn_on
+            action: switch.turn_on
             target:
               entity_id: switch.dmaker_p45_5007_alarm
           turn_off:
-            service: switch.turn_off
+            action: switch.turn_off
             target:
               entity_id: switch.dmaker_p45_5007_alarm
         controls_locked:
           state_entity_id: switch.dmaker_p45_5007_physical_control_locked
           turn_on:
-            service: switch.turn_on
+            action: switch.turn_on
             target:
               entity_id: switch.dmaker_p45_5007_physical_control_locked
           turn_off:
-            service: switch.turn_off
+            action: switch.turn_off
             target:
               entity_id: switch.dmaker_p45_5007_physical_control_locked
         oscillation:
           state_entity_id: switch.dmaker_p45_5007_horizontal_swing
           turn_on:
-            service: switch.turn_on
+            action: switch.turn_on
             target:
               entity_id: switch.dmaker_p45_5007_horizontal_swing
           turn_off:
-            service: switch.turn_off
+            action: switch.turn_off
             target:
               entity_id: switch.dmaker_p45_5007_horizontal_swing
         backlight:
           state_entity_id: light.dmaker_p45_5007_indicator_light
           turn_on:
-            service: light.turn_on
+            action: light.turn_on
             target:
               entity_id: light.dmaker_p45_5007_indicator_light
           turn_off:
-            service: light.turn_off
+            action: light.turn_off
             target:
               entity_id: light.dmaker_p45_5007_indicator_light

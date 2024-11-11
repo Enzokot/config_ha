@@ -31,7 +31,7 @@
                 target: !secret sms_phone_enzokot
                 data:
                   url: 'http://192.168.8.1/'
-            - action: notify.html5_notifier
+            - action: notify.html5
               data:
                 title: "ℹ️ Check notification's"
                 message: pong

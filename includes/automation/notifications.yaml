@@ -820,7 +820,7 @@
                       {{ iif(state_attr(trigger.event.data.entity_id, 'supported_features') | int(0) > 0, ['Установить:/installupdate ' + trigger.event.data.entity_id], []) }}
                 - sequence:
                   - condition: "{{ not is_state_attr(trigger.event.data.entity_id, 'device_class', 'firmware') }}"
-                  - action: notify.html5_notifier
+                  - action: notify.html5
                     data:
                       title: "{{ '\U0001f389' }} *Системное обновление*"
                       message: "Доступна {{ latest_version }} версия {{ friendlyname }} для установки, текущая {{ installed_version }}"

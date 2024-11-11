@@ -173,6 +173,8 @@ sensor:
 button:
   - platform: restart
     name: ${devicename}_Restart
+    id: button_restart
 
   - platform: safe_mode
     name: ${devicename}_Safe_Mode
+    id: button_restart_safe_mode

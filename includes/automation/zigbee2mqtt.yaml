@@ -167,7 +167,7 @@
           at:
             - "02:30:00"
             - "05:30:00"
-            - "23:30:00"
+            #- "23:30:00"
       actions:
         - parallel:
             - choose:
@@ -175,9 +175,9 @@
                     - condition: state
                       entity_id: input_boolean.thermostat_bedroom_night_mode
                       state: 'on'
-                    - condition: numeric_state
-                      entity_id: sensor.thermostat_bedroom_valve_position
-                      above: 79
+                    # - condition: numeric_state
+                    #   entity_id: sensor.thermostat_bedroom_valve_position
+                    #   above: 79
                     # - condition: numeric_state
                     #   entity_id: sensor.esp_xiaomi_bed_room_temperature
                     #   below: 25.7
@@ -192,9 +192,9 @@
                     - condition: state
                       entity_id: input_boolean.thermostat_childrensroom_night_mode
                       state: 'on'
-                    - condition: numeric_state
-                      entity_id: sensor.thermostat_childrens_room_valve_position
-                      above: 79
+                    # - condition: numeric_state
+                    #   entity_id: sensor.thermostat_childrens_room_valve_position
+                    #   above: 79
                     # - condition: numeric_state
                     #   entity_id: sensor.esp_xiaomi_childrens_room_temperature
                     #   below: 25.7

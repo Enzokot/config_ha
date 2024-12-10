@@ -213,7 +213,7 @@
       actions:
         - action: automation.turn_on
           target:
-            entity_id: automation.sync_yeelight_ceiling_to_switch
+            entity_id: automation.sync_yeelight_ceiling_cr_to_switch
         - action: telegram_bot.answer_callback_query
           data:
             callback_query_id: '{{ trigger.event.data.id }}'
@@ -271,7 +271,7 @@
                 entity_id: light.yeelight_ceiling_cr
             - action: automation.turn_on
               target:
-                entity_id: automation.sync_yeelight_ceiling_to_switch
+                entity_id: automation.sync_yeelight_ceiling_cr_to_switch
         - action: telegram_bot.answer_callback_query
           data:
             callback_query_id: '{{ trigger.event.data.id }}'

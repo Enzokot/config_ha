@@ -12,7 +12,7 @@ homeassistant:
   customize: !include_dir_merge_named includes/customize
   allowlist_external_dirs:
     - /config
-    - /share/obmen
+    - /share/ds_obmen
   external_url: !secret external_url
   internal_url: "http://kotletochka-dell-srv.local:8123/"
   auth_mfa_modules:
@@ -101,3 +101,6 @@ python_script:
 yandex_smart_home: !include includes/yandex_smart_home.yaml
 yandex_station: !include includes/yandex_station.yaml
 xiaomi_gateway3: !include includes/xiaomi_gateway3.yaml
+
+go2rtc:
+  url: http://localhost:1984/

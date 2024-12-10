@@ -146,7 +146,7 @@
               - 'Да:/changelight, Нет:/nochangelight, Игнорировать:/ignoringchangelight'
         - action: automation.turn_off
           target:
-            entity_id: automation.sync_yeelight_ceiling_cr_to_switch
+            entity_id: "{{ this.entity_id }}"
 
 #Подсветка шлюза при открытии входной двери
     - alias: light gateway toggle

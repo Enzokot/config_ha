@@ -127,7 +127,7 @@
           event_type: yandex_speaker
           event_data:
             instance: text_action
-            value: "Сделай громче на 0-"
+            value: "Ничего не делай-"
       actions:
         - action: media_player.play_media
           target:
@@ -167,7 +167,7 @@
           event_type: yandex_speaker
           event_data:
             instance: text_action
-            value: "Сделай громче на 0?"
+            value: "Ничего не делай?"
       actions:
         - action: media_player.play_media
           target:

@@ -1746,7 +1746,7 @@
                     {%- set issues = state_attr('sensor.repairs_state', 'issues') -%}
                     {%- set datanames = namespace(issue=[]) -%}
                     {% for issue in issues %}
-                        {% set datanames.issue = datanames.issue + ['Домен: <b>' + issue.domain + ', </b> описание: <b>' + issue.issue_id + '</b>'] -%}
+                        {% set datanames.issue = datanames.issue + ['Домен: <b>' + issue.domain + ', </b>описание: <b>' + issue.issue_id + '</b>'] -%}
                     {% endfor %}
                     Обнаружены проблемы ({{- states('sensor.repairs_state') -}}шт):{{'\n'-}} {{ datanames.issue | join(', \n') }}
 

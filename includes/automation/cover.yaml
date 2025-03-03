@@ -7,7 +7,7 @@
         not_has_state: "{{ ['unknown', 'unavailable', 'none', ''] }}"
       triggers:
       - trigger: numeric_state
-        entity_id: sensor.0x54ef4410000ebba0_illuminance_lux
+        entity_id: sensor.0x54ef4410000ebba0_illuminance
         above: 250
         for:
           minutes: 10
@@ -41,7 +41,7 @@
         not_has_state: "{{ ['unknown', 'unavailable', 'none', ''] }}"
       triggers:
       - trigger: numeric_state
-        entity_id: sensor.0x54ef4410000ebba0_illuminance_lux
+        entity_id: sensor.0x54ef4410000ebba0_illuminance
         below: 150
         for:
           minutes: 10
@@ -75,7 +75,7 @@
         attribute: elevation
         below: 2
       conditions:
-        - "{{ states('sensor.0x54ef4410000ebba0_illuminance_lux') | int(0) <= 250 }}"
+        - "{{ states('sensor.0x54ef4410000ebba0_illuminance') | int(0) <= 250 }}"
         - "{{ is_state_attr('sun.sun', 'rising', false) }}"
         - "{{ expand('cover.cover_group_kitchen') | selectattr('state', 'eq', 'closed') | map(attribute='entity_id') | list | length == 0 }}"
       actions:
@@ -93,7 +93,7 @@
         not_has_state: "{{ ['unknown', 'unavailable', 'none', ''] }}"
       triggers:
       - trigger: numeric_state
-        entity_id: sensor.0x54ef4410000ebba0_illuminance_lux
+        entity_id: sensor.0x54ef4410000ebba0_illuminance
         above: 250
         for:
           minutes: 10
@@ -127,7 +127,7 @@
         not_has_state: "{{ ['unknown', 'unavailable', 'none', ''] }}"
       triggers:
       - trigger: numeric_state
-        entity_id: sensor.0x54ef4410000ebba0_illuminance_lux
+        entity_id: sensor.0x54ef4410000ebba0_illuminance
         below: 150
         for:
           minutes: 10
@@ -157,7 +157,7 @@
         attribute: elevation
         below: 2
       conditions:
-        - "{{ states('sensor.0x54ef4410000ebba0_illuminance_lux') | int(0) <= 250 }}"
+        - "{{ states('sensor.0x54ef4410000ebba0_illuminance') | int(0) <= 250 }}"
         - "{{ is_state_attr('sun.sun', 'rising', false) }}"
         - "{{ expand('cover.cover_group_living_room') | selectattr('state', 'eq', 'closed') | map(attribute='entity_id') | list | length == 0 }}"
       actions:

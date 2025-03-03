@@ -43,8 +43,8 @@
                     "name":"permit_join_switch_z2m", 
                     "state_topic":"zigbee2mqtt/bridge/info",
                     "command_topic":"zigbee2mqtt/bridge/request/permit_join",
-                    "payload_on":"{\"value\": true, \"time\": 254}",
-                    "payload_off":"{\"value\": false}",
+                    "payload_on":"{\"time\":254}",
+                    "payload_off":"{\"time\":0}",
                     "state_off":"false",
                     "state_on":"true",
                     "icon":"mdi:cellphone-wireless",
@@ -55,17 +55,14 @@
 
             - action: mqtt.publish
               data: 
-                topic: homeassistant/sensor/permit_join_timeout_z2m/config
+                topic: homeassistant/sensor/permit_join_end_z2m/config
                 retain: true 
                 payload: >- 
                   { 
-                    "name":"permit join timeout z2m", 
+                    "name":"permit join end z2m", 
                     "state_topic":"zigbee2mqtt/bridge/info",
-                    "value_template":"{{ '{{' }} iif(value_json.permit_join, value_json.permit_join_timeout, 0) | int(0) {{ '}}' }}",
-                    "device_class":"duration",
-                    "unit_of_measurement":"s",
-                    "icon":"mdi:timer-outline", 
-                    "unique_id":"permit_join_timeout_z2m",
+                    "value_template":"{{ '{{' }} iif(value_json.permit_join, value_json.permit_join_end, 0) {{ '}}' }}",
+                    "unique_id":"permit_join_end_z2m",
                     "device":{"identifiers":["z2m_info"],"manufacturer":"Enzokot","model":"Local polling","name":"Zigbee2MQTT add-on"}
                   }
 
@@ -80,8 +77,22 @@
                     "value_template":"{{ '{{' }} value_json | to_json | from_json | selectattr('type', 'defined') | selectattr('type', 'in', ['Coordinator', 'Router']) | map(attribute='friendly_name') | list | count {{ '}}' }}",
                     "json_attributes_topic":"zigbee2mqtt/bridge/devices",
                     "json_attributes_template":"{{ '{{ {' }}'routers':value_json | to_json | from_json | selectattr('type', 'defined') | selectattr('type', 'in', ['Coordinator', 'Router']) | map(attribute='friendly_name') | list{{ '}' }} | tojson {{ '}}' }}",
-                    "icon":"mdi:router-wireless", 
+                    "icon":"mdi:router-wireless",
                     "unique_id":"router_devices_z2m",
+                    "device":{"identifiers":["z2m_info"],"manufacturer":"Enzokot","model":"Local polling","name":"Zigbee2MQTT add-on"}
+                  }
+
+            - action: mqtt.publish
+              data: 
+                topic: homeassistant/sensor/permit_join_current_device_z2m/config
+                retain: true 
+                payload: >- 
+                  { 
+                    "name":"permit join current device z2m", 
+                    "state_topic":"zigbee2mqtt/bridge/response/permit_join",
+                    "value_template":"{{ '{{' }} value_json.data.device if value_json.data is defined and value_json.data.device is defined else None {{ '}}' }}",
+                    "icon":"mdi:router",
+                    "unique_id":"permit_join_current_device_z2m",
                     "device":{"identifiers":["z2m_info"],"manufacturer":"Enzokot","model":"Local polling","name":"Zigbee2MQTT add-on"}
                   }
 

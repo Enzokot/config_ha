@@ -1339,7 +1339,7 @@
               data:
                 notification_id: 'config_entry_discovery'
 
-#Уведомление о новом устройстве
+#Уведомление о новой/обновлении информации устройства/сущности
     - alias: notifications entry discovery
       id: notifications entry discovery
       mode: queued
@@ -1352,6 +1352,8 @@
         - trigger: event
           id: 'device_registry'
           event_type: device_registry_updated
+      conditions:
+        - "{{ trigger.id != 'device_registry' or is_state('input_boolean.instances_stoping', 'off') }}"
       actions:
         - variables:
             name_for_send: >-
@@ -1846,6 +1848,7 @@
           before: "16:00:00"
           weekday:
             - mon
+        - "{{ now() - state_attr(this.entity_id, 'last_triggered') > timedelta(hours = 1) }}"
       actions:
         - parallel:
             - action: telegram_bot.send_message
@@ -1870,7 +1873,6 @@
           entity_id:
             - binary_sensor.0x00158d0009ea0949_water_leak
             - binary_sensor.0x00158d0009ea1c0e_water_leak
-          from: 'off'
           to: 'on'
           for: 
             seconds: 10

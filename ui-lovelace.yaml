@@ -375,7 +375,7 @@ views:
               entities:
                 - entity: light.gateway_light_04cf8cabd77b
                 - entity: sensor.signalka_shliuza_illuminance
-                - entity: sensor.0x54ef4410000ebba0_illuminance_lux
+                - entity: sensor.0x54ef4410000ebba0_illuminance
                 
 
         - type: markdown
@@ -748,8 +748,8 @@ views:
                 - type: entities
                   show_header_toggle: false
                   entities:
-                    - entity: sensor.permit_join_timeout_z2m
-                      name: "Осталось"
+                    - entity: timer.permit_join_timeout_z2m
+                      name: "Таймер:"
                       
             - type: 'custom:mushroom-select-card'
               entity: input_select.selected_router_for_permit_join_z2m
@@ -1923,7 +1923,7 @@ views:
                         border: none;
                       }
                   name: Блок. кнопок
-                  entity: switch.0x5c0272fffec89454_child_lock_switch
+                  entity: switch.0x5c0272fffec89454_child_lock
                   tap_action:
                     action: toggle
 
@@ -1998,7 +1998,7 @@ views:
                         border: none;
                       }
                   name: Блок. кнопок
-                  entity: switch.0x60a423fffe968719_child_lock_switch
+                  entity: switch.0x60a423fffe968719_child_lock
                   tap_action:
                     action: toggle
 
@@ -2069,7 +2069,7 @@ views:
                         border: none;
                       }
                   name: Блок. кнопок
-                  entity: switch.0x5c0272fffec9db22_child_lock_switch
+                  entity: switch.0x5c0272fffec9db22_child_lock
                   tap_action:
                     action: toggle
                 
@@ -2128,7 +2128,7 @@ views:
                         border: none;
                       }
                   name: Блок. кнопок
-                  entity: switch.0x5c0272fffe8de819_child_lock_switch
+                  entity: switch.0x5c0272fffe8de819_child_lock
                   tap_action:
                     action: toggle
                   
@@ -2606,7 +2606,7 @@ views:
         cards:
             - type: 'custom:webrtc-camera'
               url: 'hallway_1_sub'
-              #entity: camera.hallway_1_sub
+              #entity: camera.hallway_1_fluent
               ui: false
               muted: true
               intersection: 0.50
@@ -2616,7 +2616,7 @@ views:
 
             - type: 'custom:webrtc-camera'
               url: 'elevators_sub'
-              #entity: camera.elevators_sub
+              #entity: camera.elevators_fluent
               ui: false
               muted: true
               intersection: 0.50
@@ -2628,7 +2628,7 @@ views:
         cards:
             - type: 'custom:webrtc-camera'
               url: 'entrance_door_sub'
-              #entity: camera.entrance_door_sub
+              #entity: camera.entrance_door_fluent
               ui: false
               muted: true
               intersection: 0.50
@@ -2638,7 +2638,7 @@ views:
             
             - type: 'custom:webrtc-camera'
               url: 'emergency_exit_sub'
-              #entity: camera.emergency_exit_sub
+              #entity: camera.emergency_exit_fluent
               ui: false
               muted: true
               intersection: 0.50

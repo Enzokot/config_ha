@@ -383,7 +383,7 @@
           data:
             topic: "zigbee2mqtt/bridge/request/permit_join"
             payload: >
-                {{ '{"value": ' ~ iif(trigger.event.data.service_data.option == 'Не выбрано', 'false', 'true, "time": 254, "device": "' ~ trigger.event.data.service_data.option) ~ '"}' }}
+                {{ '{' ~ iif(trigger.event.data.service_data.option == 'Не выбрано', '"time":0', '"time":254, "device":"' ~ trigger.event.data.service_data.option) ~ '"}' }}
 
 #Смена состояния выбора по состоянию в z2m
     - alias: set_option_for_selected_router_from_info_topic_z2m
@@ -391,10 +391,15 @@
       mode: restart
       triggers:
         - trigger: state
-          id: 'switch_permit_join'
           entity_id: switch.permit_join_switch_z2m
+          id: 'switch_permit_join'
           to: 'off'
+        - trigger: state
+          entity_id: sensor.zigbee2mqtt_add_on_permit_join_current_device_z2m
+          id: 'sensor_current_device'
       actions:
+        - variables:
+            permit_join_current_device: "{{ states('sensor.zigbee2mqtt_add_on_permit_join_current_device_z2m') if is_state('switch.permit_join_switch_z2m', 'on') and has_value('sensor.zigbee2mqtt_add_on_permit_join_current_device_z2m') else 'Не выбрано' }}"
         - parallel:
           - if:
               - condition: trigger
@@ -406,3 +411,41 @@
                   entity_id: input_select.selected_router_for_permit_join_z2m
                 data:
                   option: 'Не выбрано'
+          - if:
+              - condition: trigger
+                id: sensor_current_device
+              - "{{ not is_state('input_select.selected_router_for_permit_join_z2m', permit_join_current_device) }}"
+            then:
+              - action: input_select.select_option
+                target:
+                  entity_id: input_select.selected_router_for_permit_join_z2m
+                data:
+                  option: '{{ permit_join_current_device }}'
+
+#Запуск таймера добавления устройств z2m
+    - alias: start_timer_permit_join_timeout_z2m
+      id: start_timer_permit_join_timeout_z2m
+      initial_state: true
+      mode: restart
+      triggers:
+        - trigger: state
+          entity_id: sensor.zigbee2mqtt_add_on_permit_join_end_z2m
+        - trigger: homeassistant
+          event: start
+        - trigger: event
+          event_type: automation_reloaded
+      actions:
+        - variables:
+            time_remaining: "{{ ((states('sensor.zigbee2mqtt_add_on_permit_join_end_z2m') | int(0)) / 1000 - (as_timestamp(utcnow()) | int(0))) | int(0) }}"
+        - if:
+            - "{{ time_remaining > 0 }}"
+          then:
+            - action: timer.start
+              target:
+                entity_id: timer.permit_join_timeout_z2m
+              data:
+                duration: "{{ time_remaining }}"
+          else:
+            - action: timer.cancel
+              target:
+                entity_id: timer.permit_join_timeout_z2m

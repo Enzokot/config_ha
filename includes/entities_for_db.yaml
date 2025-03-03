@@ -71,7 +71,7 @@
       - sensor.total_shelly_plug_s_keenetic_hw_cable_daily_electicity
       - sensor.total_shelly_plug_s_keenetic_hw_cable_monthly_electicity
       #Датчик освещенности улица
-      - sensor.0x54ef4410000ebba0_illuminance_lux
+      - sensor.0x54ef4410000ebba0_illuminance
       #Положение штока термоголовок
       - sensor.thermostat_childrens_room_valve_position
       - sensor.thermostat_bedroom_valve_position

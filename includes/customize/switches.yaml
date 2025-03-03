@@ -68,3 +68,19 @@ switch.shelly_1pm_fan_nvr_box:
 switch.shelly_plug_s_keenetic_hw:
   friendly_name: Вкл/выкл Keenetic HW
   icon: mdi:power-socket-eu
+
+switch.0x60a423fffe968719_child_lock:
+  friendly_name: Защита от детей
+  icon: mdi:human-female-girl
+
+switch.0x5c0272fffec9db22_child_lock:
+  friendly_name: Защита от детей
+  icon: mdi:human-female-girl
+
+switch.0x5c0272fffec89454_child_lock:
+  friendly_name: Защита от детей
+  icon: mdi:human-female-girl
+
+switch.0x5c0272fffe8de819_child_lock:
+  friendly_name: Защита от детей
+  icon: mdi:human-female-girl

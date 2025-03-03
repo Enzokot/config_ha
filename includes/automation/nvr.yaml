@@ -7,7 +7,6 @@
           entity_id:
             - binary_sensor.0x00158d0009ea0949_water_leak
             - binary_sensor.0x00158d0009ea1c0e_water_leak
-          from: 'off'
           to: 'on'
           for:
             seconds: 7
@@ -45,9 +44,9 @@
           entity_id: 
             - switch.shelly_1pm_fan_nvr_box
             - binary_sensor.0x00158d00093e4111_contact
-            - binary_sensor.0x00158d0009ea0949_water_leak
-            - binary_sensor.0x00158d0009ea1c0e_water_leak
           state: 'off'
+        - "{{ is_state('binary_sensor.0x00158d0009ea1c0e_water_leak', 'off') or not has_value('binary_sensor.0x00158d0009ea1c0e_water_leak') }}"
+        - "{{ is_state('binary_sensor.0x00158d0009ea0949_water_leak', 'off') or not has_value('binary_sensor.0x00158d0009ea0949_water_leak') }}"
         - >
             {% set time_now = now() %}
             {{ 

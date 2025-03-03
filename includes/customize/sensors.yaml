@@ -171,7 +171,7 @@ sensor.0x60a423fffef8d41a_power:
 sensor.shelly_plug_s_1_power:
   friendly_name: Тек. мощность
 
-sensor.0x54ef4410000ebba0_illuminance_lux:
+sensor.0x54ef4410000ebba0_illuminance:
   friendly_name: Улица освещенность
 
 sensor.0x54ef4410000ebba0_battery:
@@ -448,3 +448,9 @@ sensor.total_shelly_plug_s_keenetic_hw_cable_daily_electicity:
   
 sensor.total_shelly_plug_s_keenetic_hw_cable_monthly_electicity:
   friendly_name: Keenetic HW потреб. мес.
+
+sensor.ups_ds_input_voltage:
+  friendly_name: Входное напряжение DS
+
+sensor.ups_ds_output_voltage:
+  friendly_name: Выходное напряжение DS

@@ -1,9 +1,4 @@
 
-  notifier:
-    - oauth_token: !secret yandex_oauth_token
-      skill_id: !secret yandex_skill_id
-      user_id: !secret yandex_user_id
-
   filter:
     include_entities:
       - switch.0x54ef441000691265
@@ -256,6 +251,7 @@
           entity: sensor.r4s01_kettle_energy
         - type: meter
           entity: sensor.r4s01_kettle_oncount
+      backlight_entity_id: switch.r4s01_kettle_backlight
       custom_toggles:
         mute:
           state_entity_id: switch.r4s01_kettle_mute
@@ -277,16 +273,6 @@
             action: light.turn_off
             target:
               entity_id: light.r4s01_kettle_light
-        backlight:
-          state_entity_id: switch.r4s01_kettle_backlight
-          turn_on:
-            action: switch.turn_on
-            target:
-              entity_id: switch.r4s01_kettle_backlight
-          turn_off:
-            action: switch.turn_off
-            target:
-              entity_id: switch.r4s01_kettle_backlight
         keep_warm:
           state_entity_id: switch.r4s01_kettle_heat
           turn_on:
@@ -502,6 +488,7 @@
           normal: ['Straight Wind']
           supply_air: ['Natural Wind']
           quiet: ['Sleep']
+      backlight_entity_id: light.dmaker_p45_5007_indicator_light
       custom_toggles:
         mute:
           state_entity_id: switch.dmaker_p45_5007_alarm
@@ -533,13 +520,3 @@
             action: switch.turn_off
             target:
               entity_id: switch.dmaker_p45_5007_horizontal_swing
-        backlight:
-          state_entity_id: light.dmaker_p45_5007_indicator_light
-          turn_on:
-            action: light.turn_on
-            target:
-              entity_id: light.dmaker_p45_5007_indicator_light
-          turn_off:
-            action: light.turn_off
-            target:
-              entity_id: light.dmaker_p45_5007_indicator_light

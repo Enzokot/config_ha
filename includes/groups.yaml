@@ -106,6 +106,7 @@
           - fan.dmaker_p45_5007_fan
           - sensor.kotletochka_nvr_hw_hdd_0_storage
           - sensor.kotletochka_nvr_hw_hdd_1_storage
+          - sensor.ups_ds_input_voltage
 
     temperature_summary_group_to_bot:
         entities:

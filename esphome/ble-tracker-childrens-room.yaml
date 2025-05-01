@@ -10,7 +10,7 @@ external_components:
 
 esphome:
   name: $nodename
-  comment: BLE childrens room
+  comment: Monitoring HA state and BLE childrens room
 
 esp32:
   board: wemos_d1_mini32

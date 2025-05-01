@@ -2,3 +2,5 @@
     #Перезапуск и перезагрузка Supervisor для кнопки в UI
     restart_supervisor: 'curl -dsSL -H "Authorization: Bearer $SUPERVISOR_TOKEN" -X POST http://supervisor/supervisor/restart'
     reload_supervisor: 'curl -dsSL -H "Authorization: Bearer $SUPERVISOR_TOKEN" -X POST http://supervisor/supervisor/reload'
+    #Чтение бекапов
+    reload_backups: 'curl -dsSL -H "Authorization: Bearer $SUPERVISOR_TOKEN" -X POST http://supervisor/backups/reload'

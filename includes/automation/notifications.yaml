@@ -147,7 +147,7 @@
             entity_id: timer.front_door_ringtone
           - choose:
               - conditions: "{{ trigger.id == 'binary_sensor_trigger' }}"
-                sequence:            
+                sequence:
                   - action: xiaomi_aqara.stop_ringtone
                     data:
                       gw_mac: !secret gateway1_mac
@@ -1738,6 +1738,7 @@
             - "{{ trigger.id == 'homeassistant_start' }}"
           then:
             - delay: 2
+        - condition: "{{ trigger.id == 'homeassistant_start' and states('sensor.repairs_state') | int(0) > 0 or trigger.id != 'homeassistant_start' and trigger.from_state.state | int(0) < trigger.to_state.state | int(0) }}"
         - action: telegram_bot.send_message
           data:
             target: !secret telegram_enzokot_chat_id

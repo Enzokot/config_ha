@@ -40,6 +40,11 @@
                       file: "/share/ds_obmen/Doorbeel_Snapshots/snapshot_hallway_1_{{ string_now_time }}.jpg"
                       caption: "{{ '\U0001f514' }} *Кто-то звонит в дверь*"
                       target: !secret telegram_all_chat_id
+              - action: telegram_bot.send_video
+                data:
+                  url: "http://localhost:1984/api/stream.mp4?src=hallway_1_sub&mp4=flac&duration=5&filename=record.mp4"
+                  caption: "{{ '\U0001f514' }} *Кто-то звонит в дверь*"
+                  target: !secret telegram_enzokot_chat_id
               - sequence:
                   - condition: 
                       - condition: time

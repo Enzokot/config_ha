@@ -175,10 +175,11 @@ sensor:
   - platform: homeassistant
     name: "Temperature living room"
     internal: true
-    device_class: temperature
-    accuracy_decimals: 1
+    device_class: temperature    
     entity_id: sensor.esp_xiaomi_living_room_temperature
     id: temp_for_avatto_ac_living_room
+    filters:
+      - round: 1
 
   - platform: uptime
     name: "${devicename}_Uptime_Sensor"

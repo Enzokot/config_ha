@@ -590,6 +590,7 @@ views:
                   - sensor.0x158d0006b860cf_battery
                   - sensor.0x00158d0008386b56_battery
                   - sensor.temperature_humidity_sensor_500d_battery
+                  - sensor.esp_xiaomi_hallway_battery_level
               - name: 'Движения (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
                 icon: 'mdi:motion-sensor'
@@ -721,6 +722,9 @@ views:
               tap_action: more-info
             - entity: sensor.temperature_humidity_sensor_500d_battery
               tap_action: more-info
+            - entity: sensor.esp_xiaomi_hallway_battery_level
+              tap_action: more-info
+              name: 'Дисплей Т&Rh коридор'
 
         - type: markdown
           content: >

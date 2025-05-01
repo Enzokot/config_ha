@@ -37,19 +37,21 @@
       max_exceeded: silent
       triggers:
         - trigger: event
-          event_type: yandex_intent
+          event_type: yandex_speaker
           event_data:
-            text: теперь ты алиса
+            instance: text_action
+            value: "Ничего не делай?-=" #Яндекс
         - trigger: event
-          event_type: yandex_intent
+          event_type: yandex_speaker
           event_data:
-            text: теперь ты яндекс
+            instance: text_action
+            value: "Ничего не делай?-:" #Алиса
       actions:
         - action: media_player.play_media
           target:
             entity_id: media_player.yandex_station_ff98f029b620413b35e5e278
           data:
-            media_content_id: "имя: {{ trigger.event.data.text | replace('теперь ты ', '') | replace('у', 'а') }}"
+            media_content_id: "имя: {{ 'алиса' if '?-:' in trigger.event.data.value else 'яндекс' }}"
             media_content_type: settings
 
 #Уборка конкретных комнат
@@ -146,9 +148,10 @@
       max_exceeded: silent
       triggers:
         - trigger: event
-          event_type: yandex_intent
+          event_type: yandex_speaker
           event_data:
-            text: отправь карту уборки
+            instance: text_action
+            value: "Ничего не делай?-"
       actions:
         - action: telegram_bot.send_photo
           data:

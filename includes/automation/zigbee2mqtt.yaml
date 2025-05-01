@@ -48,7 +48,7 @@
             {%- set time_ms = 1 -%} 
             {%- set state_ms = as_timestamp(state.state , 0) -%}
             {%- endif -%}
-            {%- if (state_ms | int(time_limit * time_ms, 0)) < (time_limit * time_ms) -%}
+            {%- if (state_ms | int(time_limit * time_ms, 0)) < (time_limit * time_ms) or not has_value(state.entity_id) -%}
             {%- set datanames.last_seen = datanames.last_seen + [state] -%}
             {%- endif -%}
             {%- endfor -%}
@@ -66,9 +66,9 @@
                     {%- set state_ms = state.state -%}
                     {%- else -%}
                     {%- set time_ms = 1 -%} 
-                    {%- set state_ms = as_timestamp(state.state) -%}
+                    {%- set state_ms = as_timestamp(state.state, 0) -%}
                     {%- endif -%}
-                    {%- if (state_ms | int(time_limit * time_ms)) < (time_limit * time_ms) -%}
+                    {%- if (state_ms | int(time_limit * time_ms)) < (time_limit * time_ms) or not has_value(state.entity_id) -%}
                     {%- set datanames.last_seen = datanames.last_seen + [state] -%}
                     {%- endif -%}
                     {%- endfor -%}
@@ -87,9 +87,9 @@
                     {%- set state_ms = state.state -%}
                     {%- else -%}
                     {%- set time_ms = 1 -%} 
-                    {%- set state_ms = as_timestamp(state.state) -%}
+                    {%- set state_ms = as_timestamp(state.state, 0) -%}
                     {%- endif -%}
-                    {%- if (state_ms | int(time_limit * time_ms)) < (time_limit * time_ms) -%}
+                    {%- if (state_ms | int(time_limit * time_ms)) < (time_limit * time_ms) or not has_value(state.entity_id) -%}
                     {% if device_attr(state.entity_id, 'name_by_user') != none %}
                       {%- set datanames.device_name = datanames.device_name + [device_attr(state.entity_id, 'name_by_user')] -%}
                     {% else %}
@@ -436,7 +436,7 @@
           event_type: automation_reloaded
       actions:
         - variables:
-            time_remaining: "{{ ((states('sensor.zigbee2mqtt_add_on_permit_join_end_z2m') | int(0)) / 1000 - (as_timestamp(utcnow()) | int(0))) | int(0) }}"
+            time_remaining: "{{ ((states('sensor.zigbee2mqtt_add_on_permit_join_end_z2m') | int(0)) / 1000 - (as_timestamp(utcnow(), 0) | int(0))) | int(0) }}"
         - if:
             - "{{ time_remaining > 0 }}"
           then:

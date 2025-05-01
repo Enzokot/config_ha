@@ -107,6 +107,7 @@
           - sensor.kotletochka_nvr_hw_hdd_0_storage
           - sensor.kotletochka_nvr_hw_hdd_1_storage
           - sensor.ups_ds_input_voltage
+          - sensor.ble_tracker_hallway_wifi_rssi
 
     temperature_summary_group_to_bot:
         entities:

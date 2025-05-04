@@ -72,24 +72,29 @@ display:
     time_id: sntp_time
     id: pvvx_display_hw
     lambda: |-
-      double temp = id(temp_for_display_hw).state;
-      double humidity = id(humidity_for_display_hw).state;
-      if (temp <= -10) {
-        it.print_bignum(fabs(temp));
-        it.print_unit(pvvx_mithermometer::UNIT_MINUS);
-      } else {
-        it.print_bignum(temp);
-        it.print_unit(pvvx_mithermometer::UNIT_DEG_C);
-      }
-      it.print_smallnum(humidity);
-      it.print_percent();
-      if (temp < 15 || temp > 26) {
-        it.print_sad();
-        if (temp < -5 || temp > 29) {
-          it.print_bracket(true);
+      if (id(temp_for_display_hw).has_state() && id(humidity_for_display_hw).has_state()) {
+        float temp = id(temp_for_display_hw).state;
+        float humidity = id(humidity_for_display_hw).state;
+        if (temp <= -10) {
+          it.print_bignum(fabs(temp));
+          it.print_unit(pvvx_mithermometer::UNIT_MINUS);
+        } else {
+          it.print_bignum(temp);
+          it.print_unit(pvvx_mithermometer::UNIT_DEG_C);
+        }
+        it.print_smallnum(humidity);
+        it.print_percent();
+        if (temp < 15 || temp > 26) {
+          it.print_sad();
+          if (temp < -5 || temp > 29) {
+            it.print_bracket(true);
+          }
+        } else {
+          it.print_happy();
         }
       } else {
-        it.print_happy();
+        it.print_bignum(2000); // undefined values are displayed as Hi
+        it.print_smallnum(100); // undefined values are displayed as Hi
       }
 
 sensor:

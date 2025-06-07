@@ -154,8 +154,6 @@ views:
           entities:
             - entity: sensor.maria_db_size
               secondary_info: entity-id
-            - entity: sensor.maria_db_folder_size
-              secondary_info: entity-id
             - type: button
               icon: mdi:database-minus
               name: База данных
@@ -165,9 +163,6 @@ views:
                 perform_action: automation.trigger
                 target:
                   entity_id: automation.db_purge_everyday
-            - type: divider
-            - entity: sensor.influxdb_db_folder_size
-              secondary_info: entity-id
 
         - type: markdown
           content: >

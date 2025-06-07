@@ -4,9 +4,9 @@ substitutions:
   telegram_api_token: !secret telegram_api
   telegram_chat_id: !secret telegram_enzokot_chat_id  
 
-external_components:
-  - source: github://TheStaticTurtle/esphome_syslog
-    components: [syslog]
+#external_components:
+#  - source: github://TheStaticTurtle/esphome_syslog
+#    components: [syslog]
 
 esphome:
   name: $nodename
@@ -55,11 +55,18 @@ captive_portal:
 http_request:
   verify_ssl: false
 
+udp:
+  id: kotletochka_ds_udp
+  addresses: !secret kotletochka-ds-lan-ip
+
 logger:
   #baud_rate: 0
 
 syslog:
-  ip_address: "kotletochka-ds.local"
+  #ip_address: "kotletochka-ds.lan"
+  udp_id: kotletochka_ds_udp
+  time_id: sntp_time
+  level: 'INFO'
     
 api:
   reboot_timeout: 0s
@@ -142,7 +149,7 @@ binary_sensor:
                 then:
                   - http_request.post:
                       url: "https://api.telegram.org/bot${telegram_api_token}/sendMessage"                      
-                      headers:
+                      request_headers:
                         Content-Type: application/json
                       json:
                         chat_id: "${telegram_chat_id}"
@@ -156,7 +163,7 @@ binary_sensor:
                 then:
                   - http_request.post:
                       url: "https://api.telegram.org/bot${telegram_api_token}/sendMessage"                      
-                      headers:
+                      request_headers:
                         Content-Type: application/json
                       json:
                         chat_id: "${telegram_chat_id}"

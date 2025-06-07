@@ -1,17 +1,19 @@
 
   homeassistant.components.xiaomi_miio:
     - "Timeout fetching Увлажнитель детская data"
-    - "Error fetching Увлажнитель детская data: Unable to discover the device*"
+    - "Error fetching Увлажнитель детская data: Unable to discover the device.*"
     - "Timeout fetching Увлажнитель спальня data"
-    - "Error fetching Увлажнитель спальня data: Unable to discover the device*"
+    - "Error fetching Увлажнитель спальня data: Unable to discover the device.*"
     - "Timeout fetching Xiaomi Vacuum cleaner data"
-    - "Unexpected error fetching Увлажнитель спальня data*"
-    - "Unexpected error fetching Увлажнитель детская data*"
+    - "Unexpected error fetching Увлажнитель спальня data.*"
+    - "Unexpected error fetching Увлажнитель детская data.*"
   homeassistant.helpers.entity:
-    - "Update of media_player.lg_smart_tv is taking over*"
-    - "Update of media_player.tv_kotletochka_tv_sam is taking over*"
+    - "Update of media_player.lg_smart_tv is taking over.*"
+    - "Update of media_player.tv_kotletochka_tv_sam is taking over.*"
   homeassistant.components.media_player:
-    - "Updating webostv media_player took longer than the scheduled update interval*"
-    - "Updating samsungtv media_player took longer than the scheduled update interval*"
+    - "Updating webostv media_player took longer than the scheduled update interval.*"
+    - "Updating samsungtv media_player took longer than the scheduled update interval.*"
   homeassistant.components.camera:
-    - "Updating xiaomi_cloud_map_extractor camera took longer than the scheduled update interval*"
+    - "Updating xiaomi_cloud_map_extractor camera took longer than the scheduled update interval.*"
+  homeassistant:
+    - "Error doing job.*IMAP4.*aioimaplib.*"

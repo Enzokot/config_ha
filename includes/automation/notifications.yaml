@@ -1321,11 +1321,8 @@
       mode: queued
       initial_state: true
       triggers:
-        - trigger: persistent_notification
-          update_type:
-           - added
-           - updated
-          notification_id: config_entry_discovery
+        - trigger: event
+          event_type: config_entry_discovered
       actions:
         - parallel:
             - action: telegram_bot.send_message
@@ -1335,9 +1332,6 @@
                 title: "{{ '\U0001F4DF' }} *Устройства*"
                 message: >
                     Найдено новое устройство в сети, [просмотреть]({{- states('sensor.instance_external_url_config') -}}/config/integrations)
-            - action: persistent_notification.dismiss
-              data:
-                notification_id: 'config_entry_discovery'
 
 #Уведомление о новой/обновлении информации устройства/сущности
     - alias: notifications entry discovery
@@ -1353,7 +1347,9 @@
           id: 'device_registry'
           event_type: device_registry_updated
       conditions:
-        - "{{ trigger.id != 'device_registry' or is_state('input_boolean.instances_stoping', 'off') }}"
+        - condition: state
+          entity_id: input_boolean.instances_stoping
+          state: 'off'
       actions:
         - variables:
             name_for_send: >-
@@ -1483,7 +1479,7 @@
             - action: notify.huawei_lte
               data:
                 message: >-
-                         {{ '\U0000203C' }} {{ states('sensor.check_keenetic_link_down') }} Keenetic link is down
+                         {{ '\U0000203C' }} {{ states('sensor.check_keenetic_link_down') | as_timestamp | timestamp_custom('%Y-%m-%d %H:%M') }} Keenetic link is down
                 target: !secret sms_phone_enzokot
                 data:
                   url: 'http://192.168.8.1/'
@@ -2172,3 +2168,32 @@
             target: !secret telegram_enzokot_chat_id
             title: "⚠️ *Трекинг устройств*"
             message: "Камера в *{{- iif(trigger.id == 'cr', 'детской', 'коридоре') -}}* отключена"
+
+#Пересылка уведомлений с почты Download station ya.ru
+    - alias: notification forward message from download station to telegram
+      id: notification forward message from download station to telegram
+      initial_state: true
+      mode: parallel
+      triggers:
+        - trigger: event
+          event_type: imap_content
+          event_data:
+            initial: true
+      actions:
+        - parallel:
+            - action: imap.seen
+              data:
+                entry: "{{ trigger.event.data['entry_id'] }}"
+                uid: "{{ trigger.event.data['uid'] }}"
+            - sequence:
+                - action: imap.fetch
+                  data:
+                    entry: "{{ trigger.event.data['entry_id'] }}"
+                    uid: "{{ trigger.event.data['uid'] }}"
+                  response_variable: message_text
+                - action: telegram_bot.send_message
+                  data:
+                    target: !secret telegram_enzokot_chat_id
+                    title: "{{ '\U0001F4C2' }} *Download station*"
+                    message: "{{ message_text['text'] }}"
+                    disable_web_page_preview: true

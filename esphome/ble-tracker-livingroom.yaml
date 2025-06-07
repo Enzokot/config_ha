@@ -4,10 +4,6 @@ substitutions:
   time_service_uuid: ebe0ccb0-7a0a-4b0c-8a1a-6ff2997da3a6
   time_characteristic_uuid: EBE0CCB7-7A0A-4B0C-8A1A-6FF2997DA3A6
 
-external_components:
-  - source: github://TheStaticTurtle/esphome_syslog
-    components: [syslog]
-
 esphome:
   name: $nodename
   comment: Monitoring HA state and BLE living room
@@ -57,13 +53,19 @@ wifi:
 
 captive_portal:
 
+udp:
+  id: kotletochka_ds_udp
+  addresses: !secret kotletochka-ds-lan-ip
+
 # Enable logging
 logger:
   #level: NONE
   #baud_rate: 0
 
 syslog:
-  ip_address: "kotletochka-ds.local"
+  udp_id: kotletochka_ds_udp
+  time_id: sntp_time
+  level: 'INFO'
     
 # Enable Home Assistant API
 api:  

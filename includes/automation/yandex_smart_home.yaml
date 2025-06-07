@@ -10,12 +10,12 @@
         - trigger: time
           at:
             - "8:00:00"
-            - "21:30:00"
+            - "22:00:00"
       actions:
         - variables:
             time_to_on: >
                 {% set time_now = now() %}
-                {{ today_at('8:00') <= time_now < today_at('21:29:59') }}
+                {{ today_at('8:00') <= time_now < today_at('21:59:59') }}
         - action: media_player.play_media
           target:
             entity_id: media_player.yandex_station_ff98f029b620413b35e5e278

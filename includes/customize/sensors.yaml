@@ -270,12 +270,6 @@ sensor.maria_db_size:
   friendly_name: Объем базы данных Maria
   icon: mdi:database
 
-sensor.maria_db_folder_size:
-  friendly_name: Объем каталога БД Maria
-
-sensor.influxdb_db_folder_size:
-  friendly_name: Объем каталога БД InfluxDB
-
 sensor.total_yeelight_ceiling_relay_cable_daily_electicity:
   friendly_name: Светильник потреб. день
   

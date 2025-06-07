@@ -2,10 +2,6 @@ substitutions:
   devicename: ble-tracker-hallway
   nodename: ble-tracker-hallway
 
-external_components:
-  - source: github://TheStaticTurtle/esphome_syslog
-    components: [syslog]
-
 esphome:
   name: $nodename
   comment: Monitoring HA state and BLE hallway
@@ -31,13 +27,19 @@ wifi:
 
 captive_portal:
 
+udp:
+  id: kotletochka_ds_udp
+  addresses: !secret kotletochka-ds-lan-ip
+
 # Enable logging
 logger:
   #level: NONE
   #baud_rate: 0
 
 syslog:
-  ip_address: "kotletochka-ds.local"
+  udp_id: kotletochka_ds_udp
+  time_id: sntp_time
+  level: 'INFO'
 
 # Enable Home Assistant API
 api:
@@ -72,7 +74,10 @@ display:
     time_id: sntp_time
     id: pvvx_display_hw
     lambda: |-
-      if (id(temp_for_display_hw).has_state() && id(humidity_for_display_hw).has_state()) {
+      if (isnan(id(temp_for_display_hw).state) || isnan(id(humidity_for_display_hw).state)) {
+        it.print_bignum(2000); // undefined values are displayed as Hi
+        it.print_smallnum(100); // undefined values are displayed as Hi
+      } else {
         float temp = id(temp_for_display_hw).state;
         float humidity = id(humidity_for_display_hw).state;
         if (temp <= -10) {
@@ -92,9 +97,6 @@ display:
         } else {
           it.print_happy();
         }
-      } else {
-        it.print_bignum(2000); // undefined values are displayed as Hi
-        it.print_smallnum(100); // undefined values are displayed as Hi
       }
 
 sensor:

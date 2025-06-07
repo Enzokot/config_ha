@@ -6,8 +6,6 @@
       - sensor.processor_temperature
       #База
       - sensor.maria_db_size
-      - sensor.maria_db_folder_size
-      - sensor.influxdb_db_folder_size
       #Входная дверь
       - binary_sensor.0x158d000359304c_contact
       - binary_sensor.0x158d0003cfa725_contact

@@ -96,38 +96,6 @@
                     "device":{"identifiers":["z2m_info"],"manufacturer":"Enzokot","model":"Local polling","name":"Zigbee2MQTT add-on"}
                   }
 
-            #На хосте "du -s /usr/share/hassio/addons/data/core_mariadb/databases/homeassistant/"
-            - action: mqtt.publish
-              data: 
-                topic: homeassistant/sensor/maria_db_folder_size/config
-                retain: true 
-                payload: >- 
-                  { 
-                    "name":"Maria DB folder size", 
-                    "state_topic":"host_data/folders_sizes/mariadb_homeassistant",
-                    "value_template":"{{ '{{' }} (value | float(0.0) / 1024) | round(1, 'common', 0) {{ '}}' }}",
-                    "icon":"mdi:folder-eye", 
-                    "unit_of_measurement":"MB",
-                    "unique_id":"maria_db_folder_size",
-                    "device":{"identifiers":["disk_info"],"manufacturer":"Enzokot","model":"Local polling","name":"Disk info"}
-                  }
-
-            #На хосте "du -s /usr/share/hassio/addons/data/a0d7b954_influxdb/influxdb/data/homeassistant/"
-            - action: mqtt.publish
-              data: 
-                topic: homeassistant/sensor/influxdb_db_folder_size/config
-                retain: true 
-                payload: >- 
-                  { 
-                    "name":"InfluxDB DB folder size", 
-                    "state_topic":"host_data/folders_sizes/influxdb_homeassistant",
-                    "value_template":"{{ '{{' }} (value | float(0.0) / 1024) | round(1, 'common', 0) {{ '}}' }}",
-                    "icon":"mdi:folder-eye", 
-                    "unit_of_measurement":"MB",
-                    "unique_id":"influxdb_db_folder_size",
-                    "device":{"identifiers":["disk_info"],"manufacturer":"Enzokot","model":"Local polling","name":"Disk info"}
-                  }
-
             - action: mqtt.publish
               data: 
                 topic: homeassistant/sensor/check_keenetic_link_down/config
@@ -136,7 +104,9 @@
                   { 
                     "name":"check keenetic link down", 
                     "state_topic":"host_data/network_diagnostics/check_keenetic_link_down",
+                    "value_template":"{{ '{{' }} as_datetime(value_json.status, 0) | as_local() if value_json.status is defined and as_datetime(value_json.status, 0) != 0 else None {{ '}}' }}",
                     "icon":"mdi:calendar-clock", 
+                    "device_class":"timestamp",
                     "unique_id":"check_keenetic_link_down",
                     "device":{"identifiers":["network_info"],"manufacturer":"Enzokot","model":"Local polling","name":"Network info"}
                   }
@@ -152,21 +122,6 @@
                     "value_template":"{{ '{{' }} value_json.state {{ '}}' }}",
                     "icon":"mdi:calendar-clock", 
                     "unique_id":"sostoianie_mosta",
-                    "device":{"identifiers":["z2m_info"],"manufacturer":"Enzokot","model":"Local polling","name":"Zigbee2MQTT add-on"}
-                  }
-
-            - action: mqtt.publish
-              data: 
-                topic: homeassistant/sensor/zigbee2mqtt_bridge_uptime/config
-                retain: true 
-                payload: >- 
-                  { 
-                    "avty":[{"topic":"zigbee2mqtt/bridge/state","value_template":"{{ '{{' }} value_json.state {{ '}}' }}"}],
-                    "name":"Zigbee2mqtt Bridge Uptime", 
-                    "state_topic":"host_data/zigbee2mqtt_start_at",
-                    "icon":"mdi:av-timer",
-                    "unit_of_measurement":"s",
-                    "unique_id":"zigbee2mqtt_bridge_uptime",
                     "device":{"identifiers":["z2m_info"],"manufacturer":"Enzokot","model":"Local polling","name":"Zigbee2MQTT add-on"}
                   }
 

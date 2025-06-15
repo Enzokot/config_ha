@@ -3,7 +3,7 @@
       #Система
       - sensor.processor_use
       - sensor.memory_use_percent
-      - sensor.processor_temperature
+      - sensor.pve_sensors_pve_processor_temperature
       #База
       - sensor.maria_db_size
       #Входная дверь

@@ -301,3 +301,18 @@
                     "unique_id":"dmesg_ext4_warning",
                     "device":{"identifiers":["host_kernel_info"],"manufacturer":"Enzokot","model":"Local polling","name":"Host kernel info"}
                   }
+
+            - action: mqtt.publish
+              data: 
+                topic: homeassistant/sensor/pve_processor_temperature/config
+                retain: true 
+                payload: >- 
+                  { 
+                    "name":"pve processor temperature", 
+                    "state_topic":"host_data/host_sensors/cpu_temp",
+                    "icon":"mdi:thermometer", 
+                    "unit_of_measurement":"°C",
+                    "device_class":"temperature",
+                    "unique_id":"pve_processor_temperature",
+                    "device":{"identifiers":["pve_sensors"],"manufacturer":"Enzokot","model":"Local polling","name":"PVE Sensors"}
+                  }

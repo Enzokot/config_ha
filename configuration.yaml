@@ -12,7 +12,7 @@ homeassistant:
   customize: !include_dir_merge_named includes/customize
   allowlist_external_dirs:
     - /config
-    - /share/ds_obmen
+    - /share/DS_Obmen
   external_url: !secret external_url
   internal_url: "http://kotletochka-ha-main.lan:8123/"
   auth_mfa_modules:

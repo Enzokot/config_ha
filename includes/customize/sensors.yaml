@@ -20,9 +20,8 @@ sensor.0x00158d000542ceaf_humidity:
 sensor.0x00158d0004561de9_humidity:
   friendly_name: Rh ванная
 
-sensor.processor_temperature:
+sensor.pve_sensors_pve_processor_temperature:
   friendly_name: Температура CPU
-  device_class: temperature
 
 sensor.esp_xiaomi_bed_room_temperature:
   friendly_name: Т спальня

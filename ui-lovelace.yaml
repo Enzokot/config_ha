@@ -113,7 +113,7 @@ views:
 
         - type: custom:mini-graph-card
           entities:
-            - entity: sensor.processor_temperature
+            - entity: sensor.pve_sensors_pve_processor_temperature
           show:
             extrema: true
             labels: true

@@ -84,3 +84,7 @@ switch.0x5c0272fffec89454_child_lock:
 switch.0x5c0272fffe8de819_child_lock:
   friendly_name: Защита от детей
   icon: mdi:human-female-girl
+
+switch.shelly_plug_s_htr_shelly_heated_tr:
+  friendly_name: Вкл/выкл полотенцесушитель
+  icon: mdi:heating-coil

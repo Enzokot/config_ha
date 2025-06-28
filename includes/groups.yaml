@@ -38,6 +38,7 @@
           - switch.shelly_plug_s_nvr
           - switch.shelly_1pm_fan_nvr_box
           - switch.shelly_plug_s_keenetic_hw
+          - switch.shelly_plug_s_htr_shelly_heated_tr
           - sensor.0x00158d00045cd551_battery
           - sensor.0x158d00045ca483_battery
           - sensor.0x158d00039d9398_battery
@@ -56,8 +57,7 @@
           - light.signalka_shliuza_light
           #- humidifier.zhimi_humidifier_ca4
           #- humidifier.zhimi_humidifier_cb1
-          - sensor.kholodilnik
-          - switch.kholodilnik_eco_friendly
+          - binary_sensor.kholodilnik_door
           - media_player.lg_smart_tv
           - media_player.tv_kotletochka_tv_sam
           - media_player.sony_bravia_tv

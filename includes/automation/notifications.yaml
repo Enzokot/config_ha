@@ -754,6 +754,8 @@
       conditions:
         - "{{ trigger.event.data.entity_id.startswith('update.') }}"
         - "{{ trigger.event.data.old_state is not none and trigger.event.data.new_state is not none }}"
+        - "{{ trigger.event.data.new_state.attributes.latest_version is defined and trigger.event.data.new_state.attributes.installed_version is defined }}"
+        - "{{ trigger.event.data.old_state.attributes.latest_version is defined and trigger.event.data.old_state.attributes.installed_version is defined }}"
         - or:
             - condition: template
               value_template: >
@@ -909,6 +911,7 @@
                 - sensor.shelly_plug_s_2_power
                 - sensor.shelly_plug_s_nvr_power
                 - sensor.shelly_plug_s_keenetic_hw_power
+                - sensor.shelly_plug_s_htr_shelly_heated_tr_power
             above: 3000
       actions:
         - action: telegram_bot.send_message

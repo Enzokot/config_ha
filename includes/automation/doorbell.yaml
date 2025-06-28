@@ -33,11 +33,11 @@
                     target:
                       entity_id: camera.hallway_1_fluent
                     data:
-                      filename: "/share/ds_obmen/Doorbeel_Snapshots/snapshot_hallway_1_{{ string_now_time }}.jpg"
+                      filename: "/share/DS_Obmen/Doorbeel_Snapshots/snapshot_hallway_1_{{ string_now_time }}.jpg"
               
                   - action: telegram_bot.send_photo
                     data:
-                      file: "/share/ds_obmen/Doorbeel_Snapshots/snapshot_hallway_1_{{ string_now_time }}.jpg"
+                      file: "/share/DS_Obmen/Doorbeel_Snapshots/snapshot_hallway_1_{{ string_now_time }}.jpg"
                       caption: "{{ '\U0001f514' }} *Кто-то звонит в дверь*"
                       target: !secret telegram_all_chat_id
               - action: telegram_bot.send_video

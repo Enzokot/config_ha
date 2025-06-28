@@ -104,7 +104,7 @@ views:
               name: Свободное место
               unit: 'Гб'
               min: 0
-              max: 233
+              max: 125
               entity: sensor.disk_free
               severity:
                 red: 0
@@ -1064,6 +1064,36 @@ views:
                   - entity: sensor.total_shelly_plug_s_keenetic_hw_cable_daily_electicity
                     name: 'День'
                   - entity: sensor.total_shelly_plug_s_keenetic_hw_cable_monthly_electicity
+                    name: 'Месяц'
+
+        - type: markdown
+          content: >
+             **Розетка полотенцесушитель** 
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: switch.shelly_plug_s_htr_shelly_heated_tr
+                    state_color: true
+                    secondary_info: last-changed
+            - type: divider
+            - type: glance
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
+              columns: 3
+              show_icon: false
+              entities:
+                  - entity: sensor.shelly_plug_s_htr_shelly_heated_tr_power
+                    name: 'Мощность'
+                  - entity: sensor.total_shelly_plug_s_htr_cable_daily_electicity
+                    name: 'День'
+                  - entity: sensor.total_shelly_plug_s_htr_cable_monthly_electicity
                     name: 'Месяц'
 
   - title: Климат

@@ -167,3 +167,16 @@
           unit_of_measurement: kWh
           icon: mdi:horizontal-rotate-counterclockwise
           state: "{{ states('input_number.total_shelly_plug_s_keenetic_hw_saved') }}"
+
+    - trigger:
+        - trigger: state
+          entity_id: input_number.total_shelly_plug_s_htr_saved
+        - trigger: homeassistant
+          event: start
+        - trigger: event
+          event_type: event_template_reloaded
+      sensor:
+        - name: total_shelly_plug_s_htr_cable
+          unit_of_measurement: kWh
+          icon: mdi:horizontal-rotate-counterclockwise
+          state: "{{ states('input_number.total_shelly_plug_s_htr_saved') }}"

@@ -447,3 +447,12 @@ sensor.ups_ds_input_voltage:
 
 sensor.ups_ds_output_voltage:
   friendly_name: Выходное напряжение DS
+
+sensor.shelly_plug_s_htr_shelly_heated_tr_power:
+  friendly_name: Тек. мощность
+
+sensor.total_shelly_plug_s_htr_cable_daily_electicity:
+  friendly_name: Полотенцесушитель потреб. день
+  
+sensor.total_shelly_plug_s_htr_cable_monthly_electicity:
+  friendly_name: Полотенцесушитель потреб. мес.

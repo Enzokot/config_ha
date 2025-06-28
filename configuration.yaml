@@ -55,12 +55,14 @@ influxdb: !include includes/influxdb.yaml
 logger:
   default: warn
   filters: !include includes/logger_filters.yaml
-#   logs:
-#     homeassistant.components.feedreader: debug
-#     homeassistant.bootstrap: debug
-#     homeassistant.setup: debug
-#     homeassistant.loader: debug
-#     homeassistant.config_entries: debug
+#  logs:
+#    custom_components.xiaomi_cloud_map_extractor.camera: debug
+#    custom_components.smartthinq_sensors: debug
+#    homeassistant.components.feedreader: debug
+#    homeassistant.bootstrap: debug
+#    homeassistant.setup: debug
+#    homeassistant.loader: debug
+#    homeassistant.config_entries: debug
 system_log:
   fire_event: true
 

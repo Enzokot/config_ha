@@ -154,6 +154,7 @@
             - sensor.shelly_plug_s_nvr_power
             - sensor.shelly_1pm_fan_nvr_box_power
             - sensor.shelly_plug_s_keenetic_hw_power
+            - sensor.shelly_plug_s_htr_shelly_heated_tr_power
         above: 3000
       actions:
           - action: switch.turn_off
@@ -216,7 +217,8 @@
                    "sensor.0x54ef441000691265_energy": "input_number.total_kitchen_light_switch_working_area_saved",
                    "sensor.shelly_1pm_fan_nvr_box_energy": "input_number.total_shelly_1pm_fan_nvr_box_saved",
                    "sensor.shelly_plug_s_keenetic_hw_energy": "input_number.total_shelly_plug_s_keenetic_hw_saved",
-                   "sensor.shelly_plug_s_nvr_energy": "input_number.total_shelly_plug_s_nvr_saved"}
+                   "sensor.shelly_plug_s_nvr_energy": "input_number.total_shelly_plug_s_nvr_saved",
+                   "sensor.shelly_plug_s_htr_shelly_heated_tr_energy": "input_number.total_shelly_plug_s_htr_saved"}
             }}
       triggers:
         - trigger: state
@@ -234,6 +236,7 @@
             - sensor.shelly_plug_s_nvr_energy
             - sensor.shelly_1pm_fan_nvr_box_energy
             - sensor.shelly_plug_s_keenetic_hw_energy
+            - sensor.shelly_plug_s_htr_shelly_heated_tr_energy
       conditions:
         - condition: template
           value_template: >- 

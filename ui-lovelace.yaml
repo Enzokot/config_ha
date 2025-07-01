@@ -315,6 +315,350 @@ views:
             - entity: switch.0x086bd7fffe5aecf8_right
               secondary_info: last-changed
 
+  - title: Электричество
+    path: electricity
+    icon: mdi:lightning-bolt-circle
+    cards:
+      - type: vertical-stack
+        cards:
+
+        - type: markdown
+          content: >
+             **Входная э/э** 
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: glance
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
+              columns: 4
+              show_icon: false
+              entities:
+                  - entity: sensor.shelly_em_voltage
+                    name: 'Напряжение'
+                  - entity: sensor.shelly_em_power
+                    name: 'Мощность'
+                  - entity: sensor.total_shelly_em_cable_daily_electicity
+                    name: 'День'
+                  - entity: sensor.total_shelly_em_cable_monthly_electicity
+                    name: 'Месяц'
+
+        - type: markdown
+          content: >
+             **Розетка полотенцесушитель** 
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: switch.shelly_plug_s_htr_shelly_heated_tr
+                    state_color: true
+                    secondary_info: last-changed
+            - type: divider
+            - type: glance
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
+              columns: 3
+              show_icon: false
+              entities:
+                  - entity: sensor.shelly_plug_s_htr_shelly_heated_tr_power
+                    name: 'Мощность'
+                  - entity: sensor.total_shelly_plug_s_htr_cable_daily_electicity
+                    name: 'День'
+                  - entity: sensor.total_shelly_plug_s_htr_cable_monthly_electicity
+                    name: 'Месяц'
+
+        - type: markdown
+          content: >
+             **Розетка водонагревателя** 
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: switch.0x842e14fffe13a854
+                    state_color: true
+                    secondary_info: last-changed
+                  - entity: input_boolean.water_heater_season
+                    state_color: true
+            - type: divider
+            - type: glance
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
+              columns: 3
+              show_icon: false
+              entities:
+                  - entity: sensor.0x842e14fffe13a854_power
+                    name: 'Мощность'
+                  - entity: sensor.total_water_heater_socket_cable_daily_electicity
+                    name: 'День'
+                  - entity: sensor.total_water_heater_socket_cable_monthly_electicity
+                    name: 'Месяц'
+
+        - type: markdown
+          content: >
+             **Розетка обогревателя Electrolux** 
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: switch.0x842e14fffe5047f5
+                    state_color: true
+                    secondary_info: last-changed
+                  - entity: input_boolean.heater_night_mode
+                    state_color: true
+            - type: divider
+            - type: glance
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
+              columns: 3
+              show_icon: false
+              entities:
+                  - entity: sensor.0x842e14fffe5047f5_power
+                    name: 'Мощность'
+                  - entity: sensor.total_heater_socket_cable_daily_electicity
+                    name: 'День'
+                  - entity: sensor.total_heater_socket_cable_monthly_electicity
+                    name: 'Месяц'
+
+      - type: vertical-stack
+        cards:
+
+        - type: markdown
+          content: >
+             **Розетка в кухне 1** 
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: switch.0x842e14fffe36661f
+                    state_color: true
+                    secondary_info: last-changed
+            - type: divider
+            - type: glance
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
+              columns: 3
+              show_icon: false
+              entities:
+                  - entity: sensor.0x842e14fffe36661f_power
+                    name: 'Мощность'
+                  - entity: sensor.total_kitchen_socket_1_cable_daily_electicity
+                    name: 'День'
+                  - entity: sensor.total_kitchen_socket_1_cable_monthly_electicity
+                    name: 'Месяц'
+
+        - type: markdown
+          content: >
+             **Розетка в спальне 1** 
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: switch.0x588e81fffeff5c4f
+                    state_color: true
+                    secondary_info: last-changed
+            - type: divider
+            - type: glance
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
+              columns: 3
+              show_icon: false
+              entities:
+                  - entity: sensor.0x588e81fffeff5c4f_power
+                    name: 'Мощность'
+                  - entity: sensor.total_bedroom_socket_1_cable_daily_electicity
+                    name: 'День'
+                  - entity: sensor.total_bedroom_socket_1_cable_monthly_electicity
+                    name: 'Месяц'
+
+        - type: markdown
+          content: >
+             **Розетка в спальне 2** 
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: switch.0x60a423fffef8d41a
+                    state_color: true
+                    secondary_info: last-changed
+            - type: divider
+            - type: glance
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
+              columns: 3
+              show_icon: false
+              entities:
+                  - entity: sensor.0x60a423fffef8d41a_power
+                    name: 'Мощность'
+                  - entity: sensor.total_bedroom_socket_2_cable_daily_electicity
+                    name: 'День'
+                  - entity: sensor.total_bedroom_socket_2_cable_monthly_electicity
+                    name: 'Месяц'
+
+      - type: vertical-stack
+        cards:
+
+        - type: markdown
+          content: >
+             **Кулер шкафа NVR** 
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: switch.shelly_1pm_fan_nvr_box
+                    state_color: true
+                    secondary_info: last-changed
+            - type: divider
+            - type: glance
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
+              columns: 4
+              show_icon: false
+              entities:
+                  - entity: sensor.shelly_1pm_fan_nvr_box_power
+                    name: 'Мощность'
+                  - entity: sensor.shelly_1pm_fan_nvr_box_temperature
+                    name: 'Т'
+                  - entity: sensor.total_shelly_1pm_fan_nvr_box_cable_daily_electicity
+                    name: 'День'
+                  - entity: sensor.total_shelly_1pm_fan_nvr_box_cable_monthly_electicity
+                    name: 'Месяц'
+
+        - type: markdown
+          content: >
+             **Розетка Keenetic HW** 
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: switch.shelly_plug_s_keenetic_hw
+                    state_color: true
+                    secondary_info: last-changed
+            - type: divider
+            - type: glance
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
+              columns: 3
+              show_icon: false
+              entities:
+                  - entity: sensor.shelly_plug_s_keenetic_hw_power
+                    name: 'Мощность'
+                  - entity: sensor.total_shelly_plug_s_keenetic_hw_cable_daily_electicity
+                    name: 'День'
+                  - entity: sensor.total_shelly_plug_s_keenetic_hw_cable_monthly_electicity
+                    name: 'Месяц'
+
+        - type: markdown
+          content: >
+             **Розетка NVR** 
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: switch.shelly_plug_s_nvr
+                    state_color: true
+                    secondary_info: last-changed
+            - type: divider
+            - type: glance
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
+              columns: 3
+              show_icon: false
+              entities:
+                  - entity: sensor.shelly_plug_s_nvr_power
+                    name: 'Мощность'
+                  - entity: sensor.total_shelly_plug_s_nvr_cable_daily_electicity
+                    name: 'День'
+                  - entity: sensor.total_shelly_plug_s_nvr_cable_monthly_electicity
+                    name: 'Месяц'
+
+        - type: markdown
+          content: >
+             **Розетка Data Storage** 
+
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: entities
+              show_header_toggle: false
+              entities:
+                  - entity: switch.shelly_plug_s_2
+                    state_color: true
+                    secondary_info: last-changed
+            - type: divider
+            - type: glance
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
+              columns: 3
+              show_icon: false
+              entities:
+                  - entity: sensor.shelly_plug_s_2_power
+                    name: 'Мощность'
+                  - entity: sensor.total_shelly_plug_s_2_cable_daily_electicity
+                    name: 'День'
+                  - entity: sensor.total_shelly_plug_s_2_cable_monthly_electicity
+                    name: 'Месяц'
+
   - title: Zigbee
     path: zigbee-devices
     icon: mdi:zigbee
@@ -371,8 +715,50 @@ views:
                 - entity: light.gateway_light_04cf8cabd77b
                 - entity: sensor.signalka_shliuza_illuminance
                 - entity: sensor.0x54ef4410000ebba0_illuminance
-                
 
+        - type: markdown
+          content: >
+             **Стик zigbee** 
+
+        - type: custom:vertical-stack-in-card
+        #- type: vertical-stack
+          cards:
+            - type: custom:vertical-stack-in-card
+              horizontal: true
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
+              cards:
+                - type: button
+                  name: Поиск zigbee
+                  show_state: false
+                  show_name: false
+                  entity: switch.permit_join_switch_z2m
+                  icon: mdi:cellphone-wireless
+
+                - type: entities
+                  show_header_toggle: false
+                  entities:
+                    - entity: timer.permit_join_timeout_z2m
+                      name: "Таймер:"
+                      
+            - type: 'custom:mushroom-select-card'
+              entity: input_select.selected_router_for_permit_join_z2m
+              secondary_info: none
+              layout: horizontal
+
+            - type: entities
+              show_header_toggle: false
+              entities:
+                - entity: sensor.zigbee2mqtt_coordinator_ver
+                - entity: sensor.sostoianie_mosta
+                - entity: script.zigbee2mqtt_linkuality_check
+
+      - type: vertical-stack
+        cards:
         - type: markdown
           content: >
              **Двери, окна, движение, выключатели детская** 
@@ -437,6 +823,8 @@ views:
               show_last_changed: true
               name: Прав.
 
+      - type: vertical-stack
+        cards:
         - type: markdown
           content: >
              **Двери, окна, движение, выключатели кухня** 
@@ -513,21 +901,6 @@ views:
               name: 'Балкон'
             - entity: sensor.temperature_humidity_sensor_500d_temperature
               name: 'Т'
-
-
-        - type: markdown
-          content: >
-             **Горячее водоснабжение** 
-        
-        - type: glance
-          columns: 5
-          entities:
-            - entity: sensor.0x00158d0006c5f21e_temperature
-              name: 'Ванная'
-            - entity: sensor.0x158d0006b860cf_temperature
-              name: 'Санузел'
-            - entity: sensor.0x00158d0008386b56_temperature
-              name: 'Отопление'
 
       - type: vertical-stack
         cards:
@@ -723,378 +1096,17 @@ views:
 
         - type: markdown
           content: >
-             **Стик zigbee** 
-
-        - type: custom:vertical-stack-in-card
-        #- type: vertical-stack
-          cards:
-            - type: custom:vertical-stack-in-card
-              horizontal: true
-              card_mod:
-                style: |
-                  ha-card {
-                    box-shadow: 0px 0px;
-                    border: none;
-                  }
-              cards:
-                - type: button
-                  name: Поиск zigbee
-                  show_state: false
-                  show_name: false
-                  entity: switch.permit_join_switch_z2m
-                  icon: mdi:cellphone-wireless
-
-                - type: entities
-                  show_header_toggle: false
-                  entities:
-                    - entity: timer.permit_join_timeout_z2m
-                      name: "Таймер:"
-                      
-            - type: 'custom:mushroom-select-card'
-              entity: input_select.selected_router_for_permit_join_z2m
-              secondary_info: none
-              layout: horizontal
-
-            - type: entities
-              show_header_toggle: false
-              entities:
-                - entity: sensor.zigbee2mqtt_coordinator_ver
-                - entity: sensor.sostoianie_mosta
-                - entity: script.zigbee2mqtt_linkuality_check
-
-      - type: vertical-stack
-        cards:
-
-        - type: markdown
-          content: >
-             **Входная э/э** 
-
-        - type: custom:vertical-stack-in-card
-          cards:
-            - type: glance
-              card_mod:
-                style: |
-                  ha-card {
-                    box-shadow: 0px 0px;
-                    border: none;
-                  }
-              columns: 4
-              show_icon: false
-              entities:
-                  - entity: sensor.shelly_em_voltage
-                    name: 'Напряжение'
-                  - entity: sensor.shelly_em_power
-                    name: 'Мощность'
-                  - entity: sensor.total_shelly_em_cable_daily_electicity
-                    name: 'День'
-                  - entity: sensor.total_shelly_em_cable_monthly_electicity
-                    name: 'Месяц'
-
-        - type: markdown
-          content: >
-             **Розетка водонагревателя** 
-
-        - type: custom:vertical-stack-in-card
-          cards:
-            - type: entities
-              show_header_toggle: false
-              entities:
-                  - entity: switch.0x842e14fffe13a854
-                    state_color: true
-                    secondary_info: last-changed
-                  - entity: input_boolean.water_heater_season
-                    state_color: true
-            - type: divider
-            - type: glance
-              card_mod:
-                style: |
-                  ha-card {
-                    box-shadow: 0px 0px;
-                    border: none;
-                  }
-              columns: 3
-              show_icon: false
-              entities:
-                  - entity: sensor.0x842e14fffe13a854_power
-                    name: 'Мощность'
-                  - entity: sensor.total_water_heater_socket_cable_daily_electicity
-                    name: 'День'
-                  - entity: sensor.total_water_heater_socket_cable_monthly_electicity
-                    name: 'Месяц'
-
-        - type: markdown
-          content: >
-             **Розетка обогревателя Electrolux** 
-
-        - type: custom:vertical-stack-in-card
-          cards:
-            - type: entities
-              show_header_toggle: false
-              entities:
-                  - entity: switch.0x842e14fffe5047f5
-                    state_color: true
-                    secondary_info: last-changed
-                  - entity: input_boolean.heater_night_mode
-                    state_color: true
-            - type: divider
-            - type: glance
-              card_mod:
-                style: |
-                  ha-card {
-                    box-shadow: 0px 0px;
-                    border: none;
-                  }
-              columns: 3
-              show_icon: false
-              entities:
-                  - entity: sensor.0x842e14fffe5047f5_power
-                    name: 'Мощность'
-                  - entity: sensor.total_heater_socket_cable_daily_electicity
-                    name: 'День'
-                  - entity: sensor.total_heater_socket_cable_monthly_electicity
-                    name: 'Месяц'
-
-        - type: markdown
-          content: >
-             **Розетка Data Storage** 
-
-        - type: custom:vertical-stack-in-card
-          cards:
-            - type: entities
-              show_header_toggle: false
-              entities:
-                  - entity: switch.shelly_plug_s_2
-                    state_color: true
-                    secondary_info: last-changed
-            - type: divider
-            - type: glance
-              card_mod:
-                style: |
-                  ha-card {
-                    box-shadow: 0px 0px;
-                    border: none;
-                  }
-              columns: 3
-              show_icon: false
-              entities:
-                  - entity: sensor.shelly_plug_s_2_power
-                    name: 'Мощность'
-                  - entity: sensor.total_shelly_plug_s_2_cable_daily_electicity
-                    name: 'День'
-                  - entity: sensor.total_shelly_plug_s_2_cable_monthly_electicity
-                    name: 'Месяц'
-
-        - type: markdown
-          content: >
-             **Розетка в кухне 1** 
-
-        - type: custom:vertical-stack-in-card
-          cards:
-            - type: entities
-              show_header_toggle: false
-              entities:
-                  - entity: switch.0x842e14fffe36661f
-                    state_color: true
-                    secondary_info: last-changed
-            - type: divider
-            - type: glance
-              card_mod:
-                style: |
-                  ha-card {
-                    box-shadow: 0px 0px;
-                    border: none;
-                  }
-              columns: 3
-              show_icon: false
-              entities:
-                  - entity: sensor.0x842e14fffe36661f_power
-                    name: 'Мощность'
-                  - entity: sensor.total_kitchen_socket_1_cable_daily_electicity
-                    name: 'День'
-                  - entity: sensor.total_kitchen_socket_1_cable_monthly_electicity
-                    name: 'Месяц'
-
-        - type: markdown
-          content: >
-             **Розетка в спальне 1** 
-
-        - type: custom:vertical-stack-in-card
-          cards:
-            - type: entities
-              show_header_toggle: false
-              entities:
-                  - entity: switch.0x588e81fffeff5c4f
-                    state_color: true
-                    secondary_info: last-changed
-            - type: divider
-            - type: glance
-              card_mod:
-                style: |
-                  ha-card {
-                    box-shadow: 0px 0px;
-                    border: none;
-                  }
-              columns: 3
-              show_icon: false
-              entities:
-                  - entity: sensor.0x588e81fffeff5c4f_power
-                    name: 'Мощность'
-                  - entity: sensor.total_bedroom_socket_1_cable_daily_electicity
-                    name: 'День'
-                  - entity: sensor.total_bedroom_socket_1_cable_monthly_electicity
-                    name: 'Месяц'
-
-        - type: markdown
-          content: >
-             **Розетка в спальне 2** 
-
-        - type: custom:vertical-stack-in-card
-          cards:
-            - type: entities
-              show_header_toggle: false
-              entities:
-                  - entity: switch.0x60a423fffef8d41a
-                    state_color: true
-                    secondary_info: last-changed
-            - type: divider
-            - type: glance
-              card_mod:
-                style: |
-                  ha-card {
-                    box-shadow: 0px 0px;
-                    border: none;
-                  }
-              columns: 3
-              show_icon: false
-              entities:
-                  - entity: sensor.0x60a423fffef8d41a_power
-                    name: 'Мощность'
-                  - entity: sensor.total_bedroom_socket_2_cable_daily_electicity
-                    name: 'День'
-                  - entity: sensor.total_bedroom_socket_2_cable_monthly_electicity
-                    name: 'Месяц'
-
-        - type: markdown
-          content: >
-             **Розетка NVR** 
-
-        - type: custom:vertical-stack-in-card
-          cards:
-            - type: entities
-              show_header_toggle: false
-              entities:
-                  - entity: switch.shelly_plug_s_nvr
-                    state_color: true
-                    secondary_info: last-changed
-            - type: divider
-            - type: glance
-              card_mod:
-                style: |
-                  ha-card {
-                    box-shadow: 0px 0px;
-                    border: none;
-                  }
-              columns: 3
-              show_icon: false
-              entities:
-                  - entity: sensor.shelly_plug_s_nvr_power
-                    name: 'Мощность'
-                  - entity: sensor.total_shelly_plug_s_nvr_cable_daily_electicity
-                    name: 'День'
-                  - entity: sensor.total_shelly_plug_s_nvr_cable_monthly_electicity
-                    name: 'Месяц'
-
-        - type: markdown
-          content: >
-             **Кулер шкафа NVR** 
-
-        - type: custom:vertical-stack-in-card
-          cards:
-            - type: entities
-              show_header_toggle: false
-              entities:
-                  - entity: switch.shelly_1pm_fan_nvr_box
-                    state_color: true
-                    secondary_info: last-changed
-            - type: divider
-            - type: glance
-              card_mod:
-                style: |
-                  ha-card {
-                    box-shadow: 0px 0px;
-                    border: none;
-                  }
-              columns: 4
-              show_icon: false
-              entities:
-                  - entity: sensor.shelly_1pm_fan_nvr_box_power
-                    name: 'Мощность'
-                  - entity: sensor.shelly_1pm_fan_nvr_box_temperature
-                    name: 'Т'
-                  - entity: sensor.total_shelly_1pm_fan_nvr_box_cable_daily_electicity
-                    name: 'День'
-                  - entity: sensor.total_shelly_1pm_fan_nvr_box_cable_monthly_electicity
-                    name: 'Месяц'
-
-        - type: markdown
-          content: >
-             **Розетка Keenetic HW** 
-
-        - type: custom:vertical-stack-in-card
-          cards:
-            - type: entities
-              show_header_toggle: false
-              entities:
-                  - entity: switch.shelly_plug_s_keenetic_hw
-                    state_color: true
-                    secondary_info: last-changed
-            - type: divider
-            - type: glance
-              card_mod:
-                style: |
-                  ha-card {
-                    box-shadow: 0px 0px;
-                    border: none;
-                  }
-              columns: 3
-              show_icon: false
-              entities:
-                  - entity: sensor.shelly_plug_s_keenetic_hw_power
-                    name: 'Мощность'
-                  - entity: sensor.total_shelly_plug_s_keenetic_hw_cable_daily_electicity
-                    name: 'День'
-                  - entity: sensor.total_shelly_plug_s_keenetic_hw_cable_monthly_electicity
-                    name: 'Месяц'
-
-        - type: markdown
-          content: >
-             **Розетка полотенцесушитель** 
-
-        - type: custom:vertical-stack-in-card
-          cards:
-            - type: entities
-              show_header_toggle: false
-              entities:
-                  - entity: switch.shelly_plug_s_htr_shelly_heated_tr
-                    state_color: true
-                    secondary_info: last-changed
-            - type: divider
-            - type: glance
-              card_mod:
-                style: |
-                  ha-card {
-                    box-shadow: 0px 0px;
-                    border: none;
-                  }
-              columns: 3
-              show_icon: false
-              entities:
-                  - entity: sensor.shelly_plug_s_htr_shelly_heated_tr_power
-                    name: 'Мощность'
-                  - entity: sensor.total_shelly_plug_s_htr_cable_daily_electicity
-                    name: 'День'
-                  - entity: sensor.total_shelly_plug_s_htr_cable_monthly_electicity
-                    name: 'Месяц'
+             **Горячее водоснабжение** 
+        
+        - type: glance
+          columns: 5
+          entities:
+            - entity: sensor.0x00158d0006c5f21e_temperature
+              name: 'Ванная'
+            - entity: sensor.0x158d0006b860cf_temperature
+              name: 'Санузел'
+            - entity: sensor.0x00158d0008386b56_temperature
+              name: 'Отопление'
 
   - title: Климат
     path: climate-device

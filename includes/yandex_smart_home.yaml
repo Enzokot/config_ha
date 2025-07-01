@@ -29,6 +29,7 @@
       - cover.cover_group_living_room
       - light.yeelight_lessons_lamp
       - fan.dmaker_p45_5007_fan
+      - switch.shelly_plug_s_htr_shelly_heated_tr
 
   entity_config:
     switch.0x54ef441000691265:
@@ -520,3 +521,12 @@
             action: switch.turn_off
             target:
               entity_id: switch.dmaker_p45_5007_horizontal_swing
+
+    switch.shelly_plug_s_htr_shelly_heated_tr:
+      properties:
+        - type: voltage
+          entity: sensor.shelly_plug_s_htr_shelly_heated_tr_voltage
+        - type: amperage
+          entity: sensor.shelly_plug_s_htr_shelly_heated_tr_current
+        - type: power
+          entity: sensor.shelly_plug_s_htr_shelly_heated_tr_power

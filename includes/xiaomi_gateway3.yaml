@@ -2,8 +2,8 @@
   devices:
     ble:
       entities: false
-    mesh:
-      entities: false
+    # mesh:
+    #   entities: false
     "0x00158d00054b8d72":
       occupancy_timeout: 62
     "0x00158d000566bde7":

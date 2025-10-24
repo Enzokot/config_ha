@@ -12,6 +12,7 @@
     #   actions:
     #     - action: telegram_bot.send_message
     #       data:
+    #         config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
     #         target: !secret telegram_enzokot_chat_id
     #         parse_mode: 'html'
     #         title: >-
@@ -35,6 +36,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             title: >-
                      {{ '\U0001f4f6' }} *Трекинг устройств*
@@ -67,6 +69,7 @@
     #   actions:
     #     - action: telegram_bot.send_message
     #       data:
+    #         config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
     #         target: !secret telegram_enzokot_chat_id
     #         parse_mode: 'html'
     #         title: >-
@@ -84,6 +87,7 @@
     #   actions:
     #     - action: telegram_bot.send_message
     #       data:
+    #         config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
     #         target: !secret telegram_enzokot_chat_id
     #         parse_mode: 'html'
     #         title: >-
@@ -99,6 +103,7 @@
     #   actions:
     #     - action: telegram_bot.send_message
     #       data:
+    #         config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
     #         target: !secret telegram_enzokot_chat_id
     #         parse_mode: 'html'
     #         title: >-
@@ -116,9 +121,28 @@
     #   actions:
     #     - action: telegram_bot.send_message
     #       data:
+    #         config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
     #         target: !secret telegram_enzokot_chat_id
     #         parse_mode: 'html'
     #         title: >-
     #                  {{ '\U0001F41B' }} <b>Отладка</b>
     #         message: >-
     #                 {{ iif(trigger.json.Event is none, "Пустое имя", trigger.json.Event, "Пустое имя") | e }} -> {{ iif(trigger.json.Device is none, "Пустое имя камеры", trigger.json.Device, "Пустое имя камеры") | e }}
+
+    # - alias: debug message from id in event
+    #   #id: debug message from id in event
+    #   triggers:
+    #     - trigger: event
+    #       event_type: telegram_callback
+    #       event_data:
+    #         command: '/debug'
+    #   actions:
+    #     - variables:
+    #         entity: "{{- device_entities(trigger.event.data['args'][0]) | select('is_state', 'on') | select('match', 'update.') | first -}}"
+    #         friendlyname: "{{- iif(entity != '', state_attr(entity, 'friendly_name') | replace(' Update', ''), '') -}}"
+    #     - action: telegram_bot.answer_callback_query
+    #       data:
+    #         config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
+    #         callback_query_id: '{{ trigger.event.data.id }}'
+    #         message: >-
+    #             Обновление {{ friendlyname }} уже установлено.

@@ -88,3 +88,6 @@ switch.0x5c0272fffe8de819_child_lock:
 switch.shelly_plug_s_htr_shelly_heated_tr:
   friendly_name: Вкл/выкл полотенцесушитель
   icon: mdi:heating-coil
+
+switch.kotletochka_dw_power:
+  friendly_name: Питание посудомойки

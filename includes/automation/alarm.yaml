@@ -270,6 +270,7 @@
                   entity_id: input_boolean.alarm_gateway_button
               - action: telegram_bot.send_message
                 data:
+                  config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                   title: >-
                            {{ '\U0001f6a8' }} *Сигнализация*
                   message: 'Нажатие тревожной кнопки в *детской*'
@@ -334,10 +335,12 @@
                 sequence:
                     - action: telegram_bot.delete_message
                       data:
+                        config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
                         chat_id: '{{ trigger.event.data.chat_id }}'
                         message_id: '{{ trigger.event.data.message.message_id }}'
                     - action: telegram_bot.answer_callback_query
                       data:
+                        config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
                         callback_query_id: '{{ trigger.event.data.id }}'
                         message: 'Выключили сигнализацию'
 
@@ -407,6 +410,7 @@
                     then:
                       - action: telegram_bot.send_message
                         data:
+                          config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                           target: !secret telegram_enzokot_chat_id
                           message: "{{ '\U0001f507 Отменено включение сигнализации' }}"
                     else:
@@ -434,7 +438,7 @@
           entity_id: input_boolean.alarm_gateway_button
           to: 'on'
       conditions:
-        - "{{ now() - state_attr(this.entity_id, 'last_triggered') > timedelta(seconds = 5) }}"
+        - "{{ state_attr(this.entity_id, 'last_triggered') is none or now() - state_attr(this.entity_id, 'last_triggered') > timedelta(seconds = 5) }}"
       actions:
         - variables:
             entities: >-

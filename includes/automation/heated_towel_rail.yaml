@@ -1,0 +1,28 @@
+
+#Включение/выключение полотенцесушителя утро/вечер
+    - alias: toggle_heated_towel_rail
+      id: toggle_heated_towel_rail
+      initial_state: true 
+      variables:
+        service_name: >-
+          {% set now_time = now() %}
+          {% if today_at("08:30") <= now_time <= today_at("10:00") or today_at("21:30") <= now_time <= today_at("23:00") -%} 
+            switch.turn_on
+          {%- else -%} 
+            switch.turn_off
+          {%- endif %}
+      triggers: 
+        - trigger: homeassistant
+          event: start
+        - trigger: time
+          at: 
+            - "08:30"
+            - "10:00"
+            - "21:30"
+            - "23:00"
+      conditions:
+        - "{{ service_name.endswith('on') and is_state('switch.shelly_plug_s_htr_shelly_heated_tr', 'off') or service_name.endswith('off') and is_state('switch.shelly_plug_s_htr_shelly_heated_tr', 'on') }}"
+      actions:
+        - action: "{{ service_name }}"
+          target:
+            entity_id: switch.shelly_plug_s_htr_shelly_heated_tr

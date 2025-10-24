@@ -18,7 +18,7 @@
       name: window_living_room_group
       device_class: window
       entities:
-        - binary_sensor.0x00158d0003975d8b_contact
+        - binary_sensor.0x00158d0003a00cad_contact
         - binary_sensor.0x00158d0003d05782_contact
         - binary_sensor.0x158d000396f197_contact
 

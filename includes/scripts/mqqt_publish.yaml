@@ -60,6 +60,7 @@
         sequence:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             title: >- 
                      ⚠️ *Контроль устройств Zigbee*
             disable_notification: true
@@ -87,6 +88,7 @@
         sequence:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             title: >-
                      {{ '\U00002705' }} *Контроль устройств Zigbee*
             disable_notification: true

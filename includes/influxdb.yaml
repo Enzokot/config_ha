@@ -7,7 +7,7 @@
     default_measurement: state
     include: !include entities_for_db.yaml
     component_config:
-      sensor.processor_use:
+      sensor.pve_sensors_pve_processor_load:
         override_measurement: percent
       sensor.memory_use_percent:
         override_measurement: percent

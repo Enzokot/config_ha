@@ -1,7 +1,7 @@
 
     entities:
       #Система
-      - sensor.processor_use
+      - sensor.pve_sensors_pve_processor_load
       - sensor.memory_use_percent
       - sensor.pve_sensors_pve_processor_temperature
       #База
@@ -87,10 +87,6 @@
       - sensor.start_time
       #Весы
       - sensor.esp_xiaomi_mi_scale_weight
-      #Speedtest
-      - sensor.speedtest_ping
-      - sensor.speedtest_download
-      - sensor.speedtest_upload
       #Шторы на кухне
       - cover.0x847127fffed4907d
       - cover.0x847127fffed62861
@@ -122,3 +118,5 @@
       - binary_sensor.emergency_exit_motion
       - binary_sensor.entrance_door_motion
       - binary_sensor.hallway_1_motion
+      #Полотенцесушитель
+      - sensor.shelly_plug_s_htr_shelly_heated_tr_power

@@ -2,23 +2,18 @@
 #Бинарные сенсоры  
 binary_sensor.0x158d0003943639_smoke:
   friendly_name: Датчик дыма кухня
-  icon: mdi:smoke-detector
 
 binary_sensor.0x158d00039a8358_smoke:
   friendly_name: Датчик дыма гостиная
-  icon: mdi:smoke-detector
 
 binary_sensor.0x158d00039d9398_smoke:
   friendly_name: Датчик дыма коридор
-  icon: mdi:smoke-detector
 
 binary_sensor.0x158d00045ca483_smoke:
   friendly_name: Датчик дыма детская
-  icon: mdi:smoke-detector
 
 binary_sensor.0x00158d00045cd551_smoke:
   friendly_name: Датчик дыма спальня
-  icon: mdi:smoke-detector
 
 binary_sensor.0x158d000359304c_contact:
   friendly_name: Входная дверь
@@ -66,7 +61,7 @@ binary_sensor.0x00158d0003d05782_contact:
   friendly_name: Центр. окно гостиная
   device_class: window
 
-binary_sensor.0x00158d0003975d8b_contact:
+binary_sensor.0x00158d0003a00cad_contact:
   friendly_name: Прав. окно гостиная
   device_class: window
 
@@ -149,3 +144,6 @@ binary_sensor.tapo_c110_cr_motion:
 
 binary_sensor.tapo_c110_hw_motion:
   friendly_name: Движение на камере коридор
+
+binary_sensor.0x54ef44100080c88d_smoke:
+  friendly_name: Датчик дыма NVR

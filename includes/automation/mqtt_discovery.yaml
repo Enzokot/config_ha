@@ -316,3 +316,18 @@
                     "unique_id":"pve_processor_temperature",
                     "device":{"identifiers":["pve_sensors"],"manufacturer":"Enzokot","model":"Local polling","name":"PVE Sensors"}
                   }
+
+            - action: mqtt.publish
+              data: 
+                topic: homeassistant/sensor/pve_processor_load/config
+                retain: true 
+                payload: >- 
+                  { 
+                    "name":"pve processor load", 
+                    "state_topic":"host_data/host_sensors/cpu_load",
+                    "icon":"mdi:cpu-64-bit", 
+                    "unit_of_measurement":"%",
+                    "state_class":"measurement",
+                    "unique_id":"pve_processor_load",
+                    "device":{"identifiers":["pve_sensors"],"manufacturer":"Enzokot","model":"Local polling","name":"PVE Sensors"}
+                  }

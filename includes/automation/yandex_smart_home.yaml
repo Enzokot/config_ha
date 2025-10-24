@@ -155,6 +155,7 @@
       actions:
         - action: telegram_bot.send_photo
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_all_chat_id
             url: "{{- 'http://homeassistant.local.hass.io:8123' + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
             caption: >-
@@ -178,8 +179,8 @@
           data:
             media_content_type: text
             media_content_id: > 
-              {% if is_state('sensor.014020518886002182_bsh_common_status_operationstate', 'BSH.Common.EnumType.OperationState.Run') %}
-                {% set time_delta = as_timestamp(states('sensor.014020518886002182_bsh_common_option_remainingprogramtime'), 0) - as_timestamp(now(), 0) | int(0) %}
+              {% if is_state('sensor.kotletochka_dw_operation_state', 'run') %}
+                {% set time_delta = as_timestamp(states('sensor.kotletochka_dw_program_finish_time'), 0) - as_timestamp(now(), 0) | int(0) %}
                 {% set minutes = (( time_delta % 3600) / 60) | int(0) %}
                 {% set hours = ((time_delta % 86400) / 3600) | int(0) %}
                 До окончания: {{- ' ' -}}
@@ -199,3 +200,37 @@
               {%- else %}
                 Сейчас программа не запущена
               {% endif %}
+
+#Разово запустить освежитель в туалете по команде Алисы
+    - alias: once diffuser fragrance delivery wc
+      id: once diffuser fragrance delivery wc
+      initial_state: true
+      max_exceeded: silent
+      triggers:
+        - trigger: event
+          event_type: yandex_speaker
+          event_data:
+            instance: text_action
+            value: "Ничего не делай--?"
+      actions:
+        - action: script.diffuser_fragrance_delivery_wc
+          data:
+            fragrance_duration: "{{ states('number.d4438ad06885_fragrance_duration') }}"
+            definitely_spray: true
+
+#Разово запустить освежитель в ванной по команде Алисы
+    - alias: once diffuser fragrance delivery bathroom
+      id: once diffuser fragrance delivery bathroom
+      initial_state: true
+      max_exceeded: silent
+      triggers:
+        - trigger: event
+          event_type: yandex_speaker
+          event_data:
+            instance: text_action
+            value: "Ничего не делай--!"
+      actions:
+        - action: script.diffuser_fragrance_delivery_bathroom
+          data:
+            fragrance_duration: "{{ states('number.2c195cb60050_fragrance_duration') }}"
+            definitely_spray: true

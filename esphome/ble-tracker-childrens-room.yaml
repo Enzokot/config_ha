@@ -10,6 +10,8 @@ esphome:
 
 esp32:
   board: wemos_d1_mini32
+  framework:
+    type: esp-idf
 
 wifi:
   fast_connect: true
@@ -94,6 +96,14 @@ time:
               then:
                 - script.execute: time_sync_ble_clocks
 
+light:
+  - platform: status_led
+    id: onboard_led
+    name: "${devicename}_On_Board_Led"
+    pin:
+      number: GPIO2
+      mode: OUTPUT
+
 text_sensor:
   - platform: wifi_info
     ssid:
@@ -156,10 +166,12 @@ sensor:
       name: "ESP Xiaomi Childrens Room Temperature"
       filters:
           - timeout: 1h
+          - round: 1
     humidity:
       name: "ESP Xiaomi Childrens Room Humidity"
       filters:
           - timeout: 1h
+          - round: 1
     battery_level:
       name: "ESP Xiaomi Childrens Room Battery Level"
   

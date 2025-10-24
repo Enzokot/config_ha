@@ -12,6 +12,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             title: >-
                      {{ '\U0001f41d' }} <b>Добавление устройств Zigbee</b>
             message: >-
@@ -56,6 +57,7 @@
       actions:  
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             title: >-
                     {%- set time_limit = as_timestamp(now(), 0) - 3*60*60 -%}
                     {%- set list_sensors = expand('group.dynamic_group_sensor_last_seen') | selectattr('state', 'ne', None) | selectattr('state', 'ne', 'None') | selectattr('state', 'ne', 'unknown') -%}
@@ -290,6 +292,7 @@
         - delay: "00:01:00"
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
             title: "{{ '\U0001F527' }} *Обслуживание устройств*"

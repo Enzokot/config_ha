@@ -78,3 +78,20 @@
         - action: switch.turn_off
           target:
             entity_id: switch.shelly_1pm_fan_nvr_box
+
+#Выключение розеток, выключателей, света по датчику дыма ТМК
+    - alias: smoke detector nvr alarm to turn off all
+      id: smoke detector nvr alarm to turn off all
+      initial_state: true
+      triggers:
+       - trigger: state
+         entity_id: 
+            - binary_sensor.0x54ef44100080c88d_smoke
+         to: 'on'
+      actions:
+          - action: homeassistant.turn_off
+            target:
+              entity_id: 
+                - switch.shelly_plug_s_nvr
+                - switch.shelly_1pm_fan_nvr_box
+                - switch.shelly_plug_s_keenetic_hw

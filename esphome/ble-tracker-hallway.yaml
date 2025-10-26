@@ -8,6 +8,8 @@ esphome:
 
 esp32:
   board: wemos_d1_mini32
+  framework:
+    type: esp-idf
 
 wifi:
   fast_connect: true
@@ -65,6 +67,9 @@ esp32_ble_tracker:
 ble_client:
   - mac_address: !secret bt_display_hallway_mac
     id: ble_display_hw
+
+bluetooth_proxy:
+  active: false
 
 display:
   - platform: pvvx_mithermometer
@@ -141,14 +146,13 @@ sensor:
     name: "${devicename}_WiFi_RSSI"
     update_interval: 60s
 
-switch:
-  - platform: gpio
+light:
+  - platform: status_led
     id: onboard_led
     name: "${devicename}_On_Board_Led"
     pin:
       number: GPIO2
       mode: OUTPUT
-    restore_mode: ALWAYS_OFF
 
 text_sensor:
   - platform: wifi_info
@@ -168,13 +172,13 @@ binary_sensor:
                 condition:
                   - binary_sensor.is_on: "status_connection"
                 then:
-                  - switch.turn_on: "onboard_led"
+                  - light.turn_on: "onboard_led"
                   
             - if:
                 condition:
                   - binary_sensor.is_off: "status_connection"
                 then:
-                  - switch.turn_off: "onboard_led"
+                  - light.turn_off: "onboard_led"
 
 button:
   - platform: restart

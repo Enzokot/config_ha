@@ -1,12 +1,12 @@
 substitutions:
-  devicename: ble_tracker_livingroom
-  nodename: ble-tracker-livingroom
+  devicename: ble-tracker-debug
+  nodename: ble-tracker-debug
   time_service_uuid: ebe0ccb0-7a0a-4b0c-8a1a-6ff2997da3a6
   time_characteristic_uuid: EBE0CCB7-7A0A-4B0C-8A1A-6FF2997DA3A6
 
 esphome:
   name: $nodename
-  comment: Monitoring HA state and BLE living room
+  comment: Monitoring HA state and BLE debug
   on_boot:
     priority: -10
     then:
@@ -105,13 +105,14 @@ globals:
      restore_value: yes
      initial_value: '0.0'
 
-light:
-  - platform: status_led
+switch:
+  - platform: gpio
     id: onboard_led
     name: "${devicename}_On_Board_Led"
     pin:
       number: GPIO2
       mode: OUTPUT
+    restore_mode: ALWAYS_OFF    
 
 text_sensor:
   - platform: wifi_info
@@ -131,18 +132,18 @@ binary_sensor:
                 condition:
                   - binary_sensor.is_on: "status_connection"
                 then:
-                  - light.turn_on: "onboard_led"
+                  - switch.turn_on: "onboard_led"
 
             - if:
                 condition:
                   - binary_sensor.is_off: "status_connection"
                 then:
-                  - light.turn_off: "onboard_led"
+                  - switch.turn_off: "onboard_led"
 
 esp32_ble_tracker:
   scan_parameters:
-    #window: 300ms
-    #interval: 300ms
+    #window: 48ms
+    #interval: 512ms
     active: false
 
 ble_client:

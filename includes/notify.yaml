@@ -1,12 +1,4 @@
 
-  - name: telegram_enzokot_to_bot
-    platform: telegram
-    chat_id: !secret telegram_enzokot_chat_id
-    
-  - name: telegram_chita_to_bot
-    platform: telegram
-    chat_id: !secret telegram_chita_chat_id
-  
   - name: email_enzokot_ha
     platform: smtp
     sender: !secret email_adress

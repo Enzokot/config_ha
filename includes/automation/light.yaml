@@ -139,6 +139,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             message: >-
                        ⚠️ Обнаружено отклонение светильника и выключателя, исправить?
@@ -271,7 +272,7 @@
         - condition: state
           entity_id: input_boolean.instances_stoping
           state: 'off'
-        - "{{ as_timestamp(now()) - as_timestamp(state_attr(this.entity_id, 'last_triggered')) > 60 }}"
+        - "{{ state_attr(this.entity_id, 'last_triggered') is none or now() - state_attr(this.entity_id, 'last_triggered') > timedelta(seconds = 60) }}"
         - "{{ not has_value('light.yeelight_ceiling_cr') }}"
         - "{{ has_value('switch.0x54ef441000096cbc') }}"
       actions:

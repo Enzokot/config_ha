@@ -17,10 +17,12 @@
                 message: pong
             - action: telegram_bot.delete_message
               data:
+                config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
                 chat_id: '{{ trigger.event.data.chat_id }}'
                 message_id: '{{ trigger.event.data.id }}'
             - action: telegram_bot.send_message
               data:
+                config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
                 target: '{{ trigger.event.data.chat_id }}'
                 message: >-
                           ℹ️ pong
@@ -54,10 +56,12 @@
         - parallel:
             - action: telegram_bot.delete_message
               data:
+                config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
                 chat_id: '{{ trigger.event.data.chat_id }}'
                 message_id: '{{ trigger.event.data.id }}'
             - action: telegram_bot.send_message
               data:
+                config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
                 target: '{{ trigger.event.data.chat_id }}'
                 message: >-
                        {{ '\U0001f4e2' }} С уровнем громкости:
@@ -78,10 +82,12 @@
       actions:
         - action: telegram_bot.delete_message
           data:
+            config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
             chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.id }}'
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
             target: '{{ trigger.event.data.chat_id }}'
             message: >-
                        {% if is_state('alarm_control_panel.signalka_shliuza_alarm', 'armed_away') -%}
@@ -115,6 +121,7 @@
       actions:
         - action: telegram_bot.delete_message
           data:
+            config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
             chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
         - action: >-
@@ -127,6 +134,7 @@
             entity_id: alarm_control_panel.signalka_shliuza_alarm
         - action: telegram_bot.answer_callback_query
           data:
+            config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
             callback_query_id: '{{ trigger.event.data.id }}'
             message: >-
                      {% if trigger.event.data.command == '/alarm_home_disarm' -%}
@@ -157,6 +165,7 @@
         - parallel:
             - action: telegram_bot.delete_message
               data:
+                config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
                 chat_id: '{{ trigger.event.data.chat_id }}'
                 message_id: '{{ trigger.event.data.message.message_id }}'
             - action: xiaomi_aqara.play_ringtone
@@ -173,6 +182,7 @@
                     {%- endif -%}
         - action: telegram_bot.answer_callback_query
           data:
+            config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
             callback_query_id: '{{ trigger.event.data.id }}'
             message: 'Постучали шлюзом'
 
@@ -197,6 +207,7 @@
       actions:
         - action: telegram_bot.delete_message
           data:
+            config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
             chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
 
@@ -216,6 +227,7 @@
             entity_id: automation.sync_yeelight_ceiling_cr_to_switch
         - action: telegram_bot.answer_callback_query
           data:
+            config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
             callback_query_id: '{{ trigger.event.data.id }}'
             message: 'Проверим состояние позже'
 
@@ -232,6 +244,7 @@
       actions:
         - action: telegram_bot.answer_callback_query
           data:
+            config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
             callback_query_id: '{{ trigger.event.data.id }}'
             message: 'Отключили проверку'
 
@@ -274,6 +287,7 @@
                 entity_id: automation.sync_yeelight_ceiling_cr_to_switch
         - action: telegram_bot.answer_callback_query
           data:
+            config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
             callback_query_id: '{{ trigger.event.data.id }}'
             message: 'Изменили состояние'
 
@@ -294,10 +308,12 @@
             entity_id: vacuum.xiaomi_vacuum_cleaner
         - action: telegram_bot.delete_message
           data:
+            config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
             chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
         - action: telegram_bot.answer_callback_query
           data:
+            config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
             callback_query_id: '{{ trigger.event.data.id }}'
             message: 'Включили поиск Степы'
             
@@ -314,10 +330,12 @@
       actions:
         - action: telegram_bot.delete_message
           data:
+            config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
             chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.id }}'
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
             target: '{{ trigger.event.data.chat_id }}'
             message: >-
                        {{ '\U0000231b' }} Отправить убирать:
@@ -341,10 +359,12 @@
             entity_id: vacuum.xiaomi_vacuum_cleaner
         - action: telegram_bot.delete_message
           data:
+            config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
             chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
         - action: telegram_bot.answer_callback_query
           data:
+            config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
             callback_query_id: '{{ trigger.event.data.id }}'
             message: 'Пылесос отправили на уборку'
 
@@ -365,6 +385,7 @@
       actions:
         - action: telegram_bot.delete_message
           data:
+            config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
             chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
         - action: timer.start
@@ -374,6 +395,7 @@
             duration: "{{ iif(trigger.event.data.data == '/vacuum10', 600, 1200, 1200) }}"
         - action: telegram_bot.answer_callback_query
           data:
+            config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
             callback_query_id: '{{ trigger.event.data.id }}'
             message: "{{ 'Будет отправлен на уборку через ' + iif(trigger.event.data.data == '/vacuum10', '10 мин.', '20 мин.', '20 мин.') }}"
         - action: input_text.set_value
@@ -395,6 +417,7 @@
       actions:
         - action: telegram_bot.delete_message
           data:
+            config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
             chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
         - action: timer.cancel
@@ -410,6 +433,7 @@
             entity_id: vacuum.xiaomi_vacuum_cleaner
         - action: telegram_bot.answer_callback_query
           data:
+            config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
             callback_query_id: '{{ trigger.event.data.id }}'
             message: "Отменили таймеры, отправили на базу"
         - action: input_text.set_value
@@ -431,10 +455,12 @@
       actions:
         - action: telegram_bot.delete_message
           data:
+            config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
             chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.message.message_id }}'
         - action: telegram_bot.send_photo
           data:
+            config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
             target: '{{ trigger.event.data.chat_id }}'
             url: "{{- 'http://homeassistant.local.hass.io:8123' + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
             caption: >-
@@ -454,10 +480,12 @@
       actions:
         - action: telegram_bot.delete_message
           data:
+            config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
             chat_id: '{{ trigger.event.data.chat_id }}'
             message_id: '{{ trigger.event.data.id }}'
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
             target: '{{ trigger.event.data.chat_id }}'
             title: "{{ '\U0001F321' }} *Климатические сенсоры*"
             message: >-
@@ -480,24 +508,36 @@
         - "{{ trigger.event.data['args'] | count > 0 }}"
       actions:
         - variables:
-            entity: "{{- trigger.event.data['args'][0] -}}"
-            friendlyname: "{{- state_attr(trigger.event.data['args'][0], 'friendly_name') | replace(' Update', '') -}}"
+            entity: "{{- device_entities(trigger.event.data['args'][0]) | select('match', 'update.') | first | default('unknown') -}}"
+            friendlyname: "{{- iif(entity != 'unknown', state_attr(entity, 'friendly_name') | replace(' Update', ''), '') -}}"
+            devicename: "{{- device_name(trigger.event.data['args'][0]) -}}"
         - choose:
-            - conditions: "{{ is_state(entity, 'on') and is_state_attr(entity, 'in_progress', false) }}"
+            - conditions: "{{ is_state(entity, 'off') or is_state_attr(entity, 'in_progress', true) }}"
               sequence:
                 - action: telegram_bot.answer_callback_query
                   data:
+                    config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
                     callback_query_id: '{{ trigger.event.data.id }}'
                     message: >-
-                        Обновление на версию {{ state_attr(entity, 'latest_version') }} {{ friendlyname }} запущено.
-                - action: update.install
-                  target:
-                    entity_id: "{{- entity -}}"
-                  data:
-                    backup: "{{ '{:0=64b}'.format(state_attr(entity, 'supported_features'))[-4] == '1' }}"
+                        Обновление {{ friendlyname + ' ' + iif(is_state(entity, 'off'), 'уже установлено', 'в процессе установки') }}.
+            - conditions: "{{ is_state(entity, 'on') and is_state_attr(entity, 'in_progress', false) }}"
+              sequence:
+                - parallel:
+                    - action: telegram_bot.answer_callback_query
+                      data:
+                        config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
+                        callback_query_id: '{{ trigger.event.data.id }}'
+                        message: >-
+                            Обновление на версию {{ state_attr(entity, 'latest_version') }} {{ friendlyname }} запущено.
+                    - action: update.install
+                      target:
+                        entity_id: "{{- entity -}}"
+                      data:
+                        backup: "{{ '{:0=64b}'.format(state_attr(entity, 'supported_features'))[-4] == '1' }}"
           default:
             - action: telegram_bot.answer_callback_query
               data:
+                config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
                 callback_query_id: '{{ trigger.event.data.id }}'
                 message: >-
-                    Обновление {{ friendlyname }} уже установлено.
+                    Для устройства {{ iif(devicename is none, trigger.event.data['args'][0], devicename) }} не найден элемент домена update.

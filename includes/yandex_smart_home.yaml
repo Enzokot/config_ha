@@ -530,3 +530,9 @@
           entity: sensor.shelly_plug_s_htr_shelly_heated_tr_current
         - type: power
           entity: sensor.shelly_plug_s_htr_shelly_heated_tr_power
+
+    switch.0x086bd7fffe5aecf8_right:
+      type: devices.types.ventilation
+
+    switch.0x086bd7fffe5b7c7f_left:
+      type: devices.types.ventilation

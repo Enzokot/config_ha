@@ -1,0 +1,190 @@
+
+  diffuser_fragrance_delivery_wc:
+    alias: 'Принудительно распылить освежитель в туалете'
+    icon: mdi:scent
+    max_exceeded: silent
+    fields:
+      fragrance_duration:
+        description: 'Длительность распыления'
+        example: '4'
+        default: '3'
+      definitely_spray:
+        description: 'Безусловно распылить'
+        example: true
+        default: false
+    sequence:
+      - choose:
+        - conditions:
+            - "{{ not definitely_spray }}"
+            - condition: or
+              conditions:
+                - condition: state
+                  entity_id: 'binary_sensor.d4438ad06885_battery_charging'
+                  state: 'on'
+          sequence:
+            - action: timer.start
+              target:
+                entity_id: timer.delayed_spray_fragrance_wc
+        default:
+          - if:
+              - condition: state
+                entity_id: 'timer.delayed_spray_fragrance_wc'
+                state: 'active'
+            then:
+              - action: timer.cancel
+                target:
+                  entity_id: 'timer.delayed_spray_fragrance_wc'
+          - variables:
+              light_state: "{{ states('light.d4438ad06885_light') }}"
+              fragrance_duration_state: "{{ states('number.d4438ad06885_fragrance_duration') }}"
+              diffuser_state: "{{ states('switch.d4438ad06885_diffuser') }}"
+          - action: number.set_value
+            target:
+              entity_id: 'number.d4438ad06885_fragrance_duration'
+            data:
+              value: "{{ fragrance_duration }}"
+          - if:
+              - condition: state
+                entity_id: 'light.d4438ad06885_light'
+                state: 'off'
+            then:
+              - action: light.turn_on
+                target:
+                  entity_id: 'light.d4438ad06885_light'
+          - if:
+              - condition: state
+                entity_id: 'switch.d4438ad06885_diffuser'
+                state: 'on'
+            then:
+              - action: switch.turn_off
+                target:
+                  entity_id: 'switch.d4438ad06885_diffuser'
+              - delay: 5
+          - action: switch.turn_on
+            target:
+              entity_id: 'switch.d4438ad06885_diffuser'
+          - wait_for_trigger:
+              - trigger: state
+                entity_id: 'switch.d4438ad06885_diffuser'
+                to: 'on'
+            timeout:
+                seconds: 5
+            continue_on_timeout: false
+          - delay: "{{ fragrance_duration | int + 3 }}"
+          - if:
+              - "{{ diffuser_state == 'off' }}"
+            then:
+              - action: switch.turn_off
+                target:
+                  entity_id: 'switch.d4438ad06885_diffuser'
+          - if:
+              - "{{ light_state == 'off' }}"
+            then:
+              - action: light.turn_off
+                target:
+                  entity_id: 'light.d4438ad06885_light'
+          - if:
+              - "{{ not is_state('number.d4438ad06885_fragrance_duration', fragrance_duration_state) }}"
+            then:
+              - action: number.set_value
+                target:
+                  entity_id: 'number.d4438ad06885_fragrance_duration'
+                data:
+                  value: "{{ fragrance_duration_state }}"
+
+
+  diffuser_fragrance_delivery_bathroom:
+    alias: 'Принудительно распылить освежитель в ванной'
+    icon: mdi:scent
+    max_exceeded: silent
+    fields:
+      fragrance_duration:
+        description: 'Длительность распыления'
+        example: '4'
+        default: '3'
+      definitely_spray:
+        description: 'Безусловно распылить'
+        example: true
+        default: false
+    sequence:
+      - choose:
+        - conditions:
+            - "{{ not definitely_spray }}"
+            - condition: or
+              conditions:
+                - condition: state
+                  entity_id: 'binary_sensor.2c195cb60050_battery_charging'
+                  state: 'on'
+                - condition: numeric_state
+                  entity_id: 'sensor.0x00158d0004561de9_humidity'
+                  above: 85
+          sequence:
+            - action: timer.start
+              target:
+                entity_id: timer.delayed_spray_fragrance_bathroom
+        default:
+          - if:
+              - condition: state
+                entity_id: 'timer.delayed_spray_fragrance_bathroom'
+                state: 'active'
+            then:
+              - action: timer.cancel
+                target:
+                  entity_id: 'timer.delayed_spray_fragrance_bathroom'
+          - variables:
+              light_state: "{{ states('light.2c195cb60050_light') }}"
+              fragrance_duration_state: "{{ states('number.2c195cb60050_fragrance_duration') }}"
+              diffuser_state: "{{ states('switch.2c195cb60050_diffuser') }}"
+          - action: number.set_value
+            target:
+              entity_id: 'number.2c195cb60050_fragrance_duration'
+            data:
+              value: "{{ fragrance_duration }}"
+          - if:
+              - condition: state
+                entity_id: 'light.2c195cb60050_light'
+                state: 'off'
+            then:
+              - action: light.turn_on
+                target:
+                  entity_id: 'light.2c195cb60050_light'
+          - if:
+              - condition: state
+                entity_id: 'switch.2c195cb60050_diffuser'
+                state: 'on'
+            then:
+              - action: switch.turn_off
+                target:
+                  entity_id: 'switch.2c195cb60050_diffuser'
+              - delay: 5
+          - action: switch.turn_on
+            target:
+              entity_id: 'switch.2c195cb60050_diffuser'
+          - wait_for_trigger:
+              - trigger: state
+                entity_id: 'switch.2c195cb60050_diffuser'
+                to: 'on'
+            timeout:
+                seconds: 5
+            continue_on_timeout: false
+          - delay: "{{ fragrance_duration | int + 3 }}"
+          - if:
+              - "{{ diffuser_state == 'off' }}"
+            then:
+              - action: switch.turn_off
+                target:
+                  entity_id: 'switch.2c195cb60050_diffuser'
+          - if:
+              - "{{ light_state == 'off' }}"
+            then:
+              - action: light.turn_off
+                target:
+                  entity_id: 'light.2c195cb60050_light'
+          - if:
+              - "{{ not is_state('number.2c195cb60050_fragrance_duration', fragrance_duration_state) }}"
+            then:
+              - action: number.set_value
+                target:
+                  entity_id: 'number.2c195cb60050_fragrance_duration'
+                data:
+                  value: "{{ fragrance_duration_state }}"

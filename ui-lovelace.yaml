@@ -35,7 +35,7 @@ views:
           show_header_toggle: false
           entities:
             - entity: sensor.snapshots_in_hassio_train
-            - entity: sensor.snapshots_in_google_drive_train
+            #- entity: sensor.snapshots_in_google_drive_train
             - entity: sensor.last_google_backup_train
 
         - type: markdown
@@ -71,7 +71,7 @@ views:
             - type: gauge
               name: Загрузка CPU
               unit: '%'
-              entity: sensor.processor_use
+              entity: sensor.pve_sensors_pve_processor_load
               needle: true
               severity:
                 green: 0
@@ -121,26 +121,6 @@ views:
           font_size: 70
           points_per_hour: 6
           hours_to_show: 12
-
-        - type: 'custom:mini-graph-card'
-          entities:
-            - entity: sensor.speedtest_download
-              name: Download
-              show_state: true
-            - entity: sensor.speedtest_upload
-              name: Upload
-              show_state: true
-            - entity: sensor.speedtest_ping
-              name: Ping
-          show:
-            extrema: true
-            labels: true
-          align_state: center
-          font_size: 70
-          hour24: true
-          hours_to_show: 24
-          name: Speedtest.net
-          points_per_hour: 1
 
       - type: vertical-stack
         cards:
@@ -819,7 +799,7 @@ views:
             - entity: binary_sensor.0x00158d0003d05782_contact
               show_last_changed: true
               name: Центр.
-            - entity: binary_sensor.0x00158d0003975d8b_contact
+            - entity: binary_sensor.0x00158d0003a00cad_contact
               show_last_changed: true
               name: Прав.
 
@@ -878,6 +858,9 @@ views:
             - entity: binary_sensor.0x00158d000913dbf1_contact
               show_last_changed: true
               name: 'Пол табмур'
+            - entity: binary_sensor.0x54ef44100080c88d_smoke
+              show_last_changed: true
+              name: 'Шкаф NVR'
             - entity: binary_sensor.0x00158d00093e4111_contact
               show_last_changed: true
               name: 'Шкаф NVR'
@@ -934,7 +917,7 @@ views:
                   - sensor.0x158d0003975b4c_battery
                   - sensor.0x158d000396f197_battery
                   - sensor.0x00158d0003d05782_battery
-                  - sensor.0x00158d0003975d8b_battery
+                  - sensor.0x00158d0003a00cad_battery
                   - sensor.0x158d00039a2f33_battery
                   - sensor.0x00158d00093e4111_battery
               - name: 'Дыма (min: {min}%, кол-во: {count})'
@@ -947,6 +930,7 @@ views:
                   - sensor.0x158d00045ca483_battery
                   - sensor.0x00158d00045cd551_battery
                   - sensor.0x158d0003943639_battery
+                  - sensor.0x54ef44100080c88d_battery
               - name: 'Т&Rh (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
                 icon: 'mdi:thermometer'
@@ -999,6 +983,12 @@ views:
                   - sensor.0x00158d0009ea0949_battery
                   - sensor.0x00158d000913dbf1_battery
                   - sensor.0x00158d0009ea1c0e_battery
+              - name: 'Освежители (min: {min}%, кол-во: {count})'
+                secondary_info: 'Диапазон заряда {range}%'
+                icon: 'mdi:air-filter'
+                min: 30
+                entities:
+                  - sensor.d4438ad06885_battery
           entities:
             - entity: sensor.0x158d000359304c_battery
               tap_action: more-info
@@ -1066,7 +1056,7 @@ views:
               tap_action: more-info
             - entity: sensor.0x158d000396f197_battery
               tap_action: more-info
-            - entity: sensor.0x00158d0003975d8b_battery
+            - entity: sensor.0x00158d0003a00cad_battery
               tap_action: more-info
             - entity: sensor.0x158d00039a2f33_battery
               tap_action: more-info
@@ -1093,6 +1083,10 @@ views:
             - entity: sensor.esp_xiaomi_hallway_battery_level
               tap_action: more-info
               name: 'Дисплей Т&Rh коридор'
+            - entity: sensor.d4438ad06885_battery
+              tap_action: more-info
+            - entity: sensor.0x54ef44100080c88d_battery
+              tap_action: more-info
 
         - type: markdown
           content: >
@@ -1121,7 +1115,7 @@ views:
 
         - type: custom:weather-card
           name: " "
-          entity: weather.kotletochka_home
+          entity: weather.pirateweather
 
         - type: markdown
           content: >

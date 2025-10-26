@@ -18,6 +18,7 @@
                 entity_id: vacuum.xiaomi_vacuum_cleaner
             - action: telegram_bot.send_message
               data:
+                config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                 target: "{{ states('input_text.var_chat_id_vacuum_later_start') }}"
                 title: >-
                      {{ '\U0001f680' }} *Степа*
@@ -46,6 +47,7 @@
         - parallel:
             - action: telegram_bot.send_message
               data:
+                config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                 target: "{{ states('input_text.var_chat_id_vacuum_later_start') }}"
                 title: >-
                         ⚠️ *Степа*

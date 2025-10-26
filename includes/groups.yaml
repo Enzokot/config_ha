@@ -12,7 +12,7 @@
           - sensor.ble_tracker_childrens_room_wifi_rssi
           - sensor.0x158d00054b8d72_battery
           - sensor.0x158d000566bde7_battery
-          - sensor.0x158d0003953ee9_batt
+          - sensor.0x158d0003953ee9_battery
           - remote.broadlink_ir_rm4_mini
           - sensor.0x00158d0003d05782_battery
           - sensor.0x5c0272fffec89454_linkquality
@@ -31,7 +31,7 @@
           - sensor.0x54ef4410000ebba0_battery
           - sensor.0x00158d000542ceaf_battery
           - sensor.0x158d00039a2f33_battery
-          - sensor.0x00158d0003975d8b_battery
+          - sensor.0x00158d0003a00cad_battery
           - sensor.0x00124b00215bb163_linkquality
           - switch.shelly_plug_s_1
           - switch.shelly_plug_s_2
@@ -102,12 +102,15 @@
           - sensor.esp_xiaomi_kitchen_humidity
           - sensor.temperature_humidity_sensor_500d_temperature
           - sensor.temperature_humidity_sensor_500d_humidity
-          - switch.014020518886002182_bsh_common_setting_powerstate
+          - switch.kotletochka_dw_power
           - fan.dmaker_p45_5007_fan
           - sensor.kotletochka_nvr_hw_hdd_0_storage
           - sensor.kotletochka_nvr_hw_hdd_1_storage
           - sensor.ups_ds_input_voltage
           - sensor.ble_tracker_hallway_wifi_rssi
+          - light.d4438ad06885_light
+          - sensor.0x54ef44100080c88d_battery
+          - light.2c195cb60050_light
 
     temperature_summary_group_to_bot:
         entities:
@@ -146,3 +149,4 @@
           - humidifier.zhimi_humidifier_cb1
           - light.yeelight_lessons_lamp
           - switch.shelly_plug_s_2
+          - switch.shelly_plug_s_htr_shelly_heated_tr

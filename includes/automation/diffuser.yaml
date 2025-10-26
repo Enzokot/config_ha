@@ -1,0 +1,94 @@
+
+#Срабатывание освежителя в туалете раз в час
+    - alias: dayly diffuser fragrance delivery wc
+      id: dayly diffuser fragrance delivery wc
+      variables:
+        script_name: 'script.diffuser_fragrance_delivery_wc'
+        duration_name: 'number.d4438ad06885_fragrance_duration'
+        timer_name: 'timer.delayed_spray_fragrance_wc'
+      triggers:
+        - trigger: time_pattern
+          hours: "/1"
+        # - platform: time 
+        #   at:
+        #     - '8:30'
+        #     - '10:00'
+        #     - '11:30'
+        #     - '13:00'
+        #     - '14:30'
+        #     - '16:00'
+        #     - '17:30'
+        #     - '19:00'
+        #     - '20:30'
+        #     - '22:00'
+      conditions:
+        - "{{ is_state(timer_name, 'idle') }}"
+        - condition: time
+          after: "08:00"
+          before: "22:00"
+        - "{{ state_attr(script_name, 'last_triggered') is none or now() - state_attr(script_name, 'last_triggered') > timedelta(minutes = 30) }}"
+      actions:
+        - action: "{{ script_name }}"
+          data:
+            fragrance_duration: "{{ states(duration_name) }}"
+            definitely_spray: false
+
+#Срабатывание освежителя в туалете по отложенному таймеру
+    - alias: timer finish diffuser fragrance delivery wc
+      id: timer finish diffuser fragrance delivery wc
+      variables:
+        script_name: 'script.diffuser_fragrance_delivery_wc'
+        duration_name: 'number.d4438ad06885_fragrance_duration'
+      triggers:
+        - trigger: event
+          event_type: timer.finished
+          event_data:
+            entity_id: 'timer.delayed_spray_fragrance_wc'
+      conditions:
+        - "{{ state_attr(script_name, 'last_triggered') is none or now() - state_attr(script_name, 'last_triggered') > timedelta(minutes = 30) }}"
+      actions:
+        - action: "{{ script_name }}"
+          data:
+            fragrance_duration: "{{ states(duration_name) }}"
+            definitely_spray: false
+
+#Срабатывание освежителя в ванной раз в час
+    - alias: dayly diffuser fragrance delivery bathroom
+      id: dayly diffuser fragrance delivery bathroom
+      variables:
+        script_name: 'script.diffuser_fragrance_delivery_bathroom'
+        duration_name: 'number.2c195cb60050_fragrance_duration'
+        timer_name: 'timer.delayed_spray_fragrance_bathroom'
+      triggers:
+        - trigger: time_pattern
+          hours: "/1"
+      conditions:
+        - "{{ is_state(timer_name, 'idle') }}"
+        - condition: time
+          after: "08:00"
+          before: "22:00"
+        - "{{ state_attr(script_name, 'last_triggered') is none or now() - state_attr(script_name, 'last_triggered') > timedelta(minutes = 30) }}"
+      actions:
+        - action: "{{ script_name }}"
+          data:
+            fragrance_duration: "{{ states(duration_name) }}"
+            definitely_spray: false
+
+#Срабатывание освежителя в ванной по отложенному таймеру
+    - alias: timer finish diffuser fragrance delivery bathroom
+      id: timer finish diffuser fragrance delivery bathroom
+      variables:
+        script_name: 'script.diffuser_fragrance_delivery_bathroom'
+        duration_name: 'number.2c195cb60050_fragrance_duration'
+      triggers:
+        - trigger: event
+          event_type: timer.finished
+          event_data:
+            entity_id: 'timer.delayed_spray_fragrance_bathroom'
+      conditions:
+        - "{{ state_attr(script_name, 'last_triggered') is none or now() - state_attr(script_name, 'last_triggered') > timedelta(minutes = 30) }}"
+      actions:
+        - action: "{{ script_name }}"
+          data:
+            fragrance_duration: "{{ states(duration_name) }}"
+            definitely_spray: false

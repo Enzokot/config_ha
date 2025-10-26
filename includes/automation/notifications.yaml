@@ -12,7 +12,9 @@
           minutes: 2
       actions:
         - parallel:
-            - action: notify.telegram_enzokot_to_bot
+            - action: notify.send_message
+              target:
+                entity_id: notify.telegram_enzokot_to_bot
               data:
                 title: >-
                        ⚠️ *Датчик открытия/закрытия*
@@ -49,6 +51,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_all_chat_id
             disable_notification: true
             title: >-
@@ -171,6 +174,7 @@
         - parallel:
             - action: telegram_bot.send_message
               data:
+                  config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                   title: "{{ iif(trigger.to_state.state == 'on', '\U0001F6AA', '\U0001f510') }} *Датчик открытия/закрытия*"
                   message: "Входная дверь: {{ text_for_message }}"
                   disable_notification: true
@@ -225,6 +229,7 @@
         - parallel:
             - action: telegram_bot.send_message
               data:
+                config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                 title: >-
                        {{ '\U0001f6a8' }} *Сигнализация*
                 message: >-
@@ -312,6 +317,7 @@
         - parallel:
             - action: telegram_bot.send_message
               data:
+                config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                 title: >-
                        {{ '\U0001f6a8' }} *Сигнализация*
                 message: >-
@@ -400,6 +406,7 @@
         - parallel:
             - action: telegram_bot.send_message
               data:
+                config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                 title: >-
                        {{ '\U0001f6a8' }} *Сигнализация*
                 message: >-
@@ -490,6 +497,7 @@
         - parallel:
             - action: telegram_bot.send_message
               data:
+                config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                 title: >-
                        {{ '\U0001f6a8' }} *Сигнализация*
                 message: >-
@@ -549,6 +557,7 @@
         - parallel:
             - action: telegram_bot.send_photo
               data:
+                config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                 target: !secret telegram_all_chat_id
                 url: "{{- 'http://homeassistant.local.hass.io:8123' + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
                 caption: >-
@@ -607,6 +616,7 @@
         - parallel:
             - action: telegram_bot.send_photo
               data:
+                config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                 target: !secret telegram_chita_chat_id
                 url: "{{- 'http://homeassistant.local.hass.io:8123' + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
                 caption: >-
@@ -638,6 +648,7 @@
            - binary_sensor.0x158d00039d9398_smoke
            - binary_sensor.0x158d00045ca483_smoke
            - binary_sensor.0x00158d00045cd551_smoke
+           - binary_sensor.0x54ef44100080c88d_smoke
          to: 'on'
       actions:
         - variables:
@@ -669,6 +680,7 @@
         - parallel:
             - action: telegram_bot.send_message
               data:
+                config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                 target: !secret telegram_all_chat_id
                 title: >-
                          {{ '\U0001F525' }} *Датчик дыма*
@@ -734,6 +746,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             title: >-
                      ⚠️ *Сертификат SSL*
@@ -804,6 +817,7 @@
                     old_installed_version: "{{ trigger.event.data.old_state.attributes.installed_version }}"
                 - action: telegram_bot.send_message
                   data:
+                    config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                     target: !secret telegram_enzokot_chat_id
                     title: "{{ '\U0001F38A' }} *Системное обновление*"
                     message: >
@@ -813,13 +827,14 @@
             - parallel:
                 - action: telegram_bot.send_message
                   data:
+                    config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                     target: !secret telegram_enzokot_chat_id
                     title: "{{ '\U0001F389' }} *Системное обновление*"
                     message: >
                         Доступна [{{ latest_version }}]({{- release_url }}) версия {{ friendlyname }} для установки, текущая *{{ installed_version }}*.
                     disable_web_page_preview: true
                     inline_keyboard: >-
-                      {{ iif(state_attr(trigger.event.data.entity_id, 'supported_features') | int(0) > 0, ['Установить:/installupdate ' + trigger.event.data.entity_id], []) }}
+                      {{ iif(state_attr(trigger.event.data.entity_id, 'supported_features') | int(0) > 0, ['Установить:/installupdate ' + device_id(trigger.event.data.entity_id)], []) }}
                 - sequence:
                   - condition: "{{ not is_state_attr(trigger.event.data.entity_id, 'device_class', 'firmware') }}"
                   - action: notify.html5
@@ -855,6 +870,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             title: >-
                      {{ '\U0001f50b' -}} *Низкий заряд*
@@ -889,6 +905,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             title: >-
                      {{ '\U0001f50c' }} *Управляемые розетки*
@@ -916,6 +933,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             title: >-
                      ⚠️ *Управляемые розетки*
@@ -936,6 +954,7 @@
         - parallel:
             - action: telegram_bot.send_message
               data:
+                config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                 target: !secret telegram_enzokot_chat_id
                 title: >-
                          {{ '\U0001f4f6' }} *Трекинг устройств*
@@ -984,6 +1003,7 @@
         - parallel:
             - action: telegram_bot.send_message
               data:
+                config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                 target: !secret telegram_all_chat_id
                 title: >-
                          {{ '\U0001F6B0' }} *Увлажнители*
@@ -1017,6 +1037,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_all_chat_id
             title: >-
                      {{ '\U0001F527' }} *Степа*
@@ -1054,6 +1075,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             title: >-
                      {% if trigger.above != None and trigger.below != None  %} {{ '\U00002705' }} {% else %} ⚠️ {% endif -%} *Контроль напряжения*
@@ -1095,11 +1117,12 @@
               seconds: 10
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             title: >-
                   {{ '\U0001F4BD' }} *Резервное копирование*
             message: >-
-                     Создана резервная копия с именем `{{ state_attr('sensor.backup_state', 'backups')[-1].name }}`, системный диск заполнен на *{{ states('sensor.disk_use_percent') -}}*%, свободно на Google диске *{{ state_attr('sensor.backup_state', 'free_space_in_google_drive') | replace(' ', '') }}*
+                     Создана резервная копия с именем `{{ state_attr('sensor.backup_state', 'backups')[-1].name }}`, системный диск заполнен на *{{ states('sensor.disk_use_percent') -}}*%{{ iif(is_state_attr('sensor.backup_state', 'last_uploaded', 'Never'), '', ', свободно на Google диске *' + state_attr('sensor.backup_state', 'free_space_in_google_drive') | replace(' ', '') + '*') }}
 
 #Уведоление о неуспешном входе или о блокировки IP по неуспешным логинам
     - alias: notifications failed login or block IP
@@ -1123,6 +1146,7 @@
         - parallel:
             - action: telegram_bot.send_message
               data:
+                config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                 target: !secret telegram_enzokot_chat_id
                 title: >-
                     {%- if trigger.id == 'http-login' %}
@@ -1178,6 +1202,7 @@
                   - sensor.warnings_in_system_log_command_line
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
             disable_web_page_preview: true
@@ -1189,7 +1214,7 @@
                 {% endif %} *Трекинг устройств*
             message: >
                 {% if trigger.id == 'homeassistant_start' -%}
-                    Home Assistant запущен за {{ states('sensor.start_time') }}сек. (версия Core: [{{ state_attr('update.home_assistant_core_update', 'installed_version') }}](https://github.com/home-assistant/core/releases/tag/{{- state_attr('update.home_assistant_core_update', 'installed_version') }})) {{- '\n' -}}
+                    Home Assistant запущен за {{ states('sensor.start_time') }}сек. (версия HA OS: [{{ state_attr('update.home_assistant_operating_system_update', 'installed_version') }}](https://github.com/home-assistant/operating-system/releases/tag/{{- state_attr('update.home_assistant_operating_system_update', 'installed_version') }}), версия Core: [{{ state_attr('update.home_assistant_core_update', 'installed_version') }}](https://github.com/home-assistant/core/releases/tag/{{- state_attr('update.home_assistant_core_update', 'installed_version') }})) {{- '\n' -}}
                     Ошибок: *{{ states('sensor.errors_in_system_log_command_line') }}*, предупреждений: *{{ states('sensor.warnings_in_system_log_command_line') }}* {{- '\n' -}}
                     {{ iif(long_start_integrations_name != '', 'Интеграции (>9c.): _' + long_start_integrations_name + '_', '') }}
                 {% else -%}
@@ -1224,6 +1249,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             parse_mode: 'html'
             disable_web_page_preview: true
@@ -1255,6 +1281,7 @@
               sequence:
                 - action: telegram_bot.send_message
                   data:
+                    config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                     target: !secret telegram_enzokot_chat_id
                     disable_notification: true
                     parse_mode: 'html'
@@ -1292,6 +1319,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
             title: >-
@@ -1312,6 +1340,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             disable_web_page_preview: true
             title: "{{ '\U000026D4' }} *Резервное копирование БД*"
@@ -1330,6 +1359,7 @@
         - parallel:
             - action: telegram_bot.send_message
               data:
+                config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                 target: !secret telegram_enzokot_chat_id
                 disable_notification: true
                 title: "{{ '\U0001F4DF' }} *Устройства*"
@@ -1368,6 +1398,7 @@
               {%- endif %}
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
             parse_mode: 'html'
@@ -1395,6 +1426,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
             parse_mode: 'html'
@@ -1418,6 +1450,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             parse_mode: 'html'
             disable_web_page_preview: true
@@ -1450,6 +1483,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
             title: >
@@ -1507,6 +1541,7 @@
             stormy_notification: "{{ trigger.event.data.feed_url is search('shtormovye-i-ekstrennye-preduprezhdeniya', ignorecase=True) }}"
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: >
                 {% if stormy_notification %}
                     {{ all_chat_id }}
@@ -1543,6 +1578,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
             title: "{{ '\U0001F4D6' }} *Данные системного журнала*"
@@ -1610,6 +1646,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
             parse_mode: 'html'
@@ -1645,21 +1682,22 @@
         - parallel:
             - action: telegram_bot.send_message
               data:
+                config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                 target: !secret telegram_all_chat_id
                 title: >-
                   {{ iif(trigger.id == 'below', '\U0001F6B1' , '\U0001F6B0') }} *Горячее водоснабжение*
                 message: >-
                   {{ iif(trigger.id == 'below', 'Остывает' , 'Нагревается') }} горячая труба *{{ area_name(trigger.entity_id) }}*.
-            - choose:
-              - conditions: "{{ trigger.id == 'below' and trigger.entity_id == 'sensor.0x00158d0006c5f21e_temperature' }}"
-                sequence:
-                  - action: notify.huawei_lte
-                    data:
-                      message: >-
-                               {{ '\U0000203C' }} Остывает горячая труба {{ area_name(trigger.entity_id) }}.
-                      target: !secret sms_phone_enzokot
-                      data:
-                        url: 'http://192.168.8.1/'
+            # - choose:
+            #   - conditions: "{{ trigger.id == 'below' and trigger.entity_id == 'sensor.0x00158d0006c5f21e_temperature' }}"
+            #     sequence:
+            #       - action: notify.huawei_lte
+            #         data:
+            #           message: >-
+            #                   {{ '\U0000203C' }} Остывает горячая труба {{ area_name(trigger.entity_id) }}.
+            #           target: !secret sms_phone_enzokot
+            #           data:
+            #             url: 'http://192.168.8.1/'
 
 #Уведомление из Uptime Kuma
     - alias: system down uptime kuma notifications
@@ -1680,6 +1718,7 @@
         - parallel:
             - action: telegram_bot.send_message
               data:
+                config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                 target: !secret telegram_enzokot_chat_id
                 parse_mode: 'html'
                 title: >-
@@ -1714,6 +1753,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             message: "{{ iif(is_state('alarm_control_panel.signalka_shliuza_alarm', 'disarmed'), '\U0001f507 Сигнализация *выключена*', '\U0001f509 Сигнализация *включена*') }}"
 
@@ -1740,6 +1780,7 @@
         - condition: "{{ trigger.id == 'homeassistant_start' and states('sensor.repairs_state') | int(0) > 0 or trigger.id != 'homeassistant_start' and trigger.from_state.state | int(0) < trigger.to_state.state | int(0) }}"
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             parse_mode: 'html'
             title: >-
@@ -1768,6 +1809,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             parse_mode: 'html'
             title: >-
@@ -1796,6 +1838,7 @@
             first_name_daughter: !secret first_name_daughter
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_all_chat_id
             disable_notification: true
             title: "{{ '\U00002696' }} *Взвешивание*"
@@ -1804,7 +1847,7 @@
                 {% elif trigger.to_state.state | float(0.0) >= 40 %} {{- first_name_mother -}}
                 {% else %} {{- first_name_daughter -}}
                 {% endif -%}*
-                весит `{{- trigger.to_state.state -}}` {{ trigger.to_state.attributes.unit_of_measurement -}}
+                весит `{{- trigger.to_state.state | round(2, 'common', 0) -}}` {{ trigger.to_state.attributes.unit_of_measurement -}}
 
 #Уведомление о наличии предупреждения на хосте по ext4
     - alias: host kernel ext4 warning
@@ -1824,6 +1867,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             disable_notification: true
             title: "⚠️ *Host Kernel log*"
@@ -1848,18 +1892,19 @@
           before: "16:00:00"
           weekday:
             - mon
-        - "{{ now() - state_attr(this.entity_id, 'last_triggered') > timedelta(hours = 1) }}"
+        - "{{ state_attr(this.entity_id, 'last_triggered') is none or now() - state_attr(this.entity_id, 'last_triggered') > timedelta(hours = 1) }}"
       actions:
         - parallel:
             - action: telegram_bot.send_message
               data:
+                config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                 target: !secret telegram_enzokot_chat_id
                 title: "{{ '\U0001F9F9' }} *Влажная уборка*"
                 message: "Обнаружена уборка в общем коридоре"
             - action: notify.huawei_lte
               data:
                 message: "Обнаружена уборка в общем коридоре"
-                target: !secret sms_phone_users56_59
+                target: !secret sms_phone_user56
                 data:
                   url: 'http://192.168.8.1/'
 
@@ -1880,13 +1925,14 @@
         - parallel:
             - action: telegram_bot.send_message
               data:
+                config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                 target: !secret telegram_enzokot_chat_id
                 title: "{{ '\U0001F4A7' }} *Датчики протечки*"
                 message: "Обнаружена протечка возле NVR/Камер: *{{ state_attr(trigger.entity_id, 'friendly_name') }}*"
             - action: notify.huawei_lte
               data:
                 message: "Обнаружена протечка возле NVR/Камер: {{ state_attr(trigger.entity_id, 'friendly_name') }}"
-                target: !secret sms_phone_users59_60
+                target: !secret sms_phone_user60
                 data:
                   url: 'http://192.168.8.1/'
             - sequence:
@@ -1956,6 +2002,7 @@
         - parallel:
             - action: telegram_bot.send_message
               data:
+                config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                 target: !secret telegram_enzokot_chat_id
                 title: "{{ '\U0001F511' }} *Датчик открытия/закрытия*"
                 message: "Обнаружено *открытие* дверцы шкафа с NVR"
@@ -2037,6 +2084,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0001F321' }} *Реле кулера шкафа NVR*"
             message: >-
@@ -2068,6 +2116,7 @@
         - parallel:
             - action: telegram_bot.send_message
               data:
+                config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                 target: !secret telegram_enzokot_chat_id
                 title: "{{ '\U0001F4FC' }} *Состояние NVR*"
                 message: "Обнаружено *отключение* NVR"
@@ -2144,6 +2193,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0001F50B' }} *Состояние телефона*"
             message: "Телефон полностью заряжен"
@@ -2168,6 +2218,7 @@
       actions:
         - action: telegram_bot.send_message
           data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             target: !secret telegram_enzokot_chat_id
             title: "⚠️ *Трекинг устройств*"
             message: "Камера в *{{- iif(trigger.id == 'cr', 'детской', 'коридоре') -}}* отключена"
@@ -2196,7 +2247,28 @@
                   response_variable: message_text
                 - action: telegram_bot.send_message
                   data:
+                    config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
                     target: !secret telegram_enzokot_chat_id
                     title: "{{ '\U0001F4C2' }} *Download station*"
                     message: "{{ message_text['text'] }}"
                     disable_web_page_preview: true
+
+#Оповещение о завершении восстановления из резервной копии
+    - alias: notification restore backup finished
+      id: notification restore backup finished
+      initial_state: true
+      mode: queued
+      triggers:
+        - trigger: state
+          entity_id: sensor.backup_backup_manager_state
+          from: "restore_backup"
+          not_to:
+            - "unknown"
+            - "unavailable"
+      actions:
+        - action: telegram_bot.send_message
+          data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
+            target: !secret telegram_enzokot_chat_id
+            title: "{{ '\U0001F4BD' }} *Резервное копирование*"
+            message: "Восстановление из резервной копии завершено"

@@ -10,7 +10,8 @@ esphome:
 
 esp32:
   board: wemos_d1_mini32
-
+  framework:
+    type: esp-idf
 #external_components:
 #  - source: github://myhomeiot/esphome-components
 
@@ -169,10 +170,12 @@ sensor:
       name: "ESP Xiaomi Bed Room Temperature"
       filters:
           - timeout: 1h
+          - round: 1
     humidity:
       name: "ESP Xiaomi Bed Room Humidity"
       filters:
           - timeout: 1h
+          - round: 1
     battery_level:
       name: "ESP Xiaomi Bed Room Battery Level"
 
@@ -185,14 +188,13 @@ sensor:
     name: "${devicename}_WiFi_RSSI"
     update_interval: 60s
 
-switch:
-  - platform: gpio
+light:
+  - platform: status_led
     id: onboard_led
     name: "${devicename}_On_Board_Led"
     pin:
       number: GPIO2
       mode: OUTPUT
-    restore_mode: ALWAYS_OFF
 
 text_sensor:
   - platform: wifi_info
@@ -212,13 +214,13 @@ binary_sensor:
                 condition:
                   - binary_sensor.is_on: "status_connection"
                 then:
-                  - switch.turn_on: "onboard_led"
+                  - light.turn_on: "onboard_led"
                   
             - if:
                 condition:
                   - binary_sensor.is_off: "status_connection"
                 then:
-                  - switch.turn_off: "onboard_led"
+                  - light.turn_off: "onboard_led"
 
 button:
   - platform: restart

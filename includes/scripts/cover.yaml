@@ -61,7 +61,7 @@
                 == state_attr(groupname, 'entity_id') | list | count }}
             timeout: 
               minutes: 1
-          - delay: 2
+          - delay: 5
           - variables:
               not_in_state_entity_id: "{{ expand(groupname) | selectattr('state', 'ne', statename) | map(attribute='entity_id') | list | join(', ') }}"
           - choose:

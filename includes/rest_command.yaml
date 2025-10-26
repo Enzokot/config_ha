@@ -1,11 +1,3 @@
-  #Перезапуск интеграции speedtest.net
-#   reload_integration_speedtest:
-#     url: http://homeassistant.local.hass.io:8123/api/config/config_entries/entry/8a7c8a568a453f39d2a77dda05119c4b/reload
-#     content_type: 'application/json'
-#     method: post
-#     timeout: 60
-#     headers:
-#       authorization: !secret event_observer_token
 
 #Отправка уведомления через бот broadcast
 # chat_id: "111111111"

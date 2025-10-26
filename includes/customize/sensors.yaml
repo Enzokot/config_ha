@@ -195,7 +195,7 @@ sensor.0x158d000396f197_battery:
 sensor.0x00158d0003d05782_battery:
   friendly_name: Центр. окно гостиная
 
-sensor.0x00158d0003975d8b_battery:
+sensor.0x00158d0003a00cad_battery:
   friendly_name: Прав. окно гостиная
 
 sensor.0x158d0003975b4c_battery:
@@ -456,3 +456,6 @@ sensor.total_shelly_plug_s_htr_cable_daily_electicity:
   
 sensor.total_shelly_plug_s_htr_cable_monthly_electicity:
   friendly_name: Полотенцесушитель потреб. мес.
+
+sensor.0x54ef44100080c88d_battery:
+  friendly_name: Датчик дыма NVR

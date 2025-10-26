@@ -44,8 +44,6 @@
           event_type: timer.finished
           event_data:
             entity_id: 'timer.delayed_spray_fragrance_wc'
-      conditions:
-        - "{{ state_attr(script_name, 'last_triggered') is none or now() - state_attr(script_name, 'last_triggered') > timedelta(minutes = 30) }}"
       actions:
         - action: "{{ script_name }}"
           data:
@@ -85,8 +83,6 @@
           event_type: timer.finished
           event_data:
             entity_id: 'timer.delayed_spray_fragrance_bathroom'
-      conditions:
-        - "{{ state_attr(script_name, 'last_triggered') is none or now() - state_attr(script_name, 'last_triggered') > timedelta(minutes = 30) }}"
       actions:
         - action: "{{ script_name }}"
           data:

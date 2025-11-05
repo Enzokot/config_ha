@@ -2272,3 +2272,36 @@
             target: !secret telegram_enzokot_chat_id
             title: "{{ '\U0001F4BD' }} *Резервное копирование*"
             message: "Восстановление из резервной копии завершено"
+
+#Оповещение о включенном освежители (если не сработал скрипт выключения автораспыления)
+    - alias: notification forgot to turn diffuser off
+      id: notification forgot to turn diffuser off
+      initial_state: true
+      mode: queued
+      triggers:
+        - trigger: state
+          entity_id: 
+            - light.2c195cb60050_light
+            - light.d4438ad06885_light
+            - switch.2c195cb60050_diffuser
+            - switch.d4438ad06885_diffuser
+          to: "on"
+          for:
+            minutes: 5
+      conditions:
+        - "{{ state_attr(this.entity_id, 'last_triggered') is none or now() - state_attr(this.entity_id, 'last_triggered') > timedelta(minutes = 30) }}"
+      actions:
+        - variables:
+            name_for_send: >-
+                {% if device_attr(trigger.entity_id, 'name_by_user') != none -%}
+                  {{- device_attr(trigger.entity_id, 'name_by_user') -}}
+                {%- else -%}
+                  {% set temp_name = device_attr(trigger.entity_id, 'name') %}
+                  {{- iif(temp_name != none, temp_name,  trigger.entity_id, trigger.entity_id) -}}
+                {%- endif -%}
+        - action: telegram_bot.send_message
+          data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
+            target: !secret telegram_enzokot_chat_id
+            title: "{{ '\U0001F4A6' }} *Освежители*"
+            message: "*{{ name_for_send }}* включен более 5 минут"

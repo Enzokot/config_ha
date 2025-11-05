@@ -88,3 +88,41 @@
           data:
             fragrance_duration: "{{ states(duration_name) }}"
             definitely_spray: false
+
+#Срабатывание освежителя в туалете по датчику присутствия
+    - alias: long occupancy diffuser fragrance delivery wc
+      id: long occupancy diffuser fragrance delivery wc
+      max_exceeded: silent
+      variables:
+        script_name: 'script.diffuser_fragrance_delivery_wc'
+        duration_name: 'number.d4438ad06885_fragrance_duration'
+      triggers:
+        - trigger: state
+          entity_id: 'binary_sensor.occupancy_wc_occupancy'
+          to: 'on'
+          for:
+            minutes: 4
+      actions:
+        - action: "{{ script_name }}"
+          data:
+            fragrance_duration: "{{ states(duration_name) }}"
+            definitely_spray: false
+
+#Срабатывание освежителя в ванной по датчику присутствия
+    - alias: long occupancy diffuser fragrance delivery bathroom
+      id: long occupancy diffuser fragrance delivery bathroom
+      max_exceeded: silent
+      variables:
+        script_name: 'script.diffuser_fragrance_delivery_bathroom'
+        duration_name: 'number.2c195cb60050_fragrance_duration'
+      triggers:
+        - trigger: state
+          entity_id: 'binary_sensor.occupancy_bathroom_occupancy'
+          to: 'on'
+          for:
+            minutes: 4
+      actions:
+        - action: "{{ script_name }}"
+          data:
+            fragrance_duration: "{{ states(duration_name) }}"
+            definitely_spray: false

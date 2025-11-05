@@ -170,6 +170,9 @@ ble_client:
         - lambda: |-
             ESP_LOGD("ble_client_lambda", "Disconnected from lywsd02_clock_kitchen!");
 
+bluetooth_proxy:
+  active: false
+
 script:
   - id: time_sync_ble_clocks
     mode: queued

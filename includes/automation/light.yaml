@@ -2,7 +2,6 @@
     - alias: yeelight ceiling cr off
       id: yeelight ceiling cr off
       initial_state: true
-      mode: single
       max_exceeded: silent
       triggers:
         - trigger: state
@@ -20,7 +19,6 @@
     - alias: yeelight ceiling cr on
       id: yeelight ceiling cr on
       initial_state: true
-      mode: single
       max_exceeded: silent
       triggers:
         - trigger: state
@@ -62,7 +60,6 @@
     - alias: yeelight ceiling cr on ambilight night mode
       id: yeelight ceiling cr on ambilight night mode
       initial_state: true
-      mode: single
       max_exceeded: silent
       triggers:
         - trigger: state
@@ -84,7 +81,6 @@
     - alias: yeelight ceiling cr off ambilight night mode
       id: yeelight ceiling cr off ambilight night mode
       initial_state: true
-      mode: single
       max_exceeded: silent
       triggers:
         - trigger: state
@@ -153,7 +149,6 @@
     - alias: light gateway toggle
       id: light gateway toggle
       initial_state: true
-      mode: single
       max_exceeded: silent
       triggers:
          - trigger: state
@@ -260,7 +255,6 @@
     - alias: restart integration relay yeelight ceiling unavailable
       id: restart integration relay yeelight ceiling unavailable
       initial_state: true
-      mode: single
       max_exceeded: silent
       triggers:
         - trigger: state
@@ -294,3 +288,167 @@
                   - action: homeassistant.reload_config_entry
                     data:
                       entry_id: "{{ config_entry_id('light.yeelight_ceiling_cr') }}"
+
+#Включение подсветки зеркала в туалете по датчику присутствия и освещенности
+    - alias: occupancy turn on mirror lighting wc
+      id: occupancy turn on mirror lighting wc
+      initial_state: true
+      max_exceeded: silent
+      triggers:
+        - trigger: state
+          entity_id: 'binary_sensor.occupancy_wc_occupancy'
+          to: 'on'
+      conditions:
+        - condition: numeric_state
+          entity_id: 'sensor.occupancy_wc_illuminance'
+          below: 50
+        - condition: state
+          entity_id: 'switch.0x086bd7fffe5b7c7f_right'
+          state: 'off'
+        - condition: state
+          entity_id: 'timer.delayed_turn_off_mirror_lighting_wc'
+          state: 'idle'
+      actions:
+        - parallel:
+            - action: switch.turn_on
+              target:
+                entity_id: 'switch.0x086bd7fffe5b7c7f_right'
+            - action: timer.start
+              target:
+                entity_id: 'timer.delayed_turn_off_mirror_lighting_wc'
+
+#Выключение подсветки зеркала в туалете по таймеру датчика присутствия и освещенности
+    - alias: timer turn off mirror lighting wc
+      id: timer turn off mirror lighting wc
+      initial_state: true
+      max_exceeded: silent
+      triggers:
+        - trigger: event
+          event_type: timer.finished
+          event_data:
+            entity_id: 'timer.delayed_turn_off_mirror_lighting_wc'
+      conditions:
+        - condition: state
+          entity_id: 'switch.0x086bd7fffe5b7c7f_right'
+          state: 'on'
+      actions:
+        - choose:
+            - conditions:
+                - condition: state
+                  entity_id: 'binary_sensor.occupancy_wc_occupancy'
+                  state: 'on'
+              sequence:
+                - action: timer.start
+                  target:
+                    entity_id: 'timer.delayed_turn_off_mirror_lighting_wc'
+          default:
+            - action: switch.turn_off
+              target:
+                entity_id: 'switch.0x086bd7fffe5b7c7f_right'
+
+#Включение подсветки зеркала в ванной по датчику присутствия и освещенности
+    - alias: occupancy turn on mirror lighting bathroom
+      id: occupancy turn on mirror lighting bathroom
+      initial_state: true
+      max_exceeded: silent
+      triggers:
+        - trigger: state
+          entity_id: 'binary_sensor.occupancy_bathroom_occupancy'
+          to: 'on'
+      conditions:
+        - condition: numeric_state
+          entity_id: 'sensor.occupancy_bathroom_illuminance'
+          below: 50
+        - condition: state
+          entity_id: 'switch.0x086bd7fffe5aecf8_left'
+          state: 'off'
+        - condition: state
+          entity_id: 'timer.delayed_turn_off_mirror_lighting_bathroom'
+          state: 'idle'
+      actions:
+        - parallel:
+            - action: switch.turn_on
+              target:
+                entity_id: 'switch.0x086bd7fffe5aecf8_left'
+            - action: timer.start
+              target:
+                entity_id: 'timer.delayed_turn_off_mirror_lighting_bathroom'
+
+#Выключение подсветки зеркала в ванной по таймеру датчика присутствия и освещенности
+    - alias: timer turn off mirror lighting bathroom
+      id: timer turn off mirror lighting bathroom
+      initial_state: true
+      max_exceeded: silent
+      triggers:
+        - trigger: event
+          event_type: timer.finished
+          event_data:
+            entity_id: 'timer.delayed_turn_off_mirror_lighting_bathroom'
+      conditions:
+        - condition: state
+          entity_id: 'switch.0x086bd7fffe5aecf8_left'
+          state: 'on'
+      actions:
+        - choose:
+            - conditions:
+                - condition: state
+                  entity_id: 'binary_sensor.occupancy_bathroom_occupancy'
+                  state: 'on'
+              sequence:
+                - action: timer.start
+                  target:
+                    entity_id: 'timer.delayed_turn_off_mirror_lighting_bathroom'
+          default:
+            - action: switch.turn_off
+              target:
+                entity_id: 'switch.0x086bd7fffe5aecf8_left'
+
+#Выключение подсветки зеркала в туалете по освещенности
+    - alias: illuminance turn off mirror lighting wc
+      id: illuminance turn off mirror lighting wc
+      initial_state: true
+      max_exceeded: silent
+      triggers:
+        - trigger: numeric_state
+          entity_id: 'sensor.occupancy_wc_illuminance'
+          above: 150
+      conditions:
+        - condition: state
+          entity_id: 'switch.0x086bd7fffe5b7c7f_right'
+          state: 'on'
+        - condition: state
+          entity_id: 'timer.delayed_turn_off_mirror_lighting_wc'
+          state: 'active'
+      actions:
+        - parallel:
+            - action: switch.turn_off
+              target:
+                entity_id: 'switch.0x086bd7fffe5b7c7f_right'
+            - action: timer.cancel
+              target:
+                entity_id: 'timer.delayed_turn_off_mirror_lighting_wc'
+
+#Выключение подсветки зеркала в ванной по освещенности
+    - alias: illuminance turn off mirror lighting bathroom
+      id: illuminance turn off mirror lighting bathroom
+      initial_state: true
+      max_exceeded: silent
+      triggers:
+        - trigger: numeric_state
+          entity_id: 'sensor.occupancy_bathroom_illuminance'
+          above: 150
+      conditions:
+        - condition: state
+          entity_id: 'switch.0x086bd7fffe5aecf8_left'
+          state: 'on'
+        - condition: state
+          entity_id: 'timer.delayed_turn_off_mirror_lighting_bathroom'
+          state: 'active'
+      actions:
+        - parallel:
+            - action: switch.turn_off
+              target:
+                entity_id: 'switch.0x086bd7fffe5aecf8_left'
+            - action: timer.cancel
+              target:
+                entity_id: 'timer.delayed_turn_off_mirror_lighting_bathroom'

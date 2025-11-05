@@ -4,6 +4,12 @@
       entities: false
     # mesh:
     #   entities: false
+    "b460edd01bba":
+      entities: false
+    "b460edcf78c4":
+      entities: false
+    "b460edcfcb00":
+      entities: false
     "0x00158d00054b8d72":
       occupancy_timeout: 62
     "0x00158d000566bde7":

@@ -46,8 +46,22 @@
     delayed_spray_fragrance_wc:
         name: Осталось до отложенного распыления освежителя в туалете
         duration: 120
+        restore: true
 
 #Таймер отложенного распыления освежителя в ванной
     delayed_spray_fragrance_bathroom:
         name: Осталось до отложенного распыления освежителя в ванной
         duration: 120
+        restore: true
+
+#Таймер отложенного отключения подсветки зеркала в туалете
+    delayed_turn_off_mirror_lighting_wc:
+        name: Осталось до отложенного отключения подсветки зеркала в туалете
+        duration: 4
+        restore: true
+
+#Таймер отложенного отключения подсветки зеркала в ванной
+    delayed_turn_off_mirror_lighting_bathroom:
+        name: Осталось до отложенного отключения подсветки зеркала в ванной
+        duration: 4
+        restore: true

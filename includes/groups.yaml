@@ -111,6 +111,8 @@
           - light.d4438ad06885_light
           - sensor.0x54ef44100080c88d_battery
           - light.2c195cb60050_light
+          - binary_sensor.occupancy_bathroom_occupancy
+          - binary_sensor.occupancy_wc_occupancy
 
     temperature_summary_group_to_bot:
         entities:

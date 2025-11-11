@@ -1152,7 +1152,7 @@ views:
                       styles:
                         icon:
                           - color: var(--state-active-color)
-                      spin: true
+                      rotate: true
                     - operator: default
                       styles:
                         icon:
@@ -1198,7 +1198,7 @@ views:
                       styles:
                         icon:
                           - color: var(--state-active-color)
-                      spin: true
+                      rotate: true
                     - operator: default
                       styles:
                         icon:
@@ -1244,7 +1244,7 @@ views:
                       styles:
                         icon:
                           - color: var(--state-active-color)
-                      spin: true
+                      rotate: true
                     - operator: default
                       styles:
                         icon:
@@ -1290,7 +1290,7 @@ views:
                       styles:
                         icon:
                           - color: var(--state-active-color)
-                      spin: true
+                      rotate: true
                     - operator: default
                       styles:
                         icon:
@@ -1434,7 +1434,7 @@ views:
                       styles:
                         icon:
                           - color: var(--state-active-color)
-                      spin: true
+                      rotate: true
                     - operator: default
                       styles:
                         icon:
@@ -1480,7 +1480,7 @@ views:
                       styles:
                         icon:
                           - color: var(--state-active-color)
-                      spin: true
+                      rotate: true
                     - operator: default
                       styles:
                         icon:
@@ -1526,7 +1526,7 @@ views:
                       styles:
                         icon:
                           - color: var(--state-active-color)
-                      spin: true
+                      rotate: true
                     - operator: default
                       styles:
                         icon:
@@ -1572,7 +1572,7 @@ views:
                       styles:
                         icon:
                           - color: var(--state-active-color)
-                      spin: true
+                      rotate: true
                     - operator: default
                       styles:
                         icon:

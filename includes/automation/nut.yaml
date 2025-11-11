@@ -1,0 +1,69 @@
+
+#Выключение HA по данным с ИБП
+    - alias: shutdown instance from nut ups
+      id: shutdown instance from nut ups
+      mode: restart
+      triggers:
+        - trigger: state
+          entity_id: sensor.kirpich_status_data
+          to: 
+            - 'OB'
+            - 'OB DISCHRG'
+          for:
+            minutes: 5
+        - trigger: state
+          entity_id: sensor.kirpich_status_data
+          to: 
+            - 'LB'
+            - 'LB DISCHRG'
+        - trigger: homeassistant
+          id: 'homeassistant_start'
+          event: start
+      conditions:
+        - condition: state
+          entity_id: sensor.kirpich_status_data
+          state:
+            - 'OB DISCHRG'
+            - 'OB'
+            - 'LB DISCHRG'
+            - 'LB'
+      actions:
+        - if:
+            - "{{ trigger.id == 'homeassistant_start' }}"
+          then:
+            - wait_for_trigger:
+                - trigger: state
+                  entity_id: sensor.kirpich_status_data
+                  to: 
+                    - 'OL'
+                    - 'OL CHRG'
+                    - 'OL DISCHRG'
+              timeout:
+                minutes: 2
+            - if:
+                - "{{ not wait.completed }}"
+              then:
+                - action: hassio.host_shutdown
+          else:
+            - action: hassio.host_shutdown
+
+#Перезапуск аддона z2m после включения сетевого питания ИБП
+    - alias: restart z2m addon from nut ups
+      id: restart z2m addon from nut ups
+      max_exceeded: silent
+      triggers:
+        - trigger: state
+          entity_id: sensor.kirpich_status_data
+          from:
+            - 'LB'
+            - 'LB DISCHRG'
+            - 'OB'
+            - 'OB DISCHRG'
+          to: 
+            - 'OL'
+            - 'OL CHRG'
+            - 'OL DISCHRG'
+      actions:
+        - action: hassio.addon_restart
+          data:
+            addon: 45df7312_zigbee2mqtt

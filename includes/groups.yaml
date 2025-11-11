@@ -113,6 +113,7 @@
           - light.2c195cb60050_light
           - binary_sensor.occupancy_bathroom_occupancy
           - binary_sensor.occupancy_wc_occupancy
+          - sensor.kirpich_status_data
 
     temperature_summary_group_to_bot:
         entities:

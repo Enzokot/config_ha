@@ -155,6 +155,7 @@
             - sensor.shelly_1pm_fan_nvr_box_power
             - sensor.shelly_plug_s_keenetic_hw_power
             - sensor.shelly_plug_s_htr_shelly_heated_tr_power
+            - sensor.shelly_plug_s_prox_main_shelly_prox_main_power
         above: 3000
       actions:
           - action: switch.turn_off
@@ -213,6 +214,7 @@
                    "sensor.0x54ef441000096cbc_energy": "input_number.total_yeelight_ceiling_relay_saved",
                    "sensor.shelly_em_energy": "input_number.total_shelly_em_saved",
                    "sensor.shelly_plug_s_1_energy": "input_number.total_server_ac_saved",
+                   "sensor.shelly_plug_s_prox_main_shelly_prox_main_energy": "input_number.total_server_prox_main_saved",
                    "sensor.shelly_plug_s_2_energy": "input_number.total_shelly_plug_s_2_saved",
                    "sensor.0x54ef441000691265_energy": "input_number.total_kitchen_light_switch_working_area_saved",
                    "sensor.shelly_1pm_fan_nvr_box_energy": "input_number.total_shelly_1pm_fan_nvr_box_saved",
@@ -237,6 +239,7 @@
             - sensor.shelly_1pm_fan_nvr_box_energy
             - sensor.shelly_plug_s_keenetic_hw_energy
             - sensor.shelly_plug_s_htr_shelly_heated_tr_energy
+            - sensor.shelly_plug_s_prox_main_shelly_prox_main_energy
       conditions:
         - condition: template
           value_template: >- 

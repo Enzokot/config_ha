@@ -18,6 +18,7 @@ esp32:
     type: esp-idf
 wifi:
   #fast_connect: true
+  min_auth_mode: WPA2
   networks:
   
 #  - ssid: Kotletochka_Yi
@@ -169,9 +170,6 @@ ble_client:
       then:
         - lambda: |-
             ESP_LOGD("ble_client_lambda", "Disconnected from lywsd02_clock_kitchen!");
-
-bluetooth_proxy:
-  active: false
 
 script:
   - id: time_sync_ble_clocks

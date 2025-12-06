@@ -459,3 +459,33 @@ sensor.total_shelly_plug_s_htr_cable_monthly_electicity:
 
 sensor.0x54ef44100080c88d_battery:
   friendly_name: Датчик дыма NVR
+
+sensor.2c195cb60050_battery:
+  friendly_name: Освежитель ванная
+
+sensor.d4438ad06885_battery:
+  friendly_name: Освежитель туалет
+
+sensor.c09b9eb4093d_battery:
+  friendly_name: Присутствие ванная
+
+sensor.c09b9eb4599a_battery:
+  friendly_name: Присутствие туалет
+
+sensor.shelly_plug_s_prox_main_shelly_prox_main_power:
+  friendly_name: Тек. мощность
+
+sensor.shelly_plug_s_prox_main_shelly_prox_main_frequency:
+  friendly_name: Тек. частота
+
+sensor.total_prox_main_socket_cable_daily_electicity:
+  friendly_name: Prox потреб. день
+  
+sensor.total_prox_main_socket_cable_monthly_electicity:
+  friendly_name: Prox потреб. мес.
+
+sensor.a4c13894a931_battery:
+  friendly_name: Присутствие кухня
+
+sensor.a4c1385a07a5_occupancy:
+  friendly_name: Присутствие гардероб

@@ -91,3 +91,7 @@ switch.shelly_plug_s_htr_shelly_heated_tr:
 
 switch.kotletochka_dw_power:
   friendly_name: Питание посудомойки
+
+switch.power_switch_n550jk:
+  friendly_name: Вкл/выкл n50jk
+  icon: mdi:laptop

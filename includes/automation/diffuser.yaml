@@ -98,7 +98,7 @@
         duration_name: 'number.d4438ad06885_fragrance_duration'
       triggers:
         - trigger: state
-          entity_id: 'binary_sensor.occupancy_wc_occupancy'
+          entity_id: 'binary_sensor.c09b9eb4599a_occupancy'
           to: 'on'
           for:
             minutes: 4
@@ -117,7 +117,7 @@
         duration_name: 'number.2c195cb60050_fragrance_duration'
       triggers:
         - trigger: state
-          entity_id: 'binary_sensor.occupancy_bathroom_occupancy'
+          entity_id: 'binary_sensor.c09b9eb4093d_occupancy'
           to: 'on'
           for:
             minutes: 4

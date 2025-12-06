@@ -15,6 +15,7 @@ esp32:
 
 wifi:
   fast_connect: true
+  min_auth_mode: WPA2
   networks:
   
 #  - ssid: Kotletochka_Yi

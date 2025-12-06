@@ -17,7 +17,8 @@ esp32:
 
 wifi:
   fast_connect: true
-  output_power: 20.5dB
+#  output_power: 20.5dB
+  min_auth_mode: WPA2
   networks:
   #Точка в спальне
   - ssid: Kotletochka

@@ -929,6 +929,7 @@
                 - sensor.shelly_plug_s_nvr_power
                 - sensor.shelly_plug_s_keenetic_hw_power
                 - sensor.shelly_plug_s_htr_shelly_heated_tr_power
+                - sensor.shelly_plug_s_prox_main_shelly_prox_main_power
             above: 3000
       actions:
         - action: telegram_bot.send_message
@@ -1287,7 +1288,7 @@
                     parse_mode: 'html'
                     title: "⚠️ <b>Трекинг устройств</b>"
                     message: >
-                      <i>{{ state_attr(trigger.event.data.entity_id, 'friendly_name') }}</i> сменил статус на <b>{{ trigger.event.data.new_state.state }}</b>
+                      <i>{{ trigger.event.data.old_state.attributes.friendly_name }}</i> ({{ trigger.event.data.entity_id }}) сменил статус на <b>{{ trigger.event.data.new_state.state }}</b>
 
 #Уведомление о начале/окончании нагрева воды в бойлере
     - alias: notifications on off water heater

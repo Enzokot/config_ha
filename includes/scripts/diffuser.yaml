@@ -22,7 +22,7 @@
                   entity_id: 'binary_sensor.d4438ad06885_battery_charging'
                   state: 'on'
                 - condition: state
-                  entity_id: 'binary_sensor.occupancy_wc_occupancy'
+                  entity_id: 'binary_sensor.c09b9eb4599a_occupancy'
                   state: 'on'
           sequence:
             - action: timer.start
@@ -120,7 +120,7 @@
                   entity_id: 'binary_sensor.2c195cb60050_battery_charging'
                   state: 'on'
                 - condition: state
-                  entity_id: 'binary_sensor.occupancy_bathroom_occupancy'
+                  entity_id: 'binary_sensor.c09b9eb4093d_occupancy'
                   state: 'on'
                 - condition: numeric_state
                   entity_id: 'sensor.0x00158d0004561de9_humidity'

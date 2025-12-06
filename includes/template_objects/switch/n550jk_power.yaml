@@ -1,0 +1,13 @@
+
+  - switch:
+      - name: power_switch_n550jk
+        state: "{{ is_state('binary_sensor.n550jk_availability', 'on') }}"
+        turn_on:
+          action: wake_on_lan.send_magic_packet
+          data:
+            mac: !secret mac_n550jk
+        turn_off:
+          action: hassio.addon_stdin
+          data:
+            addon: core_rpc_shutdown
+            input: n550jk

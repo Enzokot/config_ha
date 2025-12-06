@@ -111,9 +111,12 @@
           - light.d4438ad06885_light
           - sensor.0x54ef44100080c88d_battery
           - light.2c195cb60050_light
-          - binary_sensor.occupancy_bathroom_occupancy
-          - binary_sensor.occupancy_wc_occupancy
+          - binary_sensor.c09b9eb4093d_occupancy
+          - binary_sensor.c09b9eb4599a_occupancy
           - sensor.kirpich_status_data
+          - switch.shelly_plug_s_prox_main_shelly_prox_main
+          - binary_sensor.a4c13894a931_occupancy
+          - binary_sensor.a4c1385a07a5_occupancy
 
     temperature_summary_group_to_bot:
         entities:

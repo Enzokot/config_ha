@@ -2,7 +2,9 @@ substitutions:
   devicename: avatto_s06_living_room
   nodename: avatto-s06-living-room
   telegram_api_token: !secret telegram_api
-  telegram_chat_id: !secret telegram_enzokot_chat_id  
+  telegram_chat_id: !secret telegram_enzokot_chat_id
+  pikvm_api_main_authorization: !secret pikvm_api_main_authorization
+  pikvm_hostname_main: !secret pikvm_hostname_main
 
 #external_components:
 #  - source: github://TheStaticTurtle/esphome_syslog
@@ -17,6 +19,7 @@ esp8266:
   
 wifi:
   fast_connect: true
+  min_auth_mode: WPA2
   networks:
   #Точка в спальне
 #  - ssid: Kotletochka
@@ -50,6 +53,9 @@ wifi:
     ssid: "${nodename}"
     password: !secret wifi_password
 
+  on_connect:
+    - script.execute: wol_main_server_script
+
 captive_portal:
 
 http_request:
@@ -61,6 +67,9 @@ udp:
 
 logger:
   #baud_rate: 0
+
+debug:
+  update_interval: 5s
 
 syslog:
   #ip_address: "kotletochka-ds.lan"
@@ -90,7 +99,8 @@ api:
         data: int[]
       then:
         - remote_transmitter.transmit_raw:
-            code: !lambda 'return data;'
+            code: !lambda 'return {data.begin(), data.end()};'
+#            code: !lambda 'return data;'
 
 ota:
   - platform: esphome
@@ -104,6 +114,12 @@ time:
       - ntp2.vniiftri.ru
       - pool.ntp.org
     timezone: Europe/Moscow
+
+# Веб сервер
+#web_server:
+#  port: 80
+#  version: 3
+#  include_internal: true
 
 status_led:
   pin: GPIO4
@@ -123,6 +139,49 @@ remote_transmitter:
     inverted: false
   carrier_duty_percent: 50%
   id: transmitter_s06_living_room
+
+script:
+  - id: wol_main_server_script
+    mode: restart
+    then:
+      - if:
+          condition:
+            binary_sensor.is_off: status_connection
+          then:
+            - logger.log: 
+                format: "Start main WOL script"
+                level: INFO
+            - delay: 2min
+            - if:
+                condition:
+                  text_sensor.state:
+                    id: debug_reset_reason
+                    state: 'Power On'
+                then:
+                  - logger.log: 
+                      format: "Press main WOL button"
+                      level: INFO
+                  - button.press: button_wol_main_server
+                  - wait_until:
+                      condition:
+                        binary_sensor.is_on: status_connection
+                      timeout: 2min
+                  - if:
+                      condition:
+                        binary_sensor.is_on: status_connection
+                      then:
+                        - logger.log: 
+                            format: "API connected check passed"
+                            level: INFO
+                      else:
+                        - logger.log: 
+                            format: "API connected check failed"
+                            level: INFO
+                        - http_request.post:
+                            url: "http://${pikvm_hostname_main}/api/gpio/pulse?channel=restart_ac_prox_main"
+                            request_headers:
+                              Content-Type: application/json
+                              Authorization: "Basic ${pikvm_api_main_authorization}"
 
 binary_sensor:
   - platform: gpio
@@ -204,6 +263,12 @@ text_sensor:
     bssid:
       name: "${devicename}_Connected_BSSID" 
 
+  - platform: debug
+    reset_reason:
+      name: "${devicename}_Reset_reason"
+      id: debug_reset_reason
+      internal: true
+
 button:
   - platform: restart
     name: ${devicename}_Restart
@@ -212,3 +277,19 @@ button:
   - platform: safe_mode
     name: ${devicename}_Safe_Mode
     id: button_restart_safe_mode
+
+  - platform: wake_on_lan
+    name: ${devicename}_WOL_Main_Server
+    id: button_wol_main_server
+    internal: true
+    target_mac_address: !secret mac_main_server_upper
+
+#  - platform: template
+#    name: "Temp button"
+#    internal: true
+#    on_press:
+#      - http_request.post:
+#          url: "http://${pikvm_hostname_main}/api/gpio/pulse?channel=restart_ac_prox_main"
+#          request_headers:
+#            Content-Type: application/json
+#            Authorization: "Basic ${pikvm_api_main_authorization}"

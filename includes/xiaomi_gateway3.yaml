@@ -1,7 +1,18 @@
 
   devices:
-    ble:
+    #ble:
+    #  entities: false
+    "e72e0090f84f":
       entities: false
+    "e72e01923cf3":
+      entities: false
+    "e72e0030ecb4":
+      entities: false
+    "3f5b7d72ccf3":
+      entities: false
+    "a4c1380e500d":
+      entities: false
+
     # mesh:
     #   entities: false
     "b460edd01bba":
@@ -10,6 +21,8 @@
       entities: false
     "b460edcfcb00":
       entities: false
+
+    # zigbee
     "0x00158d00054b8d72":
       occupancy_timeout: 62
     "0x00158d000566bde7":

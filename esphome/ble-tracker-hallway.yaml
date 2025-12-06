@@ -12,8 +12,8 @@ esp32:
     type: esp-idf
 
 wifi:
-  fast_connect: true
-  output_power: 20.5dB
+  fast_connect: true  
+  min_auth_mode: WPA2
   networks:
 
   #Основная точка
@@ -27,22 +27,16 @@ wifi:
     ssid: "${nodename}"
     password: !secret wifi_password
 
-  on_connect:
-    - script.execute: wol_main_server_script
-
 captive_portal:
 
 udp:
-  id: kotletochka_ds_udp
-  addresses: !secret kotletochka-ds-lan-ip
+  - id: kotletochka_ds_udp
+    addresses: !secret kotletochka-ds-lan-ip
 
 # Enable logging
 logger:
   #level: NONE
   #baud_rate: 0
-
-debug:
-  update_interval: 5s
 
 syslog:
   udp_id: kotletochka_ds_udp
@@ -79,28 +73,6 @@ esp32_ble_tracker:
 ble_client:
   - mac_address: !secret bt_display_hallway_mac
     id: ble_display_hw
-
-bluetooth_proxy:
-  active: false
-
-script:
-  - id: wol_main_server_script
-    mode: restart
-    then:
-      - logger.log: 
-          format: "Start main WOL Script"
-          level: INFO
-      - delay: 2min
-      - if:
-          condition:
-            text_sensor.state:
-              id: debug_reset_reason
-              state: 'power-on event'
-          then:
-            - logger.log: 
-                format: "Press main WOL button"
-                level: INFO
-            - button.press: button_wol_main_server
 
 display:
   - platform: pvvx_mithermometer
@@ -192,12 +164,6 @@ text_sensor:
     bssid:
       name: "${devicename}_Connected_BSSID" 
 
-  - platform: debug
-    reset_reason:
-      name: "${devicename}_Reset_reason"
-      id: debug_reset_reason
-      internal: true
-
 binary_sensor:
   - platform: status
     name: "${devicename}_Status"
@@ -225,9 +191,3 @@ button:
   - platform: safe_mode
     name: ${devicename}_Safe_Mode
     id: button_restart_safe_mode
-
-  - platform: wake_on_lan
-    name: ${devicename}_WOL_Main_Server
-    id: button_wol_main_server
-    internal: true
-    target_mac_address: !secret mac_main_server

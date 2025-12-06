@@ -13,6 +13,7 @@ esp8266:
 
 wifi:
   fast_connect: true
+  min_auth_mode: WPA2
   networks:
 
   #Точка на кухне
@@ -64,7 +65,14 @@ api:
         data: int[]
       then:
         - remote_transmitter.transmit_raw:
-            code: !lambda 'return data;'
+            code: !lambda 'return {data.begin(), data.end()};'
+#            code: !lambda 'return data;'
+#            code: !lambda |-
+#                    std::vector<long int> sv_data;
+#                    for (int i = 0; i < data.size(); ++i) {
+#                      sv_data.push_back(data[i]);
+#                    }
+#                    return sv_data;
 
 ota:
   - platform: esphome

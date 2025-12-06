@@ -195,6 +195,20 @@
     tariffs:
       - electicity
 
+  total_prox_main_socket_cable_daily:
+    source: sensor.total_prox_main_socket_cable
+    unique_id: total_prox_main_socket_cable_daily
+    cycle: daily
+    tariffs:
+      - electicity
+
+  total_prox_main_socket_cable_monthly:
+    source: sensor.total_prox_main_socket_cable
+    unique_id: total_prox_main_socket_cable_monthly
+    cycle: monthly
+    tariffs:
+      - electicity
+
 #-------------------------------------------------------------------------------
 
 #   total_heater_socket_cable_daily:
@@ -381,14 +395,28 @@
 
 #   total_shelly_plug_s_htr_cable_daily:
 #     source: sensor.shelly_plug_s_htr_shelly_heated_tr_energy
-#     unique_id: total_server_socket_cable_daily
+#     unique_id: total_shelly_plug_s_htr_cable_daily
 #     cycle: daily
 #     tariffs:
 #       - electicity
 
 #   total_shelly_plug_s_htr_cable_monthly:
 #     source: sensor.shelly_plug_s_htr_shelly_heated_tr_energy
-#     unique_id: total_server_socket_cable_monthly
+#     unique_id: total_shelly_plug_s_htr_cable_monthly
+#     cycle: monthly
+#     tariffs:
+#       - electicity
+
+#   total_prox_main_socket_cable_daily:
+#     source: sensor.shelly_plug_s_prox_main_shelly_prox_main_energy
+#     unique_id: total_prox_main_socket_cable_daily
+#     cycle: daily
+#     tariffs:
+#       - electicity
+
+#   total_prox_main_socket_cable_monthly:
+#     source: sensor.shelly_plug_s_prox_main_shelly_prox_main_energy
+#     unique_id: total_prox_main_socket_cable_monthly
 #     cycle: monthly
 #     tariffs:
 #       - electicity

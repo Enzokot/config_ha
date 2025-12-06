@@ -296,11 +296,11 @@
       max_exceeded: silent
       triggers:
         - trigger: state
-          entity_id: 'binary_sensor.occupancy_wc_occupancy'
+          entity_id: 'binary_sensor.c09b9eb4599a_occupancy'
           to: 'on'
       conditions:
         - condition: numeric_state
-          entity_id: 'sensor.occupancy_wc_illuminance'
+          entity_id: 'sensor.c09b9eb4599a_illuminance'
           below: 50
         - condition: state
           entity_id: 'switch.0x086bd7fffe5b7c7f_right'
@@ -335,7 +335,7 @@
         - choose:
             - conditions:
                 - condition: state
-                  entity_id: 'binary_sensor.occupancy_wc_occupancy'
+                  entity_id: 'binary_sensor.c09b9eb4599a_occupancy'
                   state: 'on'
               sequence:
                 - action: timer.start
@@ -353,11 +353,11 @@
       max_exceeded: silent
       triggers:
         - trigger: state
-          entity_id: 'binary_sensor.occupancy_bathroom_occupancy'
+          entity_id: 'binary_sensor.c09b9eb4093d_occupancy'
           to: 'on'
       conditions:
         - condition: numeric_state
-          entity_id: 'sensor.occupancy_bathroom_illuminance'
+          entity_id: 'sensor.c09b9eb4093d_illuminance'
           below: 50
         - condition: state
           entity_id: 'switch.0x086bd7fffe5aecf8_left'
@@ -392,7 +392,7 @@
         - choose:
             - conditions:
                 - condition: state
-                  entity_id: 'binary_sensor.occupancy_bathroom_occupancy'
+                  entity_id: 'binary_sensor.c09b9eb4093d_occupancy'
                   state: 'on'
               sequence:
                 - action: timer.start
@@ -403,6 +403,63 @@
               target:
                 entity_id: 'switch.0x086bd7fffe5aecf8_left'
 
+#Включение подсветки столешницы на кухне по датчику присутствия и освещенности
+    - alias: occupancy turn on light working area kitchen
+      id: occupancy turn on light working area kitchen
+      initial_state: true
+      max_exceeded: silent
+      triggers:
+        - trigger: state
+          entity_id: 'binary_sensor.a4c13894a931_occupancy'
+          to: 'on'
+      conditions:
+        - condition: numeric_state
+          entity_id: 'sensor.a4c13894a931_illuminance'
+          below: 50
+        - condition: state
+          entity_id: 'switch.0x54ef441000691265'
+          state: 'off'
+        - condition: state
+          entity_id: 'timer.delayed_turn_off_light_working_area_kitchen'
+          state: 'idle'
+      actions:
+        - parallel:
+            - action: switch.turn_on
+              target:
+                entity_id: 'switch.0x54ef441000691265'
+            - action: timer.start
+              target:
+                entity_id: 'timer.delayed_turn_off_light_working_area_kitchen'
+
+#Выключение подсветки столешницы на кухне по таймеру датчика присутствия и освещенности
+    - alias: timer turn off light working area kitchen
+      id: timer turn off light working area kitchen
+      initial_state: true
+      max_exceeded: silent
+      triggers:
+        - trigger: event
+          event_type: timer.finished
+          event_data:
+            entity_id: 'timer.delayed_turn_off_light_working_area_kitchen'
+      conditions:
+        - condition: state
+          entity_id: 'switch.0x54ef441000691265'
+          state: 'on'
+      actions:
+        - choose:
+            - conditions:
+                - condition: state
+                  entity_id: 'binary_sensor.a4c13894a931_occupancy'
+                  state: 'on'
+              sequence:
+                - action: timer.start
+                  target:
+                    entity_id: 'timer.delayed_turn_off_light_working_area_kitchen'
+          default:
+            - action: switch.turn_off
+              target:
+                entity_id: 'switch.0x54ef441000691265'
+
 #Выключение подсветки зеркала в туалете по освещенности
     - alias: illuminance turn off mirror lighting wc
       id: illuminance turn off mirror lighting wc
@@ -410,7 +467,7 @@
       max_exceeded: silent
       triggers:
         - trigger: numeric_state
-          entity_id: 'sensor.occupancy_wc_illuminance'
+          entity_id: 'sensor.c09b9eb4599a_illuminance'
           above: 150
       conditions:
         - condition: state
@@ -435,7 +492,7 @@
       max_exceeded: silent
       triggers:
         - trigger: numeric_state
-          entity_id: 'sensor.occupancy_bathroom_illuminance'
+          entity_id: 'sensor.c09b9eb4093d_illuminance'
           above: 150
       conditions:
         - condition: state
@@ -452,3 +509,28 @@
             - action: timer.cancel
               target:
                 entity_id: 'timer.delayed_turn_off_mirror_lighting_bathroom'
+
+#Выключение подсветки столешницы на кухне по освещенности
+    - alias: illuminance turn off light working area kitchen
+      id: illuminance turn off light working area kitchen
+      initial_state: true
+      max_exceeded: silent
+      triggers:
+        - trigger: numeric_state
+          entity_id: 'sensor.a4c13894a931_illuminance'
+          above: 75
+      conditions:
+        - condition: state
+          entity_id: 'switch.0x54ef441000691265'
+          state: 'on'
+        - condition: state
+          entity_id: 'timer.delayed_turn_off_light_working_area_kitchen'
+          state: 'active'
+      actions:
+        - parallel:
+            - action: switch.turn_off
+              target:
+                entity_id: 'switch.0x54ef441000691265'
+            - action: timer.cancel
+              target:
+                entity_id: 'timer.delayed_turn_off_light_working_area_kitchen'

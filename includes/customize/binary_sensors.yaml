@@ -148,8 +148,14 @@ binary_sensor.tapo_c110_hw_motion:
 binary_sensor.0x54ef44100080c88d_smoke:
   friendly_name: Датчик дыма NVR
 
-binary_sensor.occupancy_bathroom_occupancy:
+binary_sensor.c09b9eb4093d_occupancy:
   friendly_name: Присутствие ванная
 
-binary_sensor.occupancy_wc_occupancy:
+binary_sensor.c09b9eb4599a_occupancy:
   friendly_name: Присутствие туалет
+
+binary_sensor.a4c13894a931_occupancy:
+  friendly_name: Присутствие кухня
+
+binary_sensor.a4c1385a07a5_occupancy:
+  friendly_name: Присутствие гардероб

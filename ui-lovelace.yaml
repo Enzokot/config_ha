@@ -150,15 +150,17 @@ views:
 
         - type: horizontal-stack
           cards:
-            - entity: switch.shelly_plug_s_1
+            - entity: switch.shelly_plug_s_prox_main_shelly_prox_main
               state_color: true
               icon_height: 50px
               type: button
+              name: 'Вкл/выкл розетку сервера'
+              icon: mdi:power-socket-eu
               tap_action:
                 action: perform-action
                 perform_action: switch.toggle
                 target:
-                  entity_id: switch.shelly_plug_s_1
+                  entity_id: switch.shelly_plug_s_prox_main_shelly_prox_main
                 confirmation:
                   text: Вкл/выкл розетку?
 
@@ -167,9 +169,10 @@ views:
             - type: entities
               show_header_toggle: false
               entities:
-                  - entity: sensor.shelly_plug_s_1_power
-                  - entity: sensor.total_server_socket_cable_daily_electicity
-                  - entity: sensor.total_server_socket_cable_monthly_electicity
+                  - entity: sensor.shelly_plug_s_prox_main_shelly_prox_main_power
+                  - entity: sensor.shelly_plug_s_prox_main_shelly_prox_main_frequency
+                  - entity: sensor.total_prox_main_socket_cable_daily_electicity
+                  - entity: sensor.total_prox_main_socket_cable_monthly_electicity
 
   - title: Освещение
     path: lights
@@ -815,6 +818,10 @@ views:
             - entity: binary_sensor.0x158d0003943639_smoke
               show_last_changed: true
               name: Кухня
+            - entity: binary_sensor.a4c13894a931_occupancy
+              show_last_changed: true
+              name: Кухня
+              icon: mdi:motion-sensor
             - entity: binary_sensor.0x158d0003975b4c_contact
               show_last_changed: true
               name: Лев.
@@ -844,6 +851,10 @@ views:
             - entity: binary_sensor.tapo_c110_hw_motion
               show_last_changed: true
               name: 'Камера'
+            - entity: binary_sensor.a4c1385a07a5_occupancy
+              show_last_changed: true
+              name: 'Гардероб'
+              icon: mdi:motion-sensor
 
         - type: markdown
           content: >
@@ -922,7 +933,7 @@ views:
                   - sensor.0x00158d00093e4111_battery
               - name: 'Дыма (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
-                icon: 'mdi:smoke-detector'
+                icon: 'mdi:smoke-detector-variant'
                 min: 30
                 entities:
                   - sensor.0x158d00039a8358_battery
@@ -951,6 +962,15 @@ views:
                   - sensor.0x158d000566bde7_battery
                   - sensor.0x158d0003953ee9_battery
                   - sensor.0x158d00054b8d72_battery
+              - name: 'Присутствия (min: {min}%, кол-во: {count})'
+                secondary_info: 'Диапазон заряда {range}%'
+                icon: 'mdi:home-account'
+                min: 30
+                entities:
+                  - sensor.c09b9eb4093d_battery
+                  - sensor.c09b9eb4599a_battery
+                  - sensor.a4c13894a931_battery
+                  - sensor.a4c1385a07a5_battery
               - name: 'Кнопки (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
                 icon: 'mdi:radiobox-marked'
@@ -1089,6 +1109,14 @@ views:
             - entity: sensor.0x54ef44100080c88d_battery
               tap_action: more-info
             - entity: sensor.2c195cb60050_battery
+              tap_action: more-info
+            - entity: sensor.c09b9eb4093d_battery
+              tap_action: more-info
+            - entity: sensor.c09b9eb4599a_battery
+              tap_action: more-info
+            - entity: sensor.a4c13894a931_battery
+              tap_action: more-info
+            - entity: sensor.a4c1385a07a5_battery
               tap_action: more-info
 
         - type: markdown
@@ -2621,9 +2649,50 @@ views:
               td.left: "padding: 10px 10px 10px 10px"
               th.left: "padding: 0px 0px 10px 10px"
 
+          # Bluetooth
+          - type: markdown
+            content: '### <center> <ha-icon icon="mdi:bluetooth"></ha-icon> Bluetooth LE </center>'
+          - type: "custom:flex-table-card"
+            clickable: false
+            entities:
+              include:
+                - sensor.*_ble
+            sort_by: state-
+            columns:
+              - data: friendly_name
+                name: Friendly Name
+                modify: 'x.replace(/ BLE/,"")'
+              - data: device.extra.mac
+                name: MAC
+                align: center
+                #modify: (x+'').replace(/(.{2}(?!$))/g,"$1:")
+              - data: msg_received
+                name: Received
+                modify: 'isNaN(parseInt(x, 10)) ? "" : parseInt(x, 10)'
+                align: center
+              - data: msg_missed
+                name: Missed
+                modify: 'isNaN(parseInt(x, 10)) ? "" : parseInt(x, 10)'
+                align: center
+              - data: device.last_report_gw.name
+                name: Last GW
+                align: center
+                modify: x+''
+              - data: state
+                name: Last Seen
+                modify: >
+                  var dt = new Date(0,0,0,0,0,0,(Date.now()-Date.parse(x)));
+                  isFinite(dt) ? dt.toTimeString().split(" ")[0] : ""
+                align: center
+            css:
+              table+: "padding-top: 15px;"
+              "tbody tr:nth-child(even)": "background-color: #a2542f6;"
+              td.left: "padding: 10px 10px 10px 10px"
+              th.left: "padding: 0px 0px 10px 10px"
+
           # Mesh
           - type: markdown
-            content: '### <center> <ha-icon icon="mdi:bluetooth-transfer"></ha-icon>Bluetooth Mesh </center>'
+            content: '### <center> <ha-icon icon="mdi:bluetooth-transfer"></ha-icon> Bluetooth Mesh </center>'
           - type: "custom:flex-table-card"
             clickable: false
             entities:

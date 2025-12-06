@@ -1,3 +1,4 @@
+
 #yeelight ceiling детская
     - alias: yeelight ceiling cr off
       id: yeelight ceiling cr off
@@ -422,6 +423,21 @@
         - condition: state
           entity_id: 'timer.delayed_turn_off_light_working_area_kitchen'
           state: 'idle'
+        - or:
+          - and:
+            - condition: time
+              after: "23:30:00"
+              before: "08:30:00"
+            - condition: state
+              entity_id: binary_sensor.workday_sensor
+              state: "off"
+          - and:
+            - condition: time
+              after: "23:00:00"
+              before: "07:30:00"
+            - condition: state
+              entity_id: binary_sensor.workday_sensor
+              state: "on"
       actions:
         - parallel:
             - action: switch.turn_on

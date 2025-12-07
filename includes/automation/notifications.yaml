@@ -736,7 +736,7 @@
       initial_state: true
       triggers:
         - trigger: state
-          entity_id: binary_sensor.cert_expired_keenetic_domain
+          entity_id: binary_sensor.cert_expired_netcraze_domain
           from: 'off'
           to: 'on'
         - trigger: state

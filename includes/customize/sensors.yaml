@@ -225,7 +225,7 @@ sensor.last_boot_custom:
 sensor.online_custom:
   friendly_name: Core время работы
 
-sensor.cert_expiry_keenetic_domain:
+sensor.cert_expiry_netcraze_domain:
   friendly_name: Сертификат SSL Keenetic
 
 sensor.last_google_backup_train:
@@ -361,8 +361,8 @@ sensor.ble_tracker_livingroom_wifi_rssi:
 sensor.perenio_petra01_kitchen_wifi_rssi:
   friendly_name: IR на кухне
 
-sensor.myip_keenetic:
-  friendly_name: keenetic hostname
+sensor.myip_netcraze:
+  friendly_name: netcraze hostname
   
 sensor.myip:
   friendly_name: opendns resolve

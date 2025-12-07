@@ -94,7 +94,7 @@ binary_sensor.zhimi_humidifier_cb1_low_water_level:
   friendly_name: Увлажнитель спальня
 
 #Сертификат ssl на собственные домены
-binary_sensor.cert_expired_keenetic_domain:
+binary_sensor.cert_expired_netcraze_domain:
   friendly_name: !secret keenetic_base_url
 
 binary_sensor.cert_expired_asuscomm_domain_klg:

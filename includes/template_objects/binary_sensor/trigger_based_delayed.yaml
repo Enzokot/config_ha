@@ -74,15 +74,15 @@
 #Просроченные сертификаты ssl
     - trigger:
         - trigger: state
-          entity_id: sensor.cert_expiry_keenetic_domain
+          entity_id: sensor.cert_expiry_netcraze_domain
         - trigger: homeassistant
           event: start
         - trigger: event
           event_type: event_template_reloaded
       binary_sensor:
-        - name: cert_expired_keenetic_domain
-          state: "{{ states('sensor.cert_expiry_keenetic_domain') | int(0) <= 5 }}"
-          availability: "{{ not is_state('sensor.cert_expiry_keenetic_domain', 'unavailable') }}"
+        - name: cert_expired_netcraze_domain
+          state: "{{ states('sensor.cert_expiry_netcraze_domain') | int(0) <= 5 }}"
+          availability: "{{ not is_state('sensor.cert_expiry_netcraze_domain', 'unavailable') }}"
           delay_on:
             minutes: 1
           delay_off:

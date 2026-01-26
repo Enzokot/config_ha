@@ -19,7 +19,7 @@ homeassistant:
     - type: totp
     - type: notify
       include:
-        - telegram_enzokot_to_bot
+        - send_message
       message: "\U0001F511 *Двухфакторная аутентификация*\n`{}` код для завершения авторизации Home Assistant"
   debug: false
 

@@ -115,8 +115,9 @@
           - binary_sensor.c09b9eb4599a_occupancy
           - sensor.kirpich_status_data
           - switch.shelly_plug_s_prox_main_shelly_prox_main
-          - binary_sensor.a4c13894a931_occupancy
+          - binary_sensor.449fdae95456_occupancy
           - binary_sensor.a4c1385a07a5_occupancy
+          - binary_sensor.348d130c94f5_occupancy
 
     temperature_summary_group_to_bot:
         entities:

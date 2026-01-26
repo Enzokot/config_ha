@@ -21,3 +21,43 @@
         data:
           media_content_id: "{{ content_id }}"
           media_content_type: "{{ content_type }}"
+
+#Отправка в асинхроне команды установки громкости для Samsung UE22H5600
+  remote_send_vol_set_samsung_tv:
+    alias: 'Установка абсолютной громкости на ТВ Samsung UE22H5600'
+    icon: mdi:volume-equal
+    mode: queued
+    fields:
+      entity:
+        description: 'entity_id remote от Samsung ТВ'
+        example: 'remote.tv_kotletochka_tv_sam'
+      vol_value:
+        description: 'Заданный уровень громкости'
+        example: '15'
+      media_player:
+        description: 'media_player с атрибутом volume_level для определения разницы громкости'
+        example: 'media_player.tv_kotletochka_tv_sam'
+    sequence:
+      - condition: "{{ is_state(media_player, 'on') }}"
+      - action: homeassistant.update_entity
+        data:
+          entity_id: media_player.tv_kotletochka_tv_sam
+      - variables:
+          diff_vol_str: "{{ vol_value - state_attr(media_player, 'volume_level') | float(0) * 100 }}"
+      - if:
+          - "{{ diff_vol_str | int(0) != 0 }}"
+        then:
+          - action: remote.send_command
+            target:
+              entity_id: "{{ entity }}"
+            data:
+              command: >-
+                {% set diff_vol = diff_vol_str | int(0)  %}
+                {% set command_name = iif(diff_vol < 0, 'KEY_VOLDOWN', 'KEY_VOLUP', 'KEY_VOLDOWN') %}
+                {%- set datanames = namespace(command_name=[]) -%}
+                
+                {% for i in range(diff_vol | abs) %}
+                  {% set datanames.command_name = datanames.command_name + [command_name] -%}
+                {% endfor %}
+                {{ datanames.command_name | list }}
+          - delay: 1

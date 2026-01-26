@@ -122,7 +122,7 @@
             target:
               entity_id: media_player.lg_smart_tv
             data:
-              media_content_id: "{{ value }}"
+              media_content_id: "{{ value | int(0) }}"
               media_content_type: "channel"
           increase_value:
             action: webostv.button
@@ -172,7 +172,7 @@
             data:
               variables:
                 entity: media_player.tv_kotletochka_tv_sam
-                content_id: "{{ value }}"
+                content_id: "{{ value | int(0) }}"
                 content_type: "channel"
           increase_value:
             action: remote.send_command
@@ -189,6 +189,21 @@
           range:
             min: 1
             max: 204
+        volume:
+          state_template: "{{ state_attr('media_player.tv_kotletochka_tv_sam', 'volume_level') | float(0) * 100 }}"
+          set_value:
+          #Для асинхронной смены абсолютного значения канала, т.к. интеграция выполняет данную команду с большой задержкой
+            action: script.turn_on
+            target:
+              entity_id: script.remote_send_vol_set_samsung_tv
+            data:
+              variables:
+                entity: remote.tv_kotletochka_tv_sam
+                vol_value: "{{ value }}"
+                media_player: media_player.tv_kotletochka_tv_sam
+          range:
+            min: 0
+            max: 100
 
     sensor.0x00158d000542ceaf_temperature:
       type: devices.types.sensor.climate

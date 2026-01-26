@@ -411,11 +411,11 @@
       max_exceeded: silent
       triggers:
         - trigger: state
-          entity_id: 'binary_sensor.a4c13894a931_occupancy'
+          entity_id: 'binary_sensor.449fdae95456_occupancy'
           to: 'on'
       conditions:
         - condition: numeric_state
-          entity_id: 'sensor.a4c13894a931_illuminance'
+          entity_id: 'sensor.449fdae95456_illuminance'
           below: 50
         - condition: state
           entity_id: 'switch.0x54ef441000691265'
@@ -465,7 +465,7 @@
         - choose:
             - conditions:
                 - condition: state
-                  entity_id: 'binary_sensor.a4c13894a931_occupancy'
+                  entity_id: 'binary_sensor.449fdae95456_occupancy'
                   state: 'on'
               sequence:
                 - action: timer.start
@@ -533,8 +533,8 @@
       max_exceeded: silent
       triggers:
         - trigger: numeric_state
-          entity_id: 'sensor.a4c13894a931_illuminance'
-          above: 75
+          entity_id: 'sensor.449fdae95456_illuminance'
+          above: 55
       conditions:
         - condition: state
           entity_id: 'switch.0x54ef441000691265'

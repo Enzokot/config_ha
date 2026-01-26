@@ -1893,6 +1893,7 @@
           before: "16:00:00"
           weekday:
             - mon
+            - sun
         - "{{ state_attr(this.entity_id, 'last_triggered') is none or now() - state_attr(this.entity_id, 'last_triggered') > timedelta(hours = 1) }}"
       actions:
         - parallel:

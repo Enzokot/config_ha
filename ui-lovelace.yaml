@@ -796,6 +796,10 @@ views:
             - entity: binary_sensor.0x158d00039a8358_smoke
               show_last_changed: true
               name: Гостиная
+            - entity: binary_sensor.348d130c94f5_occupancy
+              show_last_changed: true
+              name: Гостиная
+              icon: mdi:motion-sensor
             - entity: binary_sensor.0x158d000396f197_contact
               show_last_changed: true
               name: Лев.
@@ -818,7 +822,7 @@ views:
             - entity: binary_sensor.0x158d0003943639_smoke
               show_last_changed: true
               name: Кухня
-            - entity: binary_sensor.a4c13894a931_occupancy
+            - entity: binary_sensor.449fdae95456_occupancy
               show_last_changed: true
               name: Кухня
               icon: mdi:motion-sensor
@@ -969,8 +973,9 @@ views:
                 entities:
                   - sensor.c09b9eb4093d_battery
                   - sensor.c09b9eb4599a_battery
-                  - sensor.a4c13894a931_battery
+                  - sensor.449fdae95456_battery
                   - sensor.a4c1385a07a5_battery
+                  - sensor.348d130c94f5_battery
               - name: 'Кнопки (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
                 icon: 'mdi:radiobox-marked'
@@ -1106,17 +1111,25 @@ views:
               name: 'Дисплей Т&Rh коридор'
             - entity: sensor.d4438ad06885_battery
               tap_action: more-info
+              charging_state:
+                entity_id: binary_sensor.d4438ad06885_battery_charging
+                state: "on"
             - entity: sensor.0x54ef44100080c88d_battery
               tap_action: more-info
             - entity: sensor.2c195cb60050_battery
               tap_action: more-info
+              charging_state:
+                entity_id: binary_sensor.2c195cb60050_battery_charging
+                state: "on"
             - entity: sensor.c09b9eb4093d_battery
               tap_action: more-info
             - entity: sensor.c09b9eb4599a_battery
               tap_action: more-info
-            - entity: sensor.a4c13894a931_battery
+            - entity: sensor.449fdae95456_battery
               tap_action: more-info
             - entity: sensor.a4c1385a07a5_battery
+              tap_action: more-info
+            - entity: sensor.348d130c94f5_battery
               tap_action: more-info
 
         - type: markdown

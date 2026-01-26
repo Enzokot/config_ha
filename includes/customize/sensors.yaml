@@ -484,8 +484,14 @@ sensor.total_prox_main_socket_cable_daily_electicity:
 sensor.total_prox_main_socket_cable_monthly_electicity:
   friendly_name: Prox потреб. мес.
 
-sensor.a4c13894a931_battery:
+sensor.449fdae95456_battery:
   friendly_name: Присутствие кухня
 
-sensor.a4c1385a07a5_occupancy:
+sensor.a4c1385a07a5_battery:
   friendly_name: Присутствие гардероб
+
+sensor.esp_xiaomi_hallway_battery_level:
+  friendly_name: Дисплей Т&Rh коридор
+
+sensor.348d130c94f5_battery:
+  friendly_name: Присутствие гостиная

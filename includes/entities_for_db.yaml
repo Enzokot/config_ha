@@ -74,14 +74,14 @@
       - sensor.total_prox_main_socket_cable_monthly_electicity
       #Датчик освещенности улица
       - sensor.0x54ef4410000ebba0_illuminance
-      #Положение штока термоголовок
-      - sensor.thermostat_childrens_room_valve_position
-      - sensor.thermostat_bedroom_valve_position
-      - sensor.thermostat_living_room_valve_position
-      - sensor.thermostat_kitchen_valve_position
       #Напряжение в сети
       - sensor.0x842e14fffe13a854_voltage
       - sensor.shelly_em_voltage
+      #Мощность сети
+      - sensor.shelly_em_power
+      - sensor.shelly_plug_s_nvr_power
+      - sensor.shelly_1pm_fan_nvr_box_power
+      - sensor.shelly_plug_s_keenetic_hw_power
       #Трекер персоны
       - person.kostik
       #- device_tracker.sm_g973f

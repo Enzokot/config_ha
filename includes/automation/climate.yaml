@@ -209,20 +209,21 @@
                     - condition: template
                       value_template: >
                         {{ 
-                           trigger.to_state.state == 'on' and is_state('climate.0x5c0272fffec89454', 'auto') 
-                           or trigger.to_state.state == 'off' and is_state('climate.0x5c0272fffec89454', 'off') 
-                           and is_state('input_boolean.auto_triggered_valve_window_childrens_room', 'on')
+                          trigger.to_state.state == 'on' and is_state('climate.0xe456acfffefc3a6a', 'heat') and
+                          not is_state_attr('climate.0xe456acfffefc3a6a', 'temperature', 35)
+                          or trigger.to_state.state == 'off' and is_state('climate.0xe456acfffefc3a6a', 'off') 
+                          and is_state('input_boolean.auto_triggered_valve_window_childrens_room', 'on')
                         }}
                 sequence:
                     - action: climate.set_hvac_mode
                       target:
-                        entity_id: climate.0x5c0272fffec89454
+                        entity_id: climate.0xe456acfffefc3a6a
                       data:
                         hvac_mode: >
                                 {% if trigger.to_state.state == 'on' -%}
                                   off
                                 {%- else -%}
-                                  auto
+                                  heat
                                 {%- endif %}
                     - action: >
                                 {% if trigger.to_state.state == 'off' -%}
@@ -232,16 +233,11 @@
                                 {%- endif %}
                       target:
                         entity_id: input_boolean.auto_triggered_valve_window_childrens_room
-                    - action: climate.set_preset_mode
-                      target:
-                        entity_id: climate.0x5c0272fffec89454
-                      data:
-                        preset_mode: manual
               - conditions:
                     - condition: template
                       value_template: >
                         {{ 
-                           trigger.to_state.state == 'off' and is_state('climate.0x5c0272fffec89454', 'auto') 
+                           trigger.to_state.state == 'off' and is_state('climate.0xe456acfffefc3a6a', 'heat') 
                            and is_state('input_boolean.auto_triggered_valve_window_childrens_room', 'on')
                         }}
                 sequence:
@@ -327,20 +323,21 @@
                     - condition: template
                       value_template: >
                         {{ 
-                           trigger.to_state.state == 'on' and is_state('climate.0x60a423fffe968719', 'auto') 
-                           or trigger.to_state.state == 'off' and is_state('climate.0x60a423fffe968719', 'off') 
-                           and is_state('input_boolean.auto_triggered_valve_window_bed_room', 'on')
+                          trigger.to_state.state == 'on' and is_state('climate.0x449fdafffe74576a', 'heat') and
+                          not is_state_attr('climate.0x449fdafffe74576a', 'temperature', 35)
+                          or trigger.to_state.state == 'off' and is_state('climate.0x449fdafffe74576a', 'off')
+                          and is_state('input_boolean.auto_triggered_valve_window_bed_room', 'on')
                         }}
                 sequence:
                     - action: climate.set_hvac_mode
                       target:
-                        entity_id: climate.0x60a423fffe968719
+                        entity_id: climate.0x449fdafffe74576a
                       data:
                         hvac_mode: >
                                 {% if trigger.to_state.state == 'on' -%}
                                   off
                                 {%- else -%}
-                                  auto
+                                  heat
                                 {%- endif %}
                     - action: >
                                 {% if trigger.to_state.state == 'off' -%}
@@ -350,16 +347,11 @@
                                 {%- endif %}
                       target:
                         entity_id: input_boolean.auto_triggered_valve_window_bed_room
-                    - action: climate.set_preset_mode
-                      target:
-                        entity_id: climate.0x60a423fffe968719
-                      data:
-                        preset_mode: manual
               - conditions:
                     - condition: template
                       value_template: >
                         {{ 
-                           trigger.to_state.state == 'off' and is_state('climate.0x60a423fffe968719', 'auto') 
+                           trigger.to_state.state == 'off' and is_state('climate.0x449fdafffe74576a', 'heat') 
                            and is_state('input_boolean.auto_triggered_valve_window_bed_room', 'on')
                         }}
                 sequence:
@@ -395,20 +387,21 @@
                     - condition: template
                       value_template: >
                         {{ 
-                           trigger.to_state.state == 'on' and is_state('climate.0x5c0272fffe8de819', 'auto') 
-                           or trigger.to_state.state == 'off' and is_state('climate.0x5c0272fffe8de819', 'off') 
-                           and is_state('input_boolean.auto_triggered_valve_window_kitchen', 'on')
+                          trigger.to_state.state == 'on' and is_state('climate.0x0cae5ffffebbda1d', 'heat') and
+                          not is_state_attr('climate.0x0cae5ffffebbda1d', 'temperature', 35)
+                          or trigger.to_state.state == 'off' and is_state('climate.0x0cae5ffffebbda1d', 'off') 
+                          and is_state('input_boolean.auto_triggered_valve_window_kitchen', 'on')
                         }}
                 sequence:
                     - action: climate.set_hvac_mode
                       target:
-                        entity_id: climate.0x5c0272fffe8de819
+                        entity_id: climate.0x0cae5ffffebbda1d
                       data:
                         hvac_mode: >
                                 {% if trigger.to_state.state == 'on' -%}
                                   off
                                 {%- else -%}
-                                  auto
+                                  heat
                                 {%- endif %}
                     - action: >
                                 {% if trigger.to_state.state == 'off' -%}
@@ -418,17 +411,12 @@
                                 {%- endif %}
                       target:
                         entity_id: input_boolean.auto_triggered_valve_window_kitchen
-                    - action: climate.set_preset_mode
-                      target:
-                        entity_id: climate.0x5c0272fffe8de819
-                      data:
-                        preset_mode: manual
               - conditions:  
                     - condition: template
                       value_template: >
                         {{ 
-                           trigger.to_state.state == 'off' and is_state('climate.0x5c0272fffe8de819', 'auto') 
-                           and is_state('input_boolean.auto_triggered_valve_window_kitchen', 'on')
+                          trigger.to_state.state == 'off' and is_state('climate.0x0cae5ffffebbda1d', 'heat') 
+                          and is_state('input_boolean.auto_triggered_valve_window_kitchen', 'on')
                         }}
                 sequence:
                     - action: input_boolean.turn_off
@@ -531,20 +519,21 @@
                 - condition: template
                   value_template: >
                     {{ 
-                       trigger.to_state.state == 'on' and is_state('climate.0x5c0272fffec9db22', 'auto') 
-                       or trigger.to_state.state == 'off' and is_state('climate.0x5c0272fffec9db22', 'off') 
-                       and is_state('input_boolean.auto_triggered_valve_window_living_room', 'on')
+                      trigger.to_state.state == 'on' and is_state('climate.0x8c73dafffe01930c', 'heat') and
+                      not is_state_attr('climate.0x8c73dafffe01930c', 'temperature', 35)
+                      or trigger.to_state.state == 'off' and is_state('climate.0x8c73dafffe01930c', 'off') 
+                      and is_state('input_boolean.auto_triggered_valve_window_living_room', 'on')
                     }}
             sequence:
                 - action: climate.set_hvac_mode
                   target:
-                    entity_id: climate.0x5c0272fffec9db22
+                    entity_id: climate.0x8c73dafffe01930c
                   data:
                     hvac_mode: >
                             {% if trigger.to_state.state == 'on' -%}
                               off
                             {%- else -%}
-                              auto
+                              heat
                             {%- endif %}
                 - action: >
                             {% if trigger.to_state.state == 'off' -%}
@@ -554,16 +543,11 @@
                             {%- endif %}
                   target:
                     entity_id: input_boolean.auto_triggered_valve_window_living_room
-                - action: climate.set_preset_mode
-                  target:
-                    entity_id: climate.0x5c0272fffec9db22
-                  data:
-                    preset_mode: manual
           - conditions:  
                 - condition: template
                   value_template: >
                     {{ 
-                       trigger.to_state.state == 'off' and is_state('climate.0x5c0272fffec9db22', 'auto') 
+                       trigger.to_state.state == 'off' and is_state('climate.0x8c73dafffe01930c', 'heat') 
                        and is_state('input_boolean.auto_triggered_valve_window_living_room', 'on')
                     }}
             sequence:

@@ -2,7 +2,8 @@ substitutions:
   devicename: perenio_petra01_kitchen
   nodename: perenio-petra01-kitchen
   telegram_api_token: !secret telegram_api
-  telegram_chat_id: !secret telegram_enzokot_chat_id  
+  telegram_chat_id: !secret telegram_enzokot_chat_id
+  telegram_api_host: !secret telegram_api_host
 
 esphome:
   name: $nodename
@@ -130,7 +131,7 @@ binary_sensor:
                     - lambda: 'return id(uptime_sec).state > 60;'
                 then:
                   - http_request.post:
-                      url: "https://api.telegram.org/bot${telegram_api_token}/sendMessage"                      
+                      url: "${telegram_api_host}/bot${telegram_api_token}/sendMessage"                      
                       request_headers:
                         Content-Type: application/json
                       json:
@@ -144,7 +145,7 @@ binary_sensor:
                     - lambda: 'return id(uptime_sec).state > 60;'
                 then:
                   - http_request.post:
-                      url: "https://api.telegram.org/bot${telegram_api_token}/sendMessage"
+                      url: "${telegram_api_host}/bot${telegram_api_token}/sendMessage"
                       request_headers:
                         Content-Type: application/json
                       json:

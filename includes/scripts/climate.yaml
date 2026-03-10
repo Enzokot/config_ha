@@ -34,3 +34,23 @@
                                           "Sleep": "Straight Wind"}
                 %}
                 {{ preset_mode_dict[state_attr(entityid, 'preset_mode')] }}
+
+#Установка локальной температуры термостатов
+    auto_set_local_temperature_to_thermostats:
+        alias: Автоматическая установка локальной температуры термостату
+        icon: mdi:hydraulic-oil-temperature
+        mode: parallel
+        fields:
+          objecttemperatureinput:
+            description: 'Имя объекта number для установки температуры комнаты термостата'
+            example: 'number.0x0cae5ffffebbda1d_external_temperature_input'
+          objectsensortemperature:
+            description: 'Имя объекта внешнего датчика температуры'
+            example: 'sensor.esp_xiaomi_bed_room_temperature'
+        sequence:
+        - condition: "{{ has_value(objectsensortemperature) and has_value(objecttemperatureinput) }}"
+        - action: number.set_value
+          target:
+            entity_id: "{{ objecttemperatureinput }}"
+          data:
+            value: "{{ states(objectsensortemperature) | round(1, 0) }}"

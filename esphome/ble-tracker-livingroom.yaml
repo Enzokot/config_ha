@@ -220,6 +220,9 @@ script:
       - ble_client.disconnect: lywsd02_clock_kitchen          
       - esp32_ble_tracker.start_scan:          
 
+      - delay: 30s
+      - button.press: button_restart
+
 sensor:
   - platform: uptime
     name: "${devicename}_Uptime_Sensor"

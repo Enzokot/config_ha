@@ -17,3 +17,6 @@
     - "Updating xiaomi_cloud_map_extractor camera took longer than the scheduled update interval.*"
   homeassistant:
     - "Error doing job.*IMAP4.*aioimaplib.*"
+  custom_components.yandex_smart_home.notifier:
+    - "State notification request failed: Internal Server Error"
+    - "State notification request failed: Not Found"

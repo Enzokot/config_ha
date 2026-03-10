@@ -73,19 +73,6 @@ binary_sensor.0x158d00039a2f33_contact:
   friendly_name: Прав. окно кухня
   device_class: window
 
-#Для debounce бинарника батареейки TRV
-binary_sensor.debounce_trv_bedroom_low_battery:
-  friendly_name: Термоголовка спальня
-
-binary_sensor.debounce_trv_childrens_room_low_battery:
-  friendly_name: Термоголовка детская
-
-binary_sensor.debounce_trv_kitchen_low_battery:
-  friendly_name: Термоголовка кухня
-
-binary_sensor.debounce_trv_living_room_low_battery:
-  friendly_name: Термоголовка гостиная
-
 #Низкий уровень воды увлажнители
 binary_sensor.zhimi_humidifier_ca4_low_water_level:
   friendly_name: Увлажнитель детская

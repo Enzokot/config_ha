@@ -418,6 +418,9 @@
           entity_id: 'sensor.449fdae95456_illuminance'
           below: 50
         - condition: state
+          entity_id: 'cover.cover_group_kitchen'
+          state: 'closed'
+        - condition: state
           entity_id: 'switch.0x54ef441000691265'
           state: 'off'
         - condition: state
@@ -426,14 +429,14 @@
         - or:
           - and:
             - condition: time
-              after: "23:30:00"
+              after: "22:30:00"
               before: "08:30:00"
             - condition: state
               entity_id: binary_sensor.workday_sensor
               state: "off"
           - and:
             - condition: time
-              after: "23:00:00"
+              after: "22:30:00"
               before: "07:30:00"
             - condition: state
               entity_id: binary_sensor.workday_sensor

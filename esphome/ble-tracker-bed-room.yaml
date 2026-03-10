@@ -164,6 +164,9 @@ script:
       - ble_client.disconnect: lywsd02_clock_bed_room
       - esp32_ble_tracker.start_scan:
 
+      - delay: 30s
+      - button.press: button_restart
+
 sensor:
   - platform: xiaomi_lywsd02
     mac_address: !secret clock_bt_bed_room_mac

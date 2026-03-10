@@ -135,30 +135,22 @@
           minutes: "/3"
       actions:
         - parallel:
-            - action: script.auto_local_temperature_calibration_thermostats
+            - action: script.auto_set_local_temperature_to_thermostats
               data:
-                namevalve: 'Bedroom valve with thermostat'
-                objectvalve: 'climate.0x60a423fffe968719'
-                objectvalvewindow: 'switch.0x60a423fffe968719_window_detection'
-                objectsensortemperature: 'sensor.esp_xiaomi_bed_room_temperature'
-            - action: script.auto_local_temperature_calibration_thermostats
-              data:
-                namevalve: 'Living room valve with thermostat'
-                objectvalve: 'climate.0x5c0272fffec9db22'
-                objectvalvewindow: 'switch.0x5c0272fffec9db22_window_detection'
-                objectsensortemperature: 'sensor.esp_xiaomi_living_room_temperature'
-            - action: script.auto_local_temperature_calibration_thermostats
-              data:
-                namevalve: 'Childrens room valve with thermostat'
-                objectvalve: 'climate.0x5c0272fffec89454'
-                objectvalvewindow: 'switch.0x5c0272fffec89454_window_detection'
+                objecttemperatureinput: 'number.0xe456acfffefc3a6a_external_temperature_input'
                 objectsensortemperature: 'sensor.esp_xiaomi_childrens_room_temperature'
-            - action: script.auto_local_temperature_calibration_thermostats
+            - action: script.auto_set_local_temperature_to_thermostats
               data:
-                namevalve: 'Kitchen valve with thermostat'
-                objectvalve: 'climate.0x5c0272fffe8de819'
-                objectvalvewindow: 'switch.0x5c0272fffe8de819_window_detection'
+                objecttemperatureinput: 'number.0x0cae5ffffebbda1d_external_temperature_input'
                 objectsensortemperature: 'sensor.esp_xiaomi_kitchen_temperature'
+            - action: script.auto_set_local_temperature_to_thermostats
+              data:
+                objecttemperatureinput: 'number.0x8c73dafffe01930c_external_temperature_input'
+                objectsensortemperature: 'sensor.esp_xiaomi_living_room_temperature'
+            - action: script.auto_set_local_temperature_to_thermostats
+              data:
+                objecttemperatureinput: 'number.0x449fdafffe74576a_external_temperature_input'
+                objectsensortemperature: 'sensor.esp_xiaomi_bed_room_temperature'
 
 #Автоматическая установка boost режима во время сна
     - alias: auto_boost_mode_thermostats_at_sleeping_time
@@ -182,12 +174,12 @@
                     # - condition: numeric_state
                     #   entity_id: sensor.esp_xiaomi_bed_room_temperature
                     #   below: 25.7
-                  sequence:      
-                    - action: climate.set_preset_mode
+                  sequence:
+                    - action: select.select_option
                       target:
-                        entity_id: climate.0x60a423fffe968719
+                        entity_id: select.0x449fdafffe74576a_temporary_mode_select
                       data:
-                        preset_mode: 'boost'
+                        option: "boost"
             - choose:
                 - conditions:
                     - condition: state
@@ -199,12 +191,12 @@
                     # - condition: numeric_state
                     #   entity_id: sensor.esp_xiaomi_childrens_room_temperature
                     #   below: 25.7
-                  sequence:      
-                    - action: climate.set_preset_mode
+                  sequence:
+                    - action: select.select_option
                       target:
-                        entity_id: climate.0x5c0272fffec89454
+                        entity_id: select.0xe456acfffefc3a6a_temporary_mode_select
                       data:
-                        preset_mode: 'boost'
+                        option: "boost"
 
     - alias: switching_thermostat_night_mode
       id: switching_thermostat_night_mode
@@ -264,32 +256,40 @@
         - "{{ now().timestamp() | timestamp_custom('%d') | int(0) in [1, 15] }}"
         - condition: state
           entity_id:
-            - climate.0x5c0272fffec89454
-            - climate.0x60a423fffe968719
-            - climate.0x5c0272fffec9db22
-            - climate.0x5c0272fffe8de819
+            - climate.0xe456acfffefc3a6a
+            - climate.0x449fdafffe74576a
+            - climate.0x8c73dafffe01930c
+            - climate.0x0cae5ffffebbda1d
           state: "heat"
+        - condition: state
+          entity_id:
+            - climate.0x0cae5ffffebbda1d
+            - climate.0xe456acfffefc3a6a
+            - climate.0x449fdafffe74576a
+            - climate.0x8c73dafffe01930c
+          attribute: temperature
+          state: 35
       actions:
         - action: climate.set_hvac_mode
           target:
             entity_id: 
-              - climate.0x5c0272fffec89454
-              - climate.0x60a423fffe968719
-              - climate.0x5c0272fffec9db22
-              - climate.0x5c0272fffe8de819
+              - climate.0xe456acfffefc3a6a
+              - climate.0x449fdafffe74576a
+              - climate.0x8c73dafffe01930c
+              - climate.0x0cae5ffffebbda1d
           data:
             hvac_mode: "off"
-        - delay: "00:02:00"
+        - delay: "00:01:00"
         - action: climate.set_hvac_mode
           target:
             entity_id: 
-              - climate.0x5c0272fffec89454
-              - climate.0x60a423fffe968719
-              - climate.0x5c0272fffec9db22
-              - climate.0x5c0272fffe8de819
+              - climate.0xe456acfffefc3a6a
+              - climate.0x449fdafffe74576a
+              - climate.0x8c73dafffe01930c
+              - climate.0x0cae5ffffebbda1d
           data:
             hvac_mode: "heat"
-        - delay: "00:01:00"
+        - delay: "00:00:30"
         - action: telegram_bot.send_message
           data:
             config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'

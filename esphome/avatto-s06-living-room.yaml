@@ -5,6 +5,7 @@ substitutions:
   telegram_chat_id: !secret telegram_enzokot_chat_id
   pikvm_api_main_authorization: !secret pikvm_api_main_authorization
   pikvm_hostname_main: !secret pikvm_hostname_main
+  telegram_api_host: !secret telegram_api_host
 
 #external_components:
 #  - source: github://TheStaticTurtle/esphome_syslog
@@ -207,7 +208,7 @@ binary_sensor:
                     - lambda: 'return id(uptime_sec).state > 60;'
                 then:
                   - http_request.post:
-                      url: "https://api.telegram.org/bot${telegram_api_token}/sendMessage"                      
+                      url: "${telegram_api_host}/bot${telegram_api_token}/sendMessage"                      
                       request_headers:
                         Content-Type: application/json
                       json:
@@ -221,7 +222,7 @@ binary_sensor:
                     - lambda: 'return id(uptime_sec).state > 60;'
                 then:
                   - http_request.post:
-                      url: "https://api.telegram.org/bot${telegram_api_token}/sendMessage"                      
+                      url: "${telegram_api_host}/bot${telegram_api_token}/sendMessage"                      
                       request_headers:
                         Content-Type: application/json
                       json:

@@ -182,7 +182,8 @@ views:
         cards:
         - type: markdown
           content: >
-             **Освещение детская** 
+             **Освещение детская**
+
         - type: custom:vertical-stack-in-card
           title: 'Потолочный светильник'
           cards:
@@ -1015,6 +1016,15 @@ views:
                 entities:
                   - sensor.d4438ad06885_battery
                   - sensor.2c195cb60050_battery
+              - name: 'Термостаты (min: {min}%, кол-во: {count})'
+                secondary_info: 'Диапазон заряда {range}%'
+                icon: 'mdi:thermostat'
+                min: 30
+                entities:
+                  - sensor.0xe456acfffefc3a6a_battery
+                  - sensor.0x449fdafffe74576a_battery
+                  - sensor.0x8c73dafffe01930c_battery
+                  - sensor.0x0cae5ffffebbda1d_battery
           entities:
             - entity: sensor.0x158d000359304c_battery
               tap_action: more-info
@@ -1130,6 +1140,14 @@ views:
             - entity: sensor.a4c1385a07a5_battery
               tap_action: more-info
             - entity: sensor.348d130c94f5_battery
+              tap_action: more-info
+            - entity: sensor.0xe456acfffefc3a6a_battery
+              tap_action: more-info
+            - entity: sensor.0x0cae5ffffebbda1d_battery
+              tap_action: more-info
+            - entity: sensor.0x449fdafffe74576a_battery
+              tap_action: more-info
+            - entity: sensor.0x8c73dafffe01930c_battery
               tap_action: more-info
 
         - type: markdown
@@ -1726,6 +1744,27 @@ views:
                     state_color: true
                     name: Защита от детей
 
+        - type: markdown
+          content: >
+             **Вентиляторы** 
+        - type: custom:vertical-stack-in-card
+          cards:
+            - type: 'custom:mushroom-fan-card'
+              entity: fan.dmaker_p45_5007_fan
+              name: Кухня
+              icon_animation: true
+              show_percentage_control: true
+              show_oscillate_control: true
+              collapsible_controls: true
+              hold_action:
+                action: perform-action
+                perform_action: script.turn_on
+                target:
+                  entity_id: script.switch_fan_preset_mode
+                data:
+                  variables:
+                    entityid: fan.dmaker_p45_5007_fan
+
       - type: vertical-stack
         cards:
 
@@ -1933,66 +1972,28 @@ views:
               features:
                 - type: "target-temperature"
 
-        - type: markdown
-          content: >
-             **Вентиляторы** 
-        - type: custom:vertical-stack-in-card
-          cards:
-            - type: 'custom:mushroom-fan-card'
-              entity: fan.dmaker_p45_5007_fan
-              name: Кухня
-              icon_animation: true
-              show_percentage_control: true
-              show_oscillate_control: true
-              collapsible_controls: true
-              hold_action:
-                action: perform-action
-                perform_action: script.turn_on
-                target:
-                  entity_id: script.switch_fan_preset_mode
-                data:
-                  variables:
-                    entityid: fan.dmaker_p45_5007_fan
-
       - type: vertical-stack
         cards:
 
         - type: markdown
           content: >
-             **Термоголовка детская** 
+             **Термостат детская** 
         - type: custom:vertical-stack-in-card
           cards:
-            - type: custom:vertical-stack-in-card
-              card_mod:
-                style: |
-                  ha-card {
-                    box-shadow: 0px 0px;
-                    border: none;
-                  }
-              horizontal: true
-              cards:
-                - type: gauge
-                  card_mod:
-                    style: |
-                      ha-card {
-                        box-shadow: 0px 0px;
-                        border: none;
-                      }
-                  entity: sensor.thermostat_childrens_room_valve_position
-                - type: thermostat
-                  card_mod:
-                    style: |
-                      ha-card {
-                        box-shadow: 0px 0px;
-                        border: none;
-                      }
-                  entity: climate.0x5c0272fffec89454
-                  name: " "
+            - type: tile
+              entity: climate.0xe456acfffefc3a6a
+              name: " "
+              features:
+                - type: "target-temperature"
+                - type: "climate-hvac-modes"
+                  hvac_modes:
+                    - "heat"
+                    - "off"
     
             - type: glance
               show_state: false
               state_color: true
-              columns: 3
+              columns: 4
               entities:
                 - type: entity
                   card_mod:
@@ -2002,7 +2003,7 @@ views:
                         border: none;
                       }
                   name: Блок. кнопок
-                  entity: switch.0x5c0272fffec89454_child_lock
+                  entity: switch.0xe456acfffefc3a6a_child_lock
                   tap_action:
                     action: toggle
 
@@ -2018,6 +2019,24 @@ views:
                   tap_action:
                     action: toggle
 
+                - type: button
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
+                  name: Прогрев
+                  icon: mdi:radiator
+                  entity: select.0xe456acfffefc3a6a_temporary_mode_select
+                  tap_action:
+                    action: perform-action
+                    perform_action: select.select_option
+                    target:
+                      entity_id: select.0xe456acfffefc3a6a_temporary_mode_select
+                    data:
+                      option: "boost"
+
                 - type: entity
                   card_mod:
                     style: |
@@ -2025,48 +2044,29 @@ views:
                         box-shadow: 0px 0px;
                         border: none;
                       }
-                  name: Низкий заряд
-                  entity: binary_sensor.debounce_trv_childrens_room_low_battery
+                  name: Заряд
+                  entity: sensor.0xe456acfffefc3a6a_battery
 
         - type: markdown
           content: >
-             **Термоголовка спальня** 
+             **Термостат спальня** 
         - type: custom:vertical-stack-in-card
           cards:
-            - type: custom:vertical-stack-in-card
-              card_mod:
-                style: |
-                  ha-card {
-                    box-shadow: 0px 0px;
-                    border: none;
-                  }
-              horizontal: true
-              cards:
-
-                - type: gauge
-                  card_mod:
-                    style: |
-                      ha-card {
-                        box-shadow: 0px 0px;
-                        border: none;
-                      }
-                  entity: sensor.thermostat_bedroom_valve_position
-    
-                - type: thermostat
-                  card_mod:
-                    style: |
-                      ha-card {
-                        box-shadow: 0px 0px;
-                        border: none;
-                      }
-                  entity: climate.0x60a423fffe968719
-                  name: " "
+            - type: tile
+              entity: climate.0x449fdafffe74576a
+              name: " "
+              features:
+                - type: "target-temperature"
+                - type: "climate-hvac-modes"
+                  hvac_modes:
+                    - "heat"
+                    - "off"
     
             - type: glance
               #show_name: false
               show_state: false
               state_color: true
-              columns: 3
+              columns: 4
               entities:
 
                 - type: entity
@@ -2077,7 +2077,7 @@ views:
                         border: none;
                       }
                   name: Блок. кнопок
-                  entity: switch.0x60a423fffe968719_child_lock
+                  entity: switch.0x449fdafffe74576a_child_lock
                   tap_action:
                     action: toggle
 
@@ -2093,6 +2093,24 @@ views:
                   tap_action:
                     action: toggle
                   
+                - type: button
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
+                  name: Прогрев
+                  icon: mdi:radiator
+                  entity: select.0x449fdafffe74576a_temporary_mode_select
+                  tap_action:
+                    action: perform-action
+                    perform_action: select.select_option
+                    target:
+                      entity_id: select.0x449fdafffe74576a_temporary_mode_select
+                    data:
+                      option: "boost"
+
                 - type: entity
                   card_mod:
                     style: |
@@ -2100,45 +2118,28 @@ views:
                         box-shadow: 0px 0px;
                         border: none;
                       }
-                  name: Низкий заряд
-                  entity: binary_sensor.debounce_trv_bedroom_low_battery
+                  name: Заряд
+                  entity: sensor.0x449fdafffe74576a_battery
 
         - type: markdown
           content: >
-             **Термоголовка гостиная** 
+             **Термостат гостиная** 
         - type: custom:vertical-stack-in-card
           cards:
-            - type: custom:vertical-stack-in-card
-              card_mod:
-                style: |
-                  ha-card {
-                    box-shadow: 0px 0px;
-                    border: none;
-                  }
-              horizontal: true
-              cards:
-                - type: gauge
-                  card_mod:
-                    style: |
-                      ha-card {
-                        box-shadow: 0px 0px;
-                        border: none;
-                      }
-                  entity: sensor.thermostat_living_room_valve_position
-                - type: thermostat
-                  card_mod:
-                    style: |
-                      ha-card {
-                        box-shadow: 0px 0px;
-                        border: none;
-                      }
-                  entity: climate.0x5c0272fffec9db22
-                  name: " "
+            - type: tile
+              entity: climate.0x8c73dafffe01930c
+              name: " "
+              features:
+                - type: "target-temperature"
+                - type: "climate-hvac-modes"
+                  hvac_modes:
+                    - "heat"
+                    - "off"
     
             - type: glance
               show_state: false
               state_color: true
-              columns: 2
+              columns: 3
               entities:
                 - type: entity
                   card_mod:
@@ -2148,10 +2149,28 @@ views:
                         border: none;
                       }
                   name: Блок. кнопок
-                  entity: switch.0x5c0272fffec9db22_child_lock
+                  entity: switch.0x8c73dafffe01930c_child_lock
                   tap_action:
                     action: toggle
                 
+                - type: button
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
+                  name: Прогрев
+                  icon: mdi:radiator
+                  entity: select.0x8c73dafffe01930c_temporary_mode_select
+                  tap_action:
+                    action: perform-action
+                    perform_action: select.select_option
+                    target:
+                      entity_id: select.0x8c73dafffe01930c_temporary_mode_select
+                    data:
+                      option: "boost"
+
                 - type: entity
                   card_mod:
                     style: |
@@ -2159,45 +2178,27 @@ views:
                         box-shadow: 0px 0px;
                         border: none;
                       }
-                  name: Низкий заряд
-                  entity: binary_sensor.debounce_trv_living_room_low_battery
+                  name: Заряд
+                  entity: sensor.0x8c73dafffe01930c_battery
 
         - type: markdown
           content: >
-             **Термоголовка кухня** 
+             **Термостат кухня** 
         - type: custom:vertical-stack-in-card
           cards:
-            - type: custom:vertical-stack-in-card
-              card_mod:
-                style: |
-                  ha-card {
-                    box-shadow: 0px 0px;
-                    border: none;
-                  }
-              horizontal: true
-              cards:
-                - type: gauge
-                  card_mod:
-                    style: |
-                      ha-card {
-                        box-shadow: 0px 0px;
-                        border: none;
-                      }
-                  entity: sensor.thermostat_kitchen_valve_position
-                - type: thermostat
-                  card_mod:
-                    style: |
-                      ha-card {
-                        box-shadow: 0px 0px;
-                        border: none;
-                      }
-                  entity: climate.0x5c0272fffe8de819
-                  name: " "
-    
+            - type: tile
+              entity: climate.0x0cae5ffffebbda1d
+              name: " "
+              features:
+                - type: "target-temperature"
+                - type: "climate-hvac-modes"
+                  hvac_modes:
+                    - "heat"
+                    - "off"
             - type: glance
               show_state: false
               state_color: true
-              columns: 2
+              columns: 3
               entities:
                 - type: entity
                   card_mod:
@@ -2207,10 +2208,28 @@ views:
                         border: none;
                       }
                   name: Блок. кнопок
-                  entity: switch.0x5c0272fffe8de819_child_lock
+                  entity: switch.0x0cae5ffffebbda1d_child_lock
                   tap_action:
                     action: toggle
-                  
+
+                - type: button
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: 0px 0px;
+                        border: none;
+                      }
+                  name: Прогрев
+                  icon: mdi:radiator
+                  entity: select.0x0cae5ffffebbda1d_temporary_mode_select
+                  tap_action:
+                    action: perform-action
+                    perform_action: select.select_option
+                    target:
+                      entity_id: select.0x0cae5ffffebbda1d_temporary_mode_select
+                    data:
+                      option: "boost"
+
                 - type: entity
                   card_mod:
                     style: |
@@ -2218,14 +2237,13 @@ views:
                         box-shadow: 0px 0px;
                         border: none;
                       }
-                  name: Низкий заряд
-                  entity: binary_sensor.debounce_trv_kitchen_low_battery
+                  name: Заряд
+                  entity: sensor.0x0cae5ffffebbda1d_battery
 
   - title: Шторы
-    icon: mdi:roller-shade
     path: shades
+    icon: mdi:roller-shade
     cards:
-
       - type: vertical-stack
         cards:
         - type: markdown

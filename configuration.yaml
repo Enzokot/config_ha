@@ -24,10 +24,18 @@ homeassistant:
   debug: false
 
 config:
+
 frontend:
 lovelace:
-  mode: yaml
+  resource_mode: yaml
   resources: !include includes/resources.yaml
+  dashboards:
+    lovelace:
+      mode: yaml
+      filename: ui-lovelace.yaml
+      title: 'Обзор'
+      icon: mdi:view-dashboard
+      show_in_sidebar: true
 panel_custom: !include includes/panel_custom.yaml
 
 dhcp:

@@ -7,7 +7,7 @@
           - sensor.0x158d00039677d9_battery
           - sensor.0x00158d0004561de9_battery
           - sensor.0x588e81fffeff5c4f_linkquality
-          - sensor.0x60a423fffe968719_linkquality
+          - sensor.0x449fdafffe74576a_linkquality
           - sensor.ble_tracker_bed_room_wifi_rssi
           - sensor.ble_tracker_childrens_room_wifi_rssi
           - sensor.0x158d00054b8d72_battery
@@ -15,17 +15,16 @@
           - sensor.0x158d0003953ee9_battery
           - remote.broadlink_ir_rm4_mini
           - sensor.0x00158d0003d05782_battery
-          - sensor.0x5c0272fffec89454_linkquality
+          - sensor.0xe456acfffefc3a6a_linkquality
           - sensor.ble_tracker_livingroom_wifi_rssi
           - sensor.0x158d000359304c_battery
           - sensor.0x158d0003cfa725_battery
           - sensor.0x842e14fffe5047f5_linkquality
           - sensor.0x54ef441000691265_linkquality
           - sensor.0x842e14fffe36661f_linkquality
-          - sensor.0x5c0272fffe8de819_linkquality
           - sensor.0x158d0003975b4c_battery
           - sensor.0x158d000396f197_battery
-          - sensor.0x5c0272fffec9db22_linkquality
+          - sensor.0x8c73dafffe01930c_linkquality
           - sensor.0x158d0003a360b6_battery
           - sensor.0x158d00045a78af_battery
           - sensor.0x54ef4410000ebba0_battery
@@ -118,6 +117,7 @@
           - binary_sensor.449fdae95456_occupancy
           - binary_sensor.a4c1385a07a5_occupancy
           - binary_sensor.348d130c94f5_occupancy
+          - sensor.0x0cae5ffffebbda1d_linkquality
 
     temperature_summary_group_to_bot:
         entities:

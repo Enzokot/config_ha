@@ -226,7 +226,7 @@ sensor.online_custom:
   friendly_name: Core время работы
 
 sensor.cert_expiry_netcraze_domain:
-  friendly_name: Сертификат SSL Keenetic
+  friendly_name: Сертификат SSL Netcraze
 
 sensor.last_google_backup_train:
   friendly_name: Последний бэкап
@@ -252,18 +252,6 @@ sensor.zhimi_humidifier_ca4_temperature:
 
 sensor.zhimi_humidifier_ca4_humidity:
   friendly_name: Rh увлажнитель детская
-
-sensor.thermostat_bedroom_valve_position:
-  friendly_name: Положение штока
-
-sensor.thermostat_childrens_room_valve_position:
-  friendly_name: Положение штока
-
-sensor.thermostat_living_room_valve_position:
-  friendly_name: Положение штока
-
-sensor.thermostat_kitchen_valve_position:
-  friendly_name: Положение штока
 
 sensor.maria_db_size:
   friendly_name: Объем базы данных Maria
@@ -295,18 +283,6 @@ sensor.r4s01_kettle_energy:
   friendly_name: Kettle-G200S energy
   #state_class: total_increasing
 
-sensor.0x5c0272fffec89454_local_temperature:
-  friendly_name: Значение Т для TRV в детской
-
-sensor.0x60a423fffe968719_local_temperature:
-  friendly_name: Значение Т для TRV в спальне
-
-sensor.0x5c0272fffec9db22_local_temperature:
-  friendly_name: Значение Т для TRV в гостиной
-
-sensor.0x5c0272fffe8de819_local_temperature:
-  friendly_name: Значение Т для TRV на кухне
-
 sensor.0x00158d0006c5f21e_temperature:
   friendly_name: Т горячая труба ванная
 
@@ -333,18 +309,6 @@ sensor.0x00158d0008386b56_battery:
 
 sensor.0x00158d0008386b56_humidity:
   friendly_name: Rh отопление вход
-
-sensor.0x5c0272fffec89454_local_temperature_calibration:
-  friendly_name: Калибровка Т для TRV в детской
-
-sensor.0x60a423fffe968719_local_temperature_calibration:
-  friendly_name: Калибровка Т для TRV в спальне
-
-sensor.0x5c0272fffec9db22_local_temperature_calibration:
-  friendly_name: Калибровка Т для TRV в гостиной
-
-sensor.0x5c0272fffe8de819_local_temperature_calibration:
-  friendly_name: Калибровка Т для TRV на кухне
 
 sensor.avatto_s06_living_room_wifi_rssi:
   friendly_name: IR в гостиной
@@ -495,3 +459,15 @@ sensor.esp_xiaomi_hallway_battery_level:
 
 sensor.348d130c94f5_battery:
   friendly_name: Присутствие гостиная
+
+sensor.0x0cae5ffffebbda1d_battery:
+  friendly_name: Термостат кухня
+
+sensor.0xe456acfffefc3a6a_battery:
+  friendly_name: Термостат детская
+
+sensor.0x449fdafffe74576a_battery:
+  friendly_name: Термостат спальня
+
+sensor.0x8c73dafffe01930c_battery:
+  friendly_name: Термостат гостиная

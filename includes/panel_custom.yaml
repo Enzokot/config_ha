@@ -1,9 +1,16 @@
   - name: config/logs
-    sidebar_title: Журнал системы
+    sidebar_title: 'Журнал системы'
     sidebar_icon: mdi:math-log
     module_url: /api/hassio/app/entrypoint.js
     embed_iframe: true
-    require_admin: true    
+    require_admin: true
+
+  - name: config/developer-tools/yaml
+    sidebar_title: 'Панель разработчика'
+    sidebar_icon: mdi:hammer
+    module_url: /api/hassio/app/entrypoint.js
+    embed_iframe: true
+    require_admin: true
 
 #   - name: hassio/ingress/core_ssh
 #     sidebar_title: SSH

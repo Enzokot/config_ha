@@ -13,7 +13,7 @@
     #     - action: telegram_bot.send_message
     #       data:
     #         config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
-    #         target: !secret telegram_enzokot_chat_id
+    #         chat_id: !secret telegram_enzokot_chat_id
     #         parse_mode: 'html'
     #         title: >-
     #                  {{ '\U0001F41B' }} <b>Отладка</b>
@@ -37,7 +37,7 @@
         - action: telegram_bot.send_message
           data:
             config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
-            target: !secret telegram_enzokot_chat_id
+            chat_id: !secret telegram_enzokot_chat_id
             title: >-
                      {{ '\U0001f4f6' }} *Трекинг устройств*
             message: >-
@@ -70,7 +70,7 @@
     #     - action: telegram_bot.send_message
     #       data:
     #         config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
-    #         target: !secret telegram_enzokot_chat_id
+    #         chat_id: !secret telegram_enzokot_chat_id
     #         parse_mode: 'html'
     #         title: >-
     #                  {{ '\U0001F41B' }} <b>Отладка</b>
@@ -88,7 +88,7 @@
     #     - action: telegram_bot.send_message
     #       data:
     #         config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
-    #         target: !secret telegram_enzokot_chat_id
+    #         chat_id: !secret telegram_enzokot_chat_id
     #         parse_mode: 'html'
     #         title: >-
     #                  {{ '\U0001F41B' }} <b>Отладка</b>
@@ -104,7 +104,7 @@
     #     - action: telegram_bot.send_message
     #       data:
     #         config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
-    #         target: !secret telegram_enzokot_chat_id
+    #         chat_id: !secret telegram_enzokot_chat_id
     #         parse_mode: 'html'
     #         title: >-
     #                  {{ '\U0001F41B' }} <b>Отладка</b>
@@ -122,7 +122,7 @@
     #     - action: telegram_bot.send_message
     #       data:
     #         config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
-    #         target: !secret telegram_enzokot_chat_id
+    #         chat_id: !secret telegram_enzokot_chat_id
     #         parse_mode: 'html'
     #         title: >-
     #                  {{ '\U0001F41B' }} <b>Отладка</b>

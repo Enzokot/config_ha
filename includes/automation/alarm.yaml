@@ -274,7 +274,7 @@
                   title: >-
                            {{ '\U0001f6a8' }} *Сигнализация*
                   message: 'Нажатие тревожной кнопки в *детской*'
-                  target: !secret telegram_all_chat_id
+                  chat_id: !secret telegram_all_chat_id
               - action: notify.notify
                 data:
                   title: "{{ '\U0001f6a8' }} Сигнализация"
@@ -411,7 +411,7 @@
                       - action: telegram_bot.send_message
                         data:
                           config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
-                          target: !secret telegram_enzokot_chat_id
+                          chat_id: !secret telegram_enzokot_chat_id
                           message: "{{ '\U0001f507 Отменено включение сигнализации' }}"
                     else:
                       - action: alarm_control_panel.alarm_arm_away

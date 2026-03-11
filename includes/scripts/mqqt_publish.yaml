@@ -64,7 +64,7 @@
             title: >- 
                      ⚠️ *Контроль устройств Zigbee*
             disable_notification: true
-            target: !secret telegram_enzokot_chat_id
+            chat_id: !secret telegram_enzokot_chat_id
             message: >
                 {%- set list_sensors = expand('group.dynamic_group_sensor_linkquality') | selectattr('state', 'ne', None) | selectattr('state', 'ne', 'None') -%}
                 {%- set datanames = namespace(device_name=[]) -%}
@@ -92,5 +92,5 @@
             title: >-
                      {{ '\U00002705' }} *Контроль устройств Zigbee*
             disable_notification: true
-            target: !secret telegram_enzokot_chat_id
+            chat_id: !secret telegram_enzokot_chat_id
             message: "Устройств с низким уровнем сигнала не обнаружено"

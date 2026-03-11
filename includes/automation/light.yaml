@@ -137,7 +137,7 @@
         - action: telegram_bot.send_message
           data:
             config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
-            target: !secret telegram_enzokot_chat_id
+            chat_id: !secret telegram_enzokot_chat_id
             message: >-
                        ⚠️ Обнаружено отклонение светильника и выключателя, исправить?
             inline_keyboard:

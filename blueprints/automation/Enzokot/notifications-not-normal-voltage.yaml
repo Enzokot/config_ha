@@ -50,7 +50,7 @@ condition:
 action:
 - action: telegram_bot.send_message
   data:
-    target: !input 'telegram_chat_id'
+    chat_id: !input 'telegram_chat_id'
     title: '{{ ''⚠'' }} *Контроль напряжения*'
     parse_mode: markdown
     message: "{% if trigger.above != None and trigger.to_state.state | float >= trigger.above\

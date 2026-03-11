@@ -49,7 +49,7 @@ condition:
 action:
 - action: telegram_bot.send_message
   data:
-    target: !input 'telegram_chat_id'
+    chat_id: !input 'telegram_chat_id'
     title: '{{ ''✅'' }} *Контроль напряжения*'
     parse_mode: markdown
     message: В сети *нормальное* напряжение {{ trigger.to_state.state }}В, данные

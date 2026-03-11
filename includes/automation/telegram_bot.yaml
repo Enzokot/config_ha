@@ -23,7 +23,7 @@
             - action: telegram_bot.send_message
               data:
                 config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
-                target: '{{ trigger.event.data.chat_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
                 message: >-
                           ℹ️ pong
             - action: notify.huawei_lte
@@ -62,7 +62,7 @@
             - action: telegram_bot.send_message
               data:
                 config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
-                target: '{{ trigger.event.data.chat_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
                 message: >-
                        {{ '\U0001f4e2' }} С уровнем громкости:
                 inline_keyboard:
@@ -88,7 +88,7 @@
         - action: telegram_bot.send_message
           data:
             config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
-            target: '{{ trigger.event.data.chat_id }}'
+            chat_id: '{{ trigger.event.data.chat_id }}'
             message: >-
                        {% if is_state('alarm_control_panel.signalka_shliuza_alarm', 'armed_away') -%}
                            {{ '\U0001f509' }} Сигнализация *включена*
@@ -336,7 +336,7 @@
         - action: telegram_bot.send_message
           data:
             config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
-            target: '{{ trigger.event.data.chat_id }}'
+            chat_id: '{{ trigger.event.data.chat_id }}'
             message: >-
                        {{ '\U0000231b' }} Отправить убирать:
             inline_keyboard:
@@ -461,7 +461,7 @@
         - action: telegram_bot.send_photo
           data:
             config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
-            target: '{{ trigger.event.data.chat_id }}'
+            chat_id: '{{ trigger.event.data.chat_id }}'
             url: "{{- 'http://homeassistant.local.hass.io:8123' + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
             caption: >-
                    {{ '\U0001F5FA' }} *Степа* {{- '\n' -}} Текущая карта уборки
@@ -486,7 +486,7 @@
         - action: telegram_bot.send_message
           data:
             config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
-            target: '{{ trigger.event.data.chat_id }}'
+            chat_id: '{{ trigger.event.data.chat_id }}'
             title: "{{ '\U0001F321' }} *Климатические сенсоры*"
             message: >-
                 {% set temp_array = expand('group.temperature_summary_group_to_bot') | selectattr('state', 'defined') | selectattr('state', 'ne', None) %}

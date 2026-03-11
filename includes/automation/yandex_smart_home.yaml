@@ -156,7 +156,7 @@
         - action: telegram_bot.send_photo
           data:
             config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
-            target: !secret telegram_all_chat_id
+            chat_id: !secret telegram_all_chat_id
             url: "{{- 'http://homeassistant.local.hass.io:8123' + state_attr('camera.roborock_vacuum_map', 'entity_picture') -}}"
             caption: >-
                    {{ '\U0001F5FA' }} *Степа* {{- '\n' -}} Текущая карта уборки

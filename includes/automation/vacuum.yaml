@@ -19,7 +19,7 @@
             - action: telegram_bot.send_message
               data:
                 config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
-                target: "{{ states('input_text.var_chat_id_vacuum_later_start') }}"
+                chat_id: "{{ states('input_text.var_chat_id_vacuum_later_start') }}"
                 title: >-
                      {{ '\U0001f680' }} *Степа*
                 message: 'Начал полную уборку'
@@ -48,7 +48,7 @@
             - action: telegram_bot.send_message
               data:
                 config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
-                target: "{{ states('input_text.var_chat_id_vacuum_later_start') }}"
+                chat_id: "{{ states('input_text.var_chat_id_vacuum_later_start') }}"
                 title: >-
                         ⚠️ *Степа*
                 message: 'Не смог начать полную уборку, потому что нахожусь не на базе'

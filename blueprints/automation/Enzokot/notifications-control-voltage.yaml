@@ -56,7 +56,7 @@ condition:
 action:
 - action: telegram_bot.send_message
   data:
-    target: !input 'telegram_chat_id'
+    chat_id: !input 'telegram_chat_id'
     parse_mode: markdown
     title: '{% if trigger.above != None and trigger.below != None  %} {{ ''\U00002705''
       }} {% else %} ⚠️ {% endif -%} *Контроль напряжения*'

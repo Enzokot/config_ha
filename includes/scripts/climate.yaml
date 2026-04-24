@@ -1,16 +1,3 @@
-#Виртуализация toggle для UI
-    toggle_climate_from_ui:
-        alias: Вкл/выкл сущностей climate
-        icon: mdi:home-thermometer
-        mode: parallel
-        fields:
-          entityid:
-            description: 'Имя сущности climate'
-            example: 'climate.devireg_hw'
-        sequence:
-          - action: "climate.{{- iif(is_state(entityid, 'off'), 'turn_on', 'turn_off') }}"
-            target:
-              entity_id: "{{ entityid }}"
 
 #Переключение режимов вентилятора для UI
     switch_fan_preset_mode:

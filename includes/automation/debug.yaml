@@ -93,7 +93,9 @@
     #         title: >-
     #                  {{ '\U0001F41B' }} <b>Отладка</b>
     #         message: >-
-    #                 {{ iif(trigger.json.monitor is none, "Пустое имя", trigger.json.monitor.name, "Пустое имя") | e }} -> {{ iif(trigger.json.heartbeat is none, "Пустой статус", trigger.json.heartbeat.status, "Пустой статус") | e }}
+    #              {{ trigger.json | e }}
+    #         # message: >-
+    #         #         {{ iif(trigger.json.monitor is none, "Пустое имя", trigger.json.monitor.name, "Пустое имя") | e }} -> {{ iif(trigger.json.heartbeat is none, "Пустой статус", trigger.json.heartbeat.status, "Пустой статус") | e }}
 
     # - alias: debug event repairs issue registry updated
     #   id: debug event repairs issue registry updated

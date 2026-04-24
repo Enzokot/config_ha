@@ -20,3 +20,5 @@
   custom_components.yandex_smart_home.notifier:
     - "State notification request failed: Internal Server Error"
     - "State notification request failed: Not Found"
+  homeassistant.components.braviatv.coordinator:
+    - "Error fetching braviatv data: Error updating data for *"

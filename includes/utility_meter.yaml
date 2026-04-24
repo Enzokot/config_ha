@@ -352,14 +352,14 @@
 #       - electicity
 
 #   total_shelly_1pm_fan_nvr_box_cable_daily:
-#     source: sensor.shelly_1pm_fan_nvr_box_energy
+#     source: sensor.shelly_1pm_fan_nvr_box_shelly_1pm_fan_nvr_box_energy
 #     unique_id: total_shelly_1pm_fan_nvr_box_cable_daily
 #     cycle: daily
 #     tariffs:
 #       - electicity
 
 #   total_shelly_1pm_fan_nvr_box_cable_monthly:
-#     source: sensor.shelly_1pm_fan_nvr_box_energy
+#     source: sensor.shelly_1pm_fan_nvr_box_shelly_1pm_fan_nvr_box_energy
 #     unique_id: total_shelly_1pm_fan_nvr_box_cable_monthly
 #     cycle: monthly
 #     tariffs:

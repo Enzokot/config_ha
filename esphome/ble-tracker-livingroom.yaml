@@ -16,6 +16,10 @@ esp32:
   board: wemos_d1_mini32
   framework:
     type: esp-idf
+    advanced:
+      sram1_as_iram: true
+      minimum_chip_revision: "3.1"
+
 wifi:
   #fast_connect: true
   min_auth_mode: WPA2

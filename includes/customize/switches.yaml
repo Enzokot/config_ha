@@ -61,7 +61,7 @@ switch.shelly_plug_s_nvr:
   friendly_name: Вкл/выкл розетка NVR
   icon: mdi:power-socket-eu
 
-switch.shelly_1pm_fan_nvr_box:
+switch.shelly_1pm_fan_nvr_box_shelly_1pm_fan_nvr_box:
   friendly_name: Вкл/выкл кулер шкафа NVR
   icon: mdi:fan
 

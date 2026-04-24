@@ -94,7 +94,7 @@
                   variables:
                     entity: 'media_player.yandex_station_ff98f029b620413b35e5e278'
                     text: 'Внимание! Входная дверь открыта!!!'
-                    vol_level: '0.65'
+                    vol_level: '0.4'
               - action: xiaomi_aqara.play_ringtone
                 data:
                   gw_mac: !secret gateway1_mac
@@ -121,7 +121,7 @@
                 data:
                   entity: 'media_player.yandex_station_ff98f029b620413b35e5e278'
                   text: 'Внимание! Входная дверь открыта!!!'
-                  vol_level: '0.65'
+                  vol_level: '0.4'
               - action: xiaomi_aqara.play_ringtone
                 data:
                   gw_mac: !secret gateway1_mac
@@ -1595,7 +1595,6 @@
 #Недоступность telegram
     - alias: telegram is offline for instance notification
       id: telegram is offline for instance notification
-      initial_state: true
       triggers:
         - trigger: state
           entity_id: 
@@ -1618,10 +1617,12 @@
                     data:
                       url: 'http://192.168.8.1/'
           default:
-            - action: notify.email_enzokot_ha
+            - action: script.turn_on
               data:
-                title: "⚠️ Трекинг устройств"
-                message: "Telegram API недоступно"
+                entity_id: script.notify_to_enzokot_mail
+                variables:
+                  title: "⚠️ Трекинг устройств"
+                  message: "Telegram API недоступно"
 
 #Яндекс станция перешла из/в локальный режим
     - alias: yandex station to or from local mode notification
@@ -1714,6 +1715,7 @@
         - "{{ trigger.json.monitor is not none }}"
       actions:
         - variables:
+            base_url: !secret uptime_external_url
             status_from: >- 
               {{ iif(trigger.json.heartbeat is not none and trigger.json.heartbeat.status | int(0) == 1, 'online', 'offline', 'offline') }}
         - parallel:
@@ -1725,7 +1727,7 @@
                 title: >-
                   {{ iif(status_from == 'online', '\U00002705', '\U000026d4', '\U000026d4') }} <b>Трекинг устройств</b>
                 message: >-
-                  {{ trigger.json.monitor.name }} <b>{{ iif(status_from == 'online', 'в', 'не в', 'не в') }}</b> сети
+                  <a href="{{- base_url -}}/dashboard/{{- trigger.json.monitor.id -}}"> {{ trigger.json.monitor.name }}</a> <b>{{ iif(status_from == 'online', 'в', 'не в', 'не в') }}</b> сети
             - choose:
                 - conditions: "{{ 'tsymbal' in trigger.json.monitor.name | lower and is_state('binary_sensor.internet_availability_ping', 'on') }}"
                   sequence:
@@ -2073,14 +2075,14 @@
       triggers:
         - trigger: state
           id: 'overheating'
-          entity_id: binary_sensor.shelly_1pm_fan_nvr_box_overheating
+          entity_id: binary_sensor.shelly_1pm_fan_nvr_box_shelly_1pm_fan_nvr_box_overheating
           from: 'off'
           to: 'on'
           for: 
             seconds: 5
         - trigger: numeric_state
-          entity_id: sensor.shelly_1pm_fan_nvr_box_temperature
-          above: 35
+          entity_id: sensor.shelly_1pm_fan_nvr_box_temperature_nvr_box_temperature
+          above: 36
           for:
             seconds: 5
       actions:
@@ -2092,7 +2094,7 @@
             message: >-
               {{ 
                 iif(trigger.id == 'overheating', 
-                'Обнаружен *перегрев* реле кулера шкафа NVR (*T=' + states('sensor.shelly_1pm_fan_nvr_box_device_temperature', true, true) + '*)', 
+                'Обнаружен *перегрев* реле кулера шкафа NVR (*T=' + states('sensor.shelly_1pm_fan_nvr_box_temperature_nvr_box_temperature', true, true) + '*)', 
                 'Обнаружена высокая (*' + trigger.to_state.state + '*) температура в шкафу NVR')
               }}
 
@@ -2307,3 +2309,5 @@
             chat_id: !secret telegram_enzokot_chat_id
             title: "{{ '\U0001F4A6' }} *Освежители*"
             message: "*{{ name_for_send }}* включен более 5 минут"
+            inline_keyboard: >-
+              {{ ['Отключить:/diffuseroff ' + device_id(trigger.entity_id)] }}

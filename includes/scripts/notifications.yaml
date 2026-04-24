@@ -1,0 +1,22 @@
+
+  notify_to_enzokot_mail:
+    alias: 'Отправить уведомление на почту GMail'
+    icon: mdi:email-fast
+    mode: parallel
+    fields:
+      title:
+        description: 'Тема письма'
+        example: 'Трекинг устройств'
+      message:
+        description: 'Текст письма'
+        example: 'Telegram API недоступно'
+    sequence:
+      - action: !secret email_adress_action_name
+        data:
+          title: "{{ title }}"
+          message: "{{ message }}"
+          target: 
+            - !secret email_adress1
+          data:
+            from: !secret email_adress
+            alias_from: "Home Assistant notification's"

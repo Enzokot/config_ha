@@ -18,12 +18,12 @@
             - if:
                 - "{{ trigger.entity_id == 'binary_sensor.0x00158d0009ea0949_water_leak' }}"
                 - condition: state
-                  entity_id: switch.shelly_1pm_fan_nvr_box
+                  entity_id: switch.shelly_1pm_fan_nvr_box_shelly_1pm_fan_nvr_box
                   state: 'on'
               then:
                 - action: switch.turn_off
                   target:
-                    entity_id: switch.shelly_1pm_fan_nvr_box
+                    entity_id: switch.shelly_1pm_fan_nvr_box_shelly_1pm_fan_nvr_box
 
 #Включение кулера шкафа NVR каждый час (день) или по превышению порога температуры (ночь)
     - alias: turn on fan nvr box every hour or above temperature
@@ -37,12 +37,12 @@
           id: 'time_trigger'
         - trigger: numeric_state
           entity_id:
-            - sensor.shelly_1pm_fan_nvr_box_temperature
-          above: 34.5
+            - sensor.shelly_1pm_fan_nvr_box_temperature_nvr_box_temperature
+          above: 35.5
       conditions:
         - condition: state
           entity_id: 
-            - switch.shelly_1pm_fan_nvr_box
+            - switch.shelly_1pm_fan_nvr_box_shelly_1pm_fan_nvr_box
             - binary_sensor.0x00158d00093e4111_contact
           state: 'off'
         - "{{ is_state('binary_sensor.0x00158d0009ea1c0e_water_leak', 'off') or not has_value('binary_sensor.0x00158d0009ea1c0e_water_leak') }}"
@@ -50,13 +50,13 @@
         - >
             {% set time_now = now() %}
             {{ 
-                (today_at('9:00') <= time_now < today_at('21:00:00') or states('sensor.shelly_1pm_fan_nvr_box_temperature') | float(0.0) > 34.5)
+                (today_at('9:00') <= time_now < today_at('21:00:00') or states('sensor.shelly_1pm_fan_nvr_box_temperature_nvr_box_temperature') | float(0.0) > 35.5)
                 or trigger.id != 'time_trigger' and (time_now >= today_at('21:00:00') or time_now < today_at('9:00:00')) 
             }}
       actions:
         - action: switch.turn_on
           target:
-            entity_id: switch.shelly_1pm_fan_nvr_box
+            entity_id: switch.shelly_1pm_fan_nvr_box_shelly_1pm_fan_nvr_box
 
 #Выключение кулера шкафа NVR при открытии дверцы шкафа
     - alias: turn off fan nvr box when door is open
@@ -72,12 +72,12 @@
             seconds: 3
       conditions:
         - condition: state
-          entity_id: switch.shelly_1pm_fan_nvr_box
+          entity_id: switch.shelly_1pm_fan_nvr_box_shelly_1pm_fan_nvr_box
           state: 'on'
       actions:
         - action: switch.turn_off
           target:
-            entity_id: switch.shelly_1pm_fan_nvr_box
+            entity_id: switch.shelly_1pm_fan_nvr_box_shelly_1pm_fan_nvr_box
 
 #Выключение розеток, выключателей, света по датчику дыма ТМК
     - alias: smoke detector nvr alarm to turn off all
@@ -93,5 +93,5 @@
             target:
               entity_id: 
                 - switch.shelly_plug_s_nvr
-                - switch.shelly_1pm_fan_nvr_box
+                - switch.shelly_1pm_fan_nvr_box_shelly_1pm_fan_nvr_box
                 - switch.shelly_plug_s_keenetic_hw

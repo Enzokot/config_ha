@@ -40,7 +40,7 @@
       - sensor.zhimi_humidifier_ca4_temperature
       - sensor.esp_xiaomi_bed_room_temperature
       - sensor.esp_xiaomi_bed_room_humidity
-      - sensor.shelly_1pm_fan_nvr_box_temperature
+      - sensor.shelly_1pm_fan_nvr_box_temperature_nvr_box_temperature
       - sensor.temperature_humidity_sensor_500d_temperature
       #Счетчики розеток/реле
       - sensor.total_heater_socket_cable_daily_electicity
@@ -80,7 +80,7 @@
       #Мощность сети
       - sensor.shelly_em_power
       - sensor.shelly_plug_s_nvr_power
-      - sensor.shelly_1pm_fan_nvr_box_power
+      - sensor.shelly_1pm_fan_nvr_box_shelly_1pm_fan_nvr_box_power
       - sensor.shelly_plug_s_keenetic_hw_power
       #Трекер персоны
       - person.kostik
@@ -107,7 +107,7 @@
       - sensor.shelly_plug_s_2_energy
       - sensor.0x54ef441000691265_energy
       - sensor.shelly_plug_s_nvr_energy
-      - sensor.shelly_1pm_fan_nvr_box_energy
+      - sensor.shelly_1pm_fan_nvr_box_shelly_1pm_fan_nvr_box_energy
       - sensor.shelly_plug_s_keenetic_hw_energy
       - sensor.shelly_plug_s_htr_shelly_heated_tr_energy
       - sensor.shelly_plug_s_prox_main_shelly_prox_main_energy

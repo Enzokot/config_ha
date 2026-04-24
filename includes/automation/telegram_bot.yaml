@@ -37,10 +37,12 @@
               data:
                 title: "ℹ️ Check notification's"
                 message: pong
-            - action: notify.email_enzokot_ha
+            - action: script.turn_on
               data:
-                title: "ℹ️ Check notification's"
-                message: pong
+                entity_id: script.notify_to_enzokot_mail
+                variables:
+                  title: "ℹ️ Check notification's"
+                  message: pong
 
     - alias: keyboard tuc tuc gateway
       id: keyboard tuc tuc gateway
@@ -519,7 +521,7 @@
                     config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
                     callback_query_id: '{{ trigger.event.data.id }}'
                     message: >-
-                        Обновление {{ friendlyname + ' ' + iif(is_state(entity, 'off'), 'уже установлено', 'в процессе установки') }}.
+                        Обновление {{ friendlyname + ' ' + iif(is_state(entity, 'off'), 'уже установлено', 'в процессе установки') }}
             - conditions: "{{ is_state(entity, 'on') and is_state_attr(entity, 'in_progress', false) }}"
               sequence:
                 - parallel:
@@ -528,7 +530,7 @@
                         config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
                         callback_query_id: '{{ trigger.event.data.id }}'
                         message: >-
-                            Обновление на версию {{ state_attr(entity, 'latest_version') }} {{ friendlyname }} запущено.
+                            Обновление на версию {{ state_attr(entity, 'latest_version') }} {{ friendlyname }} запущено
                     - action: update.install
                       target:
                         entity_id: "{{- entity -}}"
@@ -540,4 +542,47 @@
                 config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
                 callback_query_id: '{{ trigger.event.data.id }}'
                 message: >-
-                    Для устройства {{ iif(devicename is none, trigger.event.data['args'][0], devicename) }} не найден элемент домена update.
+                    Для устройства {{ iif(devicename is none, trigger.event.data['args'][0], devicename) }} не найден элемент домена update
+
+#Выключение осежителя по кнопке из Telegram
+    - alias: turn off diffuser telegram bot
+      id: turn off diffuser telegram bot
+      initial_state: true
+      mode: parallel
+      triggers:
+        - trigger: event
+          event_type: telegram_callback
+          event_data:
+            command: '/diffuseroff'
+      conditions:
+        - "{{ trigger.event.data['args'] | count > 0 }}"
+      actions:
+        - variables:
+            entity: "{{- device_entities(trigger.event.data['args'][0]) | select('match', 'switch.*_diffuser') | first | default('unknown') -}}"
+            name_for_send: >-
+                {% if device_attr(entity, 'name_by_user') != none -%}
+                  {{- device_attr(entity, 'name_by_user') -}}
+                {%- else -%}
+                  {% set temp_name = device_attr(entity, 'name') %}
+                  {{- iif(temp_name != none, temp_name, entity, entity) -}}
+                {%- endif -%}
+        - choose:
+            - conditions: "{{ has_value(entity) }}"
+              sequence:
+                - parallel:
+                    - action: telegram_bot.answer_callback_query
+                      data:
+                        config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
+                        callback_query_id: '{{ trigger.event.data.id }}'
+                        message: >-
+                            Запущено выключение {{ name_for_send }}
+                    - action: switch.turn_off
+                      target:
+                        entity_id: "{{- entity -}}"
+          default:
+            - action: telegram_bot.answer_callback_query
+              data:
+                config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
+                callback_query_id: '{{ trigger.event.data.id }}'
+                message: >-
+                    Не найдена сущность {{ entity }}

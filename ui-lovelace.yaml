@@ -530,7 +530,7 @@ views:
             - type: entities
               show_header_toggle: false
               entities:
-                  - entity: switch.shelly_1pm_fan_nvr_box
+                  - entity: switch.shelly_1pm_fan_nvr_box_shelly_1pm_fan_nvr_box
                     state_color: true
                     secondary_info: last-changed
             - type: divider
@@ -544,9 +544,9 @@ views:
               columns: 4
               show_icon: false
               entities:
-                  - entity: sensor.shelly_1pm_fan_nvr_box_power
+                  - entity: sensor.shelly_1pm_fan_nvr_box_shelly_1pm_fan_nvr_box_power
                     name: 'Мощность'
-                  - entity: sensor.shelly_1pm_fan_nvr_box_temperature
+                  - entity: sensor.shelly_1pm_fan_nvr_box_temperature_nvr_box_temperature
                     name: 'Т'
                   - entity: sensor.total_shelly_1pm_fan_nvr_box_cable_daily_electicity
                     name: 'День'
@@ -910,12 +910,16 @@ views:
 
         - type: custom:battery-state-card
           default_state_formatting: false
-          color_gradient:
+          colors:
+            steps:
               - "#ff0000" # red
               - "#ffff00" # yellow
               - "#008000" # green
+            gradient: true
           sort: 
               - "state"
+          filter: {}
+          secondary_info: null
           collapse: 
               - name: 'Герконы (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
@@ -1945,13 +1949,7 @@ views:
                 - current_temperature
                 - last-changed
               icon_tap_action:
-                action: perform-action
-                perform_action: script.turn_on
-                target:
-                  entity_id: script.toggle_climate_from_ui
-                data:
-                  variables:
-                    entityid: climate.devireg_k
+                action: toggle
               features:
                 - type: "target-temperature"
             - type: tile
@@ -1962,13 +1960,7 @@ views:
                 - current_temperature
                 - last-changed
               icon_tap_action:
-                action: perform-action
-                perform_action: script.turn_on
-                target:
-                  entity_id: script.toggle_climate_from_ui
-                data:
-                  variables:
-                    entityid: climate.devireg_hw
+                action: toggle
               features:
                 - type: "target-temperature"
 

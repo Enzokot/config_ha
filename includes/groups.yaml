@@ -6,7 +6,7 @@
           - sensor.0x00158d0003981f6d_battery
           - sensor.0x158d00039677d9_battery
           - sensor.0x00158d0004561de9_battery
-          - sensor.0x588e81fffeff5c4f_linkquality
+          - sensor.0xa4c1380e2208ffff_linkquality
           - sensor.0x449fdafffe74576a_linkquality
           - sensor.ble_tracker_bed_room_wifi_rssi
           - sensor.ble_tracker_childrens_room_wifi_rssi
@@ -141,7 +141,7 @@
           - switch.0x086bd7fffe5b7c7f_right
           - switch.0x54ef441000691265
           - switch.0x54ef441000096cbc
-          - switch.0x588e81fffeff5c4f
+          - switch.0xa4c1380e2208ffff
           - switch.0x60a423fffef8d41a
           - switch.0x842e14fffe13a854
           - switch.0x842e14fffe36661f

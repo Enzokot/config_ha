@@ -33,7 +33,9 @@
                 target: !secret sms_phone_enzokot
                 data:
                   url: 'http://192.168.8.1/'
-            - action: notify.html5
+            - action: html5.send_message
+              target:
+                entity_id: '{{ integration_entities("HTML5") | select("match", "notify.") | list }}'
               data:
                 title: "ℹ️ Check notification's"
                 message: pong
@@ -513,7 +515,16 @@
             entity: "{{- device_entities(trigger.event.data['args'][0]) | select('match', 'update.') | first | default('unknown') -}}"
             friendlyname: "{{- iif(entity != 'unknown', state_attr(entity, 'friendly_name') | replace(' Update', ''), '') -}}"
             devicename: "{{- device_name(trigger.event.data['args'][0]) -}}"
+            backup_before: "{{ '{:0=64b}'.format(state_attr(entity, 'supported_features'))[-4] == '1' }}"
         - choose:
+            - conditions: "{{ backup_before and not is_state('sensor.backup_backup_manager_state', 'idle') }}"
+              sequence:
+                - action: telegram_bot.answer_callback_query
+                  data:
+                    config_entry_id: '{{ trigger.event.data.bot.config_entry_id }}'
+                    callback_query_id: '{{ trigger.event.data.id }}'
+                    message: >-
+                        Менеджер резервного копирования занят
             - conditions: "{{ is_state(entity, 'off') or is_state_attr(entity, 'in_progress', true) }}"
               sequence:
                 - action: telegram_bot.answer_callback_query
@@ -535,7 +546,7 @@
                       target:
                         entity_id: "{{- entity -}}"
                       data:
-                        backup: "{{ '{:0=64b}'.format(state_attr(entity, 'supported_features'))[-4] == '1' }}"
+                        backup: "{{ backup_before }}"
           default:
             - action: telegram_bot.answer_callback_query
               data:

@@ -467,7 +467,7 @@ views:
             - type: entities
               show_header_toggle: false
               entities:
-                  - entity: switch.0x588e81fffeff5c4f
+                  - entity: switch.0xa4c1380e2208ffff
                     state_color: true
                     secondary_info: last-changed
             - type: divider
@@ -481,7 +481,7 @@ views:
               columns: 3
               show_icon: false
               entities:
-                  - entity: sensor.0x588e81fffeff5c4f_power
+                  - entity: sensor.0xa4c1380e2208ffff_power
                     name: 'Мощность'
                   - entity: sensor.total_bedroom_socket_1_cable_daily_electicity
                     name: 'День'
@@ -2762,6 +2762,13 @@ views:
     icon: mdi:map-legend
     cards:
         - type: map
+          card_mod:
+            style:
+              ha-map$: |
+                .leaflet-control-attribution
+                {
+                  visibility: hidden;
+                 }
           entities:
             - zone.home
             - zone.work

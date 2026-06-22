@@ -283,6 +283,11 @@
              - binary_sensor.0x158d00054b8d72_motion
              - binary_sensor.0x158d000566bde7_motion
              - binary_sensor.0x158d0003953ee9_motion
+             - binary_sensor.c09b9eb4093d_occupancy
+             - binary_sensor.449fdae95456_occupancy
+             - binary_sensor.348d130c94f5_occupancy
+             - binary_sensor.c09b9eb4599a_occupancy
+             - binary_sensor.a4c1385a07a5_occupancy
           to: 'on'
       conditions:
         - condition: state
@@ -802,7 +807,7 @@
                 {%- elif state_attr(trigger.event.data.entity_id, 'release_url') is not none -%}
                   {{- state_attr(trigger.event.data.entity_id, 'release_url') -}}
                 {%- elif device_attr(trigger.event.data.entity_id, 'configuration_url') is match('homeassistant://', ignorecase=True) -%}
-                  {{- device_attr(trigger.event.data.entity_id, 'configuration_url') | replace('homeassistant:/', states('sensor.instance_external_url_config')) -}}
+                  {{- device_attr(trigger.event.data.entity_id, 'configuration_url') | replace('homeassistant:/', states('sensor.instance_external_url_config')) | replace('hassio/addon', 'config/app') -}}
                 {%- else -%}
                   {{- states('sensor.instance_external_url_config') -}}/config/dashboard
                 {%- endif %}
@@ -837,17 +842,21 @@
                       {{ iif(state_attr(trigger.event.data.entity_id, 'supported_features') | int(0) > 0, ['Установить:/installupdate ' + device_id(trigger.event.data.entity_id)], []) }}
                 - sequence:
                   - condition: "{{ not is_state_attr(trigger.event.data.entity_id, 'device_class', 'firmware') }}"
-                  - action: notify.html5
+                  - variables:
+                      var_tag: "{{- trigger.event.data.entity_id | replace('update.', '') }}"
+                      update_entity: "update_available_notify_{{- var_tag}}"
+                  - action: html5.send_message
+                    target:
+                      entity_id: notify.n550jk
                     data:
                       title: "{{ '\U0001f389' }} *Системное обновление*"
                       message: "Доступна {{ latest_version }} версия {{ friendlyname }} для установки, текущая {{ installed_version }}"
-                      target: n550jk
+                      actions: >-
+                        {{ iif(state_attr(trigger.event.data.entity_id, 'supported_features') | int(0) > 0, [{'action':'install_update', 'title':'Обновить'}], []) }}
+                      tag: "{{- var_tag }}"
                       data:
                         url: "{{- release_url }}"
-                        actions: >-
-                          {{ iif(state_attr(trigger.event.data.entity_id, 'supported_features') | int(0) > 0, [{'action':'install_update', 'title':'Обновить'}], []) }}
-                        tag: >
-                          update_available_notify_ {{- trigger.event.data.entity_id | replace('update.', '') }}
+                        update_entity: "{{- update_entity }}"
 
 #Низкий заряд батарей
     - alias: notification low battery zigbee
@@ -921,7 +930,7 @@
             entity_id: 
                 - sensor.0x842e14fffe5047f5_power
                 - sensor.0x842e14fffe13a854_power
-                - sensor.0x588e81fffeff5c4f_power
+                - sensor.0xa4c1380e2208ffff_power
                 - sensor.0x842e14fffe36661f_power
                 - sensor.shelly_plug_s_1_power
                 - sensor.0x60a423fffef8d41a_power
@@ -2278,17 +2287,47 @@
             message: "Восстановление из резервной копии завершено"
 
 #Оповещение о включенном освежители (если не сработал скрипт выключения автораспыления)
-    - alias: notification forgot to turn diffuser off
-      id: notification forgot to turn diffuser off
+    - alias: notification forgot to turn diffuser wc off
+      id: notification forgot to turn diffuser wc off
+      initial_state: true
+      mode: queued
+      triggers:
+        - trigger: state
+          entity_id: 
+            - light.d4438ad06885_light
+            - switch.d4438ad06885_diffuser
+          to: "on"
+          for:
+            minutes: 5
+      conditions:
+        - "{{ state_attr(this.entity_id, 'last_triggered') is none or now() - state_attr(this.entity_id, 'last_triggered') > timedelta(minutes = 30) }}"
+      actions:
+        - variables:
+            name_for_send: >-
+                {% if device_attr(trigger.entity_id, 'name_by_user') != none -%}
+                  {{- device_attr(trigger.entity_id, 'name_by_user') -}}
+                {%- else -%}
+                  {% set temp_name = device_attr(trigger.entity_id, 'name') %}
+                  {{- iif(temp_name != none, temp_name,  trigger.entity_id, trigger.entity_id) -}}
+                {%- endif -%}
+        - action: telegram_bot.send_message
+          data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
+            chat_id: !secret telegram_enzokot_chat_id
+            title: "{{ '\U0001F4A6' }} *Освежители*"
+            message: "*{{ name_for_send }}* включен более 5 минут"
+            inline_keyboard: >-
+              {{ ['Отключить:/diffuseroff ' + device_id(trigger.entity_id)] }}
+
+    - alias: notification forgot to turn diffuser bathroom off
+      id: notification forgot to turn diffuser bathroom off
       initial_state: true
       mode: queued
       triggers:
         - trigger: state
           entity_id: 
             - light.2c195cb60050_light
-            - light.d4438ad06885_light
             - switch.2c195cb60050_diffuser
-            - switch.d4438ad06885_diffuser
           to: "on"
           for:
             minutes: 5

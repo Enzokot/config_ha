@@ -98,7 +98,7 @@
       #Объекты энергии
       - sensor.shelly_em_energy
       - sensor.shelly_plug_s_1_energy
-      - sensor.0x588e81fffeff5c4f_energy
+      - sensor.0xa4c1380e2208ffff_energy
       - sensor.0x60a423fffef8d41a_energy
       - sensor.0x842e14fffe5047f5_energy
       - sensor.0x842e14fffe36661f_energy
@@ -123,3 +123,9 @@
       - binary_sensor.hallway_1_motion
       #Полотенцесушитель
       - sensor.shelly_plug_s_htr_shelly_heated_tr_power
+      #Присутствие
+      - binary_sensor.c09b9eb4093d_occupancy #Ванная
+      - binary_sensor.449fdae95456_occupancy #Кухня
+      - binary_sensor.348d130c94f5_occupancy #Гостиная
+      - binary_sensor.c09b9eb4599a_occupancy #Туалет
+      - binary_sensor.a4c1385a07a5_occupancy #Гардероб

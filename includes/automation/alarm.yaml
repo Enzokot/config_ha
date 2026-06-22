@@ -60,13 +60,11 @@
                     - "{{ states.group.dynamic_group_gateway_alarm_last_state_disarmed is not none }}"
                     sequence:
                       - variables:
-                          entities: "{{ expand('group.dynamic_group_gateway_alarm_last_state_disarmed') | map(attribute = 'entity_id') | list | join(', ') }}"
-                      - action: alarm_control_panel.alarm_arm_away
-                        target:
-                          entity_id: "{{ entities }}"
+                          all_entities_disarmed: "{{ expand('group.dynamic_group_gateway_alarm_last_state_disarmed') | map(attribute = 'entity_id') | list }}"
+                          entities_disarmed: "{{ all_entities_disarmed | join(', ') }}"
                       - action: alarm_control_panel.alarm_disarm
                         target:
-                          entity_id: "{{ entities }}"
+                          entity_id: "{{ entities_disarmed }}"
                       - action: group.remove
                         data:
                           object_id: dynamic_group_gateway_alarm_last_state_disarmed
@@ -75,13 +73,14 @@
                     - "{{ states.group.dynamic_group_gateway_alarm_last_state_armed_away is not none }}"
                     sequence:
                       - variables:
-                          entities: "{{ expand('group.dynamic_group_gateway_alarm_last_state_armed_away') | map(attribute = 'entity_id') | list | join(', ') }}"
+                          all_entities_armed_away: "{{ expand('group.dynamic_group_gateway_alarm_last_state_armed_away') | map(attribute = 'entity_id') | list }}"
+                          entities_armed_away: "{{ all_entities_armed_away | join(', ') }}"
                       - action: alarm_control_panel.alarm_disarm
                         target:
-                          entity_id: "{{ entities }}"
+                          entity_id: "{{ entities_armed_away }}"
                       - action: alarm_control_panel.alarm_arm_away
                         target:
-                          entity_id: "{{ entities }}"
+                          entity_id: "{{ entities_armed_away }}"
                       - action: group.remove
                         data:
                           object_id: dynamic_group_gateway_alarm_last_state_armed_away
@@ -189,6 +188,11 @@
             - binary_sensor.window_bed_room_group
             - binary_sensor.window_kitchen_group
             - binary_sensor.window_living_room_group
+            - binary_sensor.c09b9eb4093d_occupancy
+            - binary_sensor.449fdae95456_occupancy
+            - binary_sensor.348d130c94f5_occupancy
+            - binary_sensor.c09b9eb4599a_occupancy
+            - binary_sensor.a4c1385a07a5_occupancy
          to: 'on'
        - trigger: state
          entity_id: 
@@ -313,6 +317,7 @@
     - alias: mobile app telegram notification action turn off alarm
       id: mobile app telegram notification action turn off alarm
       initial_state: true
+      mode: queued
       triggers:
         - trigger: event
           event_type: mobile_app_notification_action
@@ -442,15 +447,15 @@
       actions:
         - variables:
             entities: >-
-              {{ states.alarm_control_panel | selectattr('state', 'in', ['armed_away', 'disarmed']) | rejectattr('entity_id', 'eq', 'alarm_control_panel.signalka_shliuza_alarm') | map(attribute = 'entity_id') | list | to_json }}
+              {{ states.alarm_control_panel | selectattr('state', 'in', ['armed_away', 'disarmed']) | rejectattr('entity_id', 'eq', 'alarm_control_panel.signalka_shliuza_alarm') | map(attribute = 'entity_id') | list }}
         - parallel:
           - choose:
               - conditions: 
-                - "{{ entities | from_json | count > 0 }}"
+                - "{{ entities | list | count > 0 }}"
                 sequence:
                   - action: alarm_control_panel.alarm_trigger
                     target: 
-                      entity_id: "{{ entities | from_json | join(', ') }}"
+                      entity_id: "{{ entities | list | join(', ') }}"
           - choose:
               - conditions: 
                 - condition: state

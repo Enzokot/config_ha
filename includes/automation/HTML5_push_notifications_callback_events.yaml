@@ -10,10 +10,12 @@
           event_data:
             action: install_update
       conditions:
-        - "{{ trigger.event.data['tag'] | length > 0 }}"
+        - "{{ trigger.event.data['data']['update_entity'] is defined }}"
       actions:
         - variables:
-            entity: "{{- trigger.event.data['tag'] | replace('update_available_notify_', 'update.') -}}"
+            entity: "{{- trigger.event.data['data']['update_entity'] | replace('update_available_notify_', 'update.') -}}"
+            backup_before: "{{ '{:0=64b}'.format(state_attr(entity, 'supported_features'))[-4] == '1' }}"
+        - condition: "{{ not backup_before or is_state('sensor.backup_backup_manager_state', 'idle') }}"
         - if:
             - "{{ is_state(entity, 'on') and is_state_attr(entity, 'in_progress', false) }}"
           then:
@@ -21,4 +23,4 @@
               target:
                 entity_id: "{{- entity -}}"
               data:
-                backup: "{{ '{:0=64b}'.format(state_attr(entity, 'supported_features'))[-4] == '1' }}"
+                backup: "{{ backup_before }}"

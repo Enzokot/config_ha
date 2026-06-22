@@ -161,7 +161,7 @@ sensor.0x842e14fffe13a854_power:
 sensor.0x842e14fffe36661f_power:
   friendly_name: Тек. мощность
 
-sensor.0x588e81fffeff5c4f_power:
+sensor.0xa4c1380e2208ffff_power:
   friendly_name: Тек. мощность
 
 sensor.0x60a423fffef8d41a_power:

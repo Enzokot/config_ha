@@ -11,7 +11,7 @@ switch.0x842e14fffe36661f:
   friendly_name: Вкл/выкл розетка 1 кухня
   icon: mdi:power-socket-eu
 
-switch.0x588e81fffeff5c4f:
+switch.0xa4c1380e2208ffff:
   friendly_name: Вкл/выкл розетка 1 спальня
   icon: mdi:power-socket-eu
 

@@ -1,0 +1,12 @@
+
+#   debug_variables_list_type:
+#     sequence:
+#       - variables:
+#           entities: >-
+#             {{ states.alarm_control_panel | selectattr('state', 'in', ['armed_away', 'disarmed']) | rejectattr('entity_id', 'eq', 'alarm_control_panel.signalka_shliuza_alarm') | map(attribute = 'entity_id') | list }}
+#       - condition: "{{ entities | count > 0 }}"
+#       - action: html5.send_message
+#         data:
+#           message: Доступна версия для установки, текущая
+#         target:
+#           entity_id: notify.n550jk

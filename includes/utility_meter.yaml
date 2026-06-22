@@ -254,14 +254,14 @@
 #       - electicity
 
 #   total_bedroom_socket_1_cable_daily:
-#     source: sensor.0x588e81fffeff5c4f_energy
+#     source: sensor.0xa4c1380e2208ffff_energy
 #     unique_id: total_bedroom_socket_1_cable_daily
 #     cycle: daily
 #     tariffs:
 #       - electicity
 
 #   total_bedroom_socket_1_cable_monthly:
-#     source: sensor.0x588e81fffeff5c4f_energy
+#     source: sensor.0xa4c1380e2208ffff_energy
 #     unique_id: total_bedroom_socket_1_cable_monthly
 #     cycle: monthly
 #     tariffs:

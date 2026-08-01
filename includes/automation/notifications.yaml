@@ -257,7 +257,7 @@
                 data:
                   url: 'http://192.168.8.1/'
         - choose:
-            - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+            - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' and sm_g973f_rezhim_ne_bespokoit == 'off' }}"
               sequence:
                 - action: notify.mobile_app_sm_g973f
                   data:
@@ -350,7 +350,7 @@
                 data:
                   url: 'http://192.168.8.1/'
         - choose:
-            - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+            - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' and sm_g973f_rezhim_ne_bespokoit == 'off' }}"
               sequence:
                 - action: notify.mobile_app_sm_g973f
                   data:
@@ -439,7 +439,7 @@
                 data:
                   url: 'http://192.168.8.1/'
         - choose:
-            - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+            - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' and sm_g973f_rezhim_ne_bespokoit == 'off' }}"
               sequence:
                 - action: notify.mobile_app_sm_g973f
                   data:
@@ -530,7 +530,7 @@
                 data:
                   url: 'http://192.168.8.1/'
         - choose:
-            - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+            - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' and sm_g973f_rezhim_ne_bespokoit == 'off' }}"
               sequence:
                 - action: notify.mobile_app_sm_g973f
                   data:
@@ -719,7 +719,7 @@
                 data:
                   url: 'http://192.168.8.1/'
         - choose:
-            - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+            - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' and sm_g973f_rezhim_ne_bespokoit == 'off' }}"
               sequence:
                 - action: notify.mobile_app_sm_g973f
                   data:
@@ -1983,7 +1983,7 @@
                       priority: high
                       channel: alarm_stream
                 - choose:
-                    - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+                    - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' and sm_g973f_rezhim_ne_bespokoit == 'off' }}"
                       sequence:
                         - action: notify.mobile_app_sm_g973f
                           data:
@@ -2060,7 +2060,7 @@
                       priority: high
                       channel: alarm_stream
                 - choose:
-                    - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+                    - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' and sm_g973f_rezhim_ne_bespokoit == 'off' }}"
                       sequence:
                         - action: notify.mobile_app_sm_g973f
                           data:
@@ -2174,7 +2174,7 @@
                       priority: high
                       channel: alarm_stream
                 - choose:
-                    - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+                    - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' and sm_g973f_rezhim_ne_bespokoit == 'off' }}"
                       sequence:
                         - action: notify.mobile_app_sm_g973f
                           data:
@@ -2350,3 +2350,26 @@
             message: "*{{ name_for_send }}* включен более 5 минут"
             inline_keyboard: >-
               {{ ['Отключить:/diffuseroff ' + device_id(trigger.entity_id)] }}
+
+#Оповещение об изменении количества таблеток пмм
+    - alias: notification dishwasher tablets counter changed
+      id: notification dishwasher tablets counter changed
+      initial_state: true
+      mode: queued
+      triggers:
+        - trigger: state
+          entity_id: counter.kotletochka_dw_tablets_counter
+          not_from:
+          not_to:
+      conditions:
+        - "{{ trigger.to_state.state != trigger.from_state.state }}"
+      actions:
+        - variables:
+            new_above_old: "{{ trigger.to_state.state | int(0) > trigger.from_state.state | int(0) }}"
+            difference: "{{ (trigger.to_state.state | int(0) - trigger.from_state.state | int(0)) | abs }}"
+        - action: telegram_bot.send_message
+          data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
+            chat_id: !secret telegram_enzokot_chat_id
+            title: "{{ iif(new_above_old, '⬆️', '⬇️', '⚠️') }} *Таблетки для ПММ*"
+            message: "*{{ iif(new_above_old, 'Увеличено', 'Уменьшено', '') }}* количество таблеток для ПММ на *{{ difference }}шт.*, текущее количество: *{{ trigger.to_state.state }}шт.*"

@@ -1,0 +1,20 @@
+
+#Уменьшение количества таблеток пмм по факту завершения программы мойки
+    - alias: kotletochka dw tablets decrement counter
+      id: kotletochka dw tablets decrement counter
+      triggers:
+        - trigger: numeric_state
+          entity_id: sensor.kotletochka_dw_program_progress
+          above: 35
+      conditions:
+        - condition: numeric_state
+          entity_id: counter.kotletochka_dw_tablets_counter
+          above: 0
+        - not:
+            - condition: state
+              entity_id: select.kotletochka_dw_active_program
+              state: "dishcare_dishwasher_program_machine_care"
+      actions:
+        - action: counter.decrement
+          target:
+            entity_id: counter.kotletochka_dw_tablets_counter

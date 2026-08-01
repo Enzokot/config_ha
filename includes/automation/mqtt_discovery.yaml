@@ -167,7 +167,7 @@
                 payload: >- 
                   { 
                     "name":"Kernel_EXT4_warning", 
-                    "state_topic":"host_data/dmesg_ext4_warning",
+                    "state_topic":"host_data/host_sensors/dmesg_ext4_warning",
                     "icon":"mdi:harddisk",
                     "device_class":"problem",
                     "unique_id":"dmesg_ext4_warning",

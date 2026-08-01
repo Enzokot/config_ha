@@ -297,7 +297,7 @@
                   data:
                     url: 'http://192.168.8.1/'
           - choose:
-              - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' }}"
+              - conditions: "{{ sm_g973f_rezhim_zvonka != 'normal' and sm_g973f_rezhim_ne_bespokoit == 'off' }}"
                 sequence:
                   - action: notify.mobile_app_sm_g973f
                     data:

@@ -47,6 +47,7 @@ network:
 hardware:
 
 http:
+  server_port: 8123
   login_attempts_threshold: 5
   ip_ban_enabled: true
   use_x_forwarded_for: true

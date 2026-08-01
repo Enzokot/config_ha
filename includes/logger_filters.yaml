@@ -22,3 +22,5 @@
     - "State notification request failed: Not Found"
   homeassistant.components.braviatv.coordinator:
     - "Error fetching braviatv data: Error updating data for *"
+  homeassistant.components.imap.coordinator:
+    - "Error requesting imap data: Invalid response for search.*UNAVAILABLE.*SEARCH Backend error.*"

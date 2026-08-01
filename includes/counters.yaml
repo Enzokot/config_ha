@@ -11,3 +11,8 @@
     system_log_warning_counter:
       name: 'Счетчик событий warning в syslog HA'
       restore: false
+
+#Счетчик таблеток пмм
+    kotletochka_dw_tablets_counter:
+      name: 'Счетчик таблеток посудомоечной машины'
+      minimum: 0

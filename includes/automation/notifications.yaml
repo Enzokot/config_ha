@@ -2358,7 +2358,9 @@
       mode: queued
       triggers:
         - trigger: state
-          entity_id: counter.kotletochka_dw_tablets_counter
+          entity_id: 
+            - counter.kotletochka_dw_tablets_counter
+            - counter.kotletochka_dw_cleaner_counter
           not_from:
           not_to:
       conditions:
@@ -2371,5 +2373,5 @@
           data:
             config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
             chat_id: !secret telegram_enzokot_chat_id
-            title: "{{ iif(new_above_old, '⬆️', '⬇️', '⚠️') }} *Таблетки для ПММ*"
-            message: "*{{ iif(new_above_old, 'Увеличено', 'Уменьшено', '') }}* количество таблеток для ПММ на *{{ difference }}шт.*, текущее количество: *{{ trigger.to_state.state }}шт.*"
+            title: "{{ iif(new_above_old, '⬆️', '⬇️', '⚠️') }} *Расходники для ПММ*"
+            message: "*{{ iif(new_above_old, 'Увеличено', 'Уменьшено', '') }}* количество *{{ iif(trigger.entity_id == 'counter.kotletochka_dw_tablets_counter' ,'таблеток', 'очистителя', '') }}* для ПММ на *{{ difference }}шт.*, текущее количество: *{{ trigger.to_state.state }}шт.*"

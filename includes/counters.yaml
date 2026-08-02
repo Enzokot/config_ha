@@ -14,5 +14,10 @@
 
 #Счетчик таблеток пмм
     kotletochka_dw_tablets_counter:
-      name: 'Счетчик таблеток посудомоечной машины'
+      name: 'Таблетки для ПММ'
+      minimum: 0
+
+#Счетчик очистителей пмм
+    kotletochka_dw_cleaner_counter:
+      name: 'Очиститель для ПММ'
       minimum: 0

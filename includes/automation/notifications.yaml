@@ -2375,3 +2375,26 @@
             chat_id: !secret telegram_enzokot_chat_id
             title: "{{ iif(new_above_old, '⬆️', '⬇️', '⚠️') }} *Расходники для ПММ*"
             message: "*{{ iif(new_above_old, 'Увеличено', 'Уменьшено', '') }}* количество *{{ iif(trigger.entity_id == 'counter.kotletochka_dw_tablets_counter' ,'таблеток', 'очистителя', '') }}* для ПММ на *{{ difference }}шт.*, текущее количество: *{{ trigger.to_state.state }}шт.*"
+
+#Оповещение об окончании зарядки аромадиффузора
+    - alias: notification diffuser charged
+      id: notification diffuser charged
+      initial_state: true
+      mode: parallel
+      triggers:
+        - trigger: state
+          entity_id: 
+            - binary_sensor.d4438ad06885_battery_charging
+            - binary_sensor.2c195cb60050_battery_charging
+          from: "on"
+          to: "off"
+      variables:
+        battery_entity_id: '{{ trigger.entity_id | replace("binary_", "") | replace("_charging", "") }}'
+        entity_name: '{{ state_attr(battery_entity_id, "friendly_name") }}'
+      actions:
+        - action: telegram_bot.send_message
+          data:
+            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
+            chat_id: !secret telegram_enzokot_chat_id
+            title: "{{ '\U0001F4A6' }} *Освежители*"
+            message: "*{{ entity_name }}* заряжен до *{{ states(battery_entity_id) }}*%"

@@ -45,18 +45,6 @@ mobile_app:
 zeroconf:
 network:
 hardware:
-
-http:
-  server_port: 8123
-  login_attempts_threshold: 5
-  ip_ban_enabled: true
-  use_x_forwarded_for: true
-  trusted_proxies: 
-    - 127.0.0.1
-    - ::1
-    - 172.30.33.0/24
-    - 192.168.217.1
-
 history:
 logbook:
 recorder: !include includes/recorder.yaml

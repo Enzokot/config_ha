@@ -1072,15 +1072,19 @@ views:
               tap_action: more-info
             - entity: sensor.esp_xiaomi_bed_room_battery_level
               tap_action: more-info
+              round: 0
               name: 'Часы спальня'
             - entity: sensor.esp_xiaomi_kitchen_battery_level
               tap_action: more-info
+              round: 0
               name: 'Часы кухня'
             - entity: sensor.esp_xiaomi_living_room_battery_level
               tap_action: more-info
+              round: 0
               name: 'Часы гостиная'
             - entity: sensor.esp_xiaomi_childrens_room_battery_level
               tap_action: more-info
+              round: 0
               name: 'Часы детская'
             - entity: sensor.0x00158d000396f1f9_battery
               tap_action: more-info
@@ -1122,6 +1126,7 @@ views:
               tap_action: more-info
             - entity: sensor.esp_xiaomi_hallway_battery_level
               tap_action: more-info
+              round: 0
               name: 'Дисплей Т&Rh коридор'
             - entity: sensor.d4438ad06885_battery
               tap_action: more-info

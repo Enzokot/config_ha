@@ -12,14 +12,14 @@
           minutes: 2
       actions:
         - parallel:
-            - action: notify.send_message
-              target:
-                entity_id: notify.telegram_enzokot_to_bot
+            - action: telegram_bot.send_photo
               data:
-                title: >-
-                       ⚠️ *Датчик открытия/закрытия*
-                message: >-
-                         Входная дверь: открыта более 2 минут
+                config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
+                chat_id: !secret telegram_all_chat_id
+                url: "http://localhost:1984/api/frame.mp4?src=tapo_c110_hw_main"
+                caption: |
+                  ⚠️ *Датчик открытия/закрытия*
+                  Входная дверь: открыта более 2 минут
                 # data:
                 #     inline_keyboard:
                 #       - 'Открыть:/open, Отклонить:/reject'
@@ -44,20 +44,31 @@
           from: 'off'
           to: 'on'
         - trigger: state
-          id: 'door_close'
           entity_id: binary_sensor.lobby_door_open_long_time
           from: 'on'
           to: 'off'
       actions:
-        - action: telegram_bot.send_message
-          data:
-            config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
-            chat_id: !secret telegram_all_chat_id
-            disable_notification: true
-            title: >-
-                   {% if trigger.id == 'door_open' -%} {{ '\U0001F513' }} {%- else -%} {{ '\U0001f510' }} {%- endif %} *Датчик открытия/закрытия*
-            message: >-
-                     Тамбурная дверь: {% if trigger.id == 'door_open' -%} открыта более 5 минут {%- else -%} закрыта {% endif -%}
+        - if:
+            - condition: trigger
+              id: door_open
+          then:
+            - action: telegram_bot.send_photo
+              data:
+                config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
+                chat_id: !secret telegram_all_chat_id
+                disable_notification: true
+                url: "http://localhost:1984/api/frame.mp4?src=entrance_door_sub"
+                caption: |
+                  {{ '\U0001F513' }} *Датчик открытия/закрытия*
+                  Тамбурная дверь: открыта более 5 минут
+          else:
+            - action: telegram_bot.send_message
+              data:
+                config_entry_id: '{{ config_entry_id("notify.telegram_enzokot_to_bot") }}'
+                chat_id: !secret telegram_all_chat_id
+                disable_notification: true
+                title: "{{ '\U0001f510' }} *Датчик открытия/закрытия*"
+                message: "Тамбурная дверь: закрыта"
 
     - alias: notification sound front door open long time
       id: notification sound front door open long time

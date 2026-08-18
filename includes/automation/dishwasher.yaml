@@ -6,6 +6,8 @@
         - trigger: numeric_state
           entity_id: sensor.kotletochka_dw_program_progress
           above: 35
+      conditions:
+        - "{{ trigger.from_state.state | int(-1) != -1 or (now() - state_attr(this.entity_id, 'last_triggered')) > timedelta(hours=3) }}"
       actions:
         - choose:
             - conditions:

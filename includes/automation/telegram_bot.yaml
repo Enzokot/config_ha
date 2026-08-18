@@ -570,6 +570,7 @@
       actions:
         - variables:
             entity: "{{- device_entities(trigger.event.data['args'][0]) | select('match', 'switch.*_diffuser') | first | default('unknown') -}}"
+            entity_light: "{{- device_entities(trigger.event.data['args'][0]) | select('match', 'light.*_light') | first | default('unknown') -}}"
             name_for_send: >-
                 {% if device_attr(entity, 'name_by_user') != none -%}
                   {{- device_attr(entity, 'name_by_user') -}}
@@ -590,6 +591,13 @@
                     - action: switch.turn_off
                       target:
                         entity_id: "{{- entity -}}"
+                    - sequence:
+                        - condition: "{{ has_value(entity_light) }}"
+                        - delay: 5
+                        - condition: "{{ is_state(entity_light, 'on') }}"
+                        - action: light.turn_off
+                          target:
+                            entity_id: "{{- entity_light -}}"
           default:
             - action: telegram_bot.answer_callback_query
               data:

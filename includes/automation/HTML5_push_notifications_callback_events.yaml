@@ -5,15 +5,17 @@
       initial_state: true
       mode: parallel
       triggers:
-        - trigger: event
-          event_type: html5_notification.clicked
-          event_data:
-            action: install_update
+          - trigger: state
+            entity_id: 
+              - event.n550jk
+              - event.sm_g973f
+            attribute: "action"
+            to: "install_update"
       conditions:
-        - "{{ trigger.event.data['data']['update_entity'] is defined }}"
+        - "{{ trigger.to_state.attributes.event_type == 'clicked' and trigger.to_state.attributes.update_entity is defined }}"
       actions:
         - variables:
-            entity: "{{- trigger.event.data['data']['update_entity'] | replace('update_available_notify_', 'update.') -}}"
+            entity: "{{- trigger.to_state.attributes.update_entity | replace('update_available_notify_', 'update.') -}}"
             backup_before: "{{ '{:0=64b}'.format(state_attr(entity, 'supported_features'))[-4] == '1' }}"
         - condition: "{{ not backup_before or is_state('sensor.backup_backup_manager_state', 'idle') }}"
         - if:

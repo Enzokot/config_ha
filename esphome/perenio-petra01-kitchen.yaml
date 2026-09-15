@@ -46,14 +46,14 @@ syslog:
     
 api:
   reboot_timeout: 0s
-  services:
-    - service: send_samsung_command
+  actions:
+    - action: send_samsung_command
       variables:
         data: string
       then:
         - remote_transmitter.transmit_samsung:
             data: !lambda 'return strtoul(data.c_str(), nullptr, 16);'
-    - service: send_lg_command
+    - action: send_lg_command
       variables:
         data: string
         nbits: int
@@ -61,7 +61,7 @@ api:
         - remote_transmitter.transmit_lg:
             data: !lambda 'return strtoul(data.c_str(), nullptr, 16);'
             nbits: !lambda 'return nbits;'
-    - service: send_raw_command
+    - action: send_raw_command
       variables:
         data: int[]
       then:

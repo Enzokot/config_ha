@@ -962,7 +962,7 @@ views:
                   - sensor.0x158d0006b860cf_battery
                   - sensor.0x00158d0008386b56_battery
                   - sensor.temperature_humidity_sensor_500d_battery
-                  - sensor.esp_xiaomi_hallway_battery_level
+                  - sensor.0xa4c138296061ffff_battery
               - name: 'Движения (min: {min}%, кол-во: {count})'
                 secondary_info: 'Диапазон заряда {range}%'
                 icon: 'mdi:motion-sensor'
@@ -1124,7 +1124,7 @@ views:
               tap_action: more-info
             - entity: sensor.temperature_humidity_sensor_500d_battery
               tap_action: more-info
-            - entity: sensor.esp_xiaomi_hallway_battery_level
+            - entity: sensor.0xa4c138296061ffff_battery
               tap_action: more-info
               round: 0
               name: 'Дисплей Т&Rh коридор'
@@ -1933,6 +1933,23 @@ views:
                     show_header_toggle: false
                     entities:
                         - entity: sensor.esp_xiaomi_living_room_humidity
+            - type: custom:vertical-stack-in-card
+              horizontal: true
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: 0px 0px;
+                    border: none;
+                  }
+              cards:
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.0xa4c138296061ffff_temperature
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                        - entity: sensor.0xa4c138296061ffff_humidity
 
         - type: markdown
           content: >
@@ -2396,10 +2413,7 @@ views:
             attribute: status
             icon: mdi:robot-vacuum
           - label: 'Заряд'
-            entity: vacuum.xiaomi_vacuum_cleaner
-            attribute: battery_level
-            icon: mdi:battery-charging-100
-            unit: '%'
+            entity: sensor.xiaomi_vacuum_cleaner_battery_level
           - label: 'Режим'
             entity: vacuum.xiaomi_vacuum_cleaner
             attribute: fan_speed

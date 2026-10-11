@@ -755,10 +755,6 @@
           entity_id: binary_sensor.cert_expired_netcraze_domain
           from: 'off'
           to: 'on'
-        - trigger: state
-          entity_id: binary_sensor.cert_expired_asuscomm_domain_klg
-          from: 'off'
-          to: 'on'
       actions:
         - action: telegram_bot.send_message
           data:
@@ -969,8 +965,10 @@
       initial_state: true
       mode: queued
       triggers:
-          - trigger: state
-            entity_id: sensor.myip
+        - trigger: state
+          entity_id: sensor.myip_cmd_opendns
+      conditions:
+        - "{{ trigger.from_state.state is defined and trigger.to_state.state is defined }}"
       actions:
         - parallel:
             - action: telegram_bot.send_message

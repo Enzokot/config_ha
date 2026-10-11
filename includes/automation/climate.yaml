@@ -589,3 +589,96 @@
               - action: switch.turn_on
                 target:
                   entity_id: switch.0x60a423fffef8d41a
+
+#E-ink экран в коридоре, установка температуры и погоды
+- alias: e-ink screen hallway set temperature humidity pressure
+  id: e-ink screen hallway set temperature humidity pressure
+  initial_state: true
+  mode: queued
+  triggers:
+    - trigger: state
+      entity_id: 
+        - sensor.0x00158d000542ceaf_temperature
+        - sensor.0x00158d000542ceaf_humidity
+        - sensor.0x00158d000542ceaf_pressure
+      to: null
+    - trigger: homeassistant
+      id: 'automation_reloaded'
+      event: start
+    - trigger: event
+      id: 'automation_reloaded'
+      event_type: automation_reloaded
+  conditions:
+    - "{{ is_state('binary_sensor.zigbee2mqtt_running', 'on') and is_state('binary_sensor.mosquitto_broker_running', 'on') }}"
+    - "{{ trigger.id == 'automation_reloaded' or trigger.from_state.state != trigger.to_state.state }}"
+  actions:
+    - parallel:
+        - if:
+            - "{{ trigger.id == 'automation_reloaded' or trigger.entity_id == 'sensor.0x00158d000542ceaf_temperature' and has_value(trigger.entity_id) }}"
+          then:
+            - action: number.set_value
+              target:
+                entity_id: number.0xa4c138296061ffff_remote_temperature
+              data:
+                value: "{{ states('sensor.0x00158d000542ceaf_temperature') | round(1, 'common', 0) }}"
+        - if:
+            - "{{ trigger.id == 'automation_reloaded' or trigger.entity_id == 'sensor.0x00158d000542ceaf_humidity' and has_value(trigger.entity_id) }}"
+          then:
+            - action: number.set_value
+              target:
+                entity_id: number.0xa4c138296061ffff_remote_humidity
+              data:
+                value: "{{ states('sensor.0x00158d000542ceaf_humidity') | round(0, 'common', 5) }}"
+        - if:
+            - "{{ trigger.id == 'automation_reloaded' or trigger.entity_id == 'sensor.0x00158d000542ceaf_pressure' and has_value(trigger.entity_id) }}"
+          then:
+            - action: number.set_value
+              target:
+                entity_id: number.0xa4c138296061ffff_remote_pressure
+              data:
+                value: "{{ states('sensor.0x00158d000542ceaf_pressure') | round(1, 'common', 700) }}"
+
+- alias: e-ink screen hallway set weather
+  id: e-ink screen hallway set weather
+  initial_state: true
+  mode: queued
+  triggers:
+    - trigger: state
+      entity_id: weather.pirateweather
+      to: null
+    - trigger: homeassistant
+      id: 'automation_reloaded'
+      event: start
+    - trigger: event
+      id: 'automation_reloaded'
+      event_type: automation_reloaded
+  conditions:
+    - "{{ is_state('binary_sensor.zigbee2mqtt_running', 'on') and is_state('binary_sensor.mosquitto_broker_running', 'on') }}"
+    - "{{ trigger.id == 'automation_reloaded' or trigger.from_state.state != trigger.to_state.state }}"
+  actions:
+    - variables:
+        weather_value: >-
+            {%- set state = states('weather.pirateweather') -%}
+            {%- if state in ['sunny', 'clear-night'] -%}
+              0
+            {%- elif state == 'partlycloudy' -%}
+              1
+            {%- elif state in ['cloudy', 'fog'] -%}
+              2
+            {%- elif state in ['rainy', 'pouring', 'lightning', 'lightning-rainy', 'hail', 'snowy-rainy'] -%}
+              3
+            {%- elif state == 'snowy' -%}
+              4
+            {%- elif state in ['windy', 'windy-variant'] -%}
+              5
+            {%- else -%}
+              -1
+            {%- endif -%}
+    - if:
+        - "{{ weather_value | int(-1) >= 0 }}"
+      then:
+        - action: select.select_option
+          target:
+            entity_id: select.0xa4c138296061ffff_weather
+          data:
+            option: "{{ ['sunny', 'partly_cloudy', 'overcast', 'rain', 'snow', 'windy'][weather_value | int(0)] }}"

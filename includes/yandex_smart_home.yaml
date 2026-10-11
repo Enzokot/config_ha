@@ -551,3 +551,8 @@
 
     switch.0x086bd7fffe5b7c7f_left:
       type: devices.types.ventilation
+
+    vacuum.xiaomi_vacuum_cleaner:
+      properties:
+        - type: battery_level
+          entity: sensor.xiaomi_vacuum_cleaner_battery_level

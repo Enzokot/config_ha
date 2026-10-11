@@ -84,9 +84,6 @@ binary_sensor.zhimi_humidifier_cb1_low_water_level:
 binary_sensor.cert_expired_netcraze_domain:
   friendly_name: !secret keenetic_base_url
 
-binary_sensor.cert_expired_asuscomm_domain_klg:
-  friendly_name: !secret asuscomm_base_url_klg
-
 #Отключение локального режима ястанций
 binary_sensor.yandex_station_ff98f029b620413b35e5e278_assumed_state:
   friendly_name: Яндекс станция мини кухня

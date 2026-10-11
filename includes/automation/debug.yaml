@@ -31,7 +31,7 @@
             {{ trigger.from_state.state not in not_has_state and
                trigger.to_state.state not in not_has_state and
                trigger.from_state.state != trigger.to_state.state and
-               trigger.to_state.state != states('sensor.myip')
+               trigger.to_state.state != states('sensor.myip_cmd_opendns')
             }}
       actions:
         - action: telegram_bot.send_message
@@ -41,7 +41,7 @@
             title: >-
                      {{ '\U0001f4f6' }} *Трекинг устройств*
             message: >-
-                    Внешний IP-адрес keendns `{{ trigger.to_state.state }}` не равен физическому `{{ states('sensor.myip') }}`
+                    Внешний IP-адрес keendns `{{ trigger.to_state.state }}` не равен физическому `{{ states('sensor.myip_cmd_opendns') }}`
 
     # - alias: homeassistant start debug
     #   mode: parallel

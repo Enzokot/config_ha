@@ -48,7 +48,6 @@ hardware:
 history:
 logbook:
 recorder: !include includes/recorder.yaml
-influxdb: !include includes/influxdb.yaml
 logger:
   default: warn
   filters: !include includes/logger_filters.yaml

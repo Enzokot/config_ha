@@ -328,8 +328,8 @@ sensor.perenio_petra01_kitchen_wifi_rssi:
 sensor.myip_netcraze:
   friendly_name: netcraze hostname
   
-sensor.myip:
-  friendly_name: opendns resolve
+sensor.myip_cmd_opendns:
+  friendly_name: OpenDNS cmd
 
 sensor.shelly_plug_s_2_power:
   friendly_name: Тек. мощность
@@ -454,7 +454,7 @@ sensor.449fdae95456_battery:
 sensor.a4c1385a07a5_battery:
   friendly_name: Присутствие гардероб
 
-sensor.esp_xiaomi_hallway_battery_level:
+sensor.0xa4c138296061ffff_battery:
   friendly_name: Дисплей Т&Rh коридор
 
 sensor.348d130c94f5_battery:
@@ -471,3 +471,9 @@ sensor.0x449fdafffe74576a_battery:
 
 sensor.0x8c73dafffe01930c_battery:
   friendly_name: Термостат гостиная
+
+sensor.0xa4c138296061ffff_temperature:
+  friendly_name: Т коридор
+
+sensor.0xa4c138296061ffff_humidity:
+  friendly_name: Rh коридор

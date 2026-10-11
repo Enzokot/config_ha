@@ -23,3 +23,12 @@
   - sensor:
       name: telegram status
       command: "curl --silent --fail -m 5 -o /dev/null -G https://api.telegram.org/bot{{ states('input_text.var_telegram_bot_api_token') }}/getMe && echo online || echo offline"
+
+#Внешний IP адрес
+  - sensor:
+      name: "myip_cmd_opendns"
+      command: "dig -4 +tcp +short myip.opendns.com @resolver1.opendns.com"
+      icon: mdi:ip-outline
+      command_timeout: 15
+      scan_interval: 30
+      availability: '{{ value | regex_match("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$") }}'

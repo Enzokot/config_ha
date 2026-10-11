@@ -1,14 +1,16 @@
 {
   "dashboard_view": "cards",
   "theme": "system",
-  "navigator_visible": true,
-  "device_editor_layout": "both",
-  "secrets_editor_layout": "visual",
+  "navigator_visible": false,
+  "device_editor_layout": "yaml",
+  "secrets_editor_layout": "yaml",
   "table_page_size": 25,
   "table_column_visibility": {},
   "table_sort_column": null,
   "table_sort_direction": null,
   "experience_level": "expert",
   "remote_compute_only": false,
+  "hide_device_builder": false,
+  "version_history_enabled": true,
   "onboarding_completed_version": 0
 }
